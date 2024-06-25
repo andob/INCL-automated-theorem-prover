@@ -9,14 +9,22 @@ crate-type = ["cdylib", "rlib"]
 [features]
 default = ["console_error_panic_hook"]
 
-[dependencies]
-prover = { path = "../prover" }
-wasm-bindgen = "0.2.84"
-
-console_error_panic_hook = { version = "0.1.7", optional = true }
-
 [dev-dependencies]
 wasm-bindgen-test = "0.3.34"
 
 [profile.release]
 opt-level = "s"
+
+[dependencies]
+prover = { path = "../prover" }
+
+# WASM support libs
+wasm-bindgen = "0.2.84"
+console_error_panic_hook = { version = "0.1.7", optional = true }
+
+# generic Result<> with any error
+anyhow = "1.0.79"
+
+# JSON parser
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.118"

@@ -4,3 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# generic Result<> with any error
+anyhow = "1.0.79"
+
+# regex
+regex = "1.10.5"
+
+# Enum utils
+strum = "0.26.1"
+strum_macros = "0.26.1"
+
+# String.substring()
+substring = "1.4.5"
