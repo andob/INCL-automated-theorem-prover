@@ -14,5 +14,8 @@ regex = "1.10.5"
 strum = "0.26.1"
 strum_macros = "0.26.1"
 
+# iter extensions
+itertools = "0.13.0"
+
 # String.substring()
 substring = "1.4.5"

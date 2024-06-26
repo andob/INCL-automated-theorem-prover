@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
-use prover::codeloc;
+use prover::{codeloc, test};
 
 #[derive(Serialize, Deserialize)]
 struct RootJSONNode
@@ -36,10 +36,10 @@ fn main() -> Result<()>
         {
             for premise in &problem.premises
             {
-                println!("{}", premise);
+                test(premise.clone())?;
             }
 
-            println!("{}", problem.conclusion);
+            test(problem.conclusion.clone())?;
         }
     }
 

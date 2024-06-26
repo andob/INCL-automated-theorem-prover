@@ -21,7 +21,6 @@ struct LogicalExpressionParserInput
 
 struct LogicalExpressionParserState
 {
-    variables : Vec<String>,
     current_index : usize,
 }
 
@@ -39,7 +38,8 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
         let tokens : Vec<Token> = text
             .replace("~", " ~ ").replace("¬", " ¬ ").replace("!", " ! ")
-            .replace("(", " ( ").replace(")", " ) ").split(" ")
+            .replace("(", " ( ").replace(")", " ) ").replace(", ", ",")
+            .replace("∀", " ∀").replace("∃", " ∃").split(" ")
             .map(|word| word.trim()).filter(|word| !word.is_empty())
             .flat_map(|word| Self::get_tokens(word, &token_types))
             .collect();
@@ -50,7 +50,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
         }
 
         let parser_input = LogicalExpressionParserInput { text:text.clone(), token_types, tokens };
-        let mut parser_state = LogicalExpressionParserState { variables:Vec::new(), current_index:0 };
+        let mut parser_state = LogicalExpressionParserState { current_index:0 };
 
         let mut parser = LogicalExpressionParserImpl { input: &parser_input, state: &mut parser_state };
 
@@ -122,17 +122,12 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
         if self.current_token_type().category == TokenCategory::Atomic
         {
-            let atomic_variable_name = self.current_token().value.clone();
-
+            let index_before_eat = self.state.current_index;
             self.eat(self.current_token_type().id).context(codeloc!())?;
 
-            if let Some(previouslyExistingVariable) = self.state.variables.iter().find(|variable| **variable == atomic_variable_name)
-            {
-                return Ok(Formula::Atomic(previouslyExistingVariable.clone()));
-            }
-
-            self.state.variables.push(atomic_variable_name.clone());
-            return Ok(Formula::Atomic(atomic_variable_name.clone()));
+            let to_formula = self.token_type_at_index(index_before_eat).to_formula;
+            let name = self.token_at_index(index_before_eat).value.clone();
+            return Ok(to_formula(name, vec![]));
         }
 
         if self.current_token_type().category == TokenCategory::UnaryOperation
