@@ -1,10 +1,22 @@
-mod parser;
+use std::fmt::Display;
 
-use anyhow::{Result, Context};
-use std::fmt::{Display, format, Formatter};
+use anyhow::{Context, Result};
 use itertools::Itertools;
+use serde_json::to_string;
 use substring::Substring;
+
+use crate::formula::Formula;
 use crate::parser::algorithm::LogicalExpressionParser;
+use crate::proof::problem_catalog::get_demo_problem_catalog;
+use crate::proof::Problem;
+use crate::tree::node_factory::ProofTreeNodeFactory;
+use crate::tree::ProofTree;
+use crate::tree::subtree::ProofSubtree;
+
+mod parser;
+mod tree;
+mod formula;
+mod proof;
 
 #[macro_export]
 macro_rules! codeloc
@@ -12,87 +24,53 @@ macro_rules! codeloc
     () => { format!("{}:{}", file!(), line!()) }
 }
 
-#[derive(Clone)]
-enum Formula
+pub fn test() -> Result<()>
 {
-    Atomic(String, Vec<PredicateArgument>),
-    Non(Box<Formula>),
-    And(Box<Formula>, Box<Formula>),
-    Or(Box<Formula>, Box<Formula>),
-    Imply(Box<Formula>, Box<Formula>),
-    BiImply(Box<Formula>, Box<Formula>),
-    Exists(PredicateArgument, Box<Formula>),
-    ForAll(PredicateArgument, Box<Formula>),
-}
-
-#[derive(Clone)]
-struct PredicateArgument { name : String }
-impl PredicateArgument
-{
-    fn new(name : String) -> PredicateArgument { PredicateArgument { name } }
-}
-
-impl Display for PredicateArgument
-{
-    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    let book_chapters = get_demo_problem_catalog().context(codeloc!())?;
+    for book_chapter in &book_chapters
     {
-        return write!(f, "{}", self.name);
-    }
-}
-
-impl Formula
-{
-    pub fn to_box(&self) -> Box<Formula>
-    {
-        return Box::new(self.clone());
-    }
-}
-
-impl Formula
-{
-    fn to_string_impl(&self, index : usize) -> String
-    {
-        let format_predicate_args = |args : &Vec<PredicateArgument>|
-            args.iter().map(|arg|arg.name.clone()).intersperse(String::from(",")).collect::<String>();
-
-        let format_atomic = |p : &String, args : &Vec<PredicateArgument>|
-            if args.is_empty() { p.clone() } else { format!("{}[{}]", p, format_predicate_args(args)) };
-
-        let format_unary_formula = |operator : &str, x : &Box<Formula>|
-            format!("{}{}", operator, x.to_string_impl(index+1));
-
-        let format_quantifier_formula = |operator : &str, x : &PredicateArgument, p : &Box<Formula>|
-            format!("{}{}({})", operator, x, p.to_string_impl(index+1));
-
-        let format_binary_formula = |x : &Box<Formula>, operator : &str, y : &Box<Formula>|
-            if index==0 { format!("{} {} {}", x.to_string_impl(index+1), operator, y.to_string_impl(index+1)) }
-            else { format!("({} {} {})", x.to_string_impl(index+1), operator, y.to_string_impl(index+1)) };
-
-        return match self
+        for problem in &book_chapter.problems
         {
-            Formula::Atomic(p, args) => { format_atomic(p, args) }
-            Formula::Non(x) => { format_unary_formula("¬", x) }
-            Formula::And(x, y) => { format_binary_formula(x, "∧", y) }
-            Formula::Or(x, y) => { format_binary_formula(x, "∨", y) }
-            Formula::Imply(x, y) => { format_binary_formula(x, "⊃", y) }
-            Formula::BiImply(x, y) => { format_binary_formula(x, "≡", y) }
-            Formula::Exists(x, p) => { format_quantifier_formula("∃", x, p) }
-            Formula::ForAll(x, p) => { format_quantifier_formula("∀", x, p) }
-        };
+            for premise in &problem.premises
+            {
+                println!("{}", premise);
+            }
+
+            println!("{}", problem.conclusion);
+        }
     }
+
+    return Ok(());
 }
 
-impl Display for Formula
+pub fn test2() -> Result<()>
 {
-    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    let problem = Problem
     {
-        return write!(f, "{}", self.to_string_impl(0));
-    }
-}
+        premises: vec![],
+        conclusion: Formula::Atomic("P".to_string(), vec![]),
+    };
 
-pub fn test(input : String) -> Result<()>
-{
-    let formula = LogicalExpressionParser::parse(input)?;
-    println!("{}", formula);
+    let mut node_factory = ProofTreeNodeFactory::new();
+    let n6 = Box::new(node_factory.new_node(Formula::Atomic("N6".to_string(), vec![]), None, None, None));
+    let n5 = Box::new(node_factory.new_node(Formula::Atomic("N5".to_string(), vec![]), None, Some(n6), None));
+    let n4 = Box::new(node_factory.new_node(Formula::Atomic("N4".to_string(), vec![]), None, None, None));
+    let n3 = Box::new(node_factory.new_node(Formula::Atomic("N3".to_string(), vec![]), Some(n4), None, Some(n5)));
+    let n2 = Box::new(node_factory.new_node(Formula::Atomic("N2".to_string(), vec![]), None, None, None));
+    let n1 = Box::new(node_factory.new_node(Formula::Atomic("N1".to_string(), vec![]), Some(n2), None, Some(n3)));
+    let mut tree = ProofTree::new(&problem, *n1);
+    println!("\n\n{}", tree);
+
+    println!("{}\n\n", tree.to_json()?);
+
+    let n10 = Box::new(node_factory.new_node(Formula::Atomic("N10".to_string(), vec![]), None, None, None));
+    let n20 = Box::new(node_factory.new_node(Formula::Atomic("N20".to_string(), vec![]), None, None, None));
+    let subtree = ProofSubtree { left:Some(n10), middle:None, right:Some(n20) };
+    tree.append_subtree(subtree, 5);
+
+    println!("{}", tree);
+
+    println!("{}\n\n", tree.to_json()?);
+
     return Ok(());
 }

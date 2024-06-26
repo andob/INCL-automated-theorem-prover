@@ -1,10 +1,10 @@
 use std::fmt::{Display, Formatter};
 use regex::Regex;
 use strum_macros::Display;
-use crate::Formula;
+use crate::formula::Formula;
 use crate::parser::token_types::TokenTypeID;
 
-#[derive(Copy, Clone, Eq, PartialEq, Display)]
+#[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
 pub enum OperatorPrecedence
 {
     Lowest, Low, Medium, High, Highest,
@@ -25,7 +25,7 @@ impl OperatorPrecedence
     }
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Display)]
+#[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
 pub enum TokenCategory
 {
     Grouping,

@@ -1,10 +1,12 @@
 use regex::Regex;
+use anyhow::{Context, Result};
 use strum_macros::Display;
 use substring::Substring;
-use crate::{Formula, PredicateArgument};
+use crate::codeloc;
+use crate::formula::{Formula, PredicateArgument};
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
-#[derive(Copy, Clone, Eq, PartialEq, Display)]
+#[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
 pub enum TokenTypeID
 {
     Exists, ForAll,
@@ -15,15 +17,15 @@ pub enum TokenTypeID
 
 impl TokenType
 {
-    pub fn get_types() -> Vec<TokenType>
+    pub fn get_types() -> Result<Vec<TokenType>>
     {
-        return vec!
+        return Ok(vec!
         [
             TokenType
             {
                 //matches existential quantifier: ∃x
                 id: TokenTypeID::Exists,
-                regex: Regex::new(r"∃[A-Za-z_]+").unwrap(),
+                regex: Regex::new(r"∃[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |name, args|
@@ -37,7 +39,7 @@ impl TokenType
             {
                 //matches for all quantifier: ∀x
                 id: TokenTypeID::ForAll,
-                regex: Regex::new(r"∀[A-Za-z_]+").unwrap(),
+                regex: Regex::new(r"∀[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |name, args|
@@ -51,12 +53,12 @@ impl TokenType
             {
                 //matches atomic formulas with args: P(x,y), ...
                 id: TokenTypeID::AtomicWithArgs,
-                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z_,]+\]").unwrap(),
+                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z_,]+\]").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name, args|
                 {
-                    let atomic_name = name.substring(0, name.find('[').unwrap()).to_string();
+                    let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_string();
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     return Formula::Atomic(atomic_name, predicate_args);
                 },
@@ -66,7 +68,7 @@ impl TokenType
             {
                 //matches atomic formulas: P, Q, ...
                 id: TokenTypeID::AtomicWithoutArgs,
-                regex: Regex::new(r"[A-Za-z_]+").unwrap(),
+                regex: Regex::new(r"[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name,_| { Formula::Atomic(name, vec![]) },
@@ -76,7 +78,7 @@ impl TokenType
             {
                 //matches not: ~P, ~Q, ...
                 id: TokenTypeID::Non,
-                regex: Regex::new(r"(~)|(¬)|(!)").unwrap(),
+                regex: Regex::new(r"(~)|(¬)|(!)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args| { Formula::Non(args[0].to_box()) },
@@ -86,7 +88,7 @@ impl TokenType
             {
                 //matches and: P & Q
                 id: TokenTypeID::And,
-                regex: Regex::new(r"(&)|(∧)|(\^)").unwrap(),
+                regex: Regex::new(r"(&)|(∧)|(\^)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::High,
                 to_formula: |_,args| { Formula::And(args[0].to_box(), args[1].to_box()) }
@@ -96,7 +98,7 @@ impl TokenType
             {
                 //matches or: P | Q
                 id: TokenTypeID::Or,
-                regex: Regex::new(r"(\|)|(∨)").unwrap(),
+                regex: Regex::new(r"(\|)|(∨)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::High,
                 to_formula: |_,args| { Formula::Or(args[0].to_box(), args[1].to_box()) }
@@ -106,7 +108,7 @@ impl TokenType
             {
                 //matches imply: P → Q
                 id: TokenTypeID::Imply,
-                regex: Regex::new(r"(→)|(⇒)|(⊃)").unwrap(),
+                regex: Regex::new(r"(→)|(⇒)|(⊃)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::Medium,
                 to_formula: |_,args| { Formula::Imply(args[0].to_box(), args[1].to_box()) }
@@ -116,7 +118,7 @@ impl TokenType
             {
                 //matches equivalence: P ≡ Q
                 id: TokenTypeID::BiImply,
-                regex: Regex::new(r"(↔)|(⇔)|(≡)").unwrap(),
+                regex: Regex::new(r"(↔)|(⇔)|(≡)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::Low,
                 to_formula: |_,args| { Formula::BiImply(args[0].to_box(), args[1].to_box()) }
@@ -126,7 +128,7 @@ impl TokenType
             {
                 //matches open parenthesis
                 id: TokenTypeID::OpenParenthesis,
-                regex: Regex::new(r"\(").unwrap(),
+                regex: Regex::new(r"\(").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args| { panic!("Cannot convert ( to formula!") }
@@ -136,12 +138,12 @@ impl TokenType
             {
                 //matches closed parenthesis
                 id: TokenTypeID::ClosedParenthesis,
-                regex: Regex::new(r"\)").unwrap(),
+                regex: Regex::new(r"\)").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args| { panic!("Cannot convert ) to formula!") }
             },
-        ];
+        ]);
     }
 
     fn parse_predicate_arguments(input : &String) -> Vec<PredicateArgument>

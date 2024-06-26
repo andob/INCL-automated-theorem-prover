@@ -1,12 +1,13 @@
 use anyhow::{anyhow, Context, Result};
-use crate::{codeloc, Formula};
+use crate::codeloc;
+use crate::formula::Formula;
 use crate::parser::models::{OperatorPrecedence, Token, TokenCategory, TokenType};
 use crate::parser::token_types::TokenTypeID;
 
 pub struct LogicalExpressionParser {}
 impl LogicalExpressionParser
 {
-    pub fn parse(text : String) -> Result<Formula>
+    pub fn parse(text : &String) -> Result<Formula>
     {
         return LogicalExpressionParserImpl::parse(text);
     }
@@ -32,9 +33,9 @@ struct LogicalExpressionParserImpl<'a>
 
 impl <'a> LogicalExpressionParserImpl<'a>
 {
-    fn parse(text : String) -> Result<Formula>
+    fn parse(text : &String) -> Result<Formula>
     {
-        let token_types = TokenType::get_types();
+        let token_types = TokenType::get_types().context(codeloc!())?;
 
         let tokens : Vec<Token> = text
             .replace("~", " ~ ").replace("¬", " ¬ ").replace("!", " ! ")
