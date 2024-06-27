@@ -47,7 +47,7 @@ impl Formula
         let format_atomic = |p : &String, args : &Vec<PredicateArgument>|
         if args.is_empty() { p.clone() } else { format!("{}[{}]", p, format_predicate_args(args)) };
 
-        let format_unary_formula = |operator : &str, x : &Box<Formula>|
+        let format_unary_formula = |operator : &str, x : &Formula|
         format!("{}{}", operator, x.to_string_impl(index+1));
 
         let format_quantifier_formula = |operator : &str, x : &PredicateArgument, p : &Box<Formula>|

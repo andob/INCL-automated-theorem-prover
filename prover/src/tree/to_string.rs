@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 use crate::tree::node::ProofTreeNode;
 use crate::tree::ProofTree;
 
-impl<'a> Display for ProofTree<'a>
+impl Display for ProofTree
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {

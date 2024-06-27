@@ -2,6 +2,7 @@ use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::ProofTree;
 
+#[derive(Clone)]
 pub struct ProofSubtree
 {
     pub left : Option<Box<ProofTreeNode>>,
@@ -11,16 +12,45 @@ pub struct ProofSubtree
 
 impl ProofSubtree
 {
-    fn empty() -> ProofSubtree
+    pub fn empty() -> ProofSubtree
     {
         return ProofSubtree { left:None, middle:None, right:None };
     }
+
+    pub fn with_middle_node(node : ProofTreeNode) -> ProofSubtree
+    {
+        return ProofSubtree { left:None, middle:Some(Box::new(node)), right:None };
+    }
+
+    pub fn with_middle_vertical_nodes(nodes : Vec<ProofTreeNode>) -> ProofSubtree
+    {
+        if nodes.is_empty() { return ProofSubtree::empty() };
+        let linked_nodes = Self::link_nodes_recursively(&nodes, 0);
+        return ProofSubtree { left:None, middle:Some(Box::new(linked_nodes)), right:None };
+    }
+
+    fn link_nodes_recursively(nodes : &Vec<ProofTreeNode>, index : usize) -> ProofTreeNode
+    {
+        if index < nodes.len()-1
+        {
+            let mut current_linked_node = nodes[index].clone();
+            let next_linked_node = Self::link_nodes_recursively(nodes, index+1);
+            current_linked_node.middle = Some(Box::new(next_linked_node));
+            return current_linked_node;
+        }
+
+        return nodes[index].clone();
+    }
+
+    pub fn with_left_right_nodes(left : ProofTreeNode, right : ProofTreeNode) -> ProofSubtree
+    {
+        return ProofSubtree { left:Some(Box::new(left)), middle:None, right:Some(Box::new(right)) };
+    }
 }
 
-impl<'a> ProofTree<'a>
+impl ProofTree
 {
-    //todo test this
-    pub fn append_subtree(&mut self, subtree : ProofSubtree, node_id : ProofTreeNodeID)
+    pub fn append_subtree(&mut self, subtree : &ProofSubtree, node_id : ProofTreeNodeID)
     {
         let mut target_leaf_node_ids : Vec<ProofTreeNodeID> = vec![];
 

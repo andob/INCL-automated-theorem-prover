@@ -1,10 +1,96 @@
-pub mod problem_catalog;
-pub mod problem_json;
-
 use crate::formula::Formula;
+use crate::logic::LogicRule;
+use crate::problem::Problem;
+use crate::proof::decomposition_queue::DecompositionPriorityQueue;
+use crate::tree::node::ProofTreeNode;
+use crate::tree::node_factory::ProofTreeNodeFactory;
+use crate::tree::ProofTree;
+use crate::tree::subtree::ProofSubtree;
 
-pub struct Problem
+mod decomposition_queue;
+
+pub struct ProofAlgorithm
 {
-    pub premises : Vec<Formula>,
-    pub conclusion : Formula,
+    proof_tree : ProofTree,
+    decomposition_queue : DecompositionPriorityQueue,
+    logic_rules : Vec<Box<dyn LogicRule>>,
+    node_factory : ProofTreeNodeFactory,
+}
+
+impl ProofAlgorithm
+{
+    pub fn initialize(problem : Problem) -> ProofAlgorithm
+    {
+        let logic_rules = problem.logic.get_rules();
+        let mut node_factory = ProofTreeNodeFactory::new();
+
+        let non_conclusion = Formula::Non(problem.conclusion.to_box());
+        let non_conclusion_node = node_factory.new_node(non_conclusion);
+
+        let mut decomposition_queue = DecompositionPriorityQueue::new();
+        decomposition_queue.push_tree_node(Box::new(non_conclusion_node.clone()));
+
+        if problem.premises.is_empty()
+        {
+            let proof_tree = ProofTree::new(problem, non_conclusion_node);
+
+            return ProofAlgorithm { proof_tree, decomposition_queue, logic_rules, node_factory };
+        }
+
+        let first_premise_node = node_factory.new_node(problem.premises[0].clone());
+        let first_premise_node_id = first_premise_node.id;
+
+        decomposition_queue.push_tree_node(Box::new(first_premise_node.clone()));
+
+        let other_premise_nodes = problem.premises.iter().enumerate()
+            .filter(|(index, _premise)| *index>0)
+            .map(|(index, premise)| node_factory.new_node(premise.clone()))
+            .collect::<Vec<ProofTreeNode>>();
+
+        let other_premise_subtree = ProofSubtree::with_middle_vertical_nodes(other_premise_nodes);
+
+        let mut proof_tree = ProofTree::new(problem, first_premise_node);
+        proof_tree.append_subtree(&other_premise_subtree, first_premise_node_id);
+        decomposition_queue.push_subtree(Box::new(other_premise_subtree));
+
+        let non_conclusion_subtree = ProofSubtree::with_middle_node(non_conclusion_node);
+        proof_tree.append_subtree(&non_conclusion_subtree, first_premise_node_id);
+
+        return ProofAlgorithm { proof_tree, decomposition_queue, logic_rules, node_factory };
+    }
+
+    pub fn prove(mut self) -> ProofTree
+    {
+        while !self.decomposition_queue.is_empty() && self.node_factory.node_id_sequence.has_next()
+        {
+            if let Some((node, subtree)) = self.consume_next_queue_node()
+            {
+                self.proof_tree.append_subtree(&subtree, node.id);
+
+                self.proof_tree.check_for_contradictions();
+
+                self.decomposition_queue.push_subtree(subtree);
+            }
+        }
+
+        self.proof_tree.has_timeout = !self.node_factory.node_id_sequence.has_next();
+
+        return self.proof_tree;
+    }
+
+    fn consume_next_queue_node(&mut self) -> Option<(Box<ProofTreeNode>, Box<ProofSubtree>)>
+    {
+        if let Some(node) = self.decomposition_queue.pop()
+        {
+            for logic_rule in &self.logic_rules
+            {
+                if let Some(subtree) = logic_rule.apply(&mut self.node_factory, &node)
+                {
+                    return Some((node, Box::new(subtree)));
+                }
+            }
+        }
+
+        return None;
+    }
 }

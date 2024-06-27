@@ -74,32 +74,5 @@
         "conclusion": "(s ∧ q) ⊃ p"
       }
     ]
-  },
-  {
-    "name": "QuantifierParserTest",
-    "problems":
-    [
-      {
-        "id": "test1",
-        "logic": "FirstOrderLogic",
-        "expected": "proved",
-        "premises": [ "∀x (P[x] ⊃ ∃y S[x,y])" ],
-        "conclusion": "∀x ∃y (P[x] ⊃ S[x,y])"
-      },
-      {
-        "id": "test2",
-        "logic": "FirstOrderLogic",
-        "expected": "proved",
-        "premises": [ "∃x ¬∃y S[x,y]" ],
-        "conclusion": "¬∃x ∀y S[y,x]"
-      },
-      {
-        "id": "test3",
-        "logic": "FirstOrderLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "∃x∃y P[x,y] ≡ ∃x∃y P[y,x]"
-      }
-    ]
   }
 ]

@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
-use crate::proof::problem_json::ProblemJSON;
+use crate::problem::json::ProblemJSON;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::ProofTree;
@@ -26,7 +26,7 @@ struct ProofTreeNodeJSON
     right : Option<Box<ProofTreeNodeJSON>>,
 }
 
-impl<'a> ProofTree<'a>
+impl ProofTree
 {
     pub fn to_json(&self) -> Result<String>
     {

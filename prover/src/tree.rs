@@ -1,26 +1,26 @@
 use itertools::Itertools;
-use crate::proof::Problem;
+use crate::problem::Problem;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::path::ProofTreePath;
 
-mod node;
+pub mod node;
 mod path;
 mod to_string;
 mod to_json;
 pub mod subtree;
 pub mod node_factory;
 
-pub struct ProofTree<'a>
+pub struct ProofTree
 {
-    pub problem : &'a Problem,
+    pub problem : Problem,
     pub root_node : ProofTreeNode,
     pub is_proof_correct : bool,
     pub has_timeout : bool,
 }
 
-impl<'a> ProofTree<'a>
+impl ProofTree
 {
-    pub fn new(problem : &'a Problem, root_node : ProofTreeNode) -> ProofTree<'a>
+    pub fn new(problem : Problem, root_node : ProofTreeNode) -> ProofTree
     {
         return ProofTree { problem, root_node, is_proof_correct:false, has_timeout: false };
     }
@@ -52,5 +52,10 @@ impl<'a> ProofTree<'a>
         }
 
         return ProofTreePath::new(vec![self.root_node.clone()]);
+    }
+
+    pub fn check_for_contradictions(&self)
+    {
+        //todo implement this
     }
 }

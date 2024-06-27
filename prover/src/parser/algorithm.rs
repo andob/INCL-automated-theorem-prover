@@ -1,15 +1,17 @@
+use std::any;
 use anyhow::{anyhow, Context, Result};
 use crate::codeloc;
 use crate::formula::Formula;
+use crate::logic::Logic;
 use crate::parser::models::{OperatorPrecedence, Token, TokenCategory, TokenType};
 use crate::parser::token_types::TokenTypeID;
 
 pub struct LogicalExpressionParser {}
 impl LogicalExpressionParser
 {
-    pub fn parse(text : &String) -> Result<Formula>
+    pub fn parse(logic : &Box<dyn Logic>, text : &String) -> Result<Formula>
     {
-        return LogicalExpressionParserImpl::parse(text);
+        return LogicalExpressionParserImpl::parse(logic, text);
     }
 }
 
@@ -33,7 +35,7 @@ struct LogicalExpressionParserImpl<'a>
 
 impl <'a> LogicalExpressionParserImpl<'a>
 {
-    fn parse(text : &String) -> Result<Formula>
+    fn parse(logic : &Box<dyn Logic>, text : &String) -> Result<Formula>
     {
         let token_types = TokenType::get_types().context(codeloc!())?;
 
@@ -48,6 +50,15 @@ impl <'a> LogicalExpressionParserImpl<'a>
         if tokens.is_empty()
         {
             return Err(anyhow!("Empty formula {}", text));
+        }
+
+        let legal_syntax_in_this_logic = logic.get_parser_syntax();
+        for token in &tokens
+        {
+            if !legal_syntax_in_this_logic.contains(&token.type_id)
+            {
+                return Err(anyhow!("Invalid syntax: {} operation is not available in {}!", token.type_id, logic.get_name()));
+            }
         }
 
         let parser_input = LogicalExpressionParserInput { text:text.clone(), token_types, tokens };
