@@ -1,4 +1,3 @@
-use std::rc::Rc;
 use crate::formula::Formula;
 use crate::logic::LogicRule;
 use crate::problem::Problem;

@@ -1,4 +1,3 @@
-use std::rc::Rc;
 use itertools::Itertools;
 use crate::problem::Problem;
 use crate::tree::node::ProofTreeNode;
@@ -51,7 +50,7 @@ impl ProofTree
             return found_path.clone();
         }
 
-        return ProofTreePath::new(vec![self.root_node.clone()]);
+        return ProofTreePath::new(&self.root_node);
     }
 
     pub fn check_for_contradictions(&mut self)
@@ -64,10 +63,11 @@ impl ProofTree
             let contradictory_node_ids = path.get_contradictory_node_ids(&self.problem.logic);
             if !contradictory_node_ids.is_empty()
             {
-                for id in contradictory_node_ids
+                for contradictory_node_id in contradictory_node_ids
                 {
-                    self.root_node.mark_child_node_as_contradictory(id);
+                    self.root_node.mark_child_node_as_contradictory(contradictory_node_id);
                 }
+
                 number_of_contradictory_paths += 1;
             }
         }

@@ -3,7 +3,6 @@ use strum_macros::EnumIter;
 use crate::formula::Formula::{And, BiImply, ForAll, Imply, Non, Or};
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
-use crate::tree::subtree::ProofSubtree;
 
 #[derive(Eq, PartialEq, Hash, EnumIter)]
 enum Priority

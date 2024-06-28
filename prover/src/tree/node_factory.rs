@@ -1,5 +1,4 @@
 use std::cell::RefCell;
-use std::ops::{Deref, DerefMut};
 use std::rc::Rc;
 use crate::formula::Formula;
 use crate::tree::node::ProofTreeNode;
