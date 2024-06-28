@@ -32,9 +32,8 @@ impl Logic for PropositionalLogic
     {
         return vec!
         [
+            Box::new(BasicRules {}),
             Box::new(DoubleNegationRule {}),
-            Box::new(BasicNonSplittingRules {}),
-            Box::new(BasicSplittingRules {}),
         ];
     }
 }
@@ -54,8 +53,8 @@ impl LogicRule for DoubleNegationRule
     }
 }
 
-pub struct BasicNonSplittingRules {}
-impl LogicRule for BasicNonSplittingRules
+pub struct BasicRules {}
+impl LogicRule for BasicRules
 {
     fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
@@ -68,39 +67,6 @@ impl LogicRule for BasicNonSplittingRules
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
 
-            Non(box Or(box p, box q)) =>
-            {
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let non_p_node = factory.new_node_with_subnode(Non(p.to_box()), non_q_node);
-                return Some(ProofSubtree::with_middle_node(non_p_node));
-            }
-
-            Non(box Imply(box p, box q)) =>
-            {
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
-                return Some(ProofSubtree::with_middle_node(p_node));
-            }
-
-            _ => None
-        }
-    }
-}
-
-pub struct BasicSplittingRules {}
-impl LogicRule for BasicSplittingRules
-{
-    fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
-    {
-        return match &node.formula
-        {
-            Or(box p, box q) =>
-            {
-                let p_node = factory.new_node(p.clone());
-                let q_node = factory.new_node(q.clone());
-                return Some(ProofSubtree::with_left_right_nodes(p_node, q_node));
-            }
-
             Non(box And(box p, box q)) =>
             {
                 let non_p_node = factory.new_node(Non(p.to_box()));
@@ -108,11 +74,32 @@ impl LogicRule for BasicSplittingRules
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, non_q_node));
             }
 
+            Or(box p, box q) =>
+            {
+                let p_node = factory.new_node(p.clone());
+                let q_node = factory.new_node(q.clone());
+                return Some(ProofSubtree::with_left_right_nodes(p_node, q_node));
+            }
+
+            Non(box Or(box p, box q)) =>
+            {
+                let non_q_node = factory.new_node(Non(q.to_box()));
+                let non_p_node = factory.new_node_with_subnode(Non(p.to_box()), non_q_node);
+                return Some(ProofSubtree::with_middle_node(non_p_node));
+            }
+
             Imply(box p, box q) =>
             {
                 let non_p_node = factory.new_node(Non(p.to_box()));
                 let q_node = factory.new_node(q.clone());
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, q_node));
+            }
+
+            Non(box Imply(box p, box q)) =>
+            {
+                let non_q_node = factory.new_node(Non(q.to_box()));
+                let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
+                return Some(ProofSubtree::with_middle_node(p_node));
             }
 
             BiImply(box p, box q) =>
