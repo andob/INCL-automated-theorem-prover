@@ -14,6 +14,33 @@ pub struct ProofTreeNode
     pub is_contradictory : bool,
 }
 
+//todo migrate to this data structure. Use less object cloning.
+// pub struct ProofTreeNode
+// {
+//     data : Rc<RefCell<ProofTreeNodeData>>
+// }
+//
+// pub struct ProofTreeNodeData
+// {
+//     pub id : ProofTreeNodeID,
+//     pub formula : Formula,
+//     pub left : Option<Box<ProofTreeNode>>,
+//     pub middle : Option<Box<ProofTreeNode>>,
+//     pub right : Option<Box<ProofTreeNode>>,
+//     pub is_contradictory : bool,
+// }
+//
+// impl Deref for ProofTreeNode
+// {
+//     type Target = ProofTreeNodeData;
+//     fn deref(&self) -> &Self::Target { &*self.data.borrow() }
+// }
+//
+// impl DerefMut for ProofTreeNode
+// {
+//     fn deref_mut(&mut self) -> &mut Self::Target { &mut *self.data.borrow_mut() }
+// }
+
 impl ProofTreeNode
 {
     pub fn get_all_leafs(&self) -> Vec<ProofTreeNode>
@@ -89,6 +116,30 @@ impl ProofTreeNode
         if let Some(right) = &self.right
         {
             right.find_all_child_nodes(out_nodes);
+        }
+    }
+
+    //todo remove this stupidity after migration to Rc<RefCell<>>
+    pub fn mark_child_node_as_contradictory(&mut self, node_id : ProofTreeNodeID)
+    {
+        if let Some(left) = &mut self.left
+        {
+            left.mark_child_node_as_contradictory(node_id);
+        }
+
+        if let Some(middle) = &mut self.middle
+        {
+            middle.mark_child_node_as_contradictory(node_id);
+        }
+
+        if let Some(right) = &mut self.right
+        {
+            right.mark_child_node_as_contradictory(node_id);
+        }
+
+        if self.id == node_id
+        {
+            self.is_contradictory = true;
         }
     }
 }

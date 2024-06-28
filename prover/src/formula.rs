@@ -12,6 +12,8 @@ pub enum Formula
     BiImply(Box<Formula>, Box<Formula>),
     Exists(PredicateArgument, Box<Formula>),
     ForAll(PredicateArgument, Box<Formula>),
+    Possible(Box<Formula>),
+    Necessary(Box<Formula>),
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]
@@ -60,13 +62,15 @@ impl Formula
         return match self
         {
             Formula::Atomic(p, args) => { format_atomic(p, args) }
-            Formula::Non(x) => { format_unary_formula("¬", x) }
-            Formula::And(x, y) => { format_binary_formula(x, "∧", y) }
-            Formula::Or(x, y) => { format_binary_formula(x, "∨", y) }
-            Formula::Imply(x, y) => { format_binary_formula(x, "⊃", y) }
-            Formula::BiImply(x, y) => { format_binary_formula(x, "≡", y) }
+            Formula::Non(p) => { format_unary_formula("¬", p) }
+            Formula::And(p, q) => { format_binary_formula(p, "∧", q) }
+            Formula::Or(p, q) => { format_binary_formula(p, "∨", q) }
+            Formula::Imply(p, q) => { format_binary_formula(p, "⊃", q) }
+            Formula::BiImply(p, q) => { format_binary_formula(p, "≡", q) }
             Formula::Exists(x, p) => { format_quantifier_formula("∃", x, p) }
             Formula::ForAll(x, p) => { format_quantifier_formula("∀", x, p) }
+            Formula::Possible(p) => { format_unary_formula("◇", p) }
+            Formula::Necessary(p) => { format_unary_formula("□", p) }
         };
     }
 }

@@ -12,6 +12,7 @@ pub enum TokenTypeID
     Exists, ForAll,
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
+    Possible, Necessary,
     OpenParenthesis, ClosedParenthesis,
 }
 
@@ -82,6 +83,26 @@ impl TokenType
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args| { Formula::Non(args[0].to_box()) },
+            },
+
+            TokenType
+            {
+                //matches possible: ◇P, ◇Q, ...
+                id: TokenTypeID::Possible,
+                regex: Regex::new(r"(◇)").context(codeloc!())?,
+                category: TokenCategory::UnaryOperation,
+                precedence: OperatorPrecedence::Highest,
+                to_formula: |_,args| { Formula::Possible(args[0].to_box()) },
+            },
+
+            TokenType
+            {
+                //matches necessary: □P, □Q, ...
+                id: TokenTypeID::Necessary,
+                regex: Regex::new(r"(□)").context(codeloc!())?,
+                category: TokenCategory::UnaryOperation,
+                precedence: OperatorPrecedence::Highest,
+                to_formula: |_,args| { Formula::Necessary(args[0].to_box()) },
             },
 
             TokenType

@@ -1,8 +1,9 @@
+use std::rc::Rc;
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
 use crate::formula::Formula;
-use crate::logic::Logic;
+use crate::logic::{Logic, LogicFactory};
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::parser::algorithm::LogicalExpressionParser;
 use crate::problem::Problem;
@@ -18,8 +19,8 @@ pub struct BookChapterJSON
 pub struct ProblemJSON
 {
     pub id : String,
-    pub logic : String, //todo use this
-    pub expected : String, //todo use this
+    pub logic : String,
+    pub expected : String,
     pub premises : Vec<String>,
     pub conclusion : String,
 }
@@ -43,9 +44,9 @@ impl Problem
     {
         return ProblemJSON
         {
-            id: String::new(), //todo implement
-            logic: String::new(), //todo implement
-            expected: String::new(), //todo implement
+            id: self.id.clone(),
+            logic: self.logic.get_name().to_string(),
+            expected: String::new(),
             premises: self.premises.iter().map(|premise| premise.to_string()).collect(),
             conclusion: self.conclusion.to_string(),
         };
@@ -53,17 +54,17 @@ impl Problem
 
     pub fn from_json(json : &ProblemJSON) -> Result<Problem>
     {
-        let logic : Box<dyn Logic> = Box::new(PropositionalLogic {}); //todo parse logic
+        let logic = LogicFactory::get_logic_by_name(&json.logic).context(codeloc!())?;
 
         let conclusion = LogicalExpressionParser::parse(&logic, &json.conclusion).context(codeloc!())?;
 
-        let mut premises: Vec<Formula> = vec![];
+        let mut premises : Vec<Formula> = vec![];
         for premise_json in &json.premises
         {
             let premise = LogicalExpressionParser::parse(&logic, premise_json).context(codeloc!())?;
             premises.push(premise);
         }
 
-        return Ok(Problem { logic, premises, conclusion });
+        return Ok(Problem { id: json.id.clone(), logic, premises, conclusion });
     }
 }

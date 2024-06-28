@@ -1,6 +1,8 @@
 use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
 use crate::logic::{Logic, LogicRule};
 use crate::parser::token_types::TokenTypeID;
+use crate::semantics::binary_semantics::BinarySemantics;
+use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::subtree::ProofSubtree;
@@ -9,6 +11,11 @@ pub struct PropositionalLogic {}
 impl Logic for PropositionalLogic
 {
     fn get_name(&self) -> &str { "PropositionalLogic" }
+
+    fn get_semantics(&self) -> Box<dyn Semantics>
+    {
+        return Box::new(BinarySemantics{});
+    }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
     {

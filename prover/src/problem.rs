@@ -8,6 +8,7 @@ use crate::tree::ProofTree;
 
 pub struct Problem
 {
+    pub id : String,
     pub logic : Box<dyn Logic>,
     pub premises : Vec<Formula>,
     pub conclusion : Formula,

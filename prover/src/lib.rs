@@ -20,9 +20,10 @@ use crate::tree::subtree::ProofSubtree;
 mod parser;
 mod tree;
 mod formula;
-mod problem;
 mod logic;
 mod proof;
+mod semantics;
+pub mod problem;
 
 #[macro_export]
 macro_rules! codeloc

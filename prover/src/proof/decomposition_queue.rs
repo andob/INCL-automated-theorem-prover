@@ -1,14 +1,22 @@
-use crate::formula::Formula;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
+use crate::formula::Formula::{And, BiImply, ForAll, Imply, Non, Or};
 use crate::tree::node::ProofTreeNode;
+use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::subtree::ProofSubtree;
 
-#[derive(Eq, PartialEq, Hash)]
-enum Priority { High, Normal, Low }
+#[derive(Eq, PartialEq, Hash, EnumIter)]
+enum Priority
+{
+    MostImportant, MoreImportant, Important,
+    Normal, LessImportant, LeastImportant,
+}
 
 pub struct DecompositionPriorityQueue
 {
     priorities : Vec<Priority>,
     consumable_nodes : Vec<Box<ProofTreeNode>>,
+    previously_queued_node_ids : Vec<ProofTreeNodeID>,
 }
 
 impl DecompositionPriorityQueue
@@ -17,8 +25,9 @@ impl DecompositionPriorityQueue
     {
         return DecompositionPriorityQueue
         {
-            priorities: vec![Priority::High, Priority::Normal, Priority::Low],
+            priorities: Priority::iter().collect(),
             consumable_nodes: vec![],
+            previously_queued_node_ids: vec![],
         };
     }
 
@@ -27,19 +36,17 @@ impl DecompositionPriorityQueue
         return self.consumable_nodes.is_empty();
     }
 
-    pub fn push_subtree(&mut self, subtree : Box<ProofSubtree>)
-    {
-        if let Some(left) = subtree.left { self.push_tree_node(left); }
-        if let Some(middle) = subtree.middle { self.push_tree_node(middle); }
-        if let Some(right) = subtree.right { self.push_tree_node(right); }
-    }
-
     pub fn push_tree_node(&mut self, node : Box<ProofTreeNode>)
     {
         if let Some(left) = &node.left { self.push_tree_node(left.clone()); }
         if let Some(middle) = &node.middle { self.push_tree_node(middle.clone()); }
         if let Some(right) = &node.right { self.push_tree_node(right.clone()); }
-        self.consumable_nodes.push(node);
+
+        if !self.previously_queued_node_ids.contains(&node.id)
+        {
+            self.previously_queued_node_ids.push(node.id);
+            self.consumable_nodes.push(node);
+        }
     }
 
     pub fn pop(&mut self) -> Option<Box<ProofTreeNode>>
@@ -67,8 +74,13 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
-            Formula::ForAll(..) => Priority::Low,
-            _ => Priority::High,
+            ForAll(..) => Priority::LeastImportant,
+
+            //propositional operations that will split the tree
+            BiImply(..) | Non(box BiImply(..)) => Priority::LessImportant,
+            Or(..) | Non(box And(..)) | Imply(..) => Priority::LessImportant,
+
+            _ => Priority::MostImportant,
         }
     }
 }

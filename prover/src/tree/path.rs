@@ -1,6 +1,9 @@
 use std::fmt::{Display, Formatter};
 use itertools::Itertools;
+use crate::logic::Logic;
+use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
+use crate::tree::node_factory::ProofTreeNodeID;
 
 #[derive(Clone)]
 pub struct ProofTreePath
@@ -32,6 +35,24 @@ impl ProofTreePath
         let mut out_nodes = self.nodes.clone();
         for node in nodes { out_nodes.push(node.clone()); }
         return Self::new(out_nodes);
+    }
+
+    pub fn get_contradictory_node_ids(&self, logic : &Box<dyn Logic>) -> Vec<ProofTreeNodeID>
+    {
+        let mut contradictory_ids: Vec<ProofTreeNodeID> = vec![];
+        for i in 0..self.nodes.len()
+        {
+            for j in 0..i
+            {
+                let semantics = logic.get_semantics();
+                if semantics.are_formulas_contradictory(&self.nodes[i].formula, &self.nodes[j].formula)
+                {
+                    contradictory_ids.push(self.nodes[i].id);
+                }
+            }
+        }
+
+        return contradictory_ids;
     }
 }
 
