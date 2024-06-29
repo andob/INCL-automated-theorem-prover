@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableaux</title>
+
+    <style>
+        .split {
+            height: 99%;
+            width: 33.33%;
+            position: fixed;
+            display: block;
+            top: 0;
+        }
+
+        .left { left: 0; }
+        .center { left: 33.33%; }
+        .right { left: 66.66%; }
+    </style>
+
+</head>
+<body>
+
+    <textarea id="json_text_area" class="split left">{{json}}</textarea>
+
+    <div id="tree_div" class="split center"></div>
+    <div id="modal_graph_div" class="split right"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.0/dist/cytoscape.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+
+    <script>
+    let json_text_area = document.getElementById("json_text_area");
+    let tree_div = document.getElementById("tree_div");
+    let modal_graph_div = document.getElementById("modal_graph_div");
+
+    let json = JSON.parse(json_text_area.textContent);
+    let nodes = [], edges = [];
+
+    function iterate_proof_tree(node, parent_id)
+    {
+        let is_contradictory_str = node.is_contradictory ? "X" : "";
+        let node_text = node.formula + " " + is_contradictory_str;
+        let node_data = { id: node.id, text: node_text };
+        nodes.push({ data: node_data });
+
+        if (parent_id != null)
+        {
+            let vertex_data = { source: parent_id, target: node.id };
+            edges.push({ data: vertex_data });
+        }
+
+        if (node.left != null) { iterate_proof_tree(node.left, node.id); }
+        if (node.middle != null) { iterate_proof_tree(node.middle, node.id); }
+        if (node.right != null) { iterate_proof_tree(node.right, node.id); }
+    }
+
+    iterate_proof_tree(json.root_node, null);
+
+    cytoscape({
+        container: tree_div,
+        elements: {
+            nodes: nodes,
+            edges: edges,
+        },
+        layout: {
+            name: 'dagre',
+        },
+        wheelSensitivity: 0.1,
+        style: [
+            {
+                selector: 'node',
+                style: {
+                    'background-color': 'white',
+                    'text-valign': 'center',
+                    'text-halign': 'center',
+                    'label': 'data(text)',
+                }
+            }
+        ],
+    });
+    </script>
+
+</body>
+</html>

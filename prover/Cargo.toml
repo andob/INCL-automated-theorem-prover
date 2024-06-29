@@ -3,6 +3,13 @@ name = "prover"
 version = "0.1.0"
 edition = "2021"
 
+[profile.release]
+opt-level = 3
+[profile.dev]
+opt-level = 3
+[profile.test]
+opt-level = 3
+
 [dependencies]
 # generic Result<> with any error
 anyhow = "1.0.79"

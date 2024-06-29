@@ -38,7 +38,7 @@ impl ProofTree
             root_node: self.root_node.to_json(),
         };
 
-        return serde_json::to_string(&json).context(codeloc!());
+        return serde_json::to_string_pretty(&json).context(codeloc!());
     }
 }
 
@@ -50,7 +50,7 @@ impl ProofTreeNode
         {
             id: self.id,
             formula: self.formula.to_string(),
-            is_contradictory: false,
+            is_contradictory: self.is_contradictory,
             left: if let Some(left) = &self.left
                   { Some(Box::new(left.to_json())) } else { None },
             middle: if let Some(middle) = &self.middle

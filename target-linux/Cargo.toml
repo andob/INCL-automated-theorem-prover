@@ -3,8 +3,21 @@ name = "target-linux"
 version = "0.1.0"
 edition = "2021"
 
+[profile.release]
+opt-level = 3
+[profile.dev]
+opt-level = 3
+[profile.test]
+opt-level = 3
+
 [dependencies]
 prover = { path = "../prover" }
 
 # generic Result<> with any error
 anyhow = "1.0.79"
+
+# template engine
+mustache = "0.9.0"
+
+# C stdlib bindings
+libc = "0.2.155"
