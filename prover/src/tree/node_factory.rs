@@ -34,12 +34,13 @@ impl ProofTreeNodeIDSequence
 #[derive(Clone)]
 pub struct ProofTreeNodeFactory
 {
-    pointer: Rc<RefCell<ProofTreeNodeFactoryImpl>>
+    pointer : Rc<RefCell<ProofTreeNodeFactoryImpl>>
 }
 
 pub struct ProofTreeNodeFactoryImpl
 {
-    pub node_id_sequence : ProofTreeNodeIDSequence
+    pub node_id_sequence : ProofTreeNodeIDSequence,
+    pub spawner_node_id : Option<ProofTreeNodeID>,
 }
 
 impl ProofTreeNodeFactory
@@ -50,7 +51,8 @@ impl ProofTreeNodeFactory
         {
             pointer: Rc::new(RefCell::new(ProofTreeNodeFactoryImpl
             {
-                node_id_sequence: ProofTreeNodeIDSequence::new()
+                node_id_sequence: ProofTreeNodeIDSequence::new(),
+                spawner_node_id: None,
             }))
         };
     }
@@ -77,6 +79,11 @@ impl ProofTreeNodeFactory
     {
         return self.pointer.borrow().node_id_sequence.has_next();
     }
+
+    pub fn set_spawner_node_id(&mut self, spawner_node_id : ProofTreeNodeID)
+    {
+        self.pointer.borrow_mut().spawner_node_id = Some(spawner_node_id);
+    }
 }
 
 impl ProofTreeNodeFactoryImpl
@@ -93,6 +100,7 @@ impl ProofTreeNodeFactoryImpl
             id: self.node_id_sequence.next(),
             formula: formula,
             left:None, middle:None, right:None,
+            spawner_node_id: self.spawner_node_id,
             is_contradictory: false,
         };
     }
@@ -105,6 +113,7 @@ impl ProofTreeNodeFactoryImpl
             formula: formula,
             left:None, right:None,
             middle: Some(Box::new(child)),
+            spawner_node_id: self.spawner_node_id,
             is_contradictory: false,
         };
     }

@@ -84,6 +84,8 @@ impl ProofAlgorithm
         {
             for logic_rule in &self.logic_rules
             {
+                self.node_factory.set_spawner_node_id(node.id);
+
                 if let Some(subtree) = logic_rule.apply(&mut self.node_factory, &node)
                 {
                     return Some((node, Box::new(subtree)));

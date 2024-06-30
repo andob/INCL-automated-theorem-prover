@@ -11,6 +11,7 @@ pub struct ProofTreeNode
     pub left : Option<Box<ProofTreeNode>>,
     pub middle : Option<Box<ProofTreeNode>>,
     pub right : Option<Box<ProofTreeNode>>,
+    pub spawner_node_id : Option<ProofTreeNodeID>,
     pub is_contradictory : bool,
 }
 

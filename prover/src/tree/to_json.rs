@@ -21,6 +21,7 @@ struct ProofTreeNodeJSON
     id : ProofTreeNodeID,
     formula : String,
     is_contradictory : bool,
+    spawner_node_id : Option<ProofTreeNodeID>,
     left : Option<Box<ProofTreeNodeJSON>>,
     middle : Option<Box<ProofTreeNodeJSON>>,
     right : Option<Box<ProofTreeNodeJSON>>,
@@ -51,6 +52,7 @@ impl ProofTreeNode
             id: self.id,
             formula: self.formula.to_string(),
             is_contradictory: self.is_contradictory,
+            spawner_node_id: self.spawner_node_id,
             left: if let Some(left) = &self.left
                   { Some(Box::new(left.to_json())) } else { None },
             middle: if let Some(middle) = &self.middle
