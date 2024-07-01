@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::formula::converters::predicate_arg_instantiation::PredicateArgInstanceNameSequence;
 use crate::formula::Formula;
 use crate::tree::node::ProofTreeNode;
 
@@ -40,6 +41,7 @@ pub struct ProofTreeNodeFactory
 pub struct ProofTreeNodeFactoryImpl
 {
     pub node_id_sequence : ProofTreeNodeIDSequence,
+    pub predicate_arg_instance_name_sequence : PredicateArgInstanceNameSequence,
     pub spawner_node_id : Option<ProofTreeNodeID>,
 }
 
@@ -52,6 +54,7 @@ impl ProofTreeNodeFactory
             pointer: Rc::new(RefCell::new(ProofTreeNodeFactoryImpl
             {
                 node_id_sequence: ProofTreeNodeIDSequence::new(),
+                predicate_arg_instance_name_sequence: PredicateArgInstanceNameSequence::new(),
                 spawner_node_id: None,
             }))
         };
@@ -80,6 +83,11 @@ impl ProofTreeNodeFactory
         return self.pointer.borrow().node_id_sequence.has_next();
     }
 
+    pub fn new_predicate_argument_instance_name(&mut self) -> String
+    {
+        return self.pointer.borrow_mut().predicate_arg_instance_name_sequence.next();
+    }
+
     pub fn set_spawner_node_id(&mut self, spawner_node_id : ProofTreeNodeID)
     {
         self.pointer.borrow_mut().spawner_node_id = Some(spawner_node_id);
@@ -101,6 +109,7 @@ impl ProofTreeNodeFactoryImpl
             formula: formula,
             left:None, middle:None, right:None,
             spawner_node_id: self.spawner_node_id,
+            contrarian_node_id: None,
             is_contradictory: false,
         };
     }
@@ -114,6 +123,7 @@ impl ProofTreeNodeFactoryImpl
             left:None, right:None,
             middle: Some(Box::new(child)),
             spawner_node_id: self.spawner_node_id,
+            contrarian_node_id: None,
             is_contradictory: false,
         };
     }

@@ -12,6 +12,7 @@ pub struct ProofTreeNode
     pub middle : Option<Box<ProofTreeNode>>,
     pub right : Option<Box<ProofTreeNode>>,
     pub spawner_node_id : Option<ProofTreeNodeID>,
+    pub contrarian_node_id: Option<ProofTreeNodeID>,
     pub is_contradictory : bool,
 }
 
@@ -93,26 +94,27 @@ impl ProofTreeNode
         }
     }
 
-    pub fn mark_child_node_as_contradictory(&mut self, node_id : ProofTreeNodeID)
+    pub fn mark_child_node_as_contradictory(&mut self, node_id : ProofTreeNodeID, contrarian_node_id : ProofTreeNodeID)
     {
         if let Some(left) = &mut self.left
         {
-            left.mark_child_node_as_contradictory(node_id);
+            left.mark_child_node_as_contradictory(node_id, contrarian_node_id);
         }
 
         if let Some(middle) = &mut self.middle
         {
-            middle.mark_child_node_as_contradictory(node_id);
+            middle.mark_child_node_as_contradictory(node_id, contrarian_node_id);
         }
 
         if let Some(right) = &mut self.right
         {
-            right.mark_child_node_as_contradictory(node_id);
+            right.mark_child_node_as_contradictory(node_id, contrarian_node_id);
         }
 
         if self.id == node_id
         {
             self.is_contradictory = true;
+            self.contrarian_node_id = Some(contrarian_node_id);
         }
     }
 }

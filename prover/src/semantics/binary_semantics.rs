@@ -12,14 +12,14 @@ impl Semantics for BinarySemantics
 
         return match (left, right)
         {
-            (Atomic(p, _), Non(box Atomic(q, _))) |
-            (Non(box Atomic(p, _)), Atomic(q, _)) |
+            (Atomic(p, _), Non(box Atomic(q, _), _)) |
+            (Non(box Atomic(p, _), _), Atomic(q, _)) |
 
-            (Possible(box Atomic(p, _)), Non(box Possible(box Atomic(q, _)))) |
-            (Non(box Possible(box Atomic(p, _))), Possible(box Atomic(q, _))) |
+            (Possible(box Atomic(p, _), _), Non(box Possible(box Atomic(q, _), _), _)) |
+            (Non(box Possible(box Atomic(p, _), _), _), Possible(box Atomic(q, _), _)) |
 
-            (Necessary(box Atomic(p, _)), Non(box Necessary(box Atomic(q, _)))) |
-            (Non(box Necessary(box Atomic(p, _))), Necessary(box Atomic(q, _)))
+            (Necessary(box Atomic(p, _), _), Non(box Necessary(box Atomic(q, _), _), _)) |
+            (Non(box Necessary(box Atomic(p, _), _), _), Necessary(box Atomic(q, _), _))
 
             => { p==q }
 

@@ -2,6 +2,7 @@
  * migrate to "deref patterns" feature when it will become stable
  * then migrate to a non-nightly version of rust */
 #![feature(box_patterns)]
+#![feature(iter_intersperse)]
 
 use std::fmt::Display;
 use anyhow::{Context};
@@ -10,7 +11,7 @@ use substring::Substring;
 
 pub mod parser;
 mod tree;
-mod formula;
+pub mod formula;
 pub mod logic;
 mod proof;
 mod semantics;

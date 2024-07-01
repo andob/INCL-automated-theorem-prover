@@ -43,7 +43,8 @@
         let node_data = {
             id: node.id,
             text: node.formula + (node.is_contradictory ? " X" : ""),
-            spawner_node_id: node.spawner_node_id
+            spawner_node_id: node.spawner_node_id,
+            contrarian_node_id: node.contrarian_node_id
         };
 
         nodes.push({ data: node_data });
@@ -92,6 +93,14 @@
     function select_node(tapped_node)
     {
         tapped_node.style("background-color", "#50cb30");
+
+        let contrarian_node_id = tapped_node.data().contrarian_node_id;
+        if (contrarian_node_id != null)
+        {
+            let contrarian_node = cy.nodes().find((node) => parseInt(node.data().id) === parseInt(contrarian_node_id));
+
+            contrarian_node.style("background-color", "#999999");
+        }
 
         let spawner_node_id = tapped_node.data().spawner_node_id;
         if (spawner_node_id != null)

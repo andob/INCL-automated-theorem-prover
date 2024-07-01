@@ -42,17 +42,6 @@ impl ProofTree
         return self.root_node.get_all_leafs_with_paths();
     }
 
-    //todo use this
-    pub fn get_path_from_root_to_leafs_through_node(&self, node : &ProofTreeNode) -> ProofTreePath
-    {
-        if let Some(found_path) = self.get_all_paths().iter().find(|path| path.contains(node))
-        {
-            return found_path.clone();
-        }
-
-        return ProofTreePath::new(&self.root_node);
-    }
-
     pub fn check_for_contradictions(&mut self)
     {
         let mut number_of_contradictory_paths = 0usize;
@@ -61,13 +50,13 @@ impl ProofTree
         for path in &paths
         {
             let contradictory_node_ids = path.get_contradictory_node_ids(&self.problem.logic);
+            for (contradictory_node_id, contrarian_node_id) in &contradictory_node_ids
+            {
+                self.root_node.mark_child_node_as_contradictory(*contradictory_node_id, *contrarian_node_id);
+            }
+
             if !contradictory_node_ids.is_empty()
             {
-                for contradictory_node_id in contradictory_node_ids
-                {
-                    self.root_node.mark_child_node_as_contradictory(contradictory_node_id);
-                }
-
                 number_of_contradictory_paths += 1;
             }
         }

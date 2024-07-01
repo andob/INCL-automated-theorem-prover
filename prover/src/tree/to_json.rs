@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
+use crate::formula::notations::OperatorNotations;
 use crate::problem::json::ProblemJSON;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
@@ -22,6 +23,7 @@ struct ProofTreeNodeJSON
     formula : String,
     is_contradictory : bool,
     spawner_node_id : Option<ProofTreeNodeID>,
+    contrarian_node_id : Option<ProofTreeNodeID>,
     left : Option<Box<ProofTreeNodeJSON>>,
     middle : Option<Box<ProofTreeNodeJSON>>,
     right : Option<Box<ProofTreeNodeJSON>>,
@@ -29,14 +31,14 @@ struct ProofTreeNodeJSON
 
 impl ProofTree
 {
-    pub fn to_json(&self) -> Result<String>
+    pub fn to_json(&self, notations : OperatorNotations) -> Result<String>
     {
         let json = ProofTreeJSON
         {
-            problem: self.problem.to_json(),
+            problem: self.problem.to_json(notations),
             was_proved: self.is_proof_correct,
             has_timeout: self.has_timeout,
-            root_node: self.root_node.to_json(),
+            root_node: self.root_node.to_json(notations),
         };
 
         return serde_json::to_string_pretty(&json).context(codeloc!());
@@ -45,20 +47,21 @@ impl ProofTree
 
 impl ProofTreeNode
 {
-    pub fn to_json(&self) -> ProofTreeNodeJSON
+    pub fn to_json(&self, notations : OperatorNotations) -> ProofTreeNodeJSON
     {
         return ProofTreeNodeJSON
         {
             id: self.id,
-            formula: self.formula.to_string(),
+            formula: self.formula.to_string_with_notations(notations),
             is_contradictory: self.is_contradictory,
             spawner_node_id: self.spawner_node_id,
+            contrarian_node_id: self.contrarian_node_id,
             left: if let Some(left) = &self.left
-                  { Some(Box::new(left.to_json())) } else { None },
+                  { Some(Box::new(left.to_json(notations))) } else { None },
             middle: if let Some(middle) = &self.middle
-                    { Some(Box::new(middle.to_json())) } else { None },
+                    { Some(Box::new(middle.to_json(notations))) } else { None },
             right: if let Some(right) = &self.right
-                   { Some(Box::new(right.to_json())) } else { None },
+                   { Some(Box::new(right.to_json(notations))) } else { None },
         };
     }
 }

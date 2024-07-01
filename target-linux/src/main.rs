@@ -7,6 +7,7 @@ use anyhow::{Context, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
 use prover::codeloc;
+use prover::formula::notations::OperatorNotations;
 use prover::logic::{Logic, LogicFactory};
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
@@ -79,7 +80,7 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
             let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-            let proof_tree_json = proof_tree.to_json().context(codeloc!())?;
+            let proof_tree_json = proof_tree.to_json(OperatorNotations::BookNotations).context(codeloc!())?;
             let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
             template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
 
@@ -98,7 +99,7 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
     let proof_tree = problem.prove();
-    let proof_tree_json = proof_tree.to_json().context(codeloc!())?;
+    let proof_tree_json = proof_tree.to_json(OperatorNotations::ComputerScienceNotations).context(codeloc!())?;
 
     let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
     template.render_data(&mut proof_file, &template_data).context(codeloc!())?;

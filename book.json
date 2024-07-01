@@ -74,5 +74,17 @@
         "conclusion": "(s ∧ q) ⊃ p"
       }
     ]
+  },
+  {
+    "name": "Quantifier logic test",
+    "problems": [
+      {
+        "id": "Socrates",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x (Human[x] → Mortal[x])", "∃x Human[x]" ],
+        "conclusion": "∃x Mortal[x]"
+      }
+    ]
   }
 ]

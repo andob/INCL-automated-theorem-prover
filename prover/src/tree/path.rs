@@ -1,6 +1,6 @@
-use std::fmt::{Display, Formatter};
+use std::fmt::{Display, Formatter, write};
 use itertools::Itertools;
-use crate::formula::Formula;
+use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments};
 use crate::logic::Logic;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
@@ -56,9 +56,10 @@ impl ProofTreePath
         return ProofTreePath { nodes:out_nodes };
     }
 
-    pub fn get_contradictory_node_ids(&self, logic : &Box<dyn Logic>) -> Vec<ProofTreeNodeID>
+    pub fn get_contradictory_node_ids(&self, logic : &Box<dyn Logic>) -> Vec<(ProofTreeNodeID, ProofTreeNodeID)>
     {
-        let mut contradictory_ids : Vec<ProofTreeNodeID> = vec![];
+        let mut contradictory_ids : Vec<(ProofTreeNodeID, ProofTreeNodeID)> = vec![];
+
         for i in 0..self.nodes.len()
         {
             for j in 0..i
@@ -66,12 +67,26 @@ impl ProofTreePath
                 let semantics = logic.get_semantics();
                 if semantics.are_formulas_contradictory(&self.nodes[i].formula, &self.nodes[j].formula)
                 {
-                    contradictory_ids.push(self.nodes[i].id);
+                    contradictory_ids.push((self.nodes[i].id, self.nodes[j].id));
                 }
             }
         }
 
         return contradictory_ids;
+    }
+
+    //todo use this
+    pub fn get_all_formulas(&self) -> Vec<&Formula>
+    {
+        return self.nodes.iter().map(|node| &node.formula).collect();
+    }
+
+    //todo use this
+    pub fn get_all_possible_worlds(&self) -> Vec<&PossibleWorld>
+    {
+        return self.nodes.iter()
+            .map(|node| node.formula.get_possible_world())
+            .unique().sorted().rev().collect();
     }
 }
 
@@ -79,8 +94,19 @@ impl Display for ProofTreePath
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        let nodes_as_string = self.nodes.iter().map(|node| node.formula.to_string())
-            .intersperse(String::from(" -> ")).collect::<String>();
-        return write!(f, "{}", nodes_as_string);
+        let last_index = self.nodes.len()-1;
+        for (index, node) in self.nodes.iter().enumerate()
+        {
+            if index < last_index
+            {
+                write!(f, "{} -> ", node.formula).unwrap();
+            }
+            else
+            {
+                write!(f, "{}", node.formula).unwrap();
+            }
+        }
+
+        return write!(f, "");
     }
 }

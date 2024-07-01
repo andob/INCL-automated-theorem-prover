@@ -1,3 +1,4 @@
+use box_macro::bx;
 use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
 use crate::logic::{Logic, LogicRule};
 use crate::parser::token_types::TokenTypeID;
@@ -43,9 +44,9 @@ impl LogicRule for DoubleNegationRule
 {
     fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        if let Non(box Non(box p)) = &node.formula
+        if let Non(box Non(box p, _), extras) = &node.formula
         {
-            let p_node = factory.new_node(p.clone());
+            let p_node = factory.new_node(p.with(extras));
             return Some(ProofSubtree::with_middle_node(p_node));
         }
 
@@ -60,63 +61,73 @@ impl LogicRule for BasicRules
     {
         return match &node.formula
         {
-            And(box p, box q) =>
+            And(box p, box q, extras) =>
             {
-                let q_node = factory.new_node(q.clone());
-                let p_node = factory.new_node_with_subnode(p.clone(), q_node);
+                let q_node = factory.new_node(q.with(extras));
+                let p_node = factory.new_node_with_subnode(p.with(extras), q_node);
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
 
-            Non(box And(box p, box q)) =>
+            Non(box And(box p, box q, _), extras) =>
             {
-                let non_p_node = factory.new_node(Non(p.to_box()));
-                let non_q_node = factory.new_node(Non(q.to_box()));
+                let non_p = Non(bx!(p.with(extras)), extras.clone());
+                let non_p_node = factory.new_node(non_p);
+                let non_q = Non(bx!(q.with(extras)), extras.clone());
+                let non_q_node = factory.new_node(non_q);
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, non_q_node));
             }
 
-            Or(box p, box q) =>
+            Or(box p, box q, extras) =>
             {
-                let p_node = factory.new_node(p.clone());
-                let q_node = factory.new_node(q.clone());
+                let p_node = factory.new_node(p.with(extras));
+                let q_node = factory.new_node(q.with(extras));
                 return Some(ProofSubtree::with_left_right_nodes(p_node, q_node));
             }
 
-            Non(box Or(box p, box q)) =>
+            Non(box Or(box p, box q, _), extras) =>
             {
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let non_p_node = factory.new_node_with_subnode(Non(p.to_box()), non_q_node);
+                let non_q = Non(bx!(q.with(extras)), extras.clone());
+                let non_q_node = factory.new_node(non_q);
+                let non_p = Non(bx!(p.with(extras)), extras.clone());
+                let non_p_node = factory.new_node_with_subnode(non_p, non_q_node);
                 return Some(ProofSubtree::with_middle_node(non_p_node));
             }
 
-            Imply(box p, box q) =>
+            Imply(box p, box q, extras) =>
             {
-                let non_p_node = factory.new_node(Non(p.to_box()));
-                let q_node = factory.new_node(q.clone());
+                let non_p = Non(bx!(p.with(extras)), extras.clone());
+                let non_p_node = factory.new_node(non_p);
+                let q_node = factory.new_node(q.with(extras));
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, q_node));
             }
 
-            Non(box Imply(box p, box q)) =>
+            Non(box Imply(box p, box q, _), extras) =>
             {
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
+                let non_q = Non(bx!(q.with(extras)), extras.clone());
+                let non_q_node = factory.new_node(non_q);
+                let p_node = factory.new_node_with_subnode(p.with(extras), non_q_node);
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
 
-            BiImply(box p, box q) =>
+            BiImply(box p, box q, extras) =>
             {
-                let q_node = factory.new_node(q.clone());
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let p_node = factory.new_node_with_subnode(p.clone(), q_node);
-                let non_p_node = factory.new_node_with_subnode(Non(p.to_box()), non_q_node);
+                let q_node = factory.new_node(q.with(extras));
+                let p_node = factory.new_node_with_subnode(p.with(extras), q_node);
+                let non_q = Non(bx!(q.with(extras)), extras.clone());
+                let non_q_node = factory.new_node(non_q);
+                let non_p = Non(bx!(p.with(extras)), extras.clone());
+                let non_p_node = factory.new_node_with_subnode(non_p, non_q_node);
                 return Some(ProofSubtree::with_left_right_nodes(p_node, non_p_node));
             }
 
-            Non(box BiImply(box p, box q)) =>
+            Non(box BiImply(box p, box q, _), extras) =>
             {
-                let q_node = factory.new_node(q.clone());
-                let non_q_node = factory.new_node(Non(q.to_box()));
-                let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
-                let non_p_node = factory.new_node_with_subnode(Non(p.to_box()), q_node);
+                let non_q = Non(bx!(q.with(extras)), extras.clone());
+                let non_q_node = factory.new_node(non_q);
+                let p_node = factory.new_node_with_subnode(p.with(extras), non_q_node);
+                let q_node = factory.new_node(q.with(extras));
+                let non_p = Non(bx!(p.with(extras)), extras.clone());
+                let non_p_node = factory.new_node_with_subnode(non_p, q_node);
                 return Some(ProofSubtree::with_left_right_nodes(p_node, non_p_node));
             }
 

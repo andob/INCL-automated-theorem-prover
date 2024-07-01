@@ -1,9 +1,10 @@
 use regex::Regex;
 use anyhow::{Context, Result};
+use box_macro::bx;
 use strum_macros::Display;
 use substring::Substring;
 use crate::codeloc;
-use crate::formula::{Formula, PredicateArgument};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
 #[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
@@ -31,8 +32,9 @@ impl TokenType
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |name, args|
                 {
+                    let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    return Formula::Exists(predicate_args[0].clone(), args[0].to_box());
+                    return Formula::Exists(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras);
                 },
             },
 
@@ -45,8 +47,9 @@ impl TokenType
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |name, args|
                 {
+                    let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    return Formula::ForAll(predicate_args[0].clone(), args[0].to_box());
+                    return Formula::ForAll(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras);
                 },
             },
 
@@ -61,7 +64,8 @@ impl TokenType
                 {
                     let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_string();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    return Formula::Atomic(atomic_name, predicate_args);
+                    let formula_extras = AtomicFormulaExtras::new(predicate_args);
+                    return Formula::Atomic(atomic_name, formula_extras);
                 },
             },
 
@@ -72,7 +76,11 @@ impl TokenType
                 regex: Regex::new(r"[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
-                to_formula: |name,_| { Formula::Atomic(name, vec![]) },
+                to_formula: |name,_|
+                {
+                    let formula_extras = AtomicFormulaExtras::empty();
+                    return Formula::Atomic(name, formula_extras);
+                },
             },
 
             TokenType
@@ -82,7 +90,11 @@ impl TokenType
                 regex: Regex::new(r"(~)|(¬)|(!)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
-                to_formula: |_,args| { Formula::Non(args[0].to_box()) },
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Non(bx!(args[0].clone()), formula_extras);
+                },
             },
 
             TokenType
@@ -92,7 +104,11 @@ impl TokenType
                 regex: Regex::new(r"(◇)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
-                to_formula: |_,args| { Formula::Possible(args[0].to_box()) },
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Possible(bx!(args[0].clone()), formula_extras);
+                },
             },
 
             TokenType
@@ -102,7 +118,11 @@ impl TokenType
                 regex: Regex::new(r"(□)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
                 precedence: OperatorPrecedence::Highest,
-                to_formula: |_,args| { Formula::Necessary(args[0].to_box()) },
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Necessary(bx!(args[0].clone()), formula_extras);
+                },
             },
 
             TokenType
@@ -112,7 +132,11 @@ impl TokenType
                 regex: Regex::new(r"(&)|(∧)|(\^)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::High,
-                to_formula: |_,args| { Formula::And(args[0].to_box(), args[1].to_box()) }
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::And(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
             },
 
             TokenType
@@ -122,7 +146,11 @@ impl TokenType
                 regex: Regex::new(r"(\|)|(∨)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::High,
-                to_formula: |_,args| { Formula::Or(args[0].to_box(), args[1].to_box()) }
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Or(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
             },
 
             TokenType
@@ -132,7 +160,11 @@ impl TokenType
                 regex: Regex::new(r"(→)|(⇒)|(⊃)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::Medium,
-                to_formula: |_,args| { Formula::Imply(args[0].to_box(), args[1].to_box()) }
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Imply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
             },
 
             TokenType
@@ -142,7 +174,11 @@ impl TokenType
                 regex: Regex::new(r"(↔)|(⇔)|(≡)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::Low,
-                to_formula: |_,args| { Formula::BiImply(args[0].to_box(), args[1].to_box()) }
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::BiImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
             },
 
             TokenType
@@ -152,7 +188,10 @@ impl TokenType
                 regex: Regex::new(r"\(").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Highest,
-                to_formula: |_,args| { panic!("Cannot convert ( to formula!") }
+                to_formula: |_,args|
+                {
+                    panic!("Cannot convert ( to formula!");
+                }
             },
 
             TokenType
@@ -162,12 +201,15 @@ impl TokenType
                 regex: Regex::new(r"\)").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Highest,
-                to_formula: |_,args| { panic!("Cannot convert ) to formula!") }
+                to_formula: |_,args|
+                {
+                    panic!("Cannot convert ) to formula!");
+                }
             },
         ]);
     }
 
-    fn parse_predicate_arguments(input : &String) -> Vec<PredicateArgument>
+    fn parse_predicate_arguments(input : &String) -> PredicateArguments
     {
         if let Some(index_of_open_bracket) = input.find('[')
         {
@@ -190,7 +232,8 @@ impl TokenType
             return Self::parse_predicate_arguments(&new_input);
         }
 
-        return input.split(",").map(|token| token.trim().to_string())
-                .map(|name| PredicateArgument::new(name)).collect();
+        return PredicateArguments::new(input.split(",")
+            .map(|token| PredicateArgument::new(token.trim().to_string()))
+            .collect());
     }
 }

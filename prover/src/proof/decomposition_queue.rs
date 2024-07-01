@@ -76,8 +76,8 @@ impl DecompositionPriorityQueue
             ForAll(..) => Priority::LeastImportant,
 
             //propositional operations that will split the tree
-            BiImply(..) | Non(box BiImply(..)) => Priority::LessImportant,
-            Or(..) | Non(box And(..)) | Imply(..) => Priority::LessImportant,
+            BiImply(..) | Non(box BiImply(..), ..) => Priority::LessImportant,
+            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::LessImportant,
 
             _ => Priority::MostImportant,
         }

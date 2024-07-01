@@ -1,4 +1,5 @@
-use crate::formula::Formula;
+use box_macro::bx;
+use crate::formula::{Formula, FormulaExtras};
 use crate::logic::LogicRule;
 use crate::problem::Problem;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
@@ -24,7 +25,7 @@ impl ProofAlgorithm
         let logic_rules = problem.logic.get_rules();
         let mut node_factory = ProofTreeNodeFactory::new();
 
-        let non_conclusion = Formula::Non(problem.conclusion.to_box());
+        let non_conclusion = Formula::Non(bx!(problem.conclusion.clone()), FormulaExtras::empty());
         let non_conclusion_node = node_factory.new_node(non_conclusion);
 
         let mut decomposition_queue = DecompositionPriorityQueue::new();

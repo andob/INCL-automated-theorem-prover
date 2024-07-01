@@ -1,5 +1,6 @@
 use std::fmt::Display;
 use anyhow::{Context, Result};
+use crate::logic::first_order_logic::FirstOrderLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -8,6 +9,7 @@ use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::subtree::ProofSubtree;
 
 pub mod propositional_logic;
+pub mod first_order_logic;
 
 pub trait LogicRule
 {
@@ -44,6 +46,7 @@ impl LogicFactory
         return vec!
         [
             Box::new(PropositionalLogic {}),
+            Box::new(FirstOrderLogic {}),
         ];
     }
 }
