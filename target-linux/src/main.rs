@@ -3,6 +3,7 @@ use std::{env, fs, io};
 use std::ffi::CString;
 use std::io::Write;
 use std::path::Path;
+use std::rc::Rc;
 use anyhow::{Context, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
@@ -30,7 +31,7 @@ fn main() -> Result<()>
     }
     else if args.len() == 2
     {
-        let logic : Box<dyn Logic> = Box::new(PropositionalLogic{});
+        let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
         let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
 

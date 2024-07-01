@@ -1,4 +1,4 @@
-use std::fmt::{Display, Formatter, write};
+use std::fmt::{Display, Formatter};
 use crate::formula::{Formula, PredicateArgument, PredicateArguments};
 use crate::formula::notations::OperatorNotations;
 use crate::parser::token_types::TokenTypeID;

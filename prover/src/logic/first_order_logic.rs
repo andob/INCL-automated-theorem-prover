@@ -1,7 +1,7 @@
 use box_macro::bx;
 use crate::formula::Formula::{Exists, ForAll, Non};
 use crate::logic::{Logic, LogicRule};
-use crate::logic::propositional_logic::{BasicRules, DoubleNegationRule};
+use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_semantics::BinarySemantics;
 use crate::semantics::Semantics;
@@ -39,68 +39,53 @@ impl Logic for FirstOrderLogic
     {
         return vec!
         [
-            Box::new(BasicRules {}),
-            Box::new(DoubleNegationRule {}),
-            Box::new(QuantifierNegationRules {}),
-            Box::new(ExistsRule {}),
-            Box::new(ForAllRule {}),
+            Box::new(PropositionalLogicRules {}),
+            Box::new(QuantifierRules {}),
         ];
     }
 }
 
-struct QuantifierNegationRules {}
-impl LogicRule for QuantifierNegationRules
+struct QuantifierRules {}
+impl LogicRule for QuantifierRules
 {
     fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        if let Non(box Exists(x, box p, _), extras) = &node.formula
+        let logic_semantics = factory.get_logic().get_semantics();
+
+        return match &node.formula
         {
-            let non_p = Non(bx!(p.with(extras)), extras.clone());
-            let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
-            let for_all_non_p_node = factory.new_node(for_all_non_p);
-            return Some(ProofSubtree::with_middle_node(for_all_non_p_node));
+            Non(box Exists(x, box p, _), extras) =>
+            {
+                let non_p = logic_semantics.negate(p, extras);
+                let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
+                let for_all_non_p_node = factory.new_node(for_all_non_p);
+                return Some(ProofSubtree::with_middle_node(for_all_non_p_node));
+            }
+
+            Non(box ForAll(x, box p, _), extras) =>
+            {
+                let non_p = logic_semantics.negate(p, extras);
+                let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
+                let exists_non_p_node = factory.new_node(exists_non_p);
+                return Some(ProofSubtree::with_middle_node(exists_non_p_node));
+            }
+
+            Exists(x, box p, extras) =>
+            {
+                let instantiated_p = p.instantiated(factory, x, extras);
+                let instantiated_p_node = factory.new_node(instantiated_p);
+                return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+            }
+
+            ForAll(x, box p, extras) =>
+            {
+                //todo implement this
+                let instantiated_p = p.instantiated(factory, x, extras);
+                let instantiated_p_node = factory.new_node(instantiated_p);
+                return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+            }
+
+            _ => None,
         }
-        else if let Non(box ForAll(x, box p, _), extras) = &node.formula
-        {
-            let non_p = Non(bx!(p.with(extras)), extras.clone());
-            let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
-            let exists_non_p_node = factory.new_node(exists_non_p);
-            return Some(ProofSubtree::with_middle_node(exists_non_p_node));
-        }
-
-        return None;
-    }
-}
-
-struct ExistsRule {}
-impl LogicRule for ExistsRule
-{
-    fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
-    {
-        if let Exists(x, box p, extras) = &node.formula
-        {
-            let instantiated_p = p.instantiated(factory, x, extras);
-            let instantiated_p_node = factory.new_node(instantiated_p);
-            return Some(ProofSubtree::with_middle_node(instantiated_p_node));
-        }
-
-        return None;
-    }
-}
-
-struct ForAllRule {}
-impl LogicRule for ForAllRule
-{
-    fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
-    {
-        if let ForAll(x, box p, extras) = &node.formula
-        {
-            //todo implement this
-            let instantiated_p = p.instantiated(factory, x, extras);
-            let instantiated_p_node = factory.new_node(instantiated_p);
-            return Some(ProofSubtree::with_middle_node(instantiated_p_node));
-        }
-
-        return None;
     }
 }

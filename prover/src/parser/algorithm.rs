@@ -10,7 +10,7 @@ use crate::parser::token_types::TokenTypeID;
 pub struct LogicalExpressionParser {}
 impl LogicalExpressionParser
 {
-    pub fn parse(logic : &Box<dyn Logic>, text : &String) -> Result<Formula>
+    pub fn parse(logic : &Rc<dyn Logic>, text : &String) -> Result<Formula>
     {
         return LogicalExpressionParserImpl::parse(logic, text);
     }
@@ -36,7 +36,7 @@ struct LogicalExpressionParserImpl<'a>
 
 impl <'a> LogicalExpressionParserImpl<'a>
 {
-    fn parse(logic : &Box<dyn Logic>, text : &String) -> Result<Formula>
+    fn parse(logic : &Rc<dyn Logic>, text : &String) -> Result<Formula>
     {
         let token_types = TokenType::get_types().context(codeloc!())?;
 

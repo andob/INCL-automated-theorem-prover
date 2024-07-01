@@ -1,6 +1,7 @@
-use std::fmt::{Display, Formatter, write};
+use std::fmt::{Display, Formatter};
+use std::rc::Rc;
 use itertools::Itertools;
-use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments};
+use crate::formula::{Formula, PossibleWorld};
 use crate::logic::Logic;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
@@ -56,7 +57,7 @@ impl ProofTreePath
         return ProofTreePath { nodes:out_nodes };
     }
 
-    pub fn get_contradictory_node_ids(&self, logic : &Box<dyn Logic>) -> Vec<(ProofTreeNodeID, ProofTreeNodeID)>
+    pub fn get_contradictory_node_ids(&self, logic : &Rc<dyn Logic>) -> Vec<(ProofTreeNodeID, ProofTreeNodeID)>
     {
         let mut contradictory_ids : Vec<(ProofTreeNodeID, ProofTreeNodeID)> = vec![];
 

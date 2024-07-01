@@ -1,8 +1,10 @@
 pub mod binary_semantics;
 
-use crate::formula::Formula;
+use crate::formula::{Formula, FormulaExtras};
 
 pub trait Semantics
 {
+    fn negate(&self, p : &Formula, extras : &FormulaExtras) -> Formula;
+
     fn are_formulas_contradictory(&self, left : &Formula, right : &Formula) -> bool;
 }

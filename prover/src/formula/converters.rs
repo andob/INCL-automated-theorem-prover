@@ -1,5 +1,5 @@
 use box_macro::bx;
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument};
 use crate::formula::Formula::{And, Atomic, BiImply, Exists, ForAll, Imply, Necessary, Non, Or, Possible};
 use crate::tree::node_factory::ProofTreeNodeFactory;
 

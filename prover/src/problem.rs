@@ -1,6 +1,7 @@
 pub mod catalog;
 pub mod json;
 
+use std::rc::Rc;
 use crate::formula::Formula;
 use crate::logic::Logic;
 use crate::proof::ProofAlgorithm;
@@ -9,7 +10,7 @@ use crate::tree::ProofTree;
 pub struct Problem
 {
     pub id : String,
-    pub logic : Box<dyn Logic>,
+    pub logic : Rc<dyn Logic>,
     pub premises : Vec<Formula>,
     pub conclusion : Formula,
 }

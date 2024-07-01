@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::rc::Rc;
 use anyhow::{Context, Result};
 use crate::logic::first_order_logic::FirstOrderLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
@@ -34,19 +35,19 @@ pub trait Logic
 pub struct LogicFactory {}
 impl LogicFactory
 {
-    pub fn get_logic_by_name(name : &String) -> Result<Box<dyn Logic>>
+    pub fn get_logic_by_name(name : &String) -> Result<Rc<dyn Logic>>
     {
         return Self::get_logic_theories().into_iter()
             .find(|logic| logic.get_name() == name.as_str())
             .context(format!("Invalid logic with name {}!", name));
     }
 
-    pub fn get_logic_theories() -> Vec<Box<dyn Logic>>
+    pub fn get_logic_theories() -> Vec<Rc<dyn Logic>>
     {
         return vec!
         [
-            Box::new(PropositionalLogic {}),
-            Box::new(FirstOrderLogic {}),
+            Rc::new(PropositionalLogic {}),
+            Rc::new(FirstOrderLogic {}),
         ];
     }
 }
