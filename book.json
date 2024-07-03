@@ -1,6 +1,6 @@
 [
   {
-    "name": "Propositional classical logic",
+    "name": "Propositional logic",
     "problems":
     [
       {
@@ -76,14 +76,367 @@
     ]
   },
   {
-    "name": "Quantifier logic test",
+    "name": "Basic normal modal logic",
     "problems": [
       {
-        "id": "Socrates",
-        "logic": "FirstOrderLogic",
+        "id": "2.12.2.a",
+        "logic": "KModalLogic",
         "expected": "proved",
-        "premises": [ "∀x (Human[x] → Mortal[x])", "∃x Human[x]" ],
-        "conclusion": "∃x Mortal[x]"
+        "premises": [],
+        "conclusion": "(□A ∧ □B) ⊃ □(A ∧ B)"
+      },
+      {
+        "id": "2.12.2.b",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□A ∨ □B) ⊃ □(A ∨ B)"
+      },
+      {
+        "id": "2.12.2.c",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□ A ≡ ¬◇¬A"
+      },
+      {
+        "id": "2.12.2.d",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇ A ≡ ¬□¬A"
+      },
+      {
+        "id": "2.12.2.e",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇(A ∧ B) ⊃ (◇A ∧ ◇B)"
+      },
+      {
+        "id": "2.12.2.f",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇(A ∨ B) ⊃ (◇A ∨ ◇B)"
+      },
+      {
+        "id": "2.12.2.g",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [ "□(A ⊃ B)" ],
+        "conclusion": "◇A ⊃ ◇B"
+      },
+      {
+        "id": "2.12.2.h",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [ "□A", "◇B" ],
+        "conclusion": "◇(A ∧ B)"
+      },
+      {
+        "id": "2.12.2.i",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□A ≡ □(¬A ⊃ A)"
+      },
+      {
+        "id": "2.12.2.j",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□A ⊃ □(B ⊃ A)"
+      },
+      {
+        "id": "2.12.2.k",
+        "logic": "KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬◇B ⊃ □(B ⊃ A)"
+      },
+      {
+        "id": "2.12.2.l",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□(p ∨ q) ⊃ (□p ∨ □q)"
+      },
+      {
+        "id": "2.12.2.m",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "□p", "□¬q" ],
+        "conclusion": "□(p ⊃ q)"
+      },
+      {
+        "id": "2.12.2.n",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "◇p", "◇q" ],
+        "conclusion": "◇(p ∧ q)"
+      },
+      {
+        "id": "2.12.2.o",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "2.12.2.p",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ ◇p"
+      },
+      {
+        "id": "2.12.2.q",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "p" ],
+        "conclusion": "□p"
+      },
+      {
+        "id": "2.12.2.r",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "2.12.2.s",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ ◇◇p"
+      },
+      {
+        "id": "2.12.2.t",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "p ⊃ □◇p"
+      },
+      {
+        "id": "2.12.2.u",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇p ⊃ □◇p"
+      },
+      {
+        "id": "2.12.2.v",
+        "logic": "KModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇(p ∨ ¬p)"
+      }
+    ]
+  },
+  {
+    "name": "Normal modal logic",
+    "problems": [
+      {
+        "id": "3.10.3.a",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□(A ⊃ B) ∧ □(B ⊃ C)) ⊃ (A ⊃ C)"
+      },
+      {
+        "id": "3.10.3.b",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□(A ⊃ B) ∧ ◇(A ∧ C)) ⊃ ◇(B ∧ C)"
+      },
+      {
+        "id": "3.10.3.c",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□A ∧ □B) ⊃ (A ≡ B)"
+      },
+      {
+        "id": "3.10.3.d",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇(A ⊃ B) ≡ (□A ⊃ ◇B)"
+      },
+      {
+        "id": "3.10.3.e",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(◇¬A ∨ ◇¬B) ∨ ◇(A ∨ B)"
+      },
+      {
+        "id": "3.10.3.f",
+        "logic": "TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇(A ⊃ (B ∧ C)) ⊃ ((□A ⊃ ◇B) ∧ (□A ⊃ ◇C))"
+      },
+      {
+        "id": "3.10.4.a",
+        "logic": "S4ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□A ∨ □B) ≡ □(□A ∨ □B)"
+      },
+      {
+        "id": "3.10.4.b",
+        "logic": "S4ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□(□(A ≡ B) ⊃ C) ⊃ (□(A ≡ B) ⊃ □C)"
+      },
+      {
+        "id": "3.10.5.a",
+        "logic": "S5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇A ⊃ ◇◇A"
+      },
+      {
+        "id": "3.10.5.b",
+        "logic": "S5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇A ⊃ □◇A"
+      },
+      {
+        "id": "3.10.5.c",
+        "logic": "S5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□(□A ⊃ □B) ∨ □(□B ⊃ □A)"
+      },
+      {
+        "id": "3.10.5.d",
+        "logic": "S5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□(◇A ⊃ B) ≡ □(A ⊃ □B)"
+      },
+      {
+        "id": "3.10.6.a",
+        "logic": "S4ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇□p ⊃ □◇p"
+      },
+      {
+        "id": "3.10.6.b",
+        "logic": "S4ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□(□p ⊃ q) ∨ □(□q ⊃ p)"
+      },
+      {
+        "id": "3.10.6.c",
+        "logic": "S4ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□(p ≡ q) ⊃ □(□p ≡ □q)"
+      },
+      {
+        "id": "3.10.6.d",
+        "logic": "S4ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇□p ≡ □◇p"
+      }
+    ]
+  },
+  {
+    "name": "Non-normal modal logic",
+    "problems": [
+      {
+        "id": "4.13.2.a",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A⥽A"
+      },
+      {
+        "id": "4.13.2.b",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ⥽ B) ∧ (B ⥽ C)) ⥽ (A ⥽ C)"
+      },
+      {
+        "id": "4.13.2.c",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⥽ B) ⥽ (¬B ⥽ ¬A)"
+      },
+      {
+        "id": "4.13.2.d",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□¬A ⊃ □¬(A ∧ B)"
+      },
+      {
+        "id": "4.13.3.a",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.3.b",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.3.c",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "¬(p ⥽ p) ⥽ q"
+      },
+      {
+        "id": "4.13.3.d",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□(p ⥽ p)"
+      },
+      {
+        "id": "4.13.3.e",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+      },
+      {
+        "id": "4.13.3.f",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.3.g",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇◇p"
+      },
+      {
+        "id": "4.13.3.h",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□□(p ∨ ¬p)"
       }
     ]
   }

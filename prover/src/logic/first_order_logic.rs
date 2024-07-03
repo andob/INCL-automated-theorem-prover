@@ -1,21 +1,20 @@
+use std::any::Any;
 use box_macro::bx;
 use crate::formula::Formula::{Exists, ForAll, Non};
 use crate::logic::{Logic, LogicRule};
 use crate::logic::propositional_logic::PropositionalLogicRules;
+use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_semantics::BinarySemantics;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::subtree::ProofSubtree;
 
 pub struct FirstOrderLogic {}
 impl Logic for FirstOrderLogic
 {
-    fn get_name(&self) -> &str
-    {
-        return "FirstOrderLogic";
-    }
+    fn get_name(&self) -> &str { "FirstOrderLogic" }
+    fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
@@ -48,7 +47,7 @@ impl Logic for FirstOrderLogic
 struct QuantifierRules {}
 impl LogicRule for QuantifierRules
 {
-    fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
         let logic_semantics = factory.get_logic().get_semantics();
 
@@ -79,7 +78,6 @@ impl LogicRule for QuantifierRules
 
             ForAll(x, box p, extras) =>
             {
-                //todo implement this
                 let instantiated_p = p.instantiated(factory, x, extras);
                 let instantiated_p_node = factory.new_node(instantiated_p);
                 return Some(ProofSubtree::with_middle_node(instantiated_p_node));

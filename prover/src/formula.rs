@@ -1,4 +1,4 @@
-mod to_string;
+pub mod to_string;
 mod constructors;
 mod collections;
 pub mod converters;
@@ -16,10 +16,12 @@ pub enum Formula
     Or(Box<Formula>, Box<Formula>, FormulaExtras),
     Imply(Box<Formula>, Box<Formula>, FormulaExtras),
     BiImply(Box<Formula>, Box<Formula>, FormulaExtras),
+    StrictImply(Box<Formula>, Box<Formula>, FormulaExtras),
     Exists(PredicateArgument, Box<Formula>, FormulaExtras),
     ForAll(PredicateArgument, Box<Formula>, FormulaExtras),
     Possible(Box<Formula>, FormulaExtras),
     Necessary(Box<Formula>, FormulaExtras),
+    Comment(String),
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]
@@ -35,10 +37,10 @@ pub struct FormulaExtras
     pub possible_world : PossibleWorld,
 }
 
-#[derive(Eq, PartialEq, Hash, Clone, Ord, PartialOrd)]
+#[derive(Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct PossibleWorld
 {
-    pub index : usize
+    index : usize
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]

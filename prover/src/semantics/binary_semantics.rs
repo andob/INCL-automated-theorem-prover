@@ -13,21 +13,24 @@ impl Semantics for BinarySemantics
 
     fn are_formulas_contradictory(&self, left : &Formula, right : &Formula) -> bool
     {
-        //todo this does not account for predicate arguments
-        //todo this does not account for possible worlds
-
         return match (left, right)
         {
-            (Atomic(p, _), Non(box Atomic(q, _), _)) |
-            (Non(box Atomic(p, _), _), Atomic(q, _)) |
+            (Atomic(p, p_extras), Non(box Atomic(q, q_extras), _)) |
+            (Non(box Atomic(p, p_extras), _), Atomic(q, q_extras)) |
 
-            (Possible(box Atomic(p, _), _), Non(box Possible(box Atomic(q, _), _), _)) |
-            (Non(box Possible(box Atomic(p, _), _), _), Possible(box Atomic(q, _), _)) |
+            (Possible(box Atomic(p, p_extras), _), Non(box Possible(box Atomic(q, q_extras), _), _)) |
+            (Non(box Possible(box Atomic(p, p_extras), _), _), Possible(box Atomic(q, q_extras), _)) |
 
-            (Necessary(box Atomic(p, _), _), Non(box Necessary(box Atomic(q, _), _), _)) |
-            (Non(box Necessary(box Atomic(p, _), _), _), Necessary(box Atomic(q, _), _))
+            (Necessary(box Atomic(p, p_extras), _), Non(box Necessary(box Atomic(q, q_extras), _), _)) |
+            (Non(box Necessary(box Atomic(p, p_extras), _), _), Necessary(box Atomic(q, q_extras), _))
 
-            => { p==q }
+            => {
+                p == q
+                && p_extras.possible_world == q_extras.possible_world
+                && p_extras.predicate_args.len() == q_extras.predicate_args.len()
+                && p_extras.predicate_args.iter().zip(q_extras.predicate_args.iter())
+                    .all(|(x, y)| x.type_name == y.type_name)
+            }
 
             _ => { false }
         }

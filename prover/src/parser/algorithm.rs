@@ -34,16 +34,26 @@ struct LogicalExpressionParserImpl<'a>
     state : &'a mut LogicalExpressionParserState,
 }
 
+const REPLACE_TABLE : [&str; 42] =
+[
+    "∀", " ∀", "∃", " ∃", "(", " ( ", ")", " ) ", ", ", ",", "◇", " ◇ ", "□", " □ ",
+    "~", " ~ ", "¬", " ¬ ", "!", " ! ", "&", " & ", "∧", " ∧ ", "|", " | ", "∨", " ∨ ",
+    "→", " → ", "⇒", " ⇒ ", "⊃", " ⊃ ", "⥽", " ⥽ ", "↔", " ↔ ", "⇔", " ⇔ ", "≡", " ≡ ",
+];
+
 impl <'a> LogicalExpressionParserImpl<'a>
 {
     fn parse(logic : &Rc<dyn Logic>, text : &String) -> Result<Formula>
     {
         let token_types = TokenType::get_types().context(codeloc!())?;
 
-        let tokens : Vec<Token> = text
-            .replace("~", " ~ ").replace("¬", " ¬ ").replace("!", " ! ")
-            .replace("(", " ( ").replace(")", " ) ").replace(", ", ",")
-            .replace("∀", " ∀").replace("∃", " ∃").split(" ")
+        let mut prepared_text = text.clone();
+        for i in (0..REPLACE_TABLE.len()).step_by(2)
+        {
+            prepared_text = prepared_text.replace(REPLACE_TABLE[i], REPLACE_TABLE[i+1]);
+        }
+
+        let tokens : Vec<Token> = prepared_text.split(" ")
             .map(|word| word.trim()).filter(|word| !word.is_empty())
             .flat_map(|word| Self::get_tokens(word, &token_types))
             .collect();

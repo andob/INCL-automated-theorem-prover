@@ -31,5 +31,6 @@ itertools = "0.13.0"
 # String.substring()
 substring = "1.4.5"
 
-# box! macro
+# convenience instantiation macros
 box-macro = "0.2.0"
+str-macro = "1.0.0"

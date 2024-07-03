@@ -16,6 +16,7 @@ pub mod logic;
 mod proof;
 mod semantics;
 pub mod problem;
+mod graph;
 
 #[macro_export]
 macro_rules! codeloc

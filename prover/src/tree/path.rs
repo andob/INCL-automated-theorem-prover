@@ -1,7 +1,6 @@
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
-use itertools::Itertools;
-use crate::formula::{Formula, PossibleWorld};
+use crate::formula::Formula;
 use crate::logic::Logic;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
@@ -17,6 +16,7 @@ pub struct ProofTreePath
 pub struct ProofTreePathNodeData
 {
     pub id : ProofTreeNodeID,
+    pub is_contradictory : bool,
     pub formula : Formula,
 }
 
@@ -24,7 +24,12 @@ impl ProofTreePathNodeData
 {
     fn from_node(node : &ProofTreeNode) -> ProofTreePathNodeData
     {
-        return ProofTreePathNodeData { id: node.id, formula: node.formula.clone() };
+        return ProofTreePathNodeData
+        {
+            id: node.id,
+            is_contradictory: node.is_contradictory,
+            formula: node.formula.clone(),
+        };
     }
 }
 
@@ -74,20 +79,6 @@ impl ProofTreePath
         }
 
         return contradictory_ids;
-    }
-
-    //todo use this
-    pub fn get_all_formulas(&self) -> Vec<&Formula>
-    {
-        return self.nodes.iter().map(|node| &node.formula).collect();
-    }
-
-    //todo use this
-    pub fn get_all_possible_worlds(&self) -> Vec<&PossibleWorld>
-    {
-        return self.nodes.iter()
-            .map(|node| node.formula.get_possible_world())
-            .unique().sorted().rev().collect();
     }
 }
 

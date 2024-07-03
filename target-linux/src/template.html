@@ -5,30 +5,46 @@
     <title>Tableaux</title>
 
     <style>
-        .split {
-            height: 99%;
+        .split-left {
             width: 33.33%;
+            height: 99%;
+            left: 0;
+            top: 0;
             position: fixed;
             display: block;
-            top: 0;
         }
-
-        .left { left: 0; }
-        .center { left: 33.33%; }
-        .right { left: 66.66%; }
+        .split-center {
+            width: 33.33%;
+            height: 99%;
+            left: 33.33%;
+            top: 0;
+            position: fixed;
+            display: block;
+        }
+        .split-right {
+            width: 33.33%;
+            height: 99%;
+            left: 66.66%;
+            top: 0;
+            position: fixed;
+            display: block;
+        }
     </style>
 
 </head>
 <body>
 
-    <textarea id="json_text_area" class="split left">{{json}}</textarea>
+    <textarea id="json_text_area" class="split-left">{{json}}</textarea>
 
-    <div id="tree_div" class="split center"></div>
-    <div id="modal_graph_div" class="split right"></div>
+    <div id="tree_div" class="split-center"></div>
+    <div id="modal_graph_div" class="split-right"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.0/dist/cytoscape.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/avsdf-base@1.0.0/avsdf-base.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-avsdf@1.0.0/cytoscape-avsdf.min.js"></script>
 
     <script>
     let json_text_area = document.getElementById("json_text_area");
@@ -36,120 +52,177 @@
     let modal_graph_div = document.getElementById("modal_graph_div");
 
     let json = JSON.parse(json_text_area.textContent);
-    let nodes = [], edges = [];
 
-    function iterate_proof_tree(node, parent_id)
+    function render_proof_tree()
     {
-        let node_data = {
-            id: node.id,
-            text: node.formula + (node.is_contradictory ? " X" : ""),
-            spawner_node_id: node.spawner_node_id,
-            contrarian_node_id: node.contrarian_node_id
-        };
+        let nodes = [], edges = [];
 
-        nodes.push({ data: node_data });
-
-        if (parent_id != null)
+        function iterate_proof_tree(node, parent_id)
         {
-            let vertex_data = { source: parent_id, target: node.id };
-            edges.push({ data: vertex_data });
-        }
+            let node_data = {
+                id: node.id,
+                text: node.formula + (node.is_contradictory ? " X" : ""),
+                spawner_node_id: node.spawner_node_id,
+                contrarian_node_id: node.contrarian_node_id
+            };
 
-        if (node.left != null) { iterate_proof_tree(node.left, node.id); }
-        if (node.middle != null) { iterate_proof_tree(node.middle, node.id); }
-        if (node.right != null) { iterate_proof_tree(node.right, node.id); }
-    }
+            nodes.push({ data: node_data });
 
-    iterate_proof_tree(json.root_node, null);
-
-    let cy = cytoscape({
-        container: tree_div,
-        elements: {
-            nodes: nodes,
-            edges: edges,
-        },
-        layout: {
-            name: 'dagre',
-        },
-        wheelSensitivity: 0.1,
-        style: [
+            if (parent_id != null)
             {
-                selector: 'node',
-                style: {
-                    'background-color': 'white',
-                    'text-valign': 'center',
-                    'text-halign': 'center',
-                    'label': 'data(text)',
-                }
+                let vertex_data = { source: parent_id, target: node.id };
+                edges.push({ data: vertex_data });
             }
-        ],
-    });
 
-    function unselect_all_nodes()
-    {
-        cy.nodes().forEach((node) => node.style("background-color", "white"));
-    }
-
-    function select_node(tapped_node)
-    {
-        tapped_node.style("background-color", "#50cb30");
-
-        let contrarian_node_id = tapped_node.data().contrarian_node_id;
-        if (contrarian_node_id != null)
-        {
-            let contrarian_node = cy.nodes().find((node) => parseInt(node.data().id) === parseInt(contrarian_node_id));
-
-            contrarian_node.style("background-color", "#999999");
+            if (node.left != null) { iterate_proof_tree(node.left, node.id); }
+            if (node.middle != null) { iterate_proof_tree(node.middle, node.id); }
+            if (node.right != null) { iterate_proof_tree(node.right, node.id); }
         }
 
-        let spawner_node_id = tapped_node.data().spawner_node_id;
-        if (spawner_node_id != null)
+        iterate_proof_tree(json.root_node, null);
+
+        let cy = cytoscape({
+            container: tree_div,
+            elements: {
+                nodes: nodes,
+                edges: edges,
+            },
+            layout: {
+                name: 'dagre',
+            },
+            wheelSensitivity: 0.1,
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'background-color': 'white',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'label': 'data(text)',
+                    }
+                }
+            ],
+        });
+
+        function unselect_all_nodes()
         {
-            let spawner_node = cy.nodes().find((node) => parseInt(node.data().id) === parseInt(spawner_node_id));
-            let spawned_nodes = cy.nodes().filter((node) => parseInt(node.data().spawner_node_id) === parseInt(spawner_node_id));
-
-            spawner_node.style("background-color", "#e37c7c");
-
-            spawned_nodes.filter((node) => parseInt(node.data().id) !== parseInt(tapped_node.data().id))
-               .forEach((node) => node.style("background-color", "#caa9dc"));
+            cy.nodes().forEach((node) => node.style("background-color", "white"));
         }
-    }
 
-    var is_node_hovering_enabled = true;
-    cy.on('tap', 'node', (event) =>
-    {
-        is_node_hovering_enabled = false;
-        unselect_all_nodes();
-        select_node(event.target);
-    });
-
-    cy.on('tap', (event) =>
-    {
-        if (event.target === cy)
+        function select_node(tapped_node)
         {
-            //tapped outside the node
-            is_node_hovering_enabled = true;
-            unselect_all_nodes();
+            tapped_node.style("background-color", "#50cb30");
+
+            let contrarian_node_id = tapped_node.data().contrarian_node_id;
+            if (contrarian_node_id != null)
+            {
+                let contrarian_node = cy.nodes().find((node) => parseInt(node.data().id) === parseInt(contrarian_node_id));
+
+                contrarian_node.style("background-color", "#999999");
+            }
+
+            let spawner_node_id = tapped_node.data().spawner_node_id;
+            if (spawner_node_id != null)
+            {
+                let spawner_node = cy.nodes().find((node) => parseInt(node.data().id) === parseInt(spawner_node_id));
+                let spawned_nodes = cy.nodes().filter((node) => parseInt(node.data().spawner_node_id) === parseInt(spawner_node_id));
+
+                spawner_node.style("background-color", "#e37c7c");
+
+                spawned_nodes.filter((node) => parseInt(node.data().id) !== parseInt(tapped_node.data().id))
+                    .forEach((node) => node.style("background-color", "#caa9dc"));
+            }
         }
-    });
 
-    cy.on('mouseover', 'node', (event) =>
-    {
-        if (is_node_hovering_enabled)
+        var is_node_hovering_enabled = true;
+        cy.on('tap', 'node', (event) =>
         {
+            is_node_hovering_enabled = false;
             unselect_all_nodes();
             select_node(event.target);
-        }
-    });
+        });
 
-    cy.on('mouseout', 'node', (event) =>
-    {
-        if (is_node_hovering_enabled)
+        cy.on('tap', (event) =>
         {
-            unselect_all_nodes();
-        }
-    });
+            if (event.target === cy)
+            {
+                //tapped outside the node
+                is_node_hovering_enabled = true;
+                unselect_all_nodes();
+            }
+        });
 
+        cy.on('mouseover', 'node', (event) =>
+        {
+            if (is_node_hovering_enabled)
+            {
+                unselect_all_nodes();
+                select_node(event.target);
+            }
+        });
+
+        cy.on('mouseout', 'node', (event) =>
+        {
+            if (is_node_hovering_enabled)
+            {
+                unselect_all_nodes();
+            }
+        });
+    }
+
+    function render_modality_graph()
+    {
+        if (json.problem.logic === "PropositionalLogic")
+        {
+            return;
+        }
+
+        let nodes = json.modality_graph.nodes.map((node) =>
+        {
+            return { data: { id: node, text: node } };
+        });
+
+        let edges = json.modality_graph.vertices.map((vertex) =>
+        {
+            return { data: { source: vertex.from, target: vertex.to } };
+        });
+
+        cytoscape({
+            container: modal_graph_div,
+            elements: {
+                nodes: nodes,
+                edges: edges,
+            },
+            layout: {
+                name: 'avsdf',
+                animationDuration: 0,
+                nodeSeparation: 120
+            },
+            wheelSensitivity: 0.1,
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'background-color': 'white',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'label': 'data(text)',
+                    }
+                },
+                {
+                    selector: 'edge',
+                    style: {
+                        'target-arrow-shape': 'triangle',
+                        'curve-style': 'bezier',
+                        'width': 1.0,
+                    }
+                }
+            ],
+        });
+    }
+
+    render_proof_tree();
+    render_modality_graph();
     </script>
 
 </body>

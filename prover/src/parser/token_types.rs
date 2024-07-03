@@ -14,6 +14,7 @@ pub enum TokenTypeID
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
     Possible, Necessary,
+    StrictImply,
     OpenParenthesis, ClosedParenthesis,
 }
 
@@ -129,7 +130,7 @@ impl TokenType
             {
                 //matches and: P & Q
                 id: TokenTypeID::And,
-                regex: Regex::new(r"(&)|(∧)|(\^)").context(codeloc!())?,
+                regex: Regex::new(r"(&)|(∧)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
                 precedence: OperatorPrecedence::High,
                 to_formula: |_,args|
@@ -178,6 +179,20 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Formula::BiImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
+            },
+
+            TokenType
+            {
+                //strict implication: P ⥽ Q
+                id: TokenTypeID::StrictImply,
+                regex: Regex::new(r"(⥽)").context(codeloc!())?,
+                category: TokenCategory::BinaryOperation,
+                precedence: OperatorPrecedence::Low,
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::StrictImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
                 }
             },
 

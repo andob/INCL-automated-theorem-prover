@@ -13,6 +13,11 @@ impl PredicateArguments
     {
         return self.args.iter();
     }
+
+    pub fn len(&self) -> usize
+    {
+        return self.args.len();
+    }
 }
 
 impl Index<usize> for PredicateArguments

@@ -1,9 +1,10 @@
+use str_macro::str;
 use crate::formula::{PredicateArgument, PredicateArguments};
-use crate::tree::node_factory::ProofTreeNodeFactory;
+use crate::logic::rule_apply_factory::RuleApplyFactory;
 
 impl PredicateArguments
 {
-    pub fn instantiated(&self, factory : &mut ProofTreeNodeFactory, x : &PredicateArgument) -> PredicateArguments
+    pub fn instantiated(&self, factory : &mut RuleApplyFactory, x : &PredicateArgument) -> PredicateArguments
     {
         let mut instantiated_args : Vec<PredicateArgument> = vec![];
         for arg in &self.args
@@ -52,6 +53,6 @@ impl PredicateArgInstanceNameSequence
 
     pub fn next(&mut self) -> String
     {
-        return String::from("Socrates");
+        return str!("Socrates");
     }
 }

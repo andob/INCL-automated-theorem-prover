@@ -1,16 +1,18 @@
+use std::any::Any;
 use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
 use crate::logic::{Logic, LogicRule};
+use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_semantics::BinarySemantics;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::subtree::ProofSubtree;
 
 pub struct PropositionalLogic {}
 impl Logic for PropositionalLogic
 {
     fn get_name(&self) -> &str { "PropositionalLogic" }
+    fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
@@ -40,7 +42,7 @@ impl Logic for PropositionalLogic
 pub struct PropositionalLogicRules {}
 impl LogicRule for PropositionalLogicRules
 {
-    fn apply(&self, factory : &mut ProofTreeNodeFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
         let logic_semantics = factory.get_logic().get_semantics();
 

@@ -68,10 +68,10 @@ impl ProofTree
     {
         let mut should_clone_subtree_with_new_ids = false;
 
-        let (leafs, paths) = self.get_all_leafs_with_paths();
-        for (index, leaf) in leafs.iter().enumerate()
+        let paths = self.get_all_paths();
+        for path in &paths
         {
-            let path = &paths[index];
+            let leaf = path.nodes.last().unwrap();
             if !leaf.is_contradictory && (leaf.id == node_id || path.nodes.iter().any(|node| node.id == node_id))
             {
                 if !should_clone_subtree_with_new_ids

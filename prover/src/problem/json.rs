@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::codeloc;
 use crate::formula::Formula;
 use crate::formula::notations::OperatorNotations;
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::logic::{Logic, LogicFactory};
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::parser::algorithm::LogicalExpressionParser;
@@ -28,11 +29,6 @@ pub struct ProblemJSON
 
 impl ProblemJSON
 {
-    pub fn from_problem(problem : &Problem) -> ProblemJSON
-    {
-        return problem.to_json(OperatorNotations::BookNotations);
-    }
-
     pub fn to_problem(&self) -> Result<Problem>
     {
         return Problem::from_json(self);
@@ -41,10 +37,10 @@ impl ProblemJSON
 
 impl Problem
 {
-    pub fn to_json(&self, notations : OperatorNotations) -> ProblemJSON
+    pub fn to_json(&self, options : &FormulaFormatOptions) -> ProblemJSON
     {
         let premises_as_strings = self.premises.iter()
-            .map(|premise| premise.to_string_with_notations(notations))
+            .map(|premise| premise.to_string_with_options(options))
             .collect::<Vec<String>>();
 
         return ProblemJSON
@@ -53,7 +49,7 @@ impl Problem
             logic: self.logic.get_name().to_string(),
             expected: String::new(),
             premises: premises_as_strings,
-            conclusion: self.conclusion.to_string_with_notations(notations),
+            conclusion: self.conclusion.to_string_with_options(options),
         };
     }
 

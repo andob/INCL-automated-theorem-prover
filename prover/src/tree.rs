@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use crate::graph::Graph;
 use crate::problem::Problem;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
@@ -16,6 +17,7 @@ pub struct ProofTree
     pub problem : Problem,
     pub root_node : ProofTreeNode,
     pub node_factory : ProofTreeNodeFactory,
+    pub modality_graph : Graph,
     pub is_proof_correct : bool,
     pub has_timeout : bool,
 }
@@ -24,12 +26,12 @@ impl ProofTree
 {
     pub fn new(problem : Problem, node_factory : ProofTreeNodeFactory, root_node : ProofTreeNode) -> ProofTree
     {
-        return ProofTree { problem, root_node, node_factory, is_proof_correct:false, has_timeout: false };
-    }
-
-    pub fn get_all_leafs(&self) -> Vec<ProofTreeNode>
-    {
-        return self.root_node.get_all_leafs();
+        return ProofTree
+        {
+            problem, root_node, node_factory,
+            modality_graph: Graph::new(),
+            is_proof_correct:false, has_timeout:false,
+        }
     }
 
     pub fn get_all_paths(&self) -> Vec<ProofTreePath>
@@ -37,9 +39,14 @@ impl ProofTree
         return self.root_node.get_all_paths();
     }
 
-    pub fn get_all_leafs_with_paths(&self) -> (Vec<ProofTreeNode>, Vec<ProofTreePath>)
+    pub fn get_path_that_goes_through_node(&self, node : &ProofTreeNode) -> ProofTreePath
     {
-        return self.root_node.get_all_leafs_with_paths();
+        if let Some(found_path) = self.get_all_paths().iter().find(|path| path.contains(node))
+        {
+            return found_path.clone();
+        }
+
+        return ProofTreePath::new(&self.root_node);
     }
 
     pub fn check_for_contradictions(&mut self)

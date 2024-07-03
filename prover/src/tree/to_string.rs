@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::ProofTree;
 
@@ -6,19 +7,30 @@ impl Display for ProofTree
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        if self.has_timeout { writeln!(f, "TIMEOUT!")?; }
-        else if self.is_proof_correct { writeln!(f, "PROVED!")?; }
-        else { writeln!(f, "NOT PROVED!")?; }
+        let options = FormulaFormatOptions::default();
+        return write!(f, "{}", self.to_string_with_options(&options));
+    }
+}
 
-        let mut tree = String::new();
-        self.root_node.print_as_subtree_to_string(&mut tree, 0);
-        return writeln!(f, "{}", tree);
+impl ProofTree
+{
+    pub fn to_string_with_options(&self, options : &FormulaFormatOptions) -> String
+    {
+        let mut output_string = String::new();
+
+        if self.has_timeout { output_string.push_str("TIMEOUT!\n"); }
+        else if self.is_proof_correct { output_string.push_str("PROVED!\n"); }
+        else { output_string.push_str("NOT PROVED!\n"); }
+
+        self.root_node.print_as_subtree_to_string(options, &mut output_string, 0);
+
+        return output_string;
     }
 }
 
 impl ProofTreeNode
 {
-    fn print_as_subtree_to_string(&self, out_string : &mut String, indent : usize)
+    fn print_as_subtree_to_string(&self, options : &FormulaFormatOptions, out_string : &mut String, indent : usize)
     {
         if indent>0
         {
@@ -27,12 +39,7 @@ impl ProofTreeNode
             out_string.push(' ');
         }
 
-        out_string.push_str(self.formula.to_string().as_str());
-
-        //todo if options.should_show_possible_worlds && self.formula !is ModalRelationDescriptorFormula
-        // {
-        //     out_string.push_str(format!(" {}", self.formula.possible_world));
-        // }
+        out_string.push_str(self.formula.to_string_with_options(options).as_str());
 
         if self.is_contradictory
         {
@@ -43,17 +50,17 @@ impl ProofTreeNode
 
         if let Some(left) = &self.left
         {
-            left.print_as_subtree_to_string(out_string, indent+1);
+            left.print_as_subtree_to_string(options, out_string, indent+1);
         }
 
         if let Some(middle) = &self.middle
         {
-            middle.print_as_subtree_to_string(out_string, indent+1);
+            middle.print_as_subtree_to_string(options, out_string, indent+1);
         }
 
         if let Some(right) = &self.right
         {
-            right.print_as_subtree_to_string(out_string, indent+1);
+            right.print_as_subtree_to_string(options, out_string, indent+1);
         }
     }
 }

@@ -40,6 +40,14 @@ impl PossibleWorld
     }
 }
 
+impl PossibleWorld
+{
+    pub fn fork(&self) -> PossibleWorld
+    {
+        return PossibleWorld { index:self.index+1 };
+    }
+}
+
 impl PredicateArguments
 {
     pub fn empty() -> PredicateArguments

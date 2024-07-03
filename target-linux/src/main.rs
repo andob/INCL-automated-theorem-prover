@@ -9,6 +9,7 @@ use libc::c_char;
 use mustache::{MapBuilder, Template};
 use prover::codeloc;
 use prover::formula::notations::OperatorNotations;
+use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::{Logic, LogicFactory};
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
@@ -26,6 +27,7 @@ fn main() -> Result<()>
     if args.contains(&String::from("solve-book"))
     {
         prove_problems_from_the_book(template, output_dir_path).context(codeloc!())?;
+        create_proof_index_html_file(output_dir_path).context(codeloc!())?;
 
         open_firefox(format!("{}/index.html", output_dir_path)).context(codeloc!())?;
     }
@@ -65,10 +67,6 @@ fn main() -> Result<()>
 
 fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> Result<()>
 {
-    let output_index_file_path = format!("{}/index.html", output_dir_path);
-    let mut output_index_file = File::create(output_index_file_path).context(codeloc!())?;
-    let mut output_index_html = String::from("<html><head><title>Index</title></head><body>");
-
     let book_chapters = get_demo_problem_catalog().context(codeloc!())?;
     for book_chapter in &book_chapters
     {
@@ -81,11 +79,35 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
             let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-            let proof_tree_json = proof_tree.to_json(OperatorNotations::BookNotations).context(codeloc!())?;
+            let formula_format_options = FormulaFormatOptions
+            {
+                notations: OperatorNotations::BookNotations,
+                should_show_possible_worlds: problem_json.logic != "PropositionalLogic",
+            };
+
+            let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
+
             let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
             template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
+        }
+    }
 
-            output_index_html.push_str(format!("<a href=\"{}.html\" target=\"blank\">{}</a><br/>", problem_id, problem_id).as_str());
+    return Ok(());
+}
+
+fn create_proof_index_html_file(output_dir_path : &str) -> Result<()>
+{
+    let output_index_file_path = format!("{}/index.html", output_dir_path);
+    let mut output_index_file = File::create(output_index_file_path).context(codeloc!())?;
+    let mut output_index_html = String::from("<html><head><title>Index</title></head><body>");
+
+    let book_chapters = get_demo_problem_catalog().context(codeloc!())?;
+    for book_chapter in &book_chapters
+    {
+        output_index_html.push_str(format!("<p>{}</p>", book_chapter.name).as_str());
+        for problem in &book_chapter.problems
+        {
+            output_index_html.push_str(format!("<a href=\"{}.html\" target=\"blank\">{}</a><br/>", problem.id, problem.id).as_str());
         }
     }
 
@@ -100,7 +122,14 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
     let proof_tree = problem.prove();
-    let proof_tree_json = proof_tree.to_json(OperatorNotations::ComputerScienceNotations).context(codeloc!())?;
+
+    let formula_format_options = FormulaFormatOptions
+    {
+        notations: OperatorNotations::ComputerScienceNotations,
+        should_show_possible_worlds: false,
+    };
+
+    let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
 
     let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
     template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
