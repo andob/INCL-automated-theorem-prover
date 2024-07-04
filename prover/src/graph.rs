@@ -18,16 +18,13 @@ impl Graph
 {
     pub fn new() -> Graph
     {
-        let mut graph = Graph
+        return Graph
         {
             nodes: HashSet::new(),
             vertices: HashSet::new(),
             necessity_reapplications: vec![],
             log: String::new(),
         };
-
-        graph.add_node(PossibleWorld::zero());
-        return graph;
     }
 
     pub fn is_empty(&self) -> bool

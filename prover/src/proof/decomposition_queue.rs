@@ -1,6 +1,8 @@
+use std::rc::Rc;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use crate::formula::Formula::{And, BiImply, ForAll, Imply, Non, Or};
+use crate::formula::Formula::{And, BiImply, ForAll, Imply, Non, Or, Possible, StrictImply};
+use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
 
@@ -13,6 +15,7 @@ enum Priority
 
 pub struct DecompositionPriorityQueue
 {
+    logic : Rc<dyn Logic>,
     priorities : Vec<Priority>,
     consumable_nodes : Vec<Box<ProofTreeNode>>,
     previously_queued_node_ids : Vec<ProofTreeNodeID>,
@@ -20,10 +23,11 @@ pub struct DecompositionPriorityQueue
 
 impl DecompositionPriorityQueue
 {
-    pub fn new() -> DecompositionPriorityQueue
+    pub fn new(logic : Rc<dyn Logic>) -> DecompositionPriorityQueue
     {
         return DecompositionPriorityQueue
         {
+            logic: logic,
             priorities: Priority::iter().collect(),
             consumable_nodes: vec![],
             previously_queued_node_ids: vec![],
@@ -73,11 +77,16 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
+            //forall needs to apply after all instantiations
             ForAll(..) => Priority::LeastImportant,
 
+            //on non-normal modal logic, possibility needs to be applied after necessity
+            (Non(box StrictImply(..), ..) | Possible(..))
+                if self.logic.get_name().is_non_normal_modal_logic() => Priority::LessImportant,
+
             //propositional operations that will split the tree
-            BiImply(..) | Non(box BiImply(..), ..) => Priority::LessImportant,
-            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::LessImportant,
+            BiImply(..) | Non(box BiImply(..), ..) => Priority::Normal,
+            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::Normal,
 
             _ => Priority::MostImportant,
         }

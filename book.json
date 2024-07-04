@@ -1,5 +1,25 @@
 [
   {
+    "name": "Tests",
+    "problems":
+    [
+      {
+        "id": "PropositionalTest",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(!!P≡P) & (P&(Q&R)≡(P&Q)&R) & (P|(Q|R)≡(P|Q)|R) & (P&(Q|R)≡(P&Q)|(P&R)) & (P|(Q&R)≡(P|Q)&(P|R)) & (!(P|Q)≡!P&!Q) & (!(P&Q)≡!P|!Q)"
+      },
+      {
+        "id": "TimeoutTest",
+        "logic": "S5ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇◇□◇P"
+      }
+    ]
+  },
+  {
     "name": "Propositional logic",
     "problems":
     [

@@ -27,6 +27,8 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
     {
         let logic_semantics = factory.get_logic().get_semantics();
 
+        self.initialize_modality_graph(factory);
+
         return match &node.formula
         {
             Non(box Possible(box p, _), extras) =>
@@ -73,12 +75,29 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
     }
 }
 
+impl <LOGIC: Logic> ModalLogicRules<LOGIC>
+{
+    fn initialize_modality_graph(&self, factory : &mut RuleApplyFactory)
+    {
+        if factory.modality_graph.is_empty()
+        {
+            let logic_pointer = factory.get_logic().clone();
+            let logic = logic_pointer.as_any().downcast_ref::<LOGIC>().unwrap();
+
+            factory.modality_graph.add_node(PossibleWorld::zero());
+
+            (self.modality.add_missing_graph_vertices)(&logic, factory.modality_graph);
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct NecessityReapplicationData
 {
     pub input_formula : Formula,
     pub input_possible_world : PossibleWorld,
     pub input_spawner_node_id : ProofTreeNodeID,
+    pub input_path_leaf_node_id : ProofTreeNodeID,
     pub already_iterated_possible_worlds : Vec<PossibleWorld>,
 }
 
@@ -116,16 +135,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let comment_node = factory.new_node(comment);
 
         let mut output_nodes = vec![comment_node, p_in_forked_world_node];
-        let mut output_necessity_reapplications : Vec<NecessityReapplicationData> = vec![];
-
-        while let Some(mut reapplication) = factory.pop_next_necessity_reapplication()
-        {
-            let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication);
-            output_nodes.append(&mut output_nodes_from_necessity);
-            output_necessity_reapplications.push(reapplication);
-        }
-
-        factory.push_necessity_reapplications(output_necessity_reapplications);
+        self.reapply_necessity_after_possibility(factory, node, &mut output_nodes);
 
         return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
@@ -137,11 +147,15 @@ impl <LOGIC : Logic> Modality<LOGIC>
     {
         if !(self.is_necessity_applicable)(factory, node, extras) { return None };
 
+        let path = factory.tree.get_path_that_goes_through_node(node);
+        let leaf_node_id = path.nodes.last().unwrap().id;
+
         let mut reapplication_data = NecessityReapplicationData
         {
             input_formula: p.with(extras),
             input_possible_world: extras.possible_world,
             input_spawner_node_id: node.id,
+            input_path_leaf_node_id: leaf_node_id,
             already_iterated_possible_worlds: vec![],
         };
 
@@ -149,6 +163,27 @@ impl <LOGIC : Logic> Modality<LOGIC>
         factory.push_necessity_reapplication(reapplication_data);
 
         return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+    }
+
+    fn reapply_necessity_after_possibility(&self,
+        factory : &mut RuleApplyFactory, node : &ProofTreeNode,
+        output_nodes : &mut Vec<ProofTreeNode>)
+    {
+        let mut reusable_necessity_reapplications: Vec<NecessityReapplicationData> = vec![];
+
+        while let Some(mut reapplication) = factory.pop_next_necessity_reapplication()
+        {
+            let path = factory.tree.get_path_that_goes_through_node(node);
+            if path.contains_node_with_id(reapplication.input_path_leaf_node_id)
+            {
+                let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication);
+                output_nodes.append(&mut output_nodes_from_necessity);
+            }
+
+            reusable_necessity_reapplications.push(reapplication);
+        }
+
+        factory.push_necessity_reapplications(reusable_necessity_reapplications);
     }
 
     fn reapply_necessity(&self,

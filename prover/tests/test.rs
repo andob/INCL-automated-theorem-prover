@@ -27,7 +27,7 @@ fn test_full_output()
         println!("{}\n", output_chunk);
     }
 
-    assert_eq!(expected_output.trim(), actual_output.trim());
+    assert_eq!(actual_output.trim(), expected_output.trim());
 }
 
 #[test]

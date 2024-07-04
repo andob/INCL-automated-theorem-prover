@@ -44,7 +44,12 @@ impl ProofTreePath
 
     pub fn contains(&self, node : &ProofTreeNode) -> bool
     {
-        return self.nodes.iter().any(|path_node| path_node.id == node.id);
+        return self.contains_node_with_id(node.id);
+    }
+
+    pub fn contains_node_with_id(&self, node_id : ProofTreeNodeID) -> bool
+    {
+        return self.nodes.iter().any(|path_node| path_node.id == node_id);
     }
 
     pub fn plus(&self, node : &ProofTreeNode) -> ProofTreePath

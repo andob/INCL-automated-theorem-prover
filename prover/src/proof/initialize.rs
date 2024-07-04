@@ -17,7 +17,7 @@ impl ProofAlgorithm
         let non_conclusion = problem.logic.get_semantics().negate(&problem.conclusion, &FormulaExtras::empty());
         let non_conclusion_node = node_factory.new_node(non_conclusion);
 
-        let mut decomposition_queue = DecompositionPriorityQueue::new();
+        let mut decomposition_queue = DecompositionPriorityQueue::new(problem.logic.clone());
         decomposition_queue.push_tree_node(Box::new(non_conclusion_node.clone()));
 
         if problem.premises.is_empty()

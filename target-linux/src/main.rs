@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::{env, fs, io};
+use std::any::Any;
 use std::ffi::CString;
 use std::io::Write;
 use std::path::Path;
@@ -7,10 +8,10 @@ use std::rc::Rc;
 use anyhow::{Context, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
-use prover::codeloc;
+use prover::{codeloc, logic};
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
-use prover::logic::{Logic, LogicFactory};
+use prover::logic::{Logic, LogicFactory, LogicName};
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
 use prover::problem::catalog::get_demo_problem_catalog;
@@ -72,9 +73,8 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
     {
         for problem_json in &book_chapter.problems
         {
-            let problem_id = &problem_json.id;
             let problem = problem_json.to_problem().context(codeloc!())?;
-            let proof_tree = problem.prove();
+            let (problem_id, logic) = (problem.id.clone(), problem.logic.clone());
 
             let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
             let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
@@ -82,9 +82,10 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             let formula_format_options = FormulaFormatOptions
             {
                 notations: OperatorNotations::BookNotations,
-                should_show_possible_worlds: problem_json.logic != "PropositionalLogic",
+                should_show_possible_worlds: logic.get_name().is_modal_logic(),
             };
 
+            let proof_tree = problem.prove();
             let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
 
             let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
@@ -121,14 +122,13 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
 {
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-    let proof_tree = problem.prove();
-
     let formula_format_options = FormulaFormatOptions
     {
         notations: OperatorNotations::ComputerScienceNotations,
         should_show_possible_worlds: false,
     };
 
+    let proof_tree = problem.prove();
     let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
 
     let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();

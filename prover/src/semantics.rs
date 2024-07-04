@@ -6,5 +6,5 @@ pub trait Semantics
 {
     fn negate(&self, p : &Formula, extras : &FormulaExtras) -> Formula;
 
-    fn are_formulas_contradictory(&self, left : &Formula, right : &Formula) -> bool;
+    fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool;
 }

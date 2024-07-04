@@ -1,7 +1,7 @@
 use std::any::Any;
 use box_macro::bx;
 use crate::formula::Formula::{Exists, ForAll, Non};
-use crate::logic::{Logic, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -13,7 +13,7 @@ use crate::tree::subtree::ProofSubtree;
 pub struct FirstOrderLogic {}
 impl Logic for FirstOrderLogic
 {
-    fn get_name(&self) -> &str { "FirstOrderLogic" }
+    fn get_name(&self) -> LogicName { LogicName::FirstOrderLogic }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
