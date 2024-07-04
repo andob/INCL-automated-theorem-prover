@@ -4,12 +4,14 @@ mod missing_vertices;
 use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use crate::formula::PossibleWorld;
+use crate::logic::common_modal_logic::NecessityReapplicationData;
 
 pub struct Graph
 {
     pub nodes : HashSet<PossibleWorld>,
     pub vertices : HashSet<GraphVertex>,
-    pub log : String,
+    pub necessity_reapplications : Vec<NecessityReapplicationData>,
+    log : String,
 }
 
 impl Graph
@@ -20,6 +22,7 @@ impl Graph
         {
             nodes: HashSet::new(),
             vertices: HashSet::new(),
+            necessity_reapplications: vec![],
             log: String::new(),
         };
 
@@ -44,9 +47,11 @@ impl Graph
         self.log.push_str(format!("{}R{}", from, to).as_str());
     }
 
-    pub fn clear_log(&mut self)
+    pub fn flush_log(&mut self) -> String
     {
+        let log = self.log.clone();
         self.log = String::new();
+        return log;
     }
 }
 

@@ -16,7 +16,7 @@ pub mod propositional_logic;
 pub mod first_order_logic;
 mod normal_modal_logic;
 mod non_normal_modal_logic;
-mod common_modal_logic;
+pub mod common_modal_logic;
 pub mod rule_apply_factory;
 
 pub trait LogicRule

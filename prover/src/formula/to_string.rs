@@ -36,7 +36,7 @@ impl Formula
     {
         let mut formula_string = self.to_string_impl(options, 0);
 
-        if options.should_show_possible_worlds
+        if options.should_show_possible_worlds && !matches!(self, Formula::Comment(..))
         {
             formula_string.push(' ');
             formula_string.push_str(self.get_possible_world().to_string().as_str());

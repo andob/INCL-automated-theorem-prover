@@ -40,7 +40,7 @@ pub struct FormulaExtras
 #[derive(Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct PossibleWorld
 {
-    index : usize
+    index : u8
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]

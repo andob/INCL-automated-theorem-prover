@@ -1,7 +1,7 @@
 use std::any::Any;
 use str_macro::str;
 use crate::logic::{Logic, LogicRule};
-use crate::logic::common_modal_logic::{ModalLogicRules, Necessity, Possibility};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_semantics::BinarySemantics;
@@ -52,34 +52,25 @@ impl Logic for NormalModalLogic
         return vec!
         [
             Box::new(PropositionalLogicRules {}),
-            Box::new(ModalLogicRules::new(self.get_possibility(), self.get_necessity())),
+            Box::new(ModalLogicRules::new(self.get_modality())),
         ];
     }
 }
 
 impl NormalModalLogic
 {
-    pub fn get_possibility(&self) -> Possibility<NormalModalLogic>
+    pub fn get_modality(&self) -> Modality<NormalModalLogic>
     {
-        return Possibility
+        return Modality
         {
-            is_applicable: |_, _, _| { true },
+            is_possibility_applicable: |_, _, _| { true },
+            is_necessity_applicable: |_, _, _| { true },
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_reflexive { graph.add_missing_reflexive_vertices() }
                 if logic.is_symmetric { graph.add_missing_symmetric_vertices() }
                 if logic.is_transitive { graph.add_missing_transitive_vertices() }
             }
-        };
-    }
-
-    pub fn get_necessity(&self) -> Necessity<NormalModalLogic>
-    {
-        //todo modify this
-        return Necessity
-        {
-            is_applicable: |_, _| { true },
-            dummy: |logic| {},
         };
     }
 }

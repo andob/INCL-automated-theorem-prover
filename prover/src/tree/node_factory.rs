@@ -9,19 +9,13 @@ pub type ProofTreeNodeID = usize;
 pub struct ProofTreeNodeIDSequence
 {
     current_id : ProofTreeNodeID,
-    max_id : ProofTreeNodeID,
 }
 
 impl ProofTreeNodeIDSequence
 {
     pub fn new() -> ProofTreeNodeIDSequence
     {
-        return ProofTreeNodeIDSequence { current_id: 0, max_id: 2000 };
-    }
-
-    pub fn has_next(&self) -> bool
-    {
-        return self.current_id < self.max_id;
+        return ProofTreeNodeIDSequence { current_id: 0 };
     }
 
     pub fn next(&mut self) -> ProofTreeNodeID
@@ -76,11 +70,6 @@ impl ProofTreeNodeFactory
     pub fn new_node_with_subnode(&mut self, formula : Formula, child : ProofTreeNode) -> ProofTreeNode
     {
         return self.pointer.borrow_mut().new_node_with_subnode(formula, child);
-    }
-
-    pub fn can_create_new_node(&self) -> bool
-    {
-        return self.pointer.borrow().node_id_sequence.has_next();
     }
 
     pub fn new_predicate_argument_instance_name(&mut self) -> String
