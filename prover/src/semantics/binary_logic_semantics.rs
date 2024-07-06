@@ -4,14 +4,9 @@ use crate::formula::{Formula, FormulaExtras};
 use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply};
 use crate::semantics::Semantics;
 
-pub struct BinarySemantics {}
-impl Semantics for BinarySemantics
+pub struct BinaryLogicSemantics {}
+impl Semantics for BinaryLogicSemantics
 {
-    fn negate(&self, p : &Formula, extras : &FormulaExtras) -> Formula
-    {
-        return Non(bx!(p.with(extras)), extras.clone());
-    }
-
     fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
     {
         //todo this does not account for predicate arguments

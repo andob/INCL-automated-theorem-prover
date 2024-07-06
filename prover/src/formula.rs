@@ -3,6 +3,7 @@ mod constructors;
 mod collections;
 pub mod converters;
 pub mod notations;
+mod operators;
 
 use std::fmt::Display;
 use itertools::Itertools;
@@ -29,18 +30,26 @@ pub struct AtomicFormulaExtras
 {
     pub predicate_args : PredicateArguments,
     pub possible_world : PossibleWorld,
+    pub sign : Sign,
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]
 pub struct FormulaExtras
 {
     pub possible_world : PossibleWorld,
+    pub sign : Sign,
 }
 
 #[derive(Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct PossibleWorld
 {
-    pub index : u8
+    pub index : i8
+}
+
+#[derive(Eq, PartialEq, Hash, Copy, Clone)]
+pub enum Sign
+{
+    Plus, Minus, PlusMinus
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]

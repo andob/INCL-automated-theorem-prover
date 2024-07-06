@@ -1,3 +1,5 @@
+use crate::formula::notations::OperatorNotations;
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;

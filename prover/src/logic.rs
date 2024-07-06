@@ -3,6 +3,7 @@ use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use anyhow::{Context, Result};
 use crate::logic::first_order_logic::FirstOrderLogic;
+use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
@@ -18,6 +19,7 @@ mod normal_modal_logic;
 mod non_normal_modal_logic;
 pub mod common_modal_logic;
 pub mod rule_apply_factory;
+pub mod intuitionistic_logic;
 
 pub trait LogicRule
 {
@@ -69,6 +71,8 @@ impl LogicFactory
             Rc::new(NonNormalModalLogic::S2()),
             Rc::new(NonNormalModalLogic::S3()),
             Rc::new(NonNormalModalLogic::S3_5()),
+
+            Rc::new(IntuitionisticLogic {}),
         ];
     }
 }
@@ -79,6 +83,7 @@ pub enum LogicName
     PropositionalLogic, FirstOrderLogic,
     KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
+    IntuitionisticLogic,
 }
 
 impl Display for LogicName
@@ -98,6 +103,7 @@ impl Display for LogicName
             LogicName::S2ModalLogic => { "S2ModalLogic" }
             LogicName::S3ModalLogic => { "S3ModalLogic" }
             LogicName::S3_5ModalLogic => { "S3.5ModalLogic" }
+            LogicName::IntuitionisticLogic => { "IntuitionisticLogic" }
         });
     }
 }
@@ -118,5 +124,10 @@ impl LogicName
     pub fn is_normal_modal_logic(self) -> bool
     {
         return self.is_modal_logic() && !self.is_non_normal_modal_logic();
+    }
+
+    pub fn is_three_valued_logic(self) -> bool
+    {
+        return self == LogicName::IntuitionisticLogic;
     }
 }

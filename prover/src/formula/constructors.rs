@@ -1,4 +1,4 @@
-use crate::formula::{AtomicFormulaExtras, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments};
+use crate::formula::{AtomicFormulaExtras, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 
 impl AtomicFormulaExtras
 {
@@ -8,6 +8,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: PredicateArguments::empty(),
             possible_world: PossibleWorld::zero(),
+            sign: Sign::Plus,
         }
     }
 
@@ -17,6 +18,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: args,
             possible_world: PossibleWorld::zero(),
+            sign: Sign::Plus,
         }
     }
 }
@@ -28,6 +30,7 @@ impl FormulaExtras
         return FormulaExtras
         {
             possible_world: PossibleWorld::zero(),
+            sign: Sign::Plus,
         }
     }
 }

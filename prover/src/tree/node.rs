@@ -52,6 +52,26 @@ impl ProofTreeNode
         }
     }
 
+    pub fn get_node_with_id(&self, node_id : ProofTreeNodeID) -> Option<&ProofTreeNode>
+    {
+        if let Some(left) = &self.left
+        {
+            if let r@Some(_) = left.get_node_with_id(node_id) { return r };
+        }
+
+        if let Some(middle) = &self.middle
+        {
+            if let r@Some(_) = middle.get_node_with_id(node_id) { return r };
+        }
+
+        if let Some(right) = &self.right
+        {
+            if let r@Some(_) = right.get_node_with_id(node_id) { return r };
+        }
+
+        return if self.id == node_id { Some(&self) } else { None };
+    }
+
     pub fn mark_child_node_as_contradictory(&mut self, node_id : ProofTreeNodeID, contrarian_node_id : ProofTreeNodeID)
     {
         if let Some(left) = &mut self.left

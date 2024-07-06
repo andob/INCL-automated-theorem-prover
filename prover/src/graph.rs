@@ -39,14 +39,13 @@ impl Graph
 
     pub fn add_vertex(&mut self, from : PossibleWorld, to : PossibleWorld)
     {
+        self.log.push_str(format!("{}r{}\n", from, to).as_str());
         self.vertices.insert(GraphVertex::new(from, to));
-
-        self.log.push_str(format!("{}R{}", from, to).as_str());
     }
 
     pub fn flush_log(&mut self) -> String
     {
-        let log = self.log.clone();
+        let log = self.log.trim().to_string();
         self.log = String::new();
         return log;
     }

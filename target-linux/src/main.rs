@@ -83,6 +83,7 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             {
                 notations: OperatorNotations::BookNotations,
                 should_show_possible_worlds: logic.get_name().is_modal_logic(),
+                should_show_sign: logic.get_name().is_three_valued_logic(),
             };
 
             let proof_tree = problem.prove();
@@ -126,6 +127,7 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
     {
         notations: OperatorNotations::ComputerScienceNotations,
         should_show_possible_worlds: false,
+        should_show_sign: false,
     };
 
     let proof_tree = problem.prove();

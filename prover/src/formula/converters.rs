@@ -1,42 +1,14 @@
 use box_macro::bx;
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Exists, ForAll, Imply, Necessary, Non, Or, Possible, StrictImply};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 
 pub mod predicate_arg_instantiation;
 mod extras_in_world;
+mod extras_with_sign;
 
 impl Formula
 {
-    pub fn with(&self, extras : &FormulaExtras) -> Formula
-    {
-        return match self
-        {
-            Atomic(p, old_extras) =>
-            {
-                let new_extras = AtomicFormulaExtras
-                {
-                    predicate_args: old_extras.predicate_args.clone(),
-                    possible_world: extras.possible_world,
-                };
-
-                return Atomic(p.clone(), new_extras);
-            }
-
-            Non(p, _) => { Non(p.clone(), extras.clone()) }
-            And(p, q, _) => { And(p.clone(), q.clone(), extras.clone()) }
-            Or(p, q, _) => { Or(p.clone(), q.clone(), extras.clone()) }
-            Imply(p, q, _) => { Imply(p.clone(), q.clone(), extras.clone()) }
-            BiImply(p, q, _) => { BiImply(p.clone(), q.clone(), extras.clone()) }
-            StrictImply(p, q, _) => { StrictImply(p.clone(), q.clone(), extras.clone()) }
-            Exists(x, p, _) => { Exists(x.clone(), p.clone(), extras.clone()) }
-            ForAll(x, p, _) => { ForAll(x.clone(), p.clone(), extras.clone()) }
-            Possible(p, _) => { Possible(p.clone(), extras.clone()) }
-            Necessary(p, _) => { Necessary(p.clone(), extras.clone()) }
-            Comment(payload) => { Comment(payload.clone()) }
-        }
-    }
-
     pub fn instantiated(&self, factory : &mut RuleApplyFactory, x : &PredicateArgument, extras : &FormulaExtras) -> Formula
     {
         let mut instantiated_box = |p : &Box<Formula>| bx!(p.instantiated(factory, x, extras));
@@ -49,6 +21,7 @@ impl Formula
                 {
                     predicate_args: old_extras.predicate_args.instantiated(factory, x),
                     possible_world: extras.possible_world,
+                    sign: old_extras.sign,
                 };
 
                 return Atomic(p.clone(), new_extras);
@@ -105,16 +78,54 @@ impl Formula
             Comment(_) => { PossibleWorld::zero() }
         }
     }
+
+    pub fn with_sign(&self, sign : Sign) -> Formula
+    {
+        return match self
+        {
+            Atomic(p, extras) => { Atomic(p.clone(), extras.with_sign(sign)) }
+            Non(p, extras) => { Non(p.clone(), extras.with_sign(sign)) }
+            And(p, q, extras) => { And(p.clone(), q.clone(), extras.with_sign(sign)) }
+            Or(p, q, extras) => { Or(p.clone(), q.clone(), extras.with_sign(sign)) }
+            Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.with_sign(sign)) }
+            BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.with_sign(sign)) }
+            StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.with_sign(sign)) }
+            Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_sign(sign)) }
+            ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_sign(sign)) }
+            Possible(p, extras) => { Possible(p.clone(), extras.with_sign(sign)) }
+            Necessary(p, extras) => { Necessary(p.clone(), extras.with_sign(sign)) }
+            Comment(payload) => { Comment(payload.clone()) }
+        }
+    }
+
+    pub fn get_sign(&self) -> Sign
+    {
+        return match self
+        {
+            Atomic(_, extras) => { extras.sign }
+            Non(_, extras) => { extras.sign }
+            And(_, _, extras) => { extras.sign }
+            Or(_, _, extras) => { extras.sign }
+            Imply(_, _, extras) => { extras.sign }
+            BiImply(_, _, extras) => { extras.sign }
+            StrictImply(_, _, extras) => { extras.sign }
+            Exists(_, _, extras) => { extras.sign }
+            ForAll(_, _, extras) => { extras.sign }
+            Possible(_, extras) => { extras.sign }
+            Necessary(_, extras) => { extras.sign }
+            Comment(_) => { Sign::Plus }
+        }
+    }
 }
 
 impl AtomicFormulaExtras
 {
-    pub fn merged_with(&self, other_extras : &FormulaExtras) -> AtomicFormulaExtras
+    pub fn to_formula_extras(&self) -> FormulaExtras
     {
-        return AtomicFormulaExtras
+        return FormulaExtras
         {
-            predicate_args: self.predicate_args.clone(),
-            possible_world: other_extras.possible_world,
+            possible_world: self.possible_world,
+            sign: self.sign,
         }
     }
 }

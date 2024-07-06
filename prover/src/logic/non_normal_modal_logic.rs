@@ -1,11 +1,12 @@
 use std::any::Any;
+use std::rc::Rc;
 use crate::formula::PossibleWorld;
 use crate::formula::Formula::{Necessary, StrictImply};
 use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::parser::token_types::TokenTypeID;
-use crate::semantics::binary_semantics::BinarySemantics;
+use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 
 pub struct NonNormalModalLogic
@@ -32,7 +33,7 @@ impl Logic for NonNormalModalLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(BinarySemantics{});
+        return Box::new(BinaryLogicSemantics {});
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
@@ -52,7 +53,7 @@ impl Logic for NonNormalModalLogic
         return vec!
         [
             Box::new(PropositionalLogicRules {}),
-            Box::new(ModalLogicRules::new(self.get_modality())),
+            Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
         ];
     }
 }

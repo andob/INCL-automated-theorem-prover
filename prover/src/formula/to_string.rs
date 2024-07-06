@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments};
+use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::notations::OperatorNotations;
 use crate::parser::token_types::TokenTypeID;
 
@@ -16,6 +16,7 @@ pub struct FormulaFormatOptions
 {
     pub notations : OperatorNotations,
     pub should_show_possible_worlds : bool,
+    pub should_show_sign : bool,
 }
 
 impl FormulaFormatOptions
@@ -26,6 +27,7 @@ impl FormulaFormatOptions
         {
             notations: OperatorNotations::BookNotations,
             should_show_possible_worlds: true,
+            should_show_sign: false,
         }
     }
 }
@@ -36,10 +38,17 @@ impl Formula
     {
         let mut formula_string = self.to_string_impl(options, 0);
 
-        if options.should_show_possible_worlds && !matches!(self, Formula::Comment(..))
+        let is_comment = matches!(self, Formula::Comment(..));
+        if options.should_show_possible_worlds && !is_comment
         {
             formula_string.push(' ');
             formula_string.push_str(self.get_possible_world().to_string().as_str());
+        }
+
+        if options.should_show_sign && !is_comment
+        {
+            formula_string.push(' ');
+            formula_string.push_str(self.get_sign().to_string().as_str());
         }
 
         return formula_string;
@@ -149,5 +158,18 @@ impl Display for PossibleWorld
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
         return write!(f, "w{}", self.index);
+    }
+}
+
+impl Display for Sign
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        return write!(f, "{}", match self
+        {
+            Sign::Plus => { '+' }
+            Sign::Minus => { '-' }
+            Sign::PlusMinus => { '±' }
+        })
     }
 }

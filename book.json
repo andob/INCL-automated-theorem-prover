@@ -16,6 +16,20 @@
         "expected": "not-proved",
         "premises": [],
         "conclusion": "◇◇□◇P"
+      },
+      {
+        "id": "IntuitionisticFirstTest",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "P → !!P"
+      },
+      {
+        "id": "IntuitionisticTimeoutTest",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "!!P → P"
       }
     ]
   },
@@ -457,6 +471,55 @@
         "expected": "not-proved",
         "premises": [],
         "conclusion": "□□(p ∨ ¬p)"
+      },
+      {
+        "id": "4.13.4.a",
+        "logic": "S2ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.4.b",
+        "logic": "S3ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.4.c",
+        "logic": "S2ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.4.d",
+        "logic": "S3ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.4.e",
+        "logic": "S3ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.4.f",
+        "logic": "S3.5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.4.g",
+        "logic": "S3.5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
       }
     ]
   }

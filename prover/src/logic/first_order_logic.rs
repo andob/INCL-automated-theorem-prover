@@ -5,7 +5,7 @@ use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
-use crate::semantics::binary_semantics::BinarySemantics;
+use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -18,7 +18,7 @@ impl Logic for FirstOrderLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(BinarySemantics{});
+        return Box::new(BinaryLogicSemantics {});
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
@@ -49,13 +49,11 @@ impl LogicRule for QuantifierRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        let logic_semantics = factory.get_logic().get_semantics();
-
         return match &node.formula
         {
             Non(box Exists(x, box p, _), extras) =>
             {
-                let non_p = logic_semantics.negate(p, extras);
+                let non_p = Non(bx!(p.clone()), extras.clone());
                 let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
                 let for_all_non_p_node = factory.new_node(for_all_non_p);
                 return Some(ProofSubtree::with_middle_node(for_all_non_p_node));
@@ -63,7 +61,7 @@ impl LogicRule for QuantifierRules
 
             Non(box ForAll(x, box p, _), extras) =>
             {
-                let non_p = logic_semantics.negate(p, extras);
+                let non_p = Non(bx!(p.clone()), extras.clone());
                 let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
                 let exists_non_p_node = factory.new_node(exists_non_p);
                 return Some(ProofSubtree::with_middle_node(exists_non_p_node));

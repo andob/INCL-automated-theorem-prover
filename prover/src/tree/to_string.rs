@@ -39,7 +39,8 @@ impl ProofTreeNode
             out_string.push(' ');
         }
 
-        out_string.push_str(self.formula.to_string_with_options(options).as_str());
+        let formula_as_string = self.formula.to_string_with_options(options);
+        out_string.push_str(formula_as_string.replace("\n", " ").as_str());
 
         if self.is_contradictory
         {

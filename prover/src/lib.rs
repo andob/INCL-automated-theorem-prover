@@ -2,6 +2,7 @@
  * migrate to "deref patterns" feature when it will become stable
  * then migrate to a non-nightly version of rust */
 #![feature(box_patterns)]
+#![feature(let_chains)]
 #![feature(iter_intersperse)]
 
 use std::any;

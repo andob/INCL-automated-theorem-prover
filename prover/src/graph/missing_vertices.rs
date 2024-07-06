@@ -9,6 +9,7 @@ impl Graph
             let reflexive_vertex = GraphVertex::new(*node, *node);
             if !self.vertices.contains(&reflexive_vertex)
             {
+                self.log.push_str(format!("{}ρ{}\n", *node, *node).as_str());
                 self.vertices.insert(reflexive_vertex);
             }
         }
@@ -29,6 +30,7 @@ impl Graph
 
         for vertex in vertices_to_add
         {
+            self.log.push_str(format!("{}σ{}\n", vertex.from, vertex.to).as_str());
             self.vertices.insert(vertex);
         }
     }
@@ -54,6 +56,7 @@ impl Graph
 
         for vertex in vertices_to_add
         {
+            self.log.push_str(format!("{}τ{}\n", vertex.from, vertex.to).as_str());
             self.vertices.insert(vertex);
         }
     }

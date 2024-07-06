@@ -2,7 +2,7 @@ use itertools::Itertools;
 use crate::graph::Graph;
 use crate::problem::Problem;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::node_factory::ProofTreeNodeFactory;
+use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::path::ProofTreePath;
 
 pub mod node;
@@ -47,6 +47,11 @@ impl ProofTree
         }
 
         return ProofTreePath::new(&self.root_node);
+    }
+
+    pub fn get_node_with_id(&self, node_id : ProofTreeNodeID) -> Option<&ProofTreeNode>
+    {
+        return self.root_node.get_node_with_id(node_id);
     }
 
     pub fn check_for_contradictions(&mut self)

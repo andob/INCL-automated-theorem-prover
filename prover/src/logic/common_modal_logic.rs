@@ -1,4 +1,6 @@
+use std::rc::Rc;
 use box_macro::bx;
+use itertools::Itertools;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Imply, Necessary, Non, Possible, StrictImply};
 use crate::graph::Graph;
@@ -10,14 +12,15 @@ use crate::tree::subtree::ProofSubtree;
 
 pub struct ModalLogicRules<LOGIC : Logic>
 {
-    modality : Modality<LOGIC>
+    modality : Rc<Modality<LOGIC>>,
+    pub delegates : Vec<Box<dyn LogicRule>>,
 }
 
 impl <LOGIC : Logic> ModalLogicRules<LOGIC>
 {
-    pub fn new(modality : Modality<LOGIC>) -> ModalLogicRules<LOGIC>
+    pub fn new(modality : Rc<Modality<LOGIC>>) -> ModalLogicRules<LOGIC>
     {
-        return ModalLogicRules { modality };
+        return ModalLogicRules { modality, delegates:vec![] };
     }
 }
 
@@ -25,22 +28,22 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        let logic_semantics = factory.get_logic().get_semantics();
-
         self.initialize_modality_graph(factory);
 
         return match &node.formula
         {
             Non(box Possible(box p, _), extras) =>
             {
-                let necessary_non_p = Necessary(bx!(logic_semantics.negate(p, extras)), extras.clone());
+                let non_p = Non(bx!(p.clone()), extras.clone());
+                let necessary_non_p = Necessary(bx!(non_p), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
                 return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
             Non(box Necessary(box p, _), extras) =>
             {
-                let possible_non_p = Possible(bx!(logic_semantics.negate(p, extras)), extras.clone());
+                let non_p = Non(bx!(p.clone()), extras.clone());
+                let possible_non_p = Possible(bx!(non_p), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
                 return Some(ProofSubtree::with_middle_node(possible_non_p_node));
             }
@@ -57,20 +60,31 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 
             StrictImply(box p, box q, extras) =>
             {
-                let p_imply_q = Imply(bx!(p.with(extras)), bx!(q.with(extras)), extras.clone());
+                let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone());
 
                 return self.modality.apply_necessity(factory, node, &p_imply_q, extras);
             }
 
             Non(box StrictImply(box p, box q, _), extras) =>
             {
-                let p_imply_q = Imply(bx!(p.with(extras)), bx!(q.with(extras)), extras.clone());
-                let non_p_imply_q = logic_semantics.negate(&p_imply_q, extras);
+                let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone());
+                let non_p_imply_q = Non(bx!(p_imply_q.clone()), extras.clone());
 
                 return self.modality.apply_possibility(factory, node, &non_p_imply_q, extras);
             }
 
-            _ => None
+            _ =>
+            {
+                for delegate in &self.delegates
+                {
+                    if let Some(subtree_from_delegate) = delegate.apply(factory, node)
+                    {
+                        return Some(subtree_from_delegate);
+                    }
+                }
+
+                return None;
+            }
         }
     }
 }
@@ -87,6 +101,8 @@ impl <LOGIC: Logic> ModalLogicRules<LOGIC>
             factory.modality_graph.add_node(PossibleWorld::zero());
 
             (self.modality.add_missing_graph_vertices)(&logic, factory.modality_graph);
+
+            factory.modality_graph.flush_log();
         }
     }
 }
@@ -128,7 +144,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         (self.add_missing_graph_vertices)(logic, factory.modality_graph);
 
-        let p_in_forked_world = p.with(extras).in_world(forked_world);
+        let p_in_forked_world = p.in_world(forked_world);
         let p_in_forked_world_node = factory.new_node(p_in_forked_world);
 
         let comment = Formula::Comment(factory.modality_graph.flush_log());
@@ -152,7 +168,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         let mut reapplication_data = NecessityReapplicationData
         {
-            input_formula: p.with(extras),
+            input_formula: p.in_world(extras.possible_world),
             input_possible_world: extras.possible_world,
             input_spawner_node_id: node.id,
             input_path_leaf_node_id: leaf_node_id,

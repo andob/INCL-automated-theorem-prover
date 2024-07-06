@@ -8,6 +8,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: self.predicate_args.clone(),
             possible_world: possible_world,
+            sign: self.sign,
         }
     }
 }
@@ -16,6 +17,10 @@ impl FormulaExtras
 {
     pub fn in_world(&self, possible_world : PossibleWorld) -> FormulaExtras
     {
-        return FormulaExtras { possible_world };
+        return FormulaExtras
+        {
+            possible_world: possible_world,
+            sign: self.sign,
+        }
     }
 }
