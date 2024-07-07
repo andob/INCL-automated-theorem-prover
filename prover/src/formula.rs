@@ -30,6 +30,7 @@ pub struct AtomicFormulaExtras
 {
     pub predicate_args : PredicateArguments,
     pub possible_world : PossibleWorld,
+    pub is_hidden : bool,
     pub sign : Sign,
 }
 
@@ -37,6 +38,7 @@ pub struct AtomicFormulaExtras
 pub struct FormulaExtras
 {
     pub possible_world : PossibleWorld,
+    pub is_hidden : bool,
     pub sign : Sign,
 }
 

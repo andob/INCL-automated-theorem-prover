@@ -8,6 +8,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: self.predicate_args.clone(),
             possible_world: possible_world,
+            is_hidden: self.is_hidden,
             sign: self.sign,
         }
     }
@@ -20,6 +21,7 @@ impl FormulaExtras
         return FormulaExtras
         {
             possible_world: possible_world,
+            is_hidden: self.is_hidden,
             sign: self.sign,
         }
     }

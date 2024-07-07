@@ -1,5 +1,3 @@
-use crate::formula::notations::OperatorNotations;
-use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -57,7 +55,7 @@ impl ProofAlgorithm
 
         if let Some(node) = self.decomposition_queue.pop()
         {
-            factory.tree_node_factory.set_spawner_node_id(node.id);
+            factory.set_spawner_node_id(node.id);
 
             for logic_rule in &self.logic_rules
             {

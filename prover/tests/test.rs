@@ -3,7 +3,6 @@ use prover::formula::to_string::FormulaFormatOptions;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
 
-//todo merge all theese functions into a single one?
 #[test]
 fn test_full_output()
 {
@@ -37,7 +36,6 @@ fn test_full_output()
 #[test]
 fn test_proof_status()
 {
-    //todo move tests from book.json/Tests into a separate test suite
     let book_chapters = get_demo_problem_catalog().unwrap();
     for book_chapter in &book_chapters
     {
@@ -61,5 +59,22 @@ fn test_proof_status()
                 assert!(!proof_tree.is_proof_correct);
             }
         }
+    }
+}
+
+#[test]
+fn test_timeout()
+{
+    let input_json = include_str!("timeout_test/input.json").to_string();
+
+    let problems_json = serde_json::from_str::<Vec<ProblemJSON>>(input_json.as_str()).unwrap();
+    for problem_json in problems_json
+    {
+        let problem_id = &problem_json.id;
+        let problem = problem_json.to_problem().unwrap();
+        let proof_tree = problem.prove();
+
+        println!("{}", problem_id);
+        assert!(proof_tree.has_timeout);
     }
 }

@@ -216,7 +216,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         if !output_formulas.is_empty()
         {
-            factory.tree_node_factory.set_spawner_node_id(reapplication_data.input_spawner_node_id);
+            factory.set_spawner_node_id(reapplication_data.input_spawner_node_id);
 
             for formula in output_formulas
             {

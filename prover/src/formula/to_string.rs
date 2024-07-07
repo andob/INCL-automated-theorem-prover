@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::notations::OperatorNotations;
 use crate::parser::token_types::TokenTypeID;
@@ -37,6 +38,11 @@ impl Formula
     pub fn to_string_with_options(&self, options : &FormulaFormatOptions) -> String
     {
         let mut formula_string = self.to_string_impl(options, 0);
+
+        if self.is_hidden()
+        {
+            formula_string = format!("[HIDDEN] {}", formula_string);
+        }
 
         let is_comment = matches!(self, Formula::Comment(..));
         if options.should_show_possible_worlds && !is_comment

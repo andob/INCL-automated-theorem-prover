@@ -56,6 +56,7 @@ impl LogicRule for QuantifierRules
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
                 let for_all_non_p_node = factory.new_node(for_all_non_p);
+
                 return Some(ProofSubtree::with_middle_node(for_all_non_p_node));
             }
 
@@ -64,6 +65,7 @@ impl LogicRule for QuantifierRules
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
                 let exists_non_p_node = factory.new_node(exists_non_p);
+
                 return Some(ProofSubtree::with_middle_node(exists_non_p_node));
             }
 
@@ -71,6 +73,7 @@ impl LogicRule for QuantifierRules
             {
                 let instantiated_p = p.instantiated(factory, x, extras);
                 let instantiated_p_node = factory.new_node(instantiated_p);
+
                 return Some(ProofSubtree::with_middle_node(instantiated_p_node));
             }
 
@@ -78,6 +81,7 @@ impl LogicRule for QuantifierRules
             {
                 let instantiated_p = p.instantiated(factory, x, extras);
                 let instantiated_p_node = factory.new_node(instantiated_p);
+
                 return Some(ProofSubtree::with_middle_node(instantiated_p_node));
             }
 

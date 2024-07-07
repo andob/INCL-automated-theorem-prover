@@ -53,6 +53,8 @@
 
     let json = JSON.parse(json_text_area.textContent);
 
+    let url_args = new URLSearchParams(window.location.search);
+
     function render_proof_tree()
     {
         let nodes = [], edges = [];

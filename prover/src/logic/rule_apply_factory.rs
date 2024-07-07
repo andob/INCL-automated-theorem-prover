@@ -4,7 +4,7 @@ use crate::graph::Graph;
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::node_factory::ProofTreeNodeFactory;
+use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::ProofTree;
 
 pub struct RuleApplyFactory<'a>
@@ -45,6 +45,19 @@ impl <'a> RuleApplyFactory<'a>
     {
         return if let Some(reapplication) = self.modality_graph.necessity_reapplications.pop()
         { Some(reapplication) } else { None };
+    }
+
+    pub fn set_spawner_node_id(&mut self, spawner_node_id : ProofTreeNodeID)
+    {
+        if let Some(spawner_node) = self.tree.get_node_with_id(spawner_node_id) && spawner_node.formula.is_hidden()
+            && let Some(spawner_spawner_node_id) = spawner_node.spawner_node_id
+        {
+            self.set_spawner_node_id(spawner_spawner_node_id);
+        }
+        else
+        {
+            self.tree_node_factory.set_spawner_node_id(spawner_node_id);
+        }
     }
 
     pub fn push_necessity_reapplication(&mut self, data : NecessityReapplicationData)

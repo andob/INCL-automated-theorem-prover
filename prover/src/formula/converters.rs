@@ -6,6 +6,7 @@ use crate::logic::rule_apply_factory::RuleApplyFactory;
 pub mod predicate_arg_instantiation;
 mod extras_in_world;
 mod extras_with_sign;
+mod extras_with_is_hidden;
 
 impl Formula
 {
@@ -21,6 +22,7 @@ impl Formula
                 {
                     predicate_args: old_extras.predicate_args.instantiated(factory, x),
                     possible_world: extras.possible_world,
+                    is_hidden: old_extras.is_hidden,
                     sign: old_extras.sign,
                 };
 
@@ -116,6 +118,44 @@ impl Formula
             Comment(_) => { Sign::Plus }
         }
     }
+
+    pub fn with_is_hidden(&self, is_hidden : bool) -> Formula
+    {
+        return match self
+        {
+            Atomic(p, extras) => { Atomic(p.clone(), extras.with_is_hidden(is_hidden)) }
+            Non(p, extras) => { Non(p.clone(), extras.with_is_hidden(is_hidden)) }
+            And(p, q, extras) => { And(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            Or(p, q, extras) => { Or(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
+            ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
+            Possible(p, extras) => { Possible(p.clone(), extras.with_is_hidden(is_hidden)) }
+            Necessary(p, extras) => { Necessary(p.clone(), extras.with_is_hidden(is_hidden)) }
+            Comment(payload) => { Comment(payload.clone()) }
+        }
+    }
+
+    pub fn is_hidden(&self) -> bool
+    {
+        return match self
+        {
+            Atomic(_, extras) => { extras.is_hidden }
+            Non(_, extras) => { extras.is_hidden }
+            And(_, _, extras) => { extras.is_hidden }
+            Or(_, _, extras) => { extras.is_hidden }
+            Imply(_, _, extras) => { extras.is_hidden }
+            BiImply(_, _, extras) => { extras.is_hidden }
+            StrictImply(_, _, extras) => { extras.is_hidden }
+            Exists(_, _, extras) => { extras.is_hidden }
+            ForAll(_, _, extras) => { extras.is_hidden }
+            Possible(_, extras) => { extras.is_hidden }
+            Necessary(_, extras) => { extras.is_hidden }
+            Comment(_) => { false }
+        }
+    }
 }
 
 impl AtomicFormulaExtras
@@ -125,6 +165,7 @@ impl AtomicFormulaExtras
         return FormulaExtras
         {
             possible_world: self.possible_world,
+            is_hidden: self.is_hidden,
             sign: self.sign,
         }
     }

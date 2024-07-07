@@ -3,7 +3,6 @@
  * then migrate to a non-nightly version of rust */
 #![feature(box_patterns)]
 #![feature(let_chains)]
-#![feature(iter_intersperse)]
 
 use std::any;
 use std::fmt::Display;

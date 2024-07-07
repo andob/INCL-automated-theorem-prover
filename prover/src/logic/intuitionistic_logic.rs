@@ -12,6 +12,7 @@ use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
+//todo to ask: problem 6.10.3.d should be proved but is not proved
 pub struct IntuitionisticLogic {}
 impl Logic for IntuitionisticLogic
 {
@@ -140,7 +141,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(Plus);
 
-                let minus_p_or_plus_q = Or(bx!(minus_p), bx!(plus_q), extras.with_sign(Plus));
+                let minus_p_or_plus_q = Or(bx!(minus_p), bx!(plus_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_necessity(factory, node, &minus_p_or_plus_q, &extras);
             }
@@ -153,7 +154,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(Minus);
 
-                let plus_p_and_minus_q = And(bx!(plus_p), bx!(minus_q), extras.with_sign(Plus));
+                let plus_p_and_minus_q = And(bx!(plus_p), bx!(minus_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_possibility(factory, node, &plus_p_and_minus_q, &extras);
             }
@@ -161,7 +162,7 @@ impl LogicRule for IntuitionisticLogicRules
             Non(box p, extras) if extras.sign == Plus =>
             {
                 let p = p.in_world(extras.possible_world);
-                let minus_p = p.with_sign(extras.sign * Minus);
+                let minus_p = p.with_sign(Minus);
 
                 return self.modality.apply_necessity(factory, node, &minus_p, extras);
             }
@@ -169,15 +170,14 @@ impl LogicRule for IntuitionisticLogicRules
             Non(box p, extras) if extras.sign == Minus =>
             {
                 let p = p.in_world(extras.possible_world);
-                let plus_p = p.with_sign(extras.sign * Minus);
+                let plus_p = p.with_sign(Plus);
 
                 return self.modality.apply_possibility(factory, node, &plus_p, &extras);
             }
 
             formula @Atomic(p, extras) if extras.sign == Plus =>
             {
-                //this guard prevents infinite reapplication of []P
-                //todo let expression in this possition are unstable -> find more usages as such
+                //this guard prevents infinite reapplication of □P
                 if let Some(spawner_node_id) = node.spawner_node_id &&
                     let Some(spawner_node) = factory.get_tree().get_node_with_id(spawner_node_id) &&
                     let Atomic(spawner_atomic_name, _) = &spawner_node.formula && spawner_atomic_name == p

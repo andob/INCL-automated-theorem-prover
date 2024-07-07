@@ -8,6 +8,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: PredicateArguments::empty(),
             possible_world: PossibleWorld::zero(),
+            is_hidden: false,
             sign: Sign::Plus,
         }
     }
@@ -18,6 +19,7 @@ impl AtomicFormulaExtras
         {
             predicate_args: args,
             possible_world: PossibleWorld::zero(),
+            is_hidden: false,
             sign: Sign::Plus,
         }
     }
@@ -30,6 +32,7 @@ impl FormulaExtras
         return FormulaExtras
         {
             possible_world: PossibleWorld::zero(),
+            is_hidden: false,
             sign: Sign::Plus,
         }
     }

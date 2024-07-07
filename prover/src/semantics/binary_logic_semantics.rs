@@ -1,5 +1,4 @@
 use box_macro::bx;
-
 use crate::formula::{Formula, FormulaExtras};
 use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply};
 use crate::semantics::Semantics;
@@ -7,6 +6,11 @@ use crate::semantics::Semantics;
 pub struct BinaryLogicSemantics {}
 impl Semantics for BinaryLogicSemantics
 {
+    fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
+    {
+        return Non(bx!(formula.clone()), FormulaExtras::empty());
+    }
+
     fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
     {
         //todo this does not account for predicate arguments

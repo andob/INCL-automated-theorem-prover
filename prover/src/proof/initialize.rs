@@ -1,5 +1,3 @@
-use box_macro::bx;
-use crate::formula::{Formula, FormulaExtras, Sign};
 use crate::graph::Graph;
 use crate::problem::Problem;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
@@ -11,15 +9,12 @@ use crate::tree::subtree::ProofSubtree;
 
 impl ProofAlgorithm
 {
-    //todo this does not look nice
     pub fn initialize(problem : Problem) -> ProofAlgorithm
     {
         let mut node_factory = ProofTreeNodeFactory::new();
 
-        let non_conclusion_node = node_factory.new_node(
-            if problem.logic.get_name().is_three_valued_logic()
-                { problem.conclusion.with_sign(Sign::Minus) }
-            else { Formula::Non(bx!(problem.conclusion.clone()), FormulaExtras::empty()) });
+        let non_conclusion = problem.logic.get_semantics().reductio_ad_absurdum(&problem.conclusion);
+        let non_conclusion_node = node_factory.new_node(non_conclusion);
 
         let mut decomposition_queue = DecompositionPriorityQueue::new(problem.logic.clone());
         decomposition_queue.push_tree_node(Box::new(non_conclusion_node.clone()));

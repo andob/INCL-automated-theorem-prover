@@ -39,7 +39,7 @@ impl Graph
 
     pub fn add_vertex(&mut self, from : PossibleWorld, to : PossibleWorld)
     {
-        self.log.push_str(format!("{}r{}\n", from, to).as_str());
+        self.log.push_str(format!("{}R{}\n", from, to).as_str());
         self.vertices.insert(GraphVertex::new(from, to));
     }
 

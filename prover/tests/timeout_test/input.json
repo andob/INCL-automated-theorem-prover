@@ -1,0 +1,16 @@
+[
+  {
+    "id": "S5TimeoutTest",
+    "logic": "S5ModalLogic",
+    "expected": "timeout",
+    "premises": [],
+    "conclusion": "◇◇□◇P"
+  },
+  {
+    "id": "IntuitionisticTimeoutTest",
+    "logic": "IntuitionisticLogic",
+    "expected": "timeout",
+    "premises": [],
+    "conclusion": "!!P → P"
+  }
+]

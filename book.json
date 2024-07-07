@@ -1,35 +1,56 @@
 [
   {
-    "name": "Tests",
+    "name": "Basic computer science",
     "problems":
     [
       {
-        "id": "PropositionalTest",
+        "id": "DoubleNegation",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "(!!P≡P) & (P&(Q&R)≡(P&Q)&R) & (P|(Q|R)≡(P|Q)|R) & (P&(Q|R)≡(P&Q)|(P&R)) & (P|(Q&R)≡(P|Q)&(P|R)) & (!(P|Q)≡!P&!Q) & (!(P&Q)≡!P|!Q)"
+        "conclusion": "!!P ≡ P"
       },
       {
-        "id": "TimeoutTest",
-        "logic": "S5ModalLogic",
-        "expected": "not-proved",
+        "id": "AndAssociativity",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
         "premises": [],
-        "conclusion": "◇◇□◇P"
+        "conclusion": "P & (Q & R) ≡ (P & Q) & R)"
       },
       {
-        "id": "IntuitionisticFirstTest",
-        "logic": "IntuitionisticLogic",
-        "expected": "not-proved",
+        "id": "OrAssociativity",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
         "premises": [],
-        "conclusion": "P → !!P"
+        "conclusion": "P | (Q | R) ≡ (P | Q) | R)"
       },
       {
-        "id": "IntuitionisticTimeoutTest",
-        "logic": "IntuitionisticLogic",
-        "expected": "not-proved",
+        "id": "AndDistributivity",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
         "premises": [],
-        "conclusion": "!!P → P"
+        "conclusion": "P & (Q | R) ≡ (P & Q) | (P & R)"
+      },
+      {
+        "id": "OrDistributivity",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "P | (Q & R) ≡ (P | Q) & (P | R)"
+      },
+      {
+        "id": "DeMorgan1",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "!(P | Q) ≡ !P & !Q"
+      },
+      {
+        "id": "DeMorgan2",
+        "logic": "PropositionalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "!(P & Q) ≡ !P | !Q"
       }
     ]
   },
@@ -520,6 +541,102 @@
         "expected": "proved",
         "premises": [],
         "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+      }
+    ]
+  },
+  {
+    "name": "Intuitionistic logic",
+    "problems": [
+      {
+        "id": "6.10.3.a",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(P ∧ (¬P ∨ Q)) → Q"
+      },
+      {
+        "id": "6.10.3.b",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬(P ∧ ¬P)"
+      },
+      {
+        "id": "6.10.3.c",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [ "¬P ∨ Q" ],
+        "conclusion": "P → Q"
+      },
+      {
+        "id": "6.10.3.d",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [ "¬(P ∨ Q)" ],
+        "conclusion": "¬P ∧ ¬Q"
+      },
+      {
+        "id": "6.10.3.e",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [ "¬P ∧ ¬Q" ],
+        "conclusion": "¬(P ∨ Q)"
+      },
+      {
+        "id": "6.10.3.f",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [ "¬P ∨ ¬Q" ],
+        "conclusion": "¬(P ∧ Q)"
+      },
+      {
+        "id": "6.10.3.g",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [ "P → (P → Q)" ],
+        "conclusion": "P → Q"
+      },
+      {
+        "id": "6.10.3.h",
+        "logic": "IntuitionisticLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬¬(P ∨ ¬P)"
+      },
+      {
+        "id": "6.10.4.a",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "P ∨ ¬P"
+      },
+      {
+        "id": "6.10.4.b",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [ "¬P → P" ],
+        "conclusion": "P"
+      },
+      {
+        "id": "6.10.4.c",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [ "¬(P ∧ Q)" ],
+        "conclusion": "¬P ∨ ¬Q"
+      },
+      {
+        "id": "6.10.4.d",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [ "¬P → ¬Q" ],
+        "conclusion": "Q → P"
+      },
+      {
+        "id": "6.10.4.e",
+        "logic": "IntuitionisticLogic",
+        "expected": "not-proved",
+        "premises": [ "P → (Q ∨ R)" ],
+        "conclusion": "(P → Q) ∨ (Q → R)"
       }
     ]
   }
