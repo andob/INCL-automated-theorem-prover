@@ -113,7 +113,7 @@ pub struct NecessityReapplicationData
     pub input_formula : Formula,
     pub input_possible_world : PossibleWorld,
     pub input_spawner_node_id : ProofTreeNodeID,
-    pub input_path_leaf_node_id : ProofTreeNodeID,
+    pub input_leafs_node_ids : Vec<ProofTreeNodeID>,
     pub already_iterated_possible_worlds : Vec<PossibleWorld>,
 }
 
@@ -163,15 +163,15 @@ impl <LOGIC : Logic> Modality<LOGIC>
     {
         if !(self.is_necessity_applicable)(factory, node, extras) { return None };
 
-        let path = factory.tree.get_path_that_goes_through_node(node);
-        let leaf_node_id = path.nodes.last().unwrap().id;
+        let paths = factory.tree.get_paths_that_goes_through_node(node);
+        let leaf_node_ids = paths.iter().map(|path| path.get_leaf_node_id()).collect();
 
         let mut reapplication_data = NecessityReapplicationData
         {
             input_formula: p.in_world(extras.possible_world),
             input_possible_world: extras.possible_world,
             input_spawner_node_id: node.id,
-            input_path_leaf_node_id: leaf_node_id,
+            input_leafs_node_ids: leaf_node_ids,
             already_iterated_possible_worlds: vec![],
         };
 
@@ -189,11 +189,14 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         while let Some(mut reapplication) = factory.pop_next_necessity_reapplication()
         {
-            let path = factory.tree.get_path_that_goes_through_node(node);
-            if path.contains_node_with_id(reapplication.input_path_leaf_node_id)
+            for path in factory.tree.get_paths_that_goes_through_node(node)
             {
-                let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication);
-                output_nodes.append(&mut output_nodes_from_necessity);
+                //necessary reapplication should happen only if we're on one of some specific paths
+                if reapplication.input_leafs_node_ids.iter().any(|leaf_node_id| path.contains_node_with_id(*leaf_node_id))
+                {
+                    let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication);
+                    output_nodes.append(&mut output_nodes_from_necessity);
+                }
             }
 
             reusable_necessity_reapplications.push(reapplication);

@@ -1,6 +1,6 @@
 [
   {
-    "name": "Basic computer science",
+    "name": "Propositional logic",
     "problems":
     [
       {
@@ -51,13 +51,7 @@
         "expected": "proved",
         "premises": [],
         "conclusion": "!(P & Q) ≡ !P | !Q"
-      }
-    ]
-  },
-  {
-    "name": "Propositional logic",
-    "problems":
-    [
+      },
       {
         "id": "1.14.1.a",
         "logic": "PropositionalLogic",
@@ -571,7 +565,7 @@
       {
         "id": "6.10.3.d",
         "logic": "IntuitionisticLogic",
-        "expected": "not-proved",
+        "expected": "proved",
         "premises": [ "¬(P ∨ Q)" ],
         "conclusion": "¬P ∧ ¬Q"
       },

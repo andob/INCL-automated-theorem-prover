@@ -21,6 +21,9 @@ serde_json = "1.0.118"
 # regex
 regex = "1.10.5"
 
+# Random number generator
+rand = "0.8.5"
+
 # Enum utils
 strum = "0.26.1"
 strum_macros = "0.26.1"

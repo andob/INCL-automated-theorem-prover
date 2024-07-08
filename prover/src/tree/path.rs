@@ -67,6 +67,11 @@ impl ProofTreePath
         return ProofTreePath { nodes:out_nodes };
     }
 
+    pub fn get_leaf_node_id(&self) -> ProofTreeNodeID
+    {
+        return self.nodes.last().unwrap().id;
+    }
+
     pub fn get_contradictory_node_ids(&self, logic : &Rc<dyn Logic>) -> Vec<(ProofTreeNodeID, ProofTreeNodeID)>
     {
         let mut contradictory_ids : Vec<(ProofTreeNodeID, ProofTreeNodeID)> = vec![];

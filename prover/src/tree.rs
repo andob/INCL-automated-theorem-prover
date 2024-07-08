@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use rand::prelude::IteratorRandom;
 use crate::graph::Graph;
 use crate::problem::Problem;
 use crate::tree::node::ProofTreeNode;
@@ -41,12 +42,13 @@ impl ProofTree
 
     pub fn get_path_that_goes_through_node(&self, node : &ProofTreeNode) -> ProofTreePath
     {
-        if let Some(found_path) = self.get_all_paths().iter().find(|path| path.contains(node))
-        {
-            return found_path.clone();
-        }
+        let paths = self.get_paths_that_goes_through_node(node);
+        return paths.into_iter().choose(&mut rand::thread_rng()).unwrap();
+    }
 
-        return ProofTreePath::new(&self.root_node);
+    pub fn get_paths_that_goes_through_node(&self, node : &ProofTreeNode) -> Vec<ProofTreePath>
+    {
+        return self.get_all_paths().into_iter().filter(|path| path.contains(node)).collect();
     }
 
     pub fn get_node_with_id(&self, node_id : ProofTreeNodeID) -> Option<&ProofTreeNode>

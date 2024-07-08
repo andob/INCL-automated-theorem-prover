@@ -1,6 +1,5 @@
-/*todo this project uses "box patterns" features available in rust nightly
- * migrate to "deref patterns" feature when it will become stable
- * then migrate to a non-nightly version of rust */
+/*todo this project uses "box patterns" features available in nightly version of rust
+ * migrate to "deref patterns" feature when it will become stable then migrate to a stable version of rust */
 #![feature(box_patterns)]
 #![feature(let_chains)]
 
