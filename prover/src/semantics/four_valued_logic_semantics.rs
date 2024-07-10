@@ -3,8 +3,8 @@ use crate::formula::Formula::Atomic;
 use crate::formula::Sign::{Minus, Plus};
 use crate::semantics::Semantics;
 
-pub struct ThreeValuedLogicSemantics {}
-impl Semantics for ThreeValuedLogicSemantics
+pub struct FourValuedLogicSemantics {}
+impl Semantics for FourValuedLogicSemantics
 {
     //P could be true or false or (neither true nor false) or (both true and false)
     fn number_of_truth_values(&self) -> u8 { 4 }
