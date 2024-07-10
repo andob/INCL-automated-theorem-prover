@@ -6,6 +6,9 @@ use crate::semantics::Semantics;
 pub struct BinaryLogicSemantics {}
 impl Semantics for BinaryLogicSemantics
 {
+    //P could be true or false
+    fn number_of_truth_values(&self) -> u8 { 2 }
+
     fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
     {
         return Non(bx!(formula.clone()), FormulaExtras::empty());

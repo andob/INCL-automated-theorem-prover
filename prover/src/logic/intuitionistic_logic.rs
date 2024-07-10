@@ -12,7 +12,6 @@ use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//todo to ask: problem 6.10.3.d should be proved but is not proved
 pub struct IntuitionisticLogic {}
 impl Logic for IntuitionisticLogic
 {

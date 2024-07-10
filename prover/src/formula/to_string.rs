@@ -175,7 +175,6 @@ impl Display for Sign
         {
             Sign::Plus => { '+' }
             Sign::Minus => { '-' }
-            Sign::PlusMinus => { '±' }
         })
     }
 }

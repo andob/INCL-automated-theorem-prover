@@ -125,9 +125,4 @@ impl LogicName
     {
         return self.is_modal_logic() && !self.is_non_normal_modal_logic();
     }
-
-    pub fn is_three_valued_logic(self) -> bool
-    {
-        return self == LogicName::IntuitionisticLogic;
-    }
 }

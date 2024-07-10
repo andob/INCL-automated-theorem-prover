@@ -1,5 +1,5 @@
 use std::ops::Mul;
-use crate::formula::Sign::{Plus, Minus, PlusMinus};
+use crate::formula::Sign::{Plus, Minus};
 use crate::formula::Sign;
 
 impl Mul for Sign
@@ -13,7 +13,6 @@ impl Mul for Sign
             (Plus, Minus) => { Minus }
             (Minus, Plus) => { Minus }
             (Minus, Minus) => { Plus }
-            _ => { PlusMinus }
         }
     }
 }

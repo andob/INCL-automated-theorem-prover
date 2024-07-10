@@ -6,8 +6,8 @@ use crate::semantics::Semantics;
 pub struct ThreeValuedLogicSemantics {}
 impl Semantics for ThreeValuedLogicSemantics
 {
-    //P could be true or false or unknown
-    fn number_of_truth_values(&self) -> u8 { 3 }
+    //P could be true or false or (neither true nor false) or (both true and false)
+    fn number_of_truth_values(&self) -> u8 { 4 }
 
     fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
     {

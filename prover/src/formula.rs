@@ -51,7 +51,7 @@ pub struct PossibleWorld
 #[derive(Eq, PartialEq, Hash, Copy, Clone)]
 pub enum Sign
 {
-    Plus, Minus, PlusMinus
+    Plus, Minus
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]

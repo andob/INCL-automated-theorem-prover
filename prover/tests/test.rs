@@ -20,7 +20,7 @@ fn test_full_output()
         {
             notations: OperatorNotations::BookNotations,
             should_show_possible_worlds: logic.get_name().is_modal_logic(),
-            should_show_sign: logic.get_name().is_three_valued_logic(),
+            should_show_sign: logic.get_semantics().number_of_truth_values()>2,
         };
 
         let proof_tree = problem.prove();
