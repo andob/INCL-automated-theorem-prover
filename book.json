@@ -546,14 +546,14 @@
       {
         "id": "3.10.11.i",
         "logic": "KTemporalExtModalLogic",
-        "expected": "not-proved",
+        "expected": "proved",
         "premises": [],
         "conclusion": "(◇ᶠp ∧ ◇ᶠq) ⊃ ((◇ᶠ(p ∧ ◇ᶠq)) ∨ ◇ᶠ(p ∧ q) ∨ (◇ᶠ(◇ᶠp ∧ q)))"
       },
       {
         "id": "3.10.11.j",
         "logic": "KTemporalExtModalLogic",
-        "expected": "not-proved",
+        "expected": "proved",
         "premises": [],
         "conclusion": "(◇ᵖp ∧ ◇ᵖq) ⊃ ((◇ᵖ(p ∧ ◇ᵖq)) ∨ ◇ᵖ(p ∧ q) ∨ (◇ᵖ(◇ᵖp ∧ q)))"
       },
@@ -595,7 +595,7 @@
       {
         "id": "3.10.11.r",
         "logic": "KTemporalExtModalLogic",
-        "expected": "not-proved",
+        "expected": "proved",
         "premises": [],
         "conclusion": "(◇ᶠp ∧ ◇ᶠ□ᶠ¬p) ⊃ ◇ᶠ(□ᵖ◇ᶠp ∧ □ᶠ¬p)"
       }

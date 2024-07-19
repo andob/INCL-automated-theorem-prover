@@ -48,18 +48,22 @@ impl Graph
     pub fn add_vertex(&mut self, from : PossibleWorld, to : PossibleWorld)
     {
         let vertex = GraphVertex::new(from, to);
-        self.log_vertex(&vertex);
+        self.log.push_str((self.log_line_formatter)(&vertex).as_str());
         self.vertices.insert(vertex);
+    }
+
+    pub fn add_vertices(&mut self, vertices_to_add : Vec<GraphVertex>)
+    {
+        for vertex in vertices_to_add
+        {
+            self.log.push_str((self.log_line_formatter)(&vertex).as_str());
+            self.vertices.insert(vertex);
+        }
     }
 
     pub fn set_log_line_formatter(&mut self, formatter : fn(&GraphVertex) -> String)
     {
         self.log_line_formatter = formatter;
-    }
-
-    pub fn log_vertex(&mut self, vertex : &GraphVertex)
-    {
-        self.log.push_str((self.log_line_formatter)(&vertex).as_str());
     }
 
     pub fn flush_log(&mut self) -> String

@@ -76,7 +76,8 @@ impl TemporalModalLogic
             {
                 if logic.is_extended
                 {
-                    graph.add_missing_temporal_convergence_vertices();
+                    graph.add_missing_forward_temporal_convergence_vertices();
+                    graph.add_missing_backward_temporal_convergence_vertices();
                 }
             },
         };
@@ -199,7 +200,7 @@ impl Graph
         }
     }
 
-    fn add_missing_temporal_convergence_vertices(&mut self)
+    fn add_missing_forward_temporal_convergence_vertices(&mut self)
     {
         let mut vertices_to_add : Vec<GraphVertex> = vec![];
 
@@ -210,18 +211,43 @@ impl Graph
                 if i_vertex != j_vertex && i_vertex.from == j_vertex.from
                 {
                     let convergent_vertex = GraphVertex::new(i_vertex.to, j_vertex.to);
-                    vertices_to_add.push(convergent_vertex);
+                    let alternate_convergent_vertex = GraphVertex::new(j_vertex.to, i_vertex.to);
+                    if !vertices_to_add.contains(&alternate_convergent_vertex)
+                    {
+                        vertices_to_add.push(convergent_vertex);
+                    }
                 }
             }
         }
 
-        self.set_log_line_formatter(|v| format!("{}βφ{}\n", v.from, v.to));
+        self.set_log_line_formatter(|v| format!("{}φ{}\n", v.from, v.to));
+        self.add_vertices(vertices_to_add);
 
-        for vertex in vertices_to_add
+        self.set_log_line_formatter(default_log_line_formatter!());
+    }
+
+    fn add_missing_backward_temporal_convergence_vertices(&mut self)
+    {
+        let mut vertices_to_add : Vec<GraphVertex> = vec![];
+
+        for i_vertex in &self.vertices
         {
-            self.log_vertex(&vertex);
-            self.vertices.insert(vertex);
+            for j_vertex in &self.vertices
+            {
+                if i_vertex != j_vertex && i_vertex.to == j_vertex.to
+                {
+                    let convergent_vertex = GraphVertex::new(i_vertex.from, j_vertex.from);
+                    let alternate_convergent_vertex = GraphVertex::new(j_vertex.from, i_vertex.from);
+                    if !vertices_to_add.contains(&alternate_convergent_vertex)
+                    {
+                        vertices_to_add.push(convergent_vertex);
+                    }
+                }
+            }
         }
+
+        self.set_log_line_formatter(|v| format!("{}β{}\n", v.from, v.to));
+        self.add_vertices(vertices_to_add);
 
         self.set_log_line_formatter(default_log_line_formatter!());
     }

@@ -17,12 +17,7 @@ impl Graph
         }
 
         self.log_line_formatter = |v| format!("{}ρ{}\n", v.from, v.to);
-
-        for vertex in vertices_to_add
-        {
-            self.log_vertex(&vertex);
-            self.vertices.insert(vertex);
-        }
+        self.add_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }
@@ -41,12 +36,7 @@ impl Graph
         }
 
         self.log_line_formatter = |v| format!("{}σ{}\n", v.from, v.to);
-
-        for vertex in vertices_to_add
-        {
-            self.log_vertex(&vertex);
-            self.vertices.insert(vertex);
-        }
+        self.add_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }
@@ -71,12 +61,7 @@ impl Graph
         }
 
         self.log_line_formatter = |v| format!("{}τ{}\n", v.from, v.to);
-
-        for vertex in vertices_to_add
-        {
-            self.log_vertex(&vertex);
-            self.vertices.insert(vertex);
-        }
+        self.add_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }
