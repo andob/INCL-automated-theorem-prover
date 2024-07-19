@@ -11,7 +11,7 @@ impl Semantics for ThreeValuedLogicSemantics
 
     fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
     {
-        return formula.with_sign(Sign::Minus);
+        return formula.with_sign(Minus);
     }
 
     fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool

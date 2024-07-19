@@ -14,6 +14,7 @@ pub enum TokenTypeID
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
     Possible, Necessary,
+    InPast, InFuture,
     StrictImply,
     OpenParenthesis, ClosedParenthesis,
 }
@@ -123,6 +124,34 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Formula::Necessary(bx!(args[0].clone()), formula_extras);
+                },
+            },
+
+            TokenType
+            {
+                //matches the past: ᵖ
+                id: TokenTypeID::InPast,
+                regex: Regex::new(r"(ᵖ)").context(codeloc!())?,
+                category: TokenCategory::UnaryOperation,
+                precedence: OperatorPrecedence::Highest,
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::InPast(bx!(args[0].clone()), formula_extras);
+                },
+            },
+
+            TokenType
+            {
+                //matches the future: ᶠ
+                id: TokenTypeID::InFuture,
+                regex: Regex::new(r"(ᶠ)").context(codeloc!())?,
+                category: TokenCategory::UnaryOperation,
+                precedence: OperatorPrecedence::Highest,
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::InFuture(bx!(args[0].clone()), formula_extras);
                 },
             },
 

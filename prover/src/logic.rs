@@ -8,6 +8,7 @@ use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
+use crate::logic::temporal_modal_logic::TemporalModalLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
@@ -20,6 +21,7 @@ mod non_normal_modal_logic;
 pub mod common_modal_logic;
 pub mod rule_apply_factory;
 pub mod intuitionistic_logic;
+mod temporal_modal_logic;
 
 pub trait LogicRule
 {
@@ -72,6 +74,9 @@ impl LogicFactory
             Rc::new(NonNormalModalLogic::S3()),
             Rc::new(NonNormalModalLogic::S3_5()),
 
+            Rc::new(TemporalModalLogic::basic()),
+            Rc::new(TemporalModalLogic::extended()),
+
             Rc::new(IntuitionisticLogic {}),
         ];
     }
@@ -83,6 +88,7 @@ pub enum LogicName
     PropositionalLogic, FirstOrderLogic,
     KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
+    KTemporalModalLogic, KTemporalExtModalLogic,
     IntuitionisticLogic,
 }
 
@@ -103,6 +109,8 @@ impl Display for LogicName
             LogicName::S2ModalLogic => { "S2ModalLogic" }
             LogicName::S3ModalLogic => { "S3ModalLogic" }
             LogicName::S3_5ModalLogic => { "S3.5ModalLogic" }
+            LogicName::KTemporalModalLogic => { "KTemporalModalLogic" }
+            LogicName::KTemporalExtModalLogic => { "KTemporalExtModalLogic" }
             LogicName::IntuitionisticLogic => { "IntuitionisticLogic" }
         });
     }

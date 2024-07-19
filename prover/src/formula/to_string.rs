@@ -129,6 +129,16 @@ impl Formula
                 return format!("□{}", p.to_string_impl(options, index+1));
             }
 
+            Formula::InPast(p, _) =>
+            {
+                return format!("ᵖ{}", p.to_string_impl(options, index+1));
+            }
+
+            Formula::InFuture(p, _) =>
+            {
+                return format!("ᶠ{}", p.to_string_impl(options, index+1));
+            }
+
             Formula::Comment(payload) =>
             {
                 return payload.clone();

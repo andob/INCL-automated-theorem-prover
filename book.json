@@ -401,6 +401,207 @@
     ]
   },
   {
+    "name": "Temporal modal logic",
+    "problems": [
+      {
+        "id": "3.10.10.a",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□ᶠ(p ⊃ q) ⊃ (□ᶠp ⊃ □ᶠq)"
+      },
+      {
+        "id": "3.10.10.b",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇ᶠp ≡ ¬□ᶠ¬p"
+      },
+      {
+        "id": "3.10.10.c",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "p ⊃ □ᶠ◇ᵖp"
+      },
+      {
+        "id": "3.10.10.d",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [ "□ᶠp ⊃ □ᶠ□ᶠp" ],
+        "conclusion": "□ᵖp ⊃ □ᵖ□ᵖp"
+      },
+      {
+        "id": "3.10.10.e",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□ᶠ(p ⊃ q) ⊃ (◇ᶠp ⊃ ◇ᶠq)"
+      },
+      {
+        "id": "3.10.10.f",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [ "◇ᶠ◇ᶠp ⊃ ◇ᶠp" ],
+        "conclusion": "◇ᵖ◇ᵖp ⊃ ◇ᵖp"
+      },
+      {
+        "id": "3.10.10.g",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□ᵖp ∨ □ᵖq) ⊃ □ᵖ(p ∨ q)"
+      },
+      {
+        "id": "3.10.10.h",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇ᵖ(p ∧ q) ⊃ (◇ᵖp ∧ ◇ᵖq)"
+      },
+      {
+        "id": "3.10.10.i",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᶠp ∧ ◇ᶠq) ⊃ ((◇ᶠ(p ∧ ◇ᶠq)) ∨ ◇ᶠ(p ∧ q) ∨ (◇ᶠ(◇ᶠp ∧ q)))"
+      },
+      {
+        "id": "3.10.10.j",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᵖp ∧ ◇ᵖq) ⊃ ((◇ᵖ(p ∧ ◇ᵖq)) ∨ ◇ᵖ(p ∧ q) ∨ (◇ᵖ(◇ᵖp ∧ q)))"
+      },
+      {
+        "id": "3.10.10.k",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□ᵖ(p ∧ q) ≡ (□ᵖp ∧ □ᵖq)"
+      },
+      {
+        "id": "3.10.10.l",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□ᵖp ⊃ ◇ᵖp"
+      },
+      {
+        "id": "3.10.10.m",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ∧ □ᵖp) ⊃ ◇ᶠ□ᵖp"
+      },
+      {
+        "id": "3.10.10.n",
+        "logic": "KTemporalModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "◇ᵖ□ᶠp ⊃ p"
+      },
+      {
+        "id": "3.10.10.o",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□ᵖ(□ᵖp ⊃ p) ⊃ □ᵖp"
+      },
+      {
+        "id": "3.10.10.p",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇ᵖ□ᵖp ⊃ □ᵖ◇ᵖp"
+      },
+      {
+        "id": "3.10.10.q",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇ᶠ□ᶠp ⊃ p"
+      },
+      {
+        "id": "3.10.10.r",
+        "logic": "KTemporalModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᶠp ∧ ◇ᶠ□ᶠ¬p) ⊃ ◇ᶠ(□ᵖ◇ᶠp ∧ □ᶠ¬p)"
+      },
+      {
+        "id": "3.10.11.d",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [ "□ᶠp ⊃ □ᶠ□ᶠp" ],
+        "conclusion": "□ᵖp ⊃ □ᵖ□ᵖp"
+      },
+      {
+        "id": "3.10.11.f",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [ "◇ᶠ◇ᶠp ⊃ ◇ᶠp" ],
+        "conclusion": "◇ᵖ◇ᵖp ⊃ ◇ᵖp"
+      },
+      {
+        "id": "3.10.11.i",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᶠp ∧ ◇ᶠq) ⊃ ((◇ᶠ(p ∧ ◇ᶠq)) ∨ ◇ᶠ(p ∧ q) ∨ (◇ᶠ(◇ᶠp ∧ q)))"
+      },
+      {
+        "id": "3.10.11.j",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᵖp ∧ ◇ᵖq) ⊃ ((◇ᵖ(p ∧ ◇ᵖq)) ∨ ◇ᵖ(p ∧ q) ∨ (◇ᵖ(◇ᵖp ∧ q)))"
+      },
+      {
+        "id": "3.10.11.l",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□ᵖp ⊃ ◇ᵖp"
+      },
+      {
+        "id": "3.10.11.m",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ∧ □ᵖp) ⊃ ◇ᶠ□ᵖp"
+      },
+      {
+        "id": "3.10.11.o",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□ᵖ(□ᵖp ⊃ p) ⊃ □ᵖp"
+      },
+      {
+        "id": "3.10.11.p",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇ᵖ□ᵖp ⊃ □ᵖ◇ᵖp"
+      },
+      {
+        "id": "3.10.11.q",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇ᶠ□ᶠp ⊃ p"
+      },
+      {
+        "id": "3.10.11.r",
+        "logic": "KTemporalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(◇ᶠp ∧ ◇ᶠ□ᶠ¬p) ⊃ ◇ᶠ(□ᵖ◇ᶠp ∧ □ᶠ¬p)"
+      }
+    ]
+  },
+  {
     "name": "Non-normal modal logic",
     "problems": [
       {

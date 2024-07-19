@@ -16,11 +16,6 @@ pub struct RuleApplyFactory<'a>
 
 impl <'a> RuleApplyFactory<'a>
 {
-    pub fn get_tree(&self) -> &'a ProofTree
-    {
-        return self.tree;
-    }
-
     pub fn get_logic(&self) -> &Rc<dyn Logic>
     {
         return &self.tree.problem.logic;
@@ -49,15 +44,19 @@ impl <'a> RuleApplyFactory<'a>
 
     pub fn set_spawner_node_id(&mut self, spawner_node_id : ProofTreeNodeID)
     {
-        if let Some(spawner_node) = self.tree.get_node_with_id(spawner_node_id) && spawner_node.formula.is_hidden()
-            && let Some(spawner_spawner_node_id) = spawner_node.spawner_node_id
+        if let Some(spawner_node) = self.tree.get_node_with_id(spawner_node_id)
         {
-            self.set_spawner_node_id(spawner_spawner_node_id);
+            if spawner_node.formula.is_hidden()
+            {
+                if let Some(spawner_spawner_node_id) = spawner_node.spawner_node_id
+                {
+                    self.tree_node_factory.set_spawner_node_id(spawner_spawner_node_id);
+                    return;
+                }
+            }
         }
-        else
-        {
-            self.tree_node_factory.set_spawner_node_id(spawner_node_id);
-        }
+
+        self.tree_node_factory.set_spawner_node_id(spawner_node_id);
     }
 
     pub fn push_necessity_reapplication(&mut self, data : NecessityReapplicationData)

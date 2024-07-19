@@ -9,6 +9,7 @@ use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
+//check out book chapter 1
 pub struct PropositionalLogic {}
 impl Logic for PropositionalLogic
 {

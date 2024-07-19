@@ -9,6 +9,7 @@ use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 
+//check out book chapter 4
 pub struct NonNormalModalLogic
 {
     pub name : LogicName,
@@ -67,7 +68,7 @@ impl NonNormalModalLogic
             is_possibility_applicable: |factory, node, extras|
             {
                 extras.possible_world == PossibleWorld::zero() ||
-                factory.get_tree().get_path_that_goes_through_node(node).nodes.iter().any(|node|
+                factory.tree.get_path_that_goes_through_node(node).nodes.iter().any(|node|
                     node.formula.get_possible_world() == extras.possible_world &&
                     matches!(node.formula, Necessary(..) | StrictImply(..)))
             },

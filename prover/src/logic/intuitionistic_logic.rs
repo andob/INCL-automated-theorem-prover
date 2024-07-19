@@ -12,6 +12,7 @@ use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
+//check out book chapter 6
 pub struct IntuitionisticLogic {}
 impl Logic for IntuitionisticLogic
 {
@@ -177,9 +178,8 @@ impl LogicRule for IntuitionisticLogicRules
             formula @Atomic(p, extras) if extras.sign == Plus =>
             {
                 //this guard prevents infinite reapplication of □P
-                if let Some(spawner_node_id) = node.spawner_node_id &&
-                    let Some(spawner_node) = factory.get_tree().get_node_with_id(spawner_node_id) &&
-                    let Atomic(spawner_atomic_name, _) = &spawner_node.formula && spawner_atomic_name == p
+                if factory.modality_graph.necessity_reapplications.iter()
+                    .any(|reapplication| reapplication.input_formula == *formula)
                     { return None; }
 
                 let extras = extras.to_formula_extras();

@@ -22,6 +22,8 @@ pub enum Formula
     ForAll(PredicateArgument, Box<Formula>, FormulaExtras),
     Possible(Box<Formula>, FormulaExtras),
     Necessary(Box<Formula>, FormulaExtras),
+    InPast(Box<Formula>, FormulaExtras),
+    InFuture(Box<Formula>, FormulaExtras),
     Comment(String),
 }
 

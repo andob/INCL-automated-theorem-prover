@@ -10,6 +10,7 @@ use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
+//check out book chapter 12
 pub struct FirstOrderLogic {}
 impl Logic for FirstOrderLogic
 {

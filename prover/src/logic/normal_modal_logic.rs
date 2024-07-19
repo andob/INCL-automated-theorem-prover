@@ -7,6 +7,7 @@ use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 
+//check out book chapters 2 and 3
 pub struct NormalModalLogic
 {
     pub name : LogicName,

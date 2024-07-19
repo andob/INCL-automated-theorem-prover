@@ -1,6 +1,6 @@
 use box_macro::bx;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Exists, ForAll, Imply, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 
 pub mod predicate_arg_instantiation;
@@ -39,6 +39,8 @@ impl Formula
             ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
             Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
             Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
+            InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
+            InFuture(p, _) => { InFuture(instantiated_box(p), extras.clone()) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -58,6 +60,8 @@ impl Formula
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.in_world(possible_world)) }
             Possible(p, extras) => { Possible(p.clone(), extras.in_world(possible_world)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.in_world(possible_world)) }
+            InPast(p, extras) => { InPast(p.clone(), extras.in_world(possible_world)) }
+            InFuture(p, extras) => { InFuture(p.clone(), extras.in_world(possible_world)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -77,6 +81,8 @@ impl Formula
             ForAll(_, _, extras) => { extras.possible_world }
             Possible(_, extras) => { extras.possible_world }
             Necessary(_, extras) => { extras.possible_world }
+            InPast(_, extras) => { extras.possible_world }
+            InFuture(_, extras) => { extras.possible_world }
             Comment(_) => { PossibleWorld::zero() }
         }
     }
@@ -96,6 +102,8 @@ impl Formula
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_sign(sign)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_sign(sign)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_sign(sign)) }
+            InPast(p, extras) => { InPast(p.clone(), extras.with_sign(sign)) }
+            InFuture(p, extras) => { InFuture(p.clone(), extras.with_sign(sign)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -115,6 +123,8 @@ impl Formula
             ForAll(_, _, extras) => { extras.sign }
             Possible(_, extras) => { extras.sign }
             Necessary(_, extras) => { extras.sign }
+            InPast(_, extras) => { extras.sign }
+            InFuture(_, extras) => { extras.sign }
             Comment(_) => { Sign::Plus }
         }
     }
@@ -134,6 +144,8 @@ impl Formula
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_is_hidden(is_hidden)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_is_hidden(is_hidden)) }
+            InPast(p, extras) => { InPast(p.clone(), extras.with_is_hidden(is_hidden)) }
+            InFuture(p, extras) => { InFuture(p.clone(), extras.with_is_hidden(is_hidden)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -153,6 +165,8 @@ impl Formula
             ForAll(_, _, extras) => { extras.is_hidden }
             Possible(_, extras) => { extras.is_hidden }
             Necessary(_, extras) => { extras.is_hidden }
+            InPast(_, extras) => { extras.is_hidden }
+            InFuture(_, extras) => { extras.is_hidden }
             Comment(_) => { false }
         }
     }

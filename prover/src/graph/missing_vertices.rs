@@ -1,18 +1,30 @@
+use crate::default_log_line_formatter;
 use crate::graph::{Graph, GraphVertex};
 
 impl Graph
 {
     pub fn add_missing_reflexive_vertices(&mut self)
     {
+        let mut vertices_to_add : Vec<GraphVertex> = vec![];
+
         for node in &self.nodes
         {
             let reflexive_vertex = GraphVertex::new(*node, *node);
             if !self.vertices.contains(&reflexive_vertex)
             {
-                self.log.push_str(format!("{}ρ{}\n", *node, *node).as_str());
-                self.vertices.insert(reflexive_vertex);
+                vertices_to_add.push(reflexive_vertex);
             }
         }
+
+        self.log_line_formatter = |v| format!("{}ρ{}\n", v.from, v.to);
+
+        for vertex in vertices_to_add
+        {
+            self.log_vertex(&vertex);
+            self.vertices.insert(vertex);
+        }
+
+        self.log_line_formatter = default_log_line_formatter!();
     }
 
     pub fn add_missing_symmetric_vertices(&mut self)
@@ -28,11 +40,15 @@ impl Graph
             }
         }
 
+        self.log_line_formatter = |v| format!("{}σ{}\n", v.from, v.to);
+
         for vertex in vertices_to_add
         {
-            self.log.push_str(format!("{}σ{}\n", vertex.from, vertex.to).as_str());
+            self.log_vertex(&vertex);
             self.vertices.insert(vertex);
         }
+
+        self.log_line_formatter = default_log_line_formatter!();
     }
 
     pub fn add_missing_transitive_vertices(&mut self)
@@ -54,10 +70,14 @@ impl Graph
             }
         }
 
+        self.log_line_formatter = |v| format!("{}τ{}\n", v.from, v.to);
+
         for vertex in vertices_to_add
         {
-            self.log.push_str(format!("{}τ{}\n", vertex.from, vertex.to).as_str());
+            self.log_vertex(&vertex);
             self.vertices.insert(vertex);
         }
+
+        self.log_line_formatter = default_log_line_formatter!();
     }
 }

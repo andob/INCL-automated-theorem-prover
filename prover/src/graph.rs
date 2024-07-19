@@ -11,7 +11,14 @@ pub struct Graph
     pub nodes : HashSet<PossibleWorld>,
     pub vertices : HashSet<GraphVertex>,
     pub necessity_reapplications : Vec<NecessityReapplicationData>,
+    log_line_formatter : fn(&GraphVertex) -> String,
     log : String,
+}
+
+#[macro_export]
+macro_rules! default_log_line_formatter
+{
+    () => { |vertex| format!("{}R{}\n", vertex.from, vertex.to) };
 }
 
 impl Graph
@@ -23,6 +30,7 @@ impl Graph
             nodes: HashSet::new(),
             vertices: HashSet::new(),
             necessity_reapplications: vec![],
+            log_line_formatter: default_log_line_formatter!(),
             log: String::new(),
         };
     }
@@ -39,8 +47,19 @@ impl Graph
 
     pub fn add_vertex(&mut self, from : PossibleWorld, to : PossibleWorld)
     {
-        self.log.push_str(format!("{}R{}\n", from, to).as_str());
-        self.vertices.insert(GraphVertex::new(from, to));
+        let vertex = GraphVertex::new(from, to);
+        self.log_vertex(&vertex);
+        self.vertices.insert(vertex);
+    }
+
+    pub fn set_log_line_formatter(&mut self, formatter : fn(&GraphVertex) -> String)
+    {
+        self.log_line_formatter = formatter;
+    }
+
+    pub fn log_vertex(&mut self, vertex : &GraphVertex)
+    {
+        self.log.push_str((self.log_line_formatter)(&vertex).as_str());
     }
 
     pub fn flush_log(&mut self) -> String
