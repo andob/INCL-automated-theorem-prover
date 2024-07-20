@@ -1,6 +1,6 @@
 use box_macro::bx;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 
 pub mod predicate_arg_instantiation;
@@ -35,6 +35,7 @@ impl Formula
             Imply(p, q, _) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
             BiImply(p, q, _) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
             StrictImply(p, q, _) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
             Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
             ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
             Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
@@ -56,6 +57,7 @@ impl Formula
             Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.in_world(possible_world)) }
             BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.in_world(possible_world)) }
             StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.in_world(possible_world)) }
+            Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.in_world(possible_world)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.in_world(possible_world)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.in_world(possible_world)) }
             Possible(p, extras) => { Possible(p.clone(), extras.in_world(possible_world)) }
@@ -77,6 +79,7 @@ impl Formula
             Imply(_, _, extras) => { extras.possible_world }
             BiImply(_, _, extras) => { extras.possible_world }
             StrictImply(_, _, extras) => { extras.possible_world }
+            Conditional(_, _, extras) => { extras.possible_world }
             Exists(_, _, extras) => { extras.possible_world }
             ForAll(_, _, extras) => { extras.possible_world }
             Possible(_, extras) => { extras.possible_world }
@@ -98,6 +101,7 @@ impl Formula
             Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.with_sign(sign)) }
             BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.with_sign(sign)) }
             StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.with_sign(sign)) }
+            Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.with_sign(sign)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_sign(sign)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_sign(sign)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_sign(sign)) }
@@ -119,6 +123,7 @@ impl Formula
             Imply(_, _, extras) => { extras.sign }
             BiImply(_, _, extras) => { extras.sign }
             StrictImply(_, _, extras) => { extras.sign }
+            Conditional(_, _, extras) => { extras.sign }
             Exists(_, _, extras) => { extras.sign }
             ForAll(_, _, extras) => { extras.sign }
             Possible(_, extras) => { extras.sign }
@@ -140,6 +145,7 @@ impl Formula
             Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
             BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
             StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
+            Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_is_hidden(is_hidden)) }
@@ -161,6 +167,7 @@ impl Formula
             Imply(_, _, extras) => { extras.is_hidden }
             BiImply(_, _, extras) => { extras.is_hidden }
             StrictImply(_, _, extras) => { extras.is_hidden }
+            Conditional(_, _, extras) => { extras.is_hidden }
             Exists(_, _, extras) => { extras.is_hidden }
             ForAll(_, _, extras) => { extras.is_hidden }
             Possible(_, extras) => { extras.is_hidden }

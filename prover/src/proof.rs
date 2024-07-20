@@ -55,7 +55,7 @@ impl ProofAlgorithm
 
         if let Some(node) = self.decomposition_queue.pop()
         {
-            factory.set_spawner_node_id(node.id);
+            factory.set_spawner_node_id(Some(node.id));
 
             for logic_rule in &self.logic_rules
             {

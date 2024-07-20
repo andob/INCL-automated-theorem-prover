@@ -42,21 +42,19 @@ impl <'a> RuleApplyFactory<'a>
         { Some(reapplication) } else { None };
     }
 
-    pub fn set_spawner_node_id(&mut self, spawner_node_id : ProofTreeNodeID)
+    pub fn set_spawner_node_id(&mut self, spawner_node_id_option : Option<ProofTreeNodeID>)
     {
-        if let Some(spawner_node) = self.tree.get_node_with_id(spawner_node_id)
+        if let Some(spawner_node_id) = spawner_node_id_option &&
+            let Some(spawner_node) = self.tree.get_node_with_id(spawner_node_id) &&
+            let Some(spawner_spawner_node_id) = spawner_node.spawner_node_id &&
+            spawner_node.formula.is_hidden()
         {
-            if spawner_node.formula.is_hidden()
-            {
-                if let Some(spawner_spawner_node_id) = spawner_node.spawner_node_id
-                {
-                    self.tree_node_factory.set_spawner_node_id(spawner_spawner_node_id);
-                    return;
-                }
-            }
+            self.tree_node_factory.set_spawner_node_id(Some(spawner_spawner_node_id));
         }
-
-        self.tree_node_factory.set_spawner_node_id(spawner_node_id);
+        else
+        {
+            self.tree_node_factory.set_spawner_node_id(spawner_node_id_option);
+        }
     }
 
     pub fn push_necessity_reapplication(&mut self, data : NecessityReapplicationData)

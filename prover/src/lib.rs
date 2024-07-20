@@ -1,6 +1,7 @@
 /*todo this project uses "box patterns" features available in nightly version of rust
  * migrate to "deref patterns" feature when it will become stable then migrate to a stable version of rust */
 #![feature(box_patterns)]
+#![feature(let_chains)]
 
 use std::any;
 use std::fmt::Display;

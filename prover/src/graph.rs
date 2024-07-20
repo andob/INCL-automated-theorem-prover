@@ -10,15 +10,16 @@ pub struct Graph
 {
     pub nodes : HashSet<PossibleWorld>,
     pub vertices : HashSet<GraphVertex>,
+    pub vertices_tags : Vec<(GraphVertex, String)>,
     pub necessity_reapplications : Vec<NecessityReapplicationData>,
-    log_line_formatter : fn(&GraphVertex) -> String,
+    log_line_formatter : Box<dyn Fn(&GraphVertex) -> String>,
     log : String,
 }
 
 #[macro_export]
 macro_rules! default_log_line_formatter
 {
-    () => { |vertex| format!("{}R{}\n", vertex.from, vertex.to) };
+    () => { Box::new(|vertex| format!("{}R{}\n", vertex.from, vertex.to)) };
 }
 
 impl Graph
@@ -29,6 +30,7 @@ impl Graph
         {
             nodes: HashSet::new(),
             vertices: HashSet::new(),
+            vertices_tags: vec![],
             necessity_reapplications: vec![],
             log_line_formatter: default_log_line_formatter!(),
             log: String::new(),
@@ -40,19 +42,13 @@ impl Graph
         return self.nodes.is_empty() && self.vertices.is_empty();
     }
 
-    pub fn add_node(&mut self, node : PossibleWorld)
+    pub fn add_and_log_vertex(&mut self, vertex : GraphVertex)
     {
-        self.nodes.insert(node.clone());
-    }
-
-    pub fn add_vertex(&mut self, from : PossibleWorld, to : PossibleWorld)
-    {
-        let vertex = GraphVertex::new(from, to);
         self.log.push_str((self.log_line_formatter)(&vertex).as_str());
         self.vertices.insert(vertex);
     }
 
-    pub fn add_vertices(&mut self, vertices_to_add : Vec<GraphVertex>)
+    pub fn add_and_log_vertices(&mut self, vertices_to_add : Vec<GraphVertex>)
     {
         for vertex in vertices_to_add
         {
@@ -61,7 +57,7 @@ impl Graph
         }
     }
 
-    pub fn set_log_line_formatter(&mut self, formatter : fn(&GraphVertex) -> String)
+    pub fn set_log_line_formatter(&mut self, formatter : Box<dyn Fn(&GraphVertex) -> String>)
     {
         self.log_line_formatter = formatter;
     }
@@ -74,7 +70,7 @@ impl Graph
     }
 }
 
-#[derive(Eq, PartialEq, Hash)]
+#[derive(Eq, PartialEq, Hash, Clone)]
 pub struct GraphVertex
 {
     pub from : PossibleWorld,

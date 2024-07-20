@@ -187,12 +187,12 @@
 
         let nodes = json.modality_graph.nodes.map((node) =>
         {
-            return { data: { id: node, text: node } };
+            return { data: { id:node, text:node } };
         });
 
         let edges = json.modality_graph.vertices.map((vertex) =>
         {
-            return { data: { source: vertex.from, target: vertex.to } };
+            return { data: { source:vertex.from, target:vertex.to, text:vertex.tags } };
         });
 
         cytoscape({
@@ -222,6 +222,9 @@
                     style: {
                         'target-arrow-shape': 'triangle',
                         'curve-style': 'bezier',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'label': 'data(text)',
                         'width': 1.0,
                     }
                 }

@@ -34,12 +34,12 @@ struct LogicalExpressionParserImpl<'a>
     state : &'a mut LogicalExpressionParserState,
 }
 
-const REPLACE_TABLE : [&str; 46] =
+const REPLACE_TABLE : [&str; 48] =
 [
     "∀", " ∀", "∃", " ∃", "(", " ( ", ")", " ) ", ", ", ",", "◇", " ◇ ", "□", " □ ",
     "~", " ~ ", "¬", " ¬ ", "!", " ! ", "&", " & ", "∧", " ∧ ", "|", " | ", "∨", " ∨ ",
     "→", " → ", "⇒", " ⇒ ", "⊃", " ⊃ ", "⥽", " ⥽ ", "↔", " ↔ ", "⇔", " ⇔ ", "≡", " ≡ ",
-    "ᶠ", " ᶠ ", "ᵖ", " ᵖ "
+    "ᶠ", " ᶠ ", "ᵖ", " ᵖ ", "ᐅ", " ᐅ "
 ];
 
 impl <'a> LogicalExpressionParserImpl<'a>

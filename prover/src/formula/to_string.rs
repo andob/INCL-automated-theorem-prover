@@ -109,6 +109,11 @@ impl Formula
                 return format_binary_formula(p, '⥽', q);
             }
 
+            Formula::Conditional(p, q, _) =>
+            {
+                return format_binary_formula(p, 'ᐅ', q);
+            }
+
             Formula::Exists(x, p, _) =>
             {
                 return format!("∃{}({})", x, p.to_string_impl(options, index+1));

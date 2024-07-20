@@ -13,9 +13,8 @@ pub enum TokenTypeID
     Exists, ForAll,
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
-    Possible, Necessary,
-    InPast, InFuture,
-    StrictImply,
+    Possible, Necessary, InPast, InFuture,
+    StrictImply, Conditional,
     OpenParenthesis, ClosedParenthesis,
 }
 
@@ -213,7 +212,7 @@ impl TokenType
 
             TokenType
             {
-                //strict implication: P ⥽ Q
+                //matches strict implication: P ⥽ Q
                 id: TokenTypeID::StrictImply,
                 regex: Regex::new(r"(⥽)").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
@@ -222,6 +221,20 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Formula::StrictImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                }
+            },
+
+            TokenType
+            {
+                //matches conditional: P ᐅ Q
+                id: TokenTypeID::Conditional,
+                regex: Regex::new(r"(ᐅ)").context(codeloc!())?,
+                category: TokenCategory::BinaryOperation,
+                precedence: OperatorPrecedence::Low,
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Formula::Conditional(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
                 }
             },
 

@@ -3,7 +3,7 @@ use box_macro::bx;
 use itertools::Itertools;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Imply, Necessary, Non, Possible, StrictImply};
-use crate::graph::Graph;
+use crate::graph::{Graph, GraphVertex};
 use crate::logic::{Logic, LogicRule};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -28,7 +28,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.initialize_modality_graph(factory);
+        self.modality.initialize_graph_if_needed(factory);
 
         return match &node.formula
         {
@@ -89,24 +89,6 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
     }
 }
 
-impl <LOGIC: Logic> ModalLogicRules<LOGIC>
-{
-    fn initialize_modality_graph(&self, factory : &mut RuleApplyFactory)
-    {
-        if factory.modality_graph.is_empty()
-        {
-            let logic_pointer = factory.get_logic().clone();
-            let logic = logic_pointer.as_any().downcast_ref::<LOGIC>().unwrap();
-
-            factory.modality_graph.add_node(PossibleWorld::zero());
-
-            (self.modality.add_missing_graph_vertices)(&logic, factory.modality_graph);
-
-            factory.modality_graph.flush_log();
-        }
-    }
-}
-
 #[derive(Clone)]
 pub struct NecessityReapplicationData
 {
@@ -126,6 +108,21 @@ pub struct Modality<LOGIC : Logic>
 
 impl <LOGIC : Logic> Modality<LOGIC>
 {
+    pub fn initialize_graph_if_needed(&self, factory : &mut RuleApplyFactory)
+    {
+        if factory.modality_graph.is_empty()
+        {
+            let logic_pointer = factory.get_logic().clone();
+            let logic = logic_pointer.as_any().downcast_ref::<LOGIC>().unwrap();
+
+            factory.modality_graph.nodes.insert(PossibleWorld::zero());
+
+            (self.add_missing_graph_vertices)(&logic, factory.modality_graph);
+
+            factory.modality_graph.flush_log();
+        }
+    }
+
     pub fn apply_possibility(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         p : &Formula, extras : &FormulaExtras,
@@ -139,8 +136,8 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let current_world = extras.possible_world;
         let forked_world = factory.modality_graph.nodes.iter().max().unwrap().fork();
 
-        factory.modality_graph.add_node(forked_world);
-        factory.modality_graph.add_vertex(current_world, forked_world);
+        factory.modality_graph.nodes.insert(forked_world);
+        factory.modality_graph.add_and_log_vertex(GraphVertex::new(current_world, forked_world));
 
         (self.add_missing_graph_vertices)(logic, factory.modality_graph);
 
@@ -185,7 +182,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         output_nodes : &mut Vec<ProofTreeNode>)
     {
-        let mut reusable_necessity_reapplications: Vec<NecessityReapplicationData> = vec![];
+        let mut reusable_necessity_reapplications : Vec<NecessityReapplicationData> = vec![];
 
         while let Some(mut reapplication) = factory.pop_next_necessity_reapplication()
         {
@@ -219,7 +216,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         if !output_formulas.is_empty()
         {
-            factory.set_spawner_node_id(reapplication_data.input_spawner_node_id);
+            factory.set_spawner_node_id(Some(reapplication_data.input_spawner_node_id));
 
             for formula in output_formulas
             {

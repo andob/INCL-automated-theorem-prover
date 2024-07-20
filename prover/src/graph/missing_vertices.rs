@@ -1,3 +1,4 @@
+use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::graph::{Graph, GraphVertex};
 
@@ -16,8 +17,8 @@ impl Graph
             }
         }
 
-        self.log_line_formatter = |v| format!("{}ρ{}\n", v.from, v.to);
-        self.add_vertices(vertices_to_add);
+        self.set_log_line_formatter(bx!(|v| format!("{}ρ{}\n", v.from, v.to)));
+        self.add_and_log_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }
@@ -35,8 +36,8 @@ impl Graph
             }
         }
 
-        self.log_line_formatter = |v| format!("{}σ{}\n", v.from, v.to);
-        self.add_vertices(vertices_to_add);
+        self.set_log_line_formatter(bx!(|v| format!("{}σ{}\n", v.from, v.to)));
+        self.add_and_log_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }
@@ -60,8 +61,8 @@ impl Graph
             }
         }
 
-        self.log_line_formatter = |v| format!("{}τ{}\n", v.from, v.to);
-        self.add_vertices(vertices_to_add);
+        self.set_log_line_formatter(bx!(|v| format!("{}τ{}\n", v.from, v.to)));
+        self.add_and_log_vertices(vertices_to_add);
 
         self.log_line_formatter = default_log_line_formatter!();
     }

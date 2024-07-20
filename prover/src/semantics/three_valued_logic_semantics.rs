@@ -1,4 +1,4 @@
-use crate::formula::{Formula, Sign};
+use crate::formula::Formula;
 use crate::formula::Formula::Atomic;
 use crate::formula::Sign::{Minus, Plus};
 use crate::semantics::Semantics;

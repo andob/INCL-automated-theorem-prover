@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use crate::formula::Formula::{And, Atomic, BiImply, ForAll, Imply, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, BiImply, Conditional, ForAll, Imply, Non, Or, Possible, StrictImply};
 use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
@@ -77,11 +77,11 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
-            //atomics are least important
-            Atomic(..) => Priority::LeastImportant,
+            //forall needs to be applied after all instantiations
+            ForAll(..) => Priority::LeastImportant,
 
-            //forall needs to apply after all instantiations
-            ForAll(..) => Priority::LessImportant,
+            //conditional needs to be applied after possibility
+            Conditional(..) => Priority::LessImportant,
 
             //on non-normal modal logic, possibility needs to be applied after necessity
             (Non(box StrictImply(..), ..) | Possible(..))

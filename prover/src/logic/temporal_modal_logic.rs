@@ -2,7 +2,6 @@ use std::any::Any;
 use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{InFuture, InPast, Necessary, Non, Possible};
-use crate::formula::PossibleWorld;
 use crate::graph::{Graph, GraphVertex};
 use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::Modality;
@@ -100,10 +99,7 @@ impl LogicRule for TemporalModalLogicRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        if factory.modality_graph.is_empty()
-        {
-            factory.modality_graph.add_node(PossibleWorld::zero());
-        }
+        self.modality.initialize_graph_if_needed(factory);
 
         return match &node.formula
         {
@@ -145,8 +141,8 @@ impl LogicRule for TemporalModalLogicRules
 
             Possible(box InPast(box p, _), extras) =>
             {
-                factory.modality_graph.set_log_line_formatter(|v| format!("{}R{}\n", v.to, v.from));
                 factory.modality_graph.invert_all_vertices();
+                factory.modality_graph.set_log_line_formatter(bx!(|v| format!("{}R{}\n", v.to, v.from)));
 
                 let subtree = self.modality.apply_possibility(factory, node, p, extras);
 
@@ -163,8 +159,8 @@ impl LogicRule for TemporalModalLogicRules
 
             Necessary(box InPast(box p, _), extras) =>
             {
-                factory.modality_graph.set_log_line_formatter(|v| format!("{}R{}\n", v.to, v.from));
                 factory.modality_graph.invert_all_vertices();
+                factory.modality_graph.set_log_line_formatter(bx!(|v| format!("{}R{}\n", v.to, v.from)));
 
                 let subtree = self.modality.apply_necessity(factory, node, p, extras);
 
@@ -230,11 +226,11 @@ impl Graph
             }
         }
 
-        self.set_log_line_formatter(|v| format!("{}φ{}\n", v.from, v.to));
-        self.add_vertices(forward_vertices_to_add);
+        self.set_log_line_formatter(bx!(|v| format!("{}φ{}\n", v.from, v.to)));
+        self.add_and_log_vertices(forward_vertices_to_add);
 
-        self.set_log_line_formatter(|v| format!("{}β{}\n", v.from, v.to));
-        self.add_vertices(backward_vertices_to_add);
+        self.set_log_line_formatter(bx!(|v| format!("{}β{}\n", v.from, v.to)));
+        self.add_and_log_vertices(backward_vertices_to_add);
 
         self.set_log_line_formatter(default_log_line_formatter!());
     }

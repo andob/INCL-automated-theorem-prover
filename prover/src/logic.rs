@@ -2,6 +2,7 @@ use std::any::Any;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use anyhow::{Context, Result};
+use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_order_logic::FirstOrderLogic;
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
@@ -22,6 +23,7 @@ pub mod common_modal_logic;
 pub mod rule_apply_factory;
 pub mod intuitionistic_logic;
 mod temporal_modal_logic;
+mod conditional_modal_logic;
 
 pub trait LogicRule
 {
@@ -77,6 +79,9 @@ impl LogicFactory
             Rc::new(TemporalModalLogic::basic()),
             Rc::new(TemporalModalLogic::extended()),
 
+            Rc::new(ConditionalModalLogic::basic()),
+            Rc::new(ConditionalModalLogic::extended()),
+
             Rc::new(IntuitionisticLogic {}),
         ];
     }
@@ -89,6 +94,7 @@ pub enum LogicName
     KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
     KTemporalModalLogic, KTemporalExtModalLogic,
+    ConditionalModalLogic, ConditionalExtModalLogic,
     IntuitionisticLogic,
 }
 
@@ -111,6 +117,8 @@ impl Display for LogicName
             LogicName::S3_5ModalLogic => { "S3.5ModalLogic" }
             LogicName::KTemporalModalLogic => { "KTemporalModalLogic" }
             LogicName::KTemporalExtModalLogic => { "KTemporalExtModalLogic" }
+            LogicName::ConditionalModalLogic => { "ConditionalModalLogic" }
+            LogicName::ConditionalExtModalLogic => { "ConditionalExtModalLogic" }
             LogicName::IntuitionisticLogic => { "IntuitionisticLogic" }
         });
     }

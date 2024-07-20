@@ -401,6 +401,144 @@
     ]
   },
   {
+    "name": "Non-normal modal logic",
+    "problems": [
+      {
+        "id": "4.13.2.a",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A⥽A"
+      },
+      {
+        "id": "4.13.2.b",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ⥽ B) ∧ (B ⥽ C)) ⥽ (A ⥽ C)"
+      },
+      {
+        "id": "4.13.2.c",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⥽ B) ⥽ (¬B ⥽ ¬A)"
+      },
+      {
+        "id": "4.13.2.d",
+        "logic": "NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□¬A ⊃ □¬(A ∧ B)"
+      },
+      {
+        "id": "4.13.3.a",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.3.b",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.3.c",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "¬(p ⥽ p) ⥽ q"
+      },
+      {
+        "id": "4.13.3.d",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□(p ⥽ p)"
+      },
+      {
+        "id": "4.13.3.e",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+      },
+      {
+        "id": "4.13.3.f",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.3.g",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "◇◇p"
+      },
+      {
+        "id": "4.13.3.h",
+        "logic": "NModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□□(p ∨ ¬p)"
+      },
+      {
+        "id": "4.13.4.a",
+        "logic": "S2ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.4.b",
+        "logic": "S3ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□p ⊃ p"
+      },
+      {
+        "id": "4.13.4.c",
+        "logic": "S2ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.4.d",
+        "logic": "S3ModalLogic",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "□p ⊃ □□p"
+      },
+      {
+        "id": "4.13.4.e",
+        "logic": "S3ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.4.f",
+        "logic": "S3.5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
+      },
+      {
+        "id": "4.13.4.g",
+        "logic": "S3.5ModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+      }
+    ]
+  },
+  {
     "name": "Temporal modal logic",
     "problems": [
       {
@@ -602,140 +740,91 @@
     ]
   },
   {
-    "name": "Non-normal modal logic",
+    "name": "Conditional modal logic",
     "problems": [
       {
-        "id": "4.13.2.a",
-        "logic": "NModalLogic",
+        "id": "5.12.2.a",
+        "logic": "ConditionalModalLogic",
+        "expected": "proved",
+        "premises": [ "□(A ≡ B)" ],
+        "conclusion": "(C ᐅ A) ≡ (C ᐅ B)"
+      },
+      {
+        "id": "5.12.2.b",
+        "logic": "ConditionalModalLogic",
+        "expected": "proved",
+        "premises": [ "A ᐅ (B ∧ C)" ],
+        "conclusion": "(A ᐅ B) ∧ (A ᐅ C)"
+      },
+      {
+        "id": "5.12.2.c",
+        "logic": "ConditionalModalLogic",
+        "expected": "proved",
+        "premises": [ "(A ᐅ B) ∧ (A ᐅ C)" ],
+        "conclusion": "A ᐅ (B ∧ C)"
+      },
+      {
+        "id": "5.12.2.d",
+        "logic": "ConditionalModalLogic",
+        "expected": "proved",
+        "premises": [ "A ᐅ (B ⊃ C)" ],
+        "conclusion": "(A ᐅ B) ⊃ (A ᐅ C)"
+      },
+      {
+        "id": "5.12.2.e",
+        "logic": "ConditionalModalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "A⥽A"
+        "conclusion": "A ᐅ (B ∨ ¬B)"
       },
       {
-        "id": "4.13.2.b",
-        "logic": "NModalLogic",
+        "id": "5.12.3.a",
+        "logic": "ConditionalExtModalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "((A ⥽ B) ∧ (B ⥽ C)) ⥽ (A ⥽ C)"
+        "conclusion": "P ᐅ P"
       },
       {
-        "id": "4.13.2.c",
-        "logic": "NModalLogic",
+        "id": "5.12.3.b",
+        "logic": "ConditionalExtModalLogic",
         "expected": "proved",
-        "premises": [],
-        "conclusion": "(A ⥽ B) ⥽ (¬B ⥽ ¬A)"
+        "premises": [ "P", "P ᐅ Q" ],
+        "conclusion": "Q"
       },
       {
-        "id": "4.13.2.d",
-        "logic": "NModalLogic",
+        "id": "5.12.3.c",
+        "logic": "ConditionalExtModalLogic",
         "expected": "proved",
-        "premises": [],
-        "conclusion": "□¬A ⊃ □¬(A ∧ B)"
+        "premises": [ "□(P ⊃ Q)" ],
+        "conclusion": "P ᐅ Q"
       },
       {
-        "id": "4.13.3.a",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□p ⊃ p"
-      },
-      {
-        "id": "4.13.3.b",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□p ⊃ □□p"
-      },
-      {
-        "id": "4.13.3.c",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "¬(p ⥽ p) ⥽ q"
-      },
-      {
-        "id": "4.13.3.d",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□(p ⥽ p)"
-      },
-      {
-        "id": "4.13.3.e",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
-      },
-      {
-        "id": "4.13.3.f",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
-      },
-      {
-        "id": "4.13.3.g",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "◇◇p"
-      },
-      {
-        "id": "4.13.3.h",
-        "logic": "NModalLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□□(p ∨ ¬p)"
-      },
-      {
-        "id": "4.13.4.a",
-        "logic": "S2ModalLogic",
+        "id": "5.12.3.d",
+        "logic": "ConditionalExtModalLogic",
         "expected": "proved",
-        "premises": [],
-        "conclusion": "□p ⊃ p"
+        "premises": [ "P ∧ ¬Q" ],
+        "conclusion": "¬(P ᐅ Q)"
       },
       {
-        "id": "4.13.4.b",
-        "logic": "S3ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "□p ⊃ p"
-      },
-      {
-        "id": "4.13.4.c",
-        "logic": "S2ModalLogic",
+        "id": "5.12.4.a",
+        "logic": "ConditionalExtModalLogic",
         "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□p ⊃ □□p"
+        "premises": [ "P ᐅ Q" ],
+        "conclusion": "(P ∧ R) ᐅ Q"
       },
       {
-        "id": "4.13.4.d",
-        "logic": "S3ModalLogic",
+        "id": "5.12.4.b",
+        "logic": "ConditionalExtModalLogic",
         "expected": "not-proved",
-        "premises": [],
-        "conclusion": "□p ⊃ □□p"
+        "premises": [ "P ᐅ Q" ],
+        "conclusion": "¬Q ᐅ ¬P"
       },
       {
-        "id": "4.13.4.e",
-        "logic": "S3ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
-      },
-      {
-        "id": "4.13.4.f",
-        "logic": "S3.5ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "□□p ⥽ (□q ⥽ □□q)"
-      },
-      {
-        "id": "4.13.4.g",
-        "logic": "S3.5ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+        "id": "5.12.4.c",
+        "logic": "ConditionalExtModalLogic",
+        "expected": "not-proved",
+        "premises": [ "P ᐅ Q", "Q ᐅ R" ],
+        "conclusion": "P ᐅ R"
       }
     ]
   },

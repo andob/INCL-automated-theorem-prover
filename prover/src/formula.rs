@@ -18,6 +18,7 @@ pub enum Formula
     Imply(Box<Formula>, Box<Formula>, FormulaExtras),
     BiImply(Box<Formula>, Box<Formula>, FormulaExtras),
     StrictImply(Box<Formula>, Box<Formula>, FormulaExtras),
+    Conditional(Box<Formula>, Box<Formula>, FormulaExtras),
     Exists(PredicateArgument, Box<Formula>, FormulaExtras),
     ForAll(PredicateArgument, Box<Formula>, FormulaExtras),
     Possible(Box<Formula>, FormulaExtras),
