@@ -34,6 +34,9 @@ fn main() -> Result<()>
     }
     else if args.len() == 2
     {
+        FormulaFormatOptions::DEFAULT_NOTATIONS.with(|default_notations|
+            { *(default_notations.borrow_mut()) = OperatorNotations::ComputerScienceNotations });
+
         let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
         let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
@@ -79,12 +82,9 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
             let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-            let formula_format_options = FormulaFormatOptions
-            {
-                notations: OperatorNotations::BookNotations,
-                should_show_possible_worlds: logic.get_name().is_modal_logic(),
-                should_show_sign: logic.get_semantics().number_of_truth_values()>2,
-            };
+            let mut formula_format_options = FormulaFormatOptions::default();
+            formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
+            formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
 
             let proof_tree = problem.prove();
             let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
@@ -123,12 +123,9 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
 {
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-    let formula_format_options = FormulaFormatOptions
-    {
-        notations: OperatorNotations::ComputerScienceNotations,
-        should_show_possible_worlds: false,
-        should_show_sign: false,
-    };
+    let mut formula_format_options = FormulaFormatOptions::default();
+    formula_format_options.should_show_possible_worlds = problem.logic.get_name().is_modal_logic();
+    formula_format_options.should_show_sign = problem.logic.get_semantics().number_of_truth_values()>2;
 
     let proof_tree = problem.prove();
     let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;

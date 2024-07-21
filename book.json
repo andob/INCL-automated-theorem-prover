@@ -1,8 +1,7 @@
 [
   {
     "name": "Propositional logic",
-    "problems":
-    [
+    "problems": [
       {
         "id": "DoubleNegation",
         "logic": "PropositionalLogic",
@@ -921,6 +920,95 @@
         "expected": "not-proved",
         "premises": [ "P → (Q ∨ R)" ],
         "conclusion": "(P → Q) ∨ (Q → R)"
+      }
+    ]
+  },
+  {
+    "name": "First degree entailment",
+    "problems": [
+      {
+        "id": "8.10.1.a",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ Q" ],
+        "conclusion": "P"
+      },
+      {
+        "id": "8.10.1.b",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P" ],
+        "conclusion": "P ∨ Q"
+      },
+      {
+        "id": "8.10.1.c",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ (Q ∧ R)" ],
+        "conclusion": "(P ∧ Q) ∨ (P ∧ R)"
+      },
+      {
+        "id": "8.10.1.d",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ (Q ∨ R)" ],
+        "conclusion": "(P ∨ Q) ∧ (P ∨ R)"
+      },
+      {
+        "id": "8.10.1.e",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P" ],
+        "conclusion": "¬¬P"
+      },
+      {
+        "id": "8.10.1.f",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "¬¬P" ],
+        "conclusion": "P"
+      },
+      {
+        "id": "8.10.1.g",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "¬(P ∧ Q) ∨ R" ],
+        "conclusion": "¬(P ∧ ¬R) ∨ ¬Q"
+      },
+      {
+        "id": "8.10.1.h",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ ¬P" ],
+        "conclusion": "P ∨ ¬P"
+      },
+      {
+        "id": "8.10.1.i",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "not-proved",
+        "premises": [ "P ∧ ¬P" ],
+        "conclusion": "Q ∨ ¬Q"
+      },
+      {
+        "id": "8.10.1.j",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "not-proved",
+        "premises": [ "P ∨ Q" ],
+        "conclusion": "P ∧ Q"
+      },
+      {
+        "id": "8.10.1.k",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "not-proved",
+        "premises": [ "P", "¬(P ∧ ¬Q)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "8.10.1.l",
+        "logic": "MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "¬(P ∧ Q) ∨ R" ],
+        "conclusion": "¬P ∨ (¬Q ∨ R)"
       }
     ]
   }

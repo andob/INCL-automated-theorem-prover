@@ -1,4 +1,3 @@
-use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
@@ -16,12 +15,9 @@ fn test_full_output()
         let problem = problem_json.to_problem().unwrap();
         let logic = problem.logic.clone();
 
-        let formula_format_options = FormulaFormatOptions
-        {
-            notations: OperatorNotations::BookNotations,
-            should_show_possible_worlds: logic.get_name().is_modal_logic(),
-            should_show_sign: logic.get_semantics().number_of_truth_values()>2,
-        };
+        let mut formula_format_options = FormulaFormatOptions::default();
+        formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
+        formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
 
         let proof_tree = problem.prove();
         let proof_tree_string = proof_tree.to_string_with_options(&formula_format_options);

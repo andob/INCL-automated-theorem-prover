@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
+use std::rc::Rc;
 use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::notations::OperatorNotations;
@@ -22,14 +24,21 @@ pub struct FormulaFormatOptions
 
 impl FormulaFormatOptions
 {
+    thread_local!
+    {
+        pub static DEFAULT_NOTATIONS : Rc<RefCell<OperatorNotations>> =
+            Rc::new(RefCell::new(OperatorNotations::BookNotations));
+    }
+
     pub fn default() -> FormulaFormatOptions
     {
-        return FormulaFormatOptions
-        {
-            notations: OperatorNotations::BookNotations,
-            should_show_possible_worlds: true,
-            should_show_sign: false,
-        }
+        return Self::DEFAULT_NOTATIONS.with(|default_notations|
+            FormulaFormatOptions
+            {
+                notations: *default_notations.borrow(),
+                should_show_possible_worlds: true,
+                should_show_sign: false,
+            });
     }
 }
 

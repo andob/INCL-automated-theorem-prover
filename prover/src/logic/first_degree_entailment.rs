@@ -1,10 +1,8 @@
 use std::any::Any;
-use std::rc::Rc;
 use box_macro::bx;
-use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
+use crate::formula::Formula::{And, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{Logic, LogicName, LogicRule};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -12,11 +10,12 @@ use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapter 6
-pub struct IntuitionisticLogic {}
-impl Logic for IntuitionisticLogic
+//check out book chapter 8
+pub struct MinimalFirstDegreeEntailmentLogic {}
+
+impl Logic for MinimalFirstDegreeEntailmentLogic
 {
-    fn get_name(&self) -> LogicName { LogicName::IntuitionisticLogic }
+    fn get_name(&self) -> LogicName { LogicName::MinimalFirstDegreeEntailmentLogic }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
@@ -29,53 +28,22 @@ impl Logic for IntuitionisticLogic
         return vec!
         [
             TokenTypeID::AtomicWithoutArgs,
-            TokenTypeID::Necessary, TokenTypeID::Possible,
-            TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or, TokenTypeID::Imply,
+            TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
         ];
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        let modality = Rc::new(self.get_modality());
-        let mut modal_logic_rules = Box::new(ModalLogicRules::new(modality.clone()));
-        let intuitionistic_logic_rules = Box::new(IntuitionisticLogicRules::new(modality));
-        modal_logic_rules.delegates.push(intuitionistic_logic_rules);
-        return vec![ modal_logic_rules ];
+        return vec!
+        [
+            Box::new(FirstDegreeEntailmentLogicRules {})
+        ];
     }
 }
 
-impl IntuitionisticLogic
-{
-    pub fn get_modality(&self) -> Modality<IntuitionisticLogic>
-    {
-        return Modality
-        {
-            is_possibility_applicable: |_, _, _| { true },
-            is_necessity_applicable: |_, _, _| { true },
-            add_missing_graph_vertices: |logic, graph|
-            {
-                graph.add_missing_reflexive_vertices();
-                graph.add_missing_transitive_vertices();
-            }
-        }
-    }
-}
-
-struct IntuitionisticLogicRules
-{
-    modality : Rc<Modality<IntuitionisticLogic>>
-}
-
-impl IntuitionisticLogicRules
-{
-    fn new(modality : Rc<Modality<IntuitionisticLogic>>) -> IntuitionisticLogicRules
-    {
-        return IntuitionisticLogicRules { modality };
-    }
-}
-
-impl LogicRule for IntuitionisticLogicRules
+pub struct FirstDegreeEntailmentLogicRules {}
+impl LogicRule for FirstDegreeEntailmentLogicRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
@@ -133,57 +101,38 @@ impl LogicRule for IntuitionisticLogicRules
                 return Some(ProofSubtree::with_middle_node(minus_p_node));
             }
 
-            Imply(box p, box q, extras) if extras.sign == Plus =>
+            Non(box Or(box p, box q, _), extras) =>
             {
                 let p = p.in_world(extras.possible_world);
-                let minus_p = p.with_sign(Minus);
-
                 let q = q.in_world(extras.possible_world);
-                let plus_q = q.with_sign(Plus);
+                let non_p = Non(bx!(p), extras.clone()).with_sign(Plus);
+                let non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
 
-                let minus_p_or_plus_q = Or(bx!(minus_p), bx!(plus_q), extras.with_sign(Plus).with_is_hidden(true));
+                let non_p_and_non_q = And(bx!(non_p), bx!(non_q), extras.clone()).with_sign(extras.sign);
+                let non_p_and_non_q_node = factory.new_node(non_p_and_non_q);
 
-                return self.modality.apply_necessity(factory, node, &minus_p_or_plus_q, &extras);
+                return Some(ProofSubtree::with_middle_node(non_p_and_non_q_node));
             }
 
-            Imply(box p, box q, extras) if extras.sign == Minus =>
+            Non(box And(box p, box q, _), extras) =>
             {
                 let p = p.in_world(extras.possible_world);
-                let plus_p = p.with_sign(Plus);
-
                 let q = q.in_world(extras.possible_world);
-                let minus_q = q.with_sign(Minus);
+                let non_p = Non(bx!(p), extras.clone()).with_sign(Plus);
+                let non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
 
-                let plus_p_and_minus_q = And(bx!(plus_p), bx!(minus_q), extras.with_sign(Plus).with_is_hidden(true));
+                let non_p_or_non_q = Or(bx!(non_p), bx!(non_q), extras.clone()).with_sign(extras.sign);
+                let non_p_or_non_q_node = factory.new_node(non_p_or_non_q);
 
-                return self.modality.apply_possibility(factory, node, &plus_p_and_minus_q, &extras);
+                return Some(ProofSubtree::with_middle_node(non_p_or_non_q_node));
             }
 
-            Non(box p, extras) if extras.sign == Plus =>
+            Non(box Non(box p, _), extras) =>
             {
-                let p = p.in_world(extras.possible_world);
-                let minus_p = p.with_sign(Minus);
+                let p = p.in_world(extras.possible_world).with_sign(extras.sign);
+                let p_node = factory.new_node(p);
 
-                return self.modality.apply_necessity(factory, node, &minus_p, extras);
-            }
-
-            Non(box p, extras) if extras.sign == Minus =>
-            {
-                let p = p.in_world(extras.possible_world);
-                let plus_p = p.with_sign(Plus);
-
-                return self.modality.apply_possibility(factory, node, &plus_p, &extras);
-            }
-
-            formula @Atomic(_, extras) if extras.sign == Plus =>
-            {
-                //this guard prevents infinite reapplication of □P
-                if factory.modality_graph.necessity_reapplications.iter()
-                    .any(|reapplication| reapplication.input_formula == *formula)
-                    { return None; }
-
-                let extras = extras.to_formula_extras();
-                return self.modality.apply_necessity(factory, node, &formula, &extras);
+                return Some(ProofSubtree::with_middle_node(p_node));
             }
 
             _ => None

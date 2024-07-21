@@ -3,6 +3,7 @@ use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use anyhow::{Context, Result};
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
+use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_order_logic::FirstOrderLogic;
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
@@ -24,6 +25,7 @@ pub mod rule_apply_factory;
 pub mod intuitionistic_logic;
 mod temporal_modal_logic;
 mod conditional_modal_logic;
+mod first_degree_entailment;
 
 pub trait LogicRule
 {
@@ -83,6 +85,8 @@ impl LogicFactory
             Rc::new(ConditionalModalLogic::extended()),
 
             Rc::new(IntuitionisticLogic {}),
+
+            Rc::new(MinimalFirstDegreeEntailmentLogic {}),
         ];
     }
 }
@@ -95,7 +99,7 @@ pub enum LogicName
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
     KTemporalModalLogic, KTemporalExtModalLogic,
     ConditionalModalLogic, ConditionalExtModalLogic,
-    IntuitionisticLogic,
+    IntuitionisticLogic, MinimalFirstDegreeEntailmentLogic,
 }
 
 impl Display for LogicName
@@ -120,6 +124,7 @@ impl Display for LogicName
             LogicName::ConditionalModalLogic => { "ConditionalModalLogic" }
             LogicName::ConditionalExtModalLogic => { "ConditionalExtModalLogic" }
             LogicName::IntuitionisticLogic => { "IntuitionisticLogic" }
+            LogicName::MinimalFirstDegreeEntailmentLogic => { "MinimalFirstDegreeEntailmentLogic" }
         });
     }
 }

@@ -36,12 +36,6 @@ impl <'a> RuleApplyFactory<'a>
         return self.tree_node_factory.new_predicate_argument_instance_name();
     }
 
-    pub fn pop_next_necessity_reapplication(&mut self) -> Option<NecessityReapplicationData>
-    {
-        return if let Some(reapplication) = self.modality_graph.necessity_reapplications.pop()
-        { Some(reapplication) } else { None };
-    }
-
     pub fn set_spawner_node_id(&mut self, spawner_node_id_option : Option<ProofTreeNodeID>)
     {
         if let Some(spawner_node_id) = spawner_node_id_option &&
@@ -68,5 +62,11 @@ impl <'a> RuleApplyFactory<'a>
         {
             self.modality_graph.necessity_reapplications.push(data_item);
         }
+    }
+
+    pub fn pop_next_necessity_reapplication(&mut self) -> Option<NecessityReapplicationData>
+    {
+        return if let Some(reapplication) = self.modality_graph.necessity_reapplications.pop()
+        { Some(reapplication) } else { None };
     }
 }
