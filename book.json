@@ -1009,6 +1009,76 @@
         "expected": "proved",
         "premises": [ "¬(P ∧ Q) ∨ R" ],
         "conclusion": "¬P ∨ (¬Q ∨ R)"
+      },
+      {
+        "id": "8.10.2.a",
+        "logic": "Kleene+KModalLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ ¬P" ],
+        "conclusion": "Q ∨ ¬Q"
+      },
+      {
+        "id": "8.10.2.b",
+        "logic": "Kleene+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "P ∨ Q" ],
+        "conclusion": "P ∧ Q"
+      },
+      {
+        "id": "8.10.2.c",
+        "logic": "Kleene+KModalLogic",
+        "expected": "proved",
+        "premises": [ "P", "¬(P ∧ ¬Q)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "8.10.2.d",
+        "logic": "PriestLogicOfParadox+KModalLogic",
+        "expected": "proved",
+        "premises": [ "P ∧ ¬P" ],
+        "conclusion": "Q ∨ ¬Q"
+      },
+      {
+        "id": "8.10.2.e",
+        "logic": "PriestLogicOfParadox+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "P ∨ Q" ],
+        "conclusion": "P ∧ Q"
+      },
+      {
+        "id": "8.10.2.f",
+        "logic": "PriestLogicOfParadox+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "P", "¬(P ∧ ¬Q)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "8.10.2.g",
+        "logic": "Lukasiewicz+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "(P ∧ Q) ⊃ R" ],
+        "conclusion": "(P ∧ ¬R) ⊃ ¬Q"
+      },
+      {
+        "id": "8.10.2.h",
+        "logic": "Lukasiewicz+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "(P ∧ Q) ⊃ R" ],
+        "conclusion": "P ⊃ (¬Q ∨ R)"
+      },
+      {
+        "id": "8.10.2.i",
+        "logic": "RMingle3+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "(P ∧ Q) ⊃ R" ],
+        "conclusion": "(P ∧ ¬R) ⊃ ¬Q"
+      },
+      {
+        "id": "8.10.2.j",
+        "logic": "RMingle3+KModalLogic",
+        "expected": "not-proved",
+        "premises": [ "(P ∧ Q) ⊃ R" ],
+        "conclusion": "P ⊃ (¬Q ∨ R)"
       }
     ]
   }

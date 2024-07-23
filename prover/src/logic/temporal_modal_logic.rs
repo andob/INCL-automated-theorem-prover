@@ -50,7 +50,7 @@ impl Logic for TemporalModalLogic
             TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::InPast, TokenTypeID::InFuture,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
@@ -59,7 +59,7 @@ impl Logic for TemporalModalLogic
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(TemporalModalLogicRules::new(self.get_modality())),
-        ];
+        ]
     }
 }
 

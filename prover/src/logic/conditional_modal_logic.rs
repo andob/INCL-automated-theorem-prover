@@ -51,7 +51,7 @@ impl Logic for ConditionalModalLogic
             TokenTypeID::Imply, TokenTypeID::BiImply,
             TokenTypeID::Necessary, TokenTypeID::Possible, TokenTypeID::Conditional,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
@@ -60,7 +60,7 @@ impl Logic for ConditionalModalLogic
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ConditionalModalLogicRules::new(self.get_modality())),
-        ];
+        ]
     }
 }
 

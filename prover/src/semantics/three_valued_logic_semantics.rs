@@ -5,9 +5,10 @@ use crate::semantics::Semantics;
 
 pub struct ThreeValuedLogicSemantics
 {
-    contradiction_behaviour : ThreeValuedContradictionBehaviour
+    contradiction_behaviours : Vec<ThreeValuedContradictionBehaviour>
 }
 
+#[derive(Eq, PartialEq)]
 pub enum ThreeValuedContradictionBehaviour
 {
     FormulaPlusWithFormulaMinus,
@@ -17,15 +18,15 @@ pub enum ThreeValuedContradictionBehaviour
 
 impl ThreeValuedLogicSemantics
 {
-    pub fn default() -> ThreeValuedLogicSemantics
+    pub fn new() -> ThreeValuedLogicSemantics
     {
-        let contradiction_behaviour = ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus;
-        return ThreeValuedLogicSemantics { contradiction_behaviour };
-    }
-
-    pub fn with_contradiction_behaviour(contradiction_behaviour : ThreeValuedContradictionBehaviour) -> ThreeValuedLogicSemantics
-    {
-        return ThreeValuedLogicSemantics { contradiction_behaviour };
+        return ThreeValuedLogicSemantics
+        {
+            contradiction_behaviours: vec!
+            [
+                ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
+            ]
+        };
     }
 }
 
@@ -43,55 +44,82 @@ impl Semantics for ThreeValuedLogicSemantics
     {
         //todo this does not account for predicate arguments
 
-        return match self.contradiction_behaviour
+        for contradiction_behaviour in &self.contradiction_behaviours
         {
-            ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
+            let is_contradiction = match contradiction_behaviour
             {
-                match (p, q)
-                {
-                    (Atomic(p_name, _), Atomic(q_name, _)) |
-                    (Non(box Atomic(p_name, _), _), Non(box Atomic(q_name, _), _))
-                    if p.get_sign() * q.get_sign() == Minus /* p/q is +/- or -/+ */ =>
-                    {
-                        p_name == q_name &&
-                        p.get_possible_world() == q.get_possible_world()
-                    }
+                ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
+                { self.are_formulas_contradictory_formula_plus_with_formula_minus(p, q) }
 
-                    _ => { false }
-                }
+                ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus =>
+                { self.are_formulas_contradictory_formula_plus_with_non_formula_plus(p, q) }
+
+                ThreeValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus =>
+                { self.are_formulas_contradictory_formula_minus_with_non_formula_minus(p, q) }
+            };
+
+            if is_contradiction
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+impl ThreeValuedLogicSemantics
+{
+    pub fn add_behaviour(&mut self, contradiction_behaviour : ThreeValuedContradictionBehaviour)
+    {
+        self.contradiction_behaviours.push(contradiction_behaviour);
+    }
+
+    fn are_formulas_contradictory_formula_plus_with_formula_minus(&self, p : &Formula, q : &Formula) -> bool
+    {
+        match (p, q)
+        {
+            (Atomic(p_name, _), Atomic(q_name, _)) |
+            (Non(box Atomic(p_name, _), _), Non(box Atomic(q_name, _), _))
+            if p.get_sign() * q.get_sign() == Minus /* p/q is +/- or -/+ */ =>
+            {
+                p_name == q_name &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
-            ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus =>
-            {
-                match (p, q)
-                {
-                    (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
-                    (Non(box Atomic(p_name, _), _), Atomic(q_name, _))
-                    if p.get_sign() == Plus && q.get_sign() == Plus =>
-                    {
-                        p_name == q_name &&
-                        p.get_possible_world() == q.get_possible_world()
-                    }
+            _ => { false }
+        }
+    }
 
-                    _ => { false }
-                }
+    fn are_formulas_contradictory_formula_plus_with_non_formula_plus(&self, p : &Formula, q : &Formula) -> bool
+    {
+        match (p, q)
+        {
+            (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
+            (Non(box Atomic(p_name, _), _), Atomic(q_name, _))
+            if p.get_sign() == Plus && q.get_sign() == Plus =>
+            {
+                p_name == q_name &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
-            ThreeValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus =>
-            {
-                match (p, q)
-                {
-                    (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
-                    (Non(box Atomic(p_name, _), _), Atomic(q_name, _))
-                    if p.get_sign() == Minus && q.get_sign() == Minus =>
-                    {
-                        p_name == q_name &&
-                        p.get_possible_world() == q.get_possible_world()
-                    }
+            _ => { false }
+        }
+    }
 
-                    _ => { false }
-                }
+    fn are_formulas_contradictory_formula_minus_with_non_formula_minus(&self, p : &Formula, q : &Formula) -> bool
+    {
+        match (p, q)
+        {
+            (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
+            (Non(box Atomic(p_name, _), _), Atomic(q_name, _))
+            if p.get_sign() == Minus && q.get_sign() == Minus =>
+            {
+                p_name == q_name &&
+                p.get_possible_world() == q.get_possible_world()
             }
-        };
+
+            _ => { false }
+        }
     }
 }

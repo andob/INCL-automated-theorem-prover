@@ -32,7 +32,7 @@ impl Logic for FirstOrderLogic
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
             TokenTypeID::Imply, TokenTypeID::BiImply,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
@@ -41,7 +41,7 @@ impl Logic for FirstOrderLogic
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(QuantifierRules {}),
-        ];
+        ]
     }
 }
 

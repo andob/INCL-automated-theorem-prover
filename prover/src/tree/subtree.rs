@@ -54,6 +54,11 @@ impl ProofSubtree
         return ProofSubtree::new(Some(Box::new(left)), None, Some(Box::new(right)));
     }
 
+    pub fn with_left_middle_right_nodes(left : ProofTreeNode, middle : ProofTreeNode, right : ProofTreeNode) -> ProofSubtree
+    {
+        return ProofSubtree::new(Some(Box::new(left)), Some(Box::new(middle)), Some(Box::new(right)));
+    }
+
     fn attach_new_ids(&mut self, node_factory : &mut ProofTreeNodeFactory)
     {
         if let Some(left) = &mut self.left { left.attach_new_ids(node_factory); }

@@ -13,14 +13,13 @@ use crate::tree::subtree::ProofSubtree;
 pub struct ModalLogicRules<LOGIC : Logic>
 {
     modality : Rc<Modality<LOGIC>>,
-    pub delegates : Vec<Box<dyn LogicRule>>,
 }
 
 impl <LOGIC : Logic> ModalLogicRules<LOGIC>
 {
     pub fn new(modality : Rc<Modality<LOGIC>>) -> ModalLogicRules<LOGIC>
     {
-        return ModalLogicRules { modality, delegates:vec![] };
+        return ModalLogicRules { modality };
     }
 }
 
@@ -73,18 +72,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 return self.modality.apply_possibility(factory, node, &non_p_imply_q, extras);
             }
 
-            _ =>
-            {
-                for delegate in &self.delegates
-                {
-                    if let Some(subtree_from_delegate) = delegate.apply(factory, node)
-                    {
-                        return Some(subtree_from_delegate);
-                    }
-                }
-
-                return None;
-            }
+            _ => None
         }
     }
 }

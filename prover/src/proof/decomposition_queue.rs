@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use crate::formula::Formula::{And, BiImply, Conditional, ForAll, Imply, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Conditional, ForAll, Imply, Non, Or, Possible, StrictImply};
 use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
@@ -77,19 +77,21 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
+            Atomic(..) => Priority::LeastImportant,
+
             //forall needs to be applied after all instantiations
-            ForAll(..) => Priority::LeastImportant,
+            ForAll(..) => Priority::LessImportant,
 
             //conditional needs to be applied after possibility
-            Conditional(..) => Priority::LessImportant,
+            Conditional(..) => Priority::Normal,
 
             //on non-normal modal logic, possibility needs to be applied after necessity
             (Non(box StrictImply(..), ..) | Possible(..))
-                if self.logic.get_name().is_non_normal_modal_logic() => Priority::Normal,
+                if self.logic.get_name().is_non_normal_modal_logic() => Priority::Important,
 
             //propositional operations that will split the tree
-            BiImply(..) | Non(box BiImply(..), ..) => Priority::Important,
-            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::Important,
+            BiImply(..) | Non(box BiImply(..), ..) => Priority::MoreImportant,
+            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::MoreImportant,
 
             _ => Priority::MostImportant,
         }

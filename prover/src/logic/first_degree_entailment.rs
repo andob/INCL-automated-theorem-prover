@@ -10,6 +10,11 @@ use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
+pub mod lukasiewicz_modal_logic;
+pub mod rmingle3_modal_logic;
+pub mod priest_logic_of_paradox;
+pub mod kleene_modal_logic;
+
 //check out book chapter 8
 pub struct MinimalFirstDegreeEntailmentLogic {}
 
@@ -20,7 +25,7 @@ impl Logic for MinimalFirstDegreeEntailmentLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(ThreeValuedLogicSemantics::default());
+        return Box::new(ThreeValuedLogicSemantics::new());
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
@@ -30,7 +35,7 @@ impl Logic for MinimalFirstDegreeEntailmentLogic
             TokenTypeID::AtomicWithoutArgs,
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
@@ -38,7 +43,7 @@ impl Logic for MinimalFirstDegreeEntailmentLogic
         return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {})
-        ];
+        ]
     }
 }
 

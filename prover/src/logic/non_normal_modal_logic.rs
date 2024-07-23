@@ -46,7 +46,7 @@ impl Logic for NonNormalModalLogic
             TokenTypeID::Imply, TokenTypeID::BiImply, TokenTypeID::StrictImply,
             TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
@@ -55,7 +55,7 @@ impl Logic for NonNormalModalLogic
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-        ];
+        ]
     }
 }
 
@@ -79,6 +79,6 @@ impl NonNormalModalLogic
                 if logic.is_symmetric { graph.add_missing_symmetric_vertices() }
                 if logic.is_transitive { graph.add_missing_transitive_vertices() }
             }
-        };
+        }
     }
 }

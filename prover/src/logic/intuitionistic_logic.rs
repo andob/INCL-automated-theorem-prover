@@ -21,7 +21,7 @@ impl Logic for IntuitionisticLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(ThreeValuedLogicSemantics::default());
+        return Box::new(ThreeValuedLogicSemantics::new());
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
@@ -32,16 +32,17 @@ impl Logic for IntuitionisticLogic
             TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or, TokenTypeID::Imply,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ];
+        ]
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
         let modality = Rc::new(self.get_modality());
-        let mut modal_logic_rules = Box::new(ModalLogicRules::new(modality.clone()));
-        let intuitionistic_logic_rules = Box::new(IntuitionisticLogicRules::new(modality));
-        modal_logic_rules.delegates.push(intuitionistic_logic_rules);
-        return vec![ modal_logic_rules ];
+        return vec!
+        [
+            Box::new(ModalLogicRules::new(modality.clone())),
+            Box::new(IntuitionisticLogicRules::new(modality)),
+        ]
     }
 }
 
