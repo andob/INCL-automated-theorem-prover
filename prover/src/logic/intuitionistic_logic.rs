@@ -178,15 +178,19 @@ impl LogicRule for IntuitionisticLogicRules
                 return self.modality.apply_possibility(factory, node, &plus_p, &extras);
             }
 
-            formula @Atomic(_, extras) if extras.sign == Plus =>
+            p_as_formula@Atomic(p_as_string, extras) if extras.sign == Plus =>
             {
                 //this guard prevents infinite reapplication of □P
-                if factory.modality_graph.necessity_reapplications.iter()
-                    .any(|reapplication| reapplication.input_formula == *formula)
-                    { return None; }
+                for reapplication in &factory.modality_graph.necessity_reapplications
+                {
+                    if let Atomic(q_as_string, _) = &reapplication.input_formula
+                    {
+                        if p_as_string == q_as_string { return None; }
+                    }
+                }
 
                 let extras = extras.to_formula_extras();
-                return self.modality.apply_necessity(factory, node, &formula, &extras);
+                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras);
             }
 
             _ => None

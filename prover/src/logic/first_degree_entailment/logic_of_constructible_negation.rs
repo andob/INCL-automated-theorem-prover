@@ -172,25 +172,33 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
                 return Some(ProofSubtree::with_middle_node(p_imply_non_q_node));
             }
 
-            formula @Atomic(_, extras) if extras.sign == Plus =>
+            p_as_formula@Atomic(p_as_string, extras) if extras.sign == Plus =>
             {
                 //this guard prevents infinite reapplication of □P
-                if factory.modality_graph.necessity_reapplications.iter()
-                    .any(|reapplication| reapplication.input_formula == *formula)
-                    { return None; }
+                for reapplication in &factory.modality_graph.necessity_reapplications
+                {
+                    if let Atomic(q_as_string, _) = &reapplication.input_formula
+                    {
+                        if p_as_string == q_as_string { return None; }
+                    }
+                }
 
                 let extras = extras.to_formula_extras();
-                return self.modality.apply_necessity(factory, node, &formula, &extras);
+                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras);
             }
 
-            formula@Non(box Atomic(..), extras) if extras.sign == Plus =>
+            non_p_as_formula@Non(box Atomic(p_as_string, _), extras) if extras.sign == Plus =>
             {
                 //this guard prevents infinite reapplication of □!P
-                if factory.modality_graph.necessity_reapplications.iter()
-                    .any(|reapplication| reapplication.input_formula == *formula)
-                    { return None; }
+                for reapplication in &factory.modality_graph.necessity_reapplications
+                {
+                    if let Non(box Atomic(q_as_string, _), _) = &reapplication.input_formula
+                    {
+                        if p_as_string == q_as_string { return None; }
+                    }
+                }
 
-                return self.modality.apply_necessity(factory, node, &formula, &extras);
+                return self.modality.apply_necessity(factory, node, &non_p_as_formula, &extras);
             }
 
             _ => None

@@ -7,10 +7,24 @@
     "conclusion": "◇◇□◇P"
   },
   {
-    "id": "IntuitionisticTimeoutTest",
+    "id": "IntuitionisticTimeoutTest1",
     "logic": "IntuitionisticLogic",
     "expected": "timeout",
     "premises": [],
     "conclusion": "!!P → P"
+  },
+  {
+    "id": "IntuitionisticTimeoutTest2",
+    "logic": "IntuitionisticLogic",
+    "expected": "timeout",
+    "premises": [ "¬P → P" ],
+    "conclusion": "P"
+  },
+  {
+    "id": "IntuitionisticTimeoutTest3",
+    "logic": "IntuitionisticLogic",
+    "expected": "timeout",
+    "premises": [ "¬P → ¬Q" ],
+    "conclusion": "Q → P"
   }
 ]
