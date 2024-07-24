@@ -1,7 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
 use strum::IntoEnumIterator;
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{BaseLogicNameIndex, Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::parser::token_types::TokenTypeID;
@@ -31,8 +31,8 @@ impl Logic for PriestLPModalLogic
 {
     fn get_name(&self) -> LogicName
     {
-        let base_name_index = LogicName::iter().position(|name| self.base_name==name);
-        return LogicName::PriestLogicOfParadoxModalLogic(base_name_index.unwrap_or_default());
+        let base_name_index = LogicName::iter().position(|name| self.base_name==name).unwrap();
+        return LogicName::PriestLogicOfParadoxModalLogic(base_name_index as BaseLogicNameIndex);
     }
 
     fn as_any(&self) -> &dyn Any { self }
@@ -71,8 +71,8 @@ impl PriestLPModalLogic
     {
         return Modality
         {
-            is_possibility_applicable: |_, _, _| { true },
-            is_necessity_applicable: |_, _, _| { true },
+            is_possibility_applicable: |_, _, _| true,
+            is_necessity_applicable: |_, _, _| true,
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_reflexive { graph.add_missing_reflexive_vertices() }

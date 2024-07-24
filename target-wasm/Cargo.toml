@@ -3,6 +3,10 @@ name = "target-wasm"
 version = "0.1.0"
 edition = "2018"
 
+description = "An automated theorem prover based on Graham Priest's Introduction to Non-Classical Logic"
+repository = "https://github.com/andob/INCL-automated-theorem-prover"
+license = "Apache-2.0"
+
 [profile.release]
 opt-level = 3
 [profile.dev]
@@ -28,3 +32,9 @@ console_error_panic_hook = { version = "0.1.7", optional = true }
 
 # generic Result<> with any error
 anyhow = "1.0.79"
+
+# random number generator
+getrandom = { version = "0.2.15", features = ["js"] }
+
+# web API bindings
+web-sys = { version = "0.3.69", features = ["Window", "Performance"] }

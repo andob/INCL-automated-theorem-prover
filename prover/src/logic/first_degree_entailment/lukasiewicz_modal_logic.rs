@@ -5,9 +5,10 @@ use strum::IntoEnumIterator;
 use crate::formula::Formula::{BiImply, Imply, Non, Or, And};
 use crate::formula::FormulaExtras;
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{BaseLogicNameIndex, Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
+use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -38,8 +39,8 @@ impl Logic for LukasiewiczModalLogic
 {
     fn get_name(&self) -> LogicName
     {
-        let base_name_index = LogicName::iter().position(|name| self.base_name==name);
-        return LogicName::LukasiewiczModalLogic(base_name_index.unwrap_or_default());
+        let base_name_index = LogicName::iter().position(|name| self.base_name==name).unwrap();
+        return LogicName::LukasiewiczModalLogic(base_name_index as BaseLogicNameIndex);
     }
 
     fn as_any(&self) -> &dyn Any { self }
@@ -65,12 +66,13 @@ impl Logic for LukasiewiczModalLogic
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        //todo invent problems
+        let modality = Rc::new(self.get_modality());
         return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
-            Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-            Box::new(LukasiewiczImplicationRules {}),
+            Box::new(ModalLogicRules::new(modality.clone())),
+            Box::new(LukasiewiczImplicationRules::new(modality)),
+            Box::new(GenericBiImplyAsConjunctionRule {}),
         ]
     }
 }
@@ -81,8 +83,8 @@ impl LukasiewiczModalLogic
     {
         return Modality
         {
-            is_possibility_applicable: |_, _, _| { true },
-            is_necessity_applicable: |_, _, _| { true },
+            is_possibility_applicable: |_, _, _| true,
+            is_necessity_applicable: |_, _, _| true,
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_reflexive { graph.add_missing_reflexive_vertices() }
@@ -93,11 +95,25 @@ impl LukasiewiczModalLogic
     }
 }
 
-struct LukasiewiczImplicationRules {}
+struct LukasiewiczImplicationRules
+{
+    modality : Rc<Modality<LukasiewiczModalLogic>>
+}
+
+impl LukasiewiczImplicationRules
+{
+    fn new(modality : Rc<Modality<LukasiewiczModalLogic>>) -> LukasiewiczImplicationRules
+    {
+        return LukasiewiczImplicationRules { modality };
+    }
+}
+
 impl LogicRule for LukasiewiczImplicationRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
+        self.modality.initialize_graph_if_needed(factory);
+
         return match &node.formula
         {
             Imply(box p, box q, extras) if extras.sign == Plus =>

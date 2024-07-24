@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="target_wasm.js"></script>
+    <script type="module">
+        import init, { test_solve_all_problems } from './target_wasm.js';
+        (async () =>
+        {
+            await init();
+            test_solve_all_problems();
+        })();
+    </script>
+</head>
+</html>

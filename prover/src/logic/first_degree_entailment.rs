@@ -14,6 +14,9 @@ pub mod lukasiewicz_modal_logic;
 pub mod rmingle3_modal_logic;
 pub mod priest_logic_of_paradox;
 pub mod kleene_modal_logic;
+pub mod logic_with_gaps_and_gluts;
+pub mod logic_of_constructible_negation;
+mod generic_biimply_fde_rule;
 
 //check out book chapter 8
 pub struct MinimalFirstDegreeEntailmentLogic {}

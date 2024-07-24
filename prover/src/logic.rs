@@ -6,6 +6,8 @@ use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;
+use crate::logic::first_degree_entailment::logic_of_constructible_negation::LogicOfConstructibleNegation;
+use crate::logic::first_degree_entailment::logic_with_gaps_and_gluts::LogicWithGapsGlutsAndWorlds;
 use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczModalLogic;
 use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
@@ -56,6 +58,8 @@ pub trait Logic : Any
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>;
 }
 
+type BaseLogicNameIndex = u8;
+
 #[derive(Eq, PartialEq, Copy, Clone, EnumIter)]
 pub enum LogicName
 {
@@ -66,10 +70,15 @@ pub enum LogicName
     ConditionalModalLogic, ConditionalExtModalLogic,
     IntuitionisticLogic,
     MinimalFirstDegreeEntailmentLogic,
-    LukasiewiczModalLogic(usize),
-    RMingle3ModalLogic(usize),
-    KleeneModalLogic(usize),
-    PriestLogicOfParadoxModalLogic(usize),
+    LukasiewiczModalLogic(BaseLogicNameIndex),
+    RMingle3ModalLogic(BaseLogicNameIndex),
+    KleeneModalLogic(BaseLogicNameIndex),
+    PriestLogicOfParadoxModalLogic(BaseLogicNameIndex),
+    K4LogicWithGapsGlutsAndWorlds,
+    N4LogicWithGapsGlutsAndWorlds,
+    I4LogicOfConstructibleNegation,
+    I3LogicOfConstructibleNegation,
+    WLogicOfConstructibleNegation,
 }
 
 impl Display for LogicName
@@ -97,24 +106,29 @@ impl Display for LogicName
             LogicName::MinimalFirstDegreeEntailmentLogic => { write!(f, "{}", "MinimalFirstDegreeEntailmentLogic") }
             LogicName::LukasiewiczModalLogic(base_logic_name_index) =>
             {
-                let base_logic_name = LogicName::iter().get(*base_logic_name_index).unwrap();
+                let base_logic_name = LogicName::iter().get(*base_logic_name_index as usize).unwrap();
                 write!(f, "Lukasiewicz+{}", base_logic_name.to_string())
             }
-            LogicName::RMingle3ModalLogic(base_logic_name_index) =>
+            LogicName::RMingle3ModalLogic(base_name_index) =>
             {
-                let base_logic_name = LogicName::iter().get(*base_logic_name_index).unwrap();
+                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
                 write!(f, "RMingle3+{}", base_logic_name.to_string())
             }
-            LogicName::KleeneModalLogic(base_logic_name_index) =>
+            LogicName::KleeneModalLogic(base_name_index) =>
             {
-                let base_logic_name = LogicName::iter().get(*base_logic_name_index).unwrap();
+                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
                 write!(f, "Kleene+{}", base_logic_name.to_string())
             }
-            LogicName::PriestLogicOfParadoxModalLogic(base_logic_name_index) =>
+            LogicName::PriestLogicOfParadoxModalLogic(base_name_index) =>
             {
-                let base_logic_name = LogicName::iter().get(*base_logic_name_index).unwrap();
+                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
                 write!(f, "PriestLogicOfParadox+{}", base_logic_name.to_string())
             }
+            LogicName::K4LogicWithGapsGlutsAndWorlds => { write!(f, "{}", "K4ModalLogicWithGapsAndGluts") }
+            LogicName::N4LogicWithGapsGlutsAndWorlds => { write!(f, "{}", "N4ModalLogicWithGapsAndGluts") }
+            LogicName::I4LogicOfConstructibleNegation => { write!(f, "{}", "I4LogicOfConstructibleNegation") }
+            LogicName::I3LogicOfConstructibleNegation => { write!(f, "{}", "I3LogicOfConstructibleNegation") }
+            LogicName::WLogicOfConstructibleNegation => { write!(f, "{}", "WLogicOfConstructibleNegation") }
         }
     }
 }
@@ -129,7 +143,8 @@ impl LogicName
     pub fn is_non_normal_modal_logic(self) -> bool
     {
         return self == LogicName::NModalLogic || self == LogicName::S2ModalLogic ||
-            self == LogicName::S3_5ModalLogic || self == LogicName::S3_5ModalLogic;
+            self == LogicName::S3_5ModalLogic || self == LogicName::S3_5ModalLogic ||
+            self == LogicName::N4LogicWithGapsGlutsAndWorlds;
     }
 
     pub fn is_normal_modal_logic(self) -> bool
@@ -199,6 +214,13 @@ impl LogicFactory
             Rc::new(KleeneModalLogic::K3_B()),
             Rc::new(KleeneModalLogic::K3_S4()),
             Rc::new(KleeneModalLogic::K3_S5()),
+
+            Rc::new(LogicWithGapsGlutsAndWorlds::K4()),
+            Rc::new(LogicWithGapsGlutsAndWorlds::N4()),
+
+            Rc::new(LogicOfConstructibleNegation::I3()),
+            Rc::new(LogicOfConstructibleNegation::I4()),
+            Rc::new(LogicOfConstructibleNegation::W()),
         ]
     }
 }

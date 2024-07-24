@@ -1081,5 +1081,328 @@
         "conclusion": "P ⊃ (¬Q ∨ R)"
       }
     ]
+  },
+  {
+    "name": "Logic with gaps, gluts and worlds (non-normal)",
+    "problems": [
+      {
+        "id": "9.11.2.a",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A ᐅ A"
+      },
+      {
+        "id": "9.11.2.b",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ᐅ ¬¬A) ∧ (¬¬A ᐅ A)"
+      },
+      {
+        "id": "9.11.2.c",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ∧ B) ᐅ A"
+      },
+      {
+        "id": "9.11.2.d",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A ᐅ (A ∨ B)"
+      },
+      {
+        "id": "9.11.2.e",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ∧ (B ∨ C)) ᐅ ((A ∧ B) ∨ (A ∧ C))) ∧ (((A ∧ B) ∨ (A ∧ C)) ᐅ (A ∧ (B ∨ C)))"
+      },
+      {
+        "id": "9.11.2.f",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B", "A ᐅ C" ],
+        "conclusion": "A ᐅ (B ∧ C)"
+      },
+      {
+        "id": "9.11.2.g",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ C", "B ᐅ C" ],
+        "conclusion": "(A ∨ B) ᐅ C"
+      },
+      {
+        "id": "9.11.2.h",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ C" ],
+        "conclusion": "(A ∧ B) ᐅ C"
+      },
+      {
+        "id": "9.11.2.i",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ᐅ B) ∧ (A ᐅ C)) ᐅ (A ᐅ (B ∧ C))"
+      },
+      {
+        "id": "9.11.2.j",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ᐅ C) ∧ (B ᐅ C)) ᐅ ((A ∨ B) ᐅ C)"
+      },
+      {
+        "id": "9.11.2.k",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B" ],
+        "conclusion": "(B ᐅ C) ᐅ (A ᐅ C)"
+      },
+      {
+        "id": "9.11.2.l",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B" ],
+        "conclusion": "(C ᐅ A) ᐅ (C ᐅ B)"
+      },
+      {
+        "id": "9.11.2.m",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B", "B ᐅ C" ],
+        "conclusion": "A ᐅ C"
+      }
+    ]
+  },
+  {
+    "name": "Logic with gaps, gluts and worlds (non-normal)",
+    "problems": [
+      {
+        "id": "9.11.3.a",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ∧ (¬p ∨ q)) ᐅ q"
+      },
+      {
+        "id": "9.11.3.b",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [ "(p ∧ q) ᐅ r" ],
+        "conclusion": "p ᐅ (¬q ∨ r)"
+      },
+      {
+        "id": "9.11.3.c",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "p ᐅ (q ∨ ¬q)"
+      },
+      {
+        "id": "9.11.3.d",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ∧ ¬p) ᐅ q"
+      },
+      {
+        "id": "9.11.3.e",
+        "logic": "K4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ᐅ q) ᐅ (¬q ᐅ ¬p)"
+      },
+      {
+        "id": "9.11.3.a",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A ᐅ A"
+      },
+      {
+        "id": "9.11.3.b",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ᐅ ¬¬A) ∧ (¬¬A ᐅ A)"
+      },
+      {
+        "id": "9.11.3.c",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ∧ B) ᐅ A"
+      },
+      {
+        "id": "9.11.3.d",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A ᐅ (A ∨ B)"
+      },
+      {
+        "id": "9.11.3.e",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ∧ (B ∨ C)) ᐅ ((A ∧ B) ∨ (A ∧ C))) ∧ (((A ∧ B) ∨ (A ∧ C)) ᐅ (A ∧ (B ∨ C)))"
+      },
+      {
+        "id": "9.11.3.f",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B", "A ᐅ C" ],
+        "conclusion": "A ᐅ (B ∧ C)"
+      },
+      {
+        "id": "9.11.3.g",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ C", "B ᐅ C" ],
+        "conclusion": "(A ∨ B) ᐅ C"
+      },
+      {
+        "id": "9.11.3.h",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ C" ],
+        "conclusion": "(A ∧ B) ᐅ C"
+      },
+      {
+        "id": "9.11.3.i",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "((A ᐅ B) ∧ (A ᐅ C)) ᐅ (A ᐅ (B ∧ C))"
+      },
+      {
+        "id": "9.11.3.j",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "((A ᐅ C) ∧ (B ᐅ C)) ᐅ ((A ∨ B) ᐅ C)"
+      },
+      {
+        "id": "9.11.3.k",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [ "A ᐅ B" ],
+        "conclusion": "(B ᐅ C) ᐅ (A ᐅ C)"
+      },
+      {
+        "id": "9.11.3.l",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "not-proved",
+        "premises": [ "A ᐅ B" ],
+        "conclusion": "(C ᐅ A) ᐅ (C ᐅ B)"
+      },
+      {
+        "id": "9.11.3.m",
+        "logic": "N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "A ᐅ B", "B ᐅ C" ],
+        "conclusion": "A ᐅ C"
+      }
+    ]
+  },
+  {
+    "name": "Logic of constructible negation",
+    "problems": [
+      {
+        "id": "9.11.10.a",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬(p ∧ q) ⊃ (¬p ∨ ¬q)"
+      },
+      {
+        "id": "9.11.10.b",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬(p ∨ q) ⊃ (¬p ∧ ¬q)"
+      },
+      {
+        "id": "9.11.10.c",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ⊃ q) ⊃ (¬q ⊃ ¬p)"
+      },
+      {
+        "id": "9.11.10.c'",
+        "logic": "I3LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ⊃ q) ⊃ (¬q ⊃ ¬p)"
+      },
+      {
+        "id": "9.11.10.d",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "p ∨ ¬p"
+      },
+      {
+        "id": "9.11.10.e",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(¬p ⊃ p) ⊃ p"
+      },
+      {
+        "id": "9.11.10.f",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬(p ⊃ q) ⊃ (p ⊃ ¬q)"
+      },
+      {
+        "id": "9.11.10.f'",
+        "logic": "WLogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "¬(p ⊃ q) ⊃ (p ⊃ ¬q)"
+      },
+      {
+        "id": "9.11.10.g",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "(p ⊃ q) ∨ (p ⊃ ¬q)"
+      },
+      {
+        "id": "9.11.10.h",
+        "logic": "I4LogicOfConstructibleNegation",
+        "expected": "not-proved",
+        "premises": [],
+        "conclusion": "¬((p ∧ ¬p) ⊃ (p ∨ ¬p))"
+      },
+      {
+        "id": "9.11.10.h'",
+        "logic": "WLogicOfConstructibleNegation",
+        "expected": " proved",
+        "premises": [],
+        "conclusion": "¬((p ∧ ¬p) ⊃ (p ∨ ¬p))"
+      },
+      {
+        "id": "9.11.11.Aristotle",
+        "logic": "WLogicOfConstructibleNegation",
+        "expected": " proved",
+        "premises": [],
+        "conclusion": "¬(A ⊃ ¬A)"
+      },
+      {
+        "id": "9.11.11.Boethius",
+        "logic": "WLogicOfConstructibleNegation",
+        "expected": " proved",
+        "premises": [],
+        "conclusion": "(A ⊃ B) ⊃ ¬(A ⊃ ¬B)"
+      }
+    ]
   }
 ]

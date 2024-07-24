@@ -77,7 +77,9 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
+            //atomics are the least important
             Atomic(..) => Priority::LeastImportant,
+            Non(box Atomic(..), ..) => Priority::LeastImportant,
 
             //forall needs to be applied after all instantiations
             ForAll(..) => Priority::LessImportant,

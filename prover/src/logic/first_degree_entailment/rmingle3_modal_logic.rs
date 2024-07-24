@@ -2,12 +2,12 @@ use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
 use strum::IntoEnumIterator;
-use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
-use crate::formula::FormulaExtras;
+use crate::formula::Formula::{Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{BaseLogicNameIndex, Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
+use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -38,8 +38,8 @@ impl Logic for RMingle3ModalLogic
 {
     fn get_name(&self) -> LogicName
     {
-        let base_name_index = LogicName::iter().position(|name| self.base_name==name);
-        return LogicName::RMingle3ModalLogic(base_name_index.unwrap_or_default());
+        let base_name_index = LogicName::iter().position(|name| self.base_name==name).unwrap();
+        return LogicName::RMingle3ModalLogic(base_name_index as BaseLogicNameIndex);
     }
 
     fn as_any(&self) -> &dyn Any { self }
@@ -65,12 +65,13 @@ impl Logic for RMingle3ModalLogic
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        //todo invent problems
+        let modality = Rc::new(self.get_modality());
         return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
-            Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-            Box::new(RMingle3ImplicationRules {}),
+            Box::new(ModalLogicRules::new(modality.clone())),
+            Box::new(RMingle3ImplicationRules::new(modality)),
+            Box::new(GenericBiImplyAsConjunctionRule {}),
         ]
     }
 }
@@ -81,8 +82,8 @@ impl RMingle3ModalLogic
     {
         return Modality
         {
-            is_possibility_applicable: |_, _, _| { true },
-            is_necessity_applicable: |_, _, _| { true },
+            is_possibility_applicable: |_, _, _| true,
+            is_necessity_applicable: |_, _, _| true,
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_reflexive { graph.add_missing_reflexive_vertices() }
@@ -93,11 +94,25 @@ impl RMingle3ModalLogic
     }
 }
 
-struct RMingle3ImplicationRules {}
+struct RMingle3ImplicationRules
+{
+    modality : Rc<Modality<RMingle3ModalLogic>>
+}
+
+impl RMingle3ImplicationRules
+{
+    fn new(modality : Rc<Modality<RMingle3ModalLogic>>) -> RMingle3ImplicationRules
+    {
+        return RMingle3ImplicationRules { modality };
+    }
+}
+
 impl LogicRule for RMingle3ImplicationRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
+        self.modality.initialize_graph_if_needed(factory);
+
         return match &node.formula
         {
             Imply(box p, box q, extras) if extras.sign == Plus =>
@@ -163,24 +178,6 @@ impl LogicRule for RMingle3ImplicationRules
                 let non_q_node = factory.new_node(non_q);
 
                 return Some(ProofSubtree::with_left_right_nodes(p_node, non_q_node));
-            }
-
-            BiImply(box p, box q, extras) =>
-            {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
-                let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone()).with_sign(Plus);
-                let q_imply_p = Imply(bx!(q), bx!(p), extras.clone()).with_sign(Plus);
-
-                let conjunction = And(bx!(p_imply_q), bx!(q_imply_p), FormulaExtras
-                {
-                    possible_world: extras.possible_world,
-                    is_hidden: true, sign: Plus
-                });
-
-                let conjunction_node = factory.new_node(conjunction);
-                return Some(ProofSubtree::with_middle_node(conjunction_node));
             }
 
             _ => None

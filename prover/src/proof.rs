@@ -10,7 +10,7 @@ use crate::tree::subtree::ProofSubtree;
 pub mod decomposition_queue;
 mod initialize;
 
-const MAX_NUMBER_OF_POSSIBLE_WORLDS : usize = 20;
+const MAX_NUMBER_OF_POSSIBLE_WORLDS : usize = 25;
 
 pub struct ProofAlgorithm
 {

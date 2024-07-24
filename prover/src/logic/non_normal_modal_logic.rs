@@ -72,7 +72,7 @@ impl NonNormalModalLogic
                     node.formula.get_possible_world() == extras.possible_world &&
                     matches!(node.formula, Necessary(..) | StrictImply(..)))
             },
-            is_necessity_applicable: |_, _, _| { true },
+            is_necessity_applicable: |_, _, _| true,
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_reflexive { graph.add_missing_reflexive_vertices() }

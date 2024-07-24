@@ -69,8 +69,8 @@ impl TemporalModalLogic
     {
         return Modality
         {
-            is_possibility_applicable: |_, _, _| { true },
-            is_necessity_applicable: |_, _, _| { true },
+            is_possibility_applicable: |_, _, _| true,
+            is_necessity_applicable: |_, _, _| true,
             add_missing_graph_vertices: |logic, graph|
             {
                 if logic.is_extended
