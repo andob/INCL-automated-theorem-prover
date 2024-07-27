@@ -73,6 +73,19 @@ impl <'a> LogicalExpressionParserImpl<'a>
             }
         }
 
+        let quantifier_args = tokens.iter()
+            .filter(|token| token.type_id == TokenTypeID::Exists || token.type_id == TokenTypeID::ForAll)
+            .map(|token| token.value.replace("∃", "").replace("∀", "").trim().to_string())
+            .collect::<Vec<String>>();
+        for arg in &quantifier_args
+        {
+            let number_of_uses = quantifier_args.iter().filter(|another| *another==arg).count();
+            if number_of_uses > 1
+            {
+                return Err(anyhow!("Invalid syntax: {} is used more than once in quantifiers!", arg));
+            }
+        }
+
         let parser_input = LogicalExpressionParserInput { text:text.clone(), token_types, tokens };
         let mut parser_state = LogicalExpressionParserState { current_index:0 };
 

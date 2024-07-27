@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::rc::Rc;
 use box_macro::bx;
 use itertools::Itertools;
@@ -136,7 +137,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let comment_node = factory.new_node(comment);
 
         let mut output_nodes = vec![comment_node, p_in_forked_world_node];
-        self.reapply_necessity_after_possibility(factory, node, &mut output_nodes);
+        self.reapply_necessity_after_possibility(factory, node, forked_world, &mut output_nodes);
 
         return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
@@ -160,15 +161,17 @@ impl <LOGIC : Logic> Modality<LOGIC>
             already_iterated_possible_worlds: vec![],
         };
 
-        let output_nodes = self.reapply_necessity(factory, &mut reapplication_data);
+        let output_nodes = self.reapply_necessity(factory, &mut reapplication_data, PossibleWorld::zero());
         factory.push_necessity_reapplication(reapplication_data);
 
         return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
 
-    fn reapply_necessity_after_possibility(&self,
-        factory : &mut RuleApplyFactory, node : &ProofTreeNode,
-        output_nodes : &mut Vec<ProofTreeNode>)
+    fn reapply_necessity_after_possibility(
+        &self, factory : &mut RuleApplyFactory,
+        node : &ProofTreeNode, forked_world : PossibleWorld,
+        output_nodes : &mut Vec<ProofTreeNode>,
+    )
     {
         let mut reusable_necessity_reapplications : Vec<NecessityReapplicationData> = vec![];
 
@@ -179,7 +182,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
                 //necessary reapplication should happen only if we're on one of some specific paths
                 if reapplication.input_leafs_node_ids.iter().any(|leaf_node_id| path.contains_node_with_id(*leaf_node_id))
                 {
-                    let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication);
+                    let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication, forked_world);
                     output_nodes.append(&mut output_nodes_from_necessity);
                 }
             }
@@ -193,6 +196,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
     fn reapply_necessity(&self,
         factory : &mut RuleApplyFactory,
         reapplication_data : &mut NecessityReapplicationData,
+        forked_world : PossibleWorld,
     ) -> Vec<ProofTreeNode>
     {
         let mut output_nodes : Vec<ProofTreeNode> = vec![];
@@ -206,10 +210,22 @@ impl <LOGIC : Logic> Modality<LOGIC>
         {
             factory.set_spawner_node_id(Some(reapplication_data.input_spawner_node_id));
 
+            let mut possible_worlds_on_tree_path = factory.tree.get_all_paths().iter()
+                .filter(|path| reapplication_data.input_leafs_node_ids.iter()
+                    .any(|leaf_id| path.contains_node_with_id(*leaf_id)))
+                .flat_map(|path| path.nodes.iter()
+                    .map(|node| node.formula.get_possible_world()))
+                .collect::<HashSet<PossibleWorld>>();
+            possible_worlds_on_tree_path.insert(forked_world);
+
             for formula in output_formulas
             {
                 reapplication_data.already_iterated_possible_worlds.push(formula.get_possible_world());
-                output_nodes.push(factory.new_node(formula));
+
+                if possible_worlds_on_tree_path.contains(&formula.get_possible_world())
+                {
+                    output_nodes.push(factory.new_node(formula));
+                }
             }
         }
 

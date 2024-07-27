@@ -7,49 +7,49 @@
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "!!P ≡ P"
+        "conclusion": "¬¬P ≡ P"
       },
       {
         "id": "AndAssociativity",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "P & (Q & R) ≡ (P & Q) & R)"
+        "conclusion": "P ∧ (Q ∧ R) ≡ (P ∧ Q) ∧ R)"
       },
       {
         "id": "OrAssociativity",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "P | (Q | R) ≡ (P | Q) | R)"
+        "conclusion": "P ∨ (Q ∨ R) ≡ (P ∨ Q) ∨ R)"
       },
       {
         "id": "AndDistributivity",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "P & (Q | R) ≡ (P & Q) | (P & R)"
+        "conclusion": "P ∧ (Q ∨ R) ≡ (P ∧ Q) ∨ (P ∧ R)"
       },
       {
         "id": "OrDistributivity",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "P | (Q & R) ≡ (P | Q) & (P | R)"
+        "conclusion": "P ∨ (Q ∧ R) ≡ (P ∨ Q) ∧ (P ∨ R)"
       },
       {
         "id": "DeMorgan1",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "!(P | Q) ≡ !P & !Q"
+        "conclusion": "¬(P ∨ Q) ≡ ¬P ∧ ¬Q"
       },
       {
         "id": "DeMorgan2",
         "logic": "PropositionalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "!(P & Q) ≡ !P | !Q"
+        "conclusion": "¬(P ∧ Q) ≡ ¬P ∨ ¬Q"
       },
       {
         "id": "1.14.1.a",
@@ -407,7 +407,7 @@
         "logic": "NModalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "A⥽A"
+        "conclusion": "A ⥽ A"
       },
       {
         "id": "4.13.2.b",
