@@ -33,8 +33,13 @@ console_error_panic_hook = { version = "0.1.7", optional = true }
 # generic Result<> with any error
 anyhow = "1.0.79"
 
+# enum utils
+strum = "0.26.1"
+strum_macros = "0.26.1"
+
 # random number generator
 getrandom = { version = "0.2.15", features = ["js"] }
 
-# web API bindings
-web-sys = { version = "0.3.69", features = ["Window", "Performance"] }
+# JSON parser
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.118"

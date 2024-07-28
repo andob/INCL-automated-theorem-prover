@@ -1,5 +1,8 @@
 #!/bin/bash
 rm -rf ./pkg
 mkdir ./pkg
-cp ./src/index.html ./pkg/index.html
+
 wasm-pack build --release --target web
+
+cp ./pkg/target_wasm.js ./src
+cp ./pkg/target_wasm_bg.wasm ./src

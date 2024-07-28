@@ -1,13 +1,13 @@
 use regex::Regex;
 use anyhow::{Context, Result};
 use box_macro::bx;
-use strum_macros::Display;
+use strum_macros::{Display, EnumIter};
 use substring::Substring;
 use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
-#[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
+#[derive(Eq, PartialEq, Hash, Clone, Copy, EnumIter, Display)]
 pub enum TokenTypeID
 {
     Exists, ForAll,

@@ -4,3 +4,5 @@ Cargo.lock
 bin/
 pkg/
 wasm-pack.log
+src/target_wasm.js
+src/target_wasm_bg.wasm

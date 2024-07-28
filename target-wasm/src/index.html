@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>INCL Automated Theorem Prover</title>
+
     <script type="module" src="target_wasm.js"></script>
-    <script type="module">
-        import init, { test_solve_all_problems } from './target_wasm.js';
-        (async () =>
-        {
-            await init();
-            test_solve_all_problems();
-        })();
-    </script>
+    <script type="module" src="app.js"></script>
 </head>
+<body>
+
+</body>
 </html>

@@ -5,7 +5,7 @@ use std::ffi::CString;
 use std::io::Write;
 use std::path::Path;
 use std::rc::Rc;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
 use prover::{codeloc, logic};
