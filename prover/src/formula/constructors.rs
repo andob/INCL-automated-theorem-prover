@@ -75,6 +75,7 @@ impl PredicateArgument
         {
             type_name: name,
             instance_name: None,
+            is_free: false,
         }
     }
 }

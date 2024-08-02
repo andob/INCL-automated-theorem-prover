@@ -7,6 +7,8 @@ use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
+pub const QUANTIFIER_ANY_KEYWORD : &str = "any";
+
 #[derive(Eq, PartialEq, Hash, Clone, Copy, EnumIter, Display)]
 pub enum TokenTypeID
 {
@@ -35,7 +37,17 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    return Formula::Exists(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras);
+                    let mut predicate_arg = predicate_args[0].clone();
+
+                    if let Formula::Atomic(atomic_name, _) = &args[0] && *atomic_name == QUANTIFIER_ANY_KEYWORD
+                    {
+                        //this is a free variable. convert from "∃x(any)" to "∃x:any(any)"
+                        predicate_arg.instance_name = Some(predicate_arg.type_name.clone());
+                        predicate_arg.type_name = QUANTIFIER_ANY_KEYWORD.to_string();
+                        predicate_arg.is_free = true;
+                    }
+
+                    return Formula::Exists(predicate_arg, bx!(args[0].clone()), formula_extras);
                 },
             },
 

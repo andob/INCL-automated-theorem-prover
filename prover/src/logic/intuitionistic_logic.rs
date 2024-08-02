@@ -29,8 +29,8 @@ impl Logic for IntuitionisticLogic
         return vec!
         [
             TokenTypeID::AtomicWithoutArgs,
-            TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or, TokenTypeID::Imply,
+            TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
         ]
     }

@@ -1,4 +1,5 @@
 use std::any::Any;
+
 use box_macro::bx;
 use crate::formula::Formula::{Exists, ForAll, Non};
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -52,7 +53,7 @@ impl LogicRule for QuantifierRules
     {
         return match &node.formula
         {
-            Non(box Exists(x, box p, _), extras) =>
+            Non(box Exists(x, box p, _), extras) if !x.is_free =>
             {
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
@@ -70,7 +71,7 @@ impl LogicRule for QuantifierRules
                 return Some(ProofSubtree::with_middle_node(exists_non_p_node));
             }
 
-            Exists(x, box p, extras) =>
+            Exists(x, box p, extras) if !x.is_free =>
             {
                 let instantiated_p = p.instantiated(factory, x, extras);
                 let instantiated_p_node = factory.new_node(instantiated_p);

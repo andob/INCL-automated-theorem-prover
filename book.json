@@ -124,6 +124,18 @@
     ]
   },
   {
+    "name": "First order logic",
+    "problems": [
+      {
+        "id": "Socrates",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x(Human[x] ⊃ Mortal[x])", "∃Socrates(any)", "Human[Socrates]" ],
+        "conclusion": "Mortal[Socrates]"
+      }
+    ]
+  },
+  {
     "name": "Basic normal modal logic",
     "problems": [
       {

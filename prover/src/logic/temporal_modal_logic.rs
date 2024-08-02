@@ -47,8 +47,8 @@ impl Logic for TemporalModalLogic
             TokenTypeID::AtomicWithoutArgs,
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
             TokenTypeID::Imply, TokenTypeID::BiImply,
-            TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::InPast, TokenTypeID::InFuture,
+            TokenTypeID::Necessary, TokenTypeID::Possible,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
         ]
     }

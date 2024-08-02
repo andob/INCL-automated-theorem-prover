@@ -66,6 +66,7 @@ pub struct PredicateArguments
 #[derive(Eq, PartialEq, Hash, Clone)]
 pub struct PredicateArgument
 {
-    pub type_name : String, //instance types eg: x,y,z,...
-    pub instance_name : Option<String>, //instances eg: a,b,c,...
+    pub type_name : String, //variables eg: x,y,z
+    pub instance_name : Option<String>, //variable instances eg: a,b,c
+    pub is_free : bool, //is a free variable?
 }

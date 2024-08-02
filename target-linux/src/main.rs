@@ -35,7 +35,7 @@ fn main() -> Result<()>
     else if args.len() == 2
     {
         FormulaFormatOptions::DEFAULT_NOTATIONS.with(|default_notations|
-            { *(default_notations.borrow_mut()) = OperatorNotations::ComputerScienceNotations });
+            { *(default_notations.borrow_mut()) = OperatorNotations::SoftwareDevelopmentNotations });
 
         let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;

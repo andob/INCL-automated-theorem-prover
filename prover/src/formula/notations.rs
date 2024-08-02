@@ -6,7 +6,7 @@ pub enum OperatorNotations
 {
     BookNotations,
     CommonMathNotations,
-    ComputerScienceNotations,
+    SoftwareDevelopmentNotations,
 }
 
 impl OperatorNotations
@@ -57,7 +57,7 @@ impl OperatorNotations
                 }
             }
 
-            OperatorNotations::ComputerScienceNotations =>
+            OperatorNotations::SoftwareDevelopmentNotations =>
             {
                 match token_type_id
                 {
