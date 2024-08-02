@@ -227,6 +227,7 @@ function render_modality_graph(json)
 {
     if (incl.should_skip_rendering_modality_graph(json.problem.logic))
     {
+        cytoscape({ container: window.containers.modality_graph_container });
         return;
     }
 
@@ -438,7 +439,9 @@ function update_problem_input_area(problem, proof_tree)
         proof_status_label.innerText = 'PROVED!';
     else proof_status_label.innerText = 'NOT PROVED!';
 
-    operator_notations_select.options.selectedIndex = incl.get_operator_notations().indexOf(window.operator_notations);
+    operator_notations_select.options.selectedIndex = Math.max(0,
+        incl.get_operator_notations().indexOf(window.operator_notations));
+
     logics_select.options.selectedIndex = incl.get_logics().indexOf(problem.logic);
 
     update_on_screen_keyboard(problem.logic);
