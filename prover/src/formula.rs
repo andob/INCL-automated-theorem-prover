@@ -45,7 +45,7 @@ pub struct FormulaExtras
     pub sign : Sign,
 }
 
-#[derive(Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub struct PossibleWorld
 {
     pub index : i8

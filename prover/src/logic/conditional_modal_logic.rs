@@ -1,5 +1,5 @@
 use std::any::Any;
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{And, Conditional, Necessary, Non, Possible};
@@ -182,12 +182,12 @@ impl LogicRule for ConditionalModalLogicRules
                 let reflexive_vertices = factory.modality_graph.vertices.iter()
                     .filter(|vertex| vertex.from == vertex.to)
                     .map(|vertex| vertex.clone())
-                    .collect::<HashSet<GraphVertex>>();
+                    .collect::<BTreeSet<GraphVertex>>();
 
                 let vertices_with_right_tag = factory.modality_graph.vertices_tags.iter()
                     .filter(|(_vertex, tag)| *tag == p_as_string)
                     .map(|(vertex, _tag)| vertex.clone())
-                    .collect::<HashSet<GraphVertex>>();
+                    .collect::<BTreeSet<GraphVertex>>();
 
                 let old_graph_vertices = factory.modality_graph.vertices.clone();
                 let mut new_graph_vertices = reflexive_vertices;

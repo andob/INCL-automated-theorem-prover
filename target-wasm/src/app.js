@@ -271,6 +271,7 @@ function render_modality_graph(json)
                     'curve-style': 'bezier',
                     'text-valign': 'center',
                     'text-halign': 'center',
+                    'color': 'white',
                     'label': 'data(text)',
                     'width': 1.0,
                 }

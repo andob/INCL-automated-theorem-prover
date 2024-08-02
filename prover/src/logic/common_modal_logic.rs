@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use std::rc::Rc;
 use box_macro::bx;
 use itertools::Itertools;
@@ -215,7 +215,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
                     .any(|leaf_id| path.contains_node_with_id(*leaf_id)))
                 .flat_map(|path| path.nodes.iter()
                     .map(|node| node.formula.get_possible_world()))
-                .collect::<HashSet<PossibleWorld>>();
+                .collect::<BTreeSet<PossibleWorld>>();
             possible_worlds_on_tree_path.insert(forked_world);
 
             for formula in output_formulas

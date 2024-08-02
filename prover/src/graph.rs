@@ -1,15 +1,15 @@
 pub mod to_json;
 mod missing_vertices;
 
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use std::fmt::{Display, Formatter};
 use crate::formula::PossibleWorld;
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 
 pub struct Graph
 {
-    pub nodes : HashSet<PossibleWorld>,
-    pub vertices : HashSet<GraphVertex>,
+    pub nodes : BTreeSet<PossibleWorld>,
+    pub vertices : BTreeSet<GraphVertex>,
     pub vertices_tags : Vec<(GraphVertex, String)>,
     pub necessity_reapplications : Vec<NecessityReapplicationData>,
     log_line_formatter : Box<dyn Fn(&GraphVertex) -> String>,
@@ -28,8 +28,8 @@ impl Graph
     {
         return Graph
         {
-            nodes: HashSet::new(),
-            vertices: HashSet::new(),
+            nodes: BTreeSet::new(),
+            vertices: BTreeSet::new(),
             vertices_tags: vec![],
             necessity_reapplications: vec![],
             log_line_formatter: default_log_line_formatter!(),
@@ -70,7 +70,7 @@ impl Graph
     }
 }
 
-#[derive(Eq, PartialEq, Hash, Clone)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone)]
 pub struct GraphVertex
 {
     pub from : PossibleWorld,

@@ -2,6 +2,7 @@
 rm -rf ./pkg
 mkdir ./pkg
 
+set -e #fail on first error
 wasm-pack build --release --target web
 
 cp ./pkg/target_wasm.js ./src
