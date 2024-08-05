@@ -1,51 +1,13 @@
-use box_macro::bx;
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
-use crate::logic::rule_apply_factory::RuleApplyFactory;
+use std::collections::BTreeSet;
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 
-pub mod predicate_arg_instantiation;
 mod extras_in_world;
 mod extras_with_sign;
 mod extras_with_is_hidden;
 
 impl Formula
 {
-    pub fn instantiated(&self, factory : &mut RuleApplyFactory, x : &PredicateArgument, extras : &FormulaExtras) -> Formula
-    {
-        let mut instantiated_box = |p : &Box<Formula>| bx!(p.instantiated(factory, x, extras));
-
-        return match self
-        {
-            Atomic(p, old_extras) =>
-            {
-                let new_extras = AtomicFormulaExtras
-                {
-                    predicate_args: old_extras.predicate_args.instantiated(factory, x),
-                    possible_world: extras.possible_world,
-                    is_hidden: old_extras.is_hidden,
-                    sign: old_extras.sign,
-                };
-
-                return Atomic(p.clone(), new_extras);
-            }
-
-            Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
-            And(p, q, _) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Or(p, q, _) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Imply(p, q, _) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            BiImply(p, q, _) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            StrictImply(p, q, _) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
-            ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
-            Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
-            Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
-            InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
-            InFuture(p, _) => { InFuture(instantiated_box(p), extras.clone()) }
-            Comment(payload) => { Comment(payload.clone()) }
-        }
-    }
-
     pub fn in_world(&self, possible_world : PossibleWorld) -> Formula
     {
         return match self
@@ -60,6 +22,7 @@ impl Formula
             Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.in_world(possible_world)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.in_world(possible_world)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.in_world(possible_world)) }
+            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.in_world(possible_world)) }
             Possible(p, extras) => { Possible(p.clone(), extras.in_world(possible_world)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.in_world(possible_world)) }
             InPast(p, extras) => { InPast(p.clone(), extras.in_world(possible_world)) }
@@ -82,6 +45,7 @@ impl Formula
             Conditional(_, _, extras) => { extras.possible_world }
             Exists(_, _, extras) => { extras.possible_world }
             ForAll(_, _, extras) => { extras.possible_world }
+            Equals(_, _, extras) => { extras.possible_world }
             Possible(_, extras) => { extras.possible_world }
             Necessary(_, extras) => { extras.possible_world }
             InPast(_, extras) => { extras.possible_world }
@@ -104,6 +68,7 @@ impl Formula
             Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.with_sign(sign)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_sign(sign)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_sign(sign)) }
+            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.with_sign(sign)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_sign(sign)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_sign(sign)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_sign(sign)) }
@@ -126,6 +91,7 @@ impl Formula
             Conditional(_, _, extras) => { extras.sign }
             Exists(_, _, extras) => { extras.sign }
             ForAll(_, _, extras) => { extras.sign }
+            Equals(_, _, extras) => { extras.sign }
             Possible(_, extras) => { extras.sign }
             Necessary(_, extras) => { extras.sign }
             InPast(_, extras) => { extras.sign }
@@ -148,6 +114,7 @@ impl Formula
             Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.with_is_hidden(is_hidden)) }
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
+            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.with_is_hidden(is_hidden)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_is_hidden(is_hidden)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_is_hidden(is_hidden)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_is_hidden(is_hidden)) }
@@ -170,11 +137,136 @@ impl Formula
             Conditional(_, _, extras) => { extras.is_hidden }
             Exists(_, _, extras) => { extras.is_hidden }
             ForAll(_, _, extras) => { extras.is_hidden }
+            Equals(_, _, extras) => { extras.is_hidden }
             Possible(_, extras) => { extras.is_hidden }
             Necessary(_, extras) => { extras.is_hidden }
             InPast(_, extras) => { extras.is_hidden }
             InFuture(_, extras) => { extras.is_hidden }
             Comment(_) => { false }
+        }
+    }
+
+    pub fn binded(&self, x : &PredicateArgument, binding_name : String, extras : &FormulaExtras) -> Formula
+    {
+        let object_name_factory : Box<dyn Fn() -> String> = Box::new(move || binding_name.clone());
+        return self.instantiated(x, &object_name_factory, extras);
+    }
+
+    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> Formula
+    {
+        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiated(x, &object_name_factory, extras));
+
+        return match self
+        {
+            Atomic(p, old_extras) =>
+            {
+                let new_extras = AtomicFormulaExtras
+                {
+                    predicate_args: old_extras.predicate_args.instantiated(x, &object_name_factory),
+                    possible_world: extras.possible_world,
+                    is_hidden: old_extras.is_hidden,
+                    sign: old_extras.sign,
+                };
+
+                return Atomic(p.clone(), new_extras);
+            }
+
+            Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
+            And(p, q, _) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Or(p, q, _) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Imply(p, q, _) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            BiImply(p, q, _) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            StrictImply(p, q, _) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
+            ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
+            Equals(x, y, _) => { Equals(x.clone(), y.clone(), extras.clone()) }
+            Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
+            Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
+            InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
+            InFuture(p, _) => { InFuture(instantiated_box(p), extras.clone()) }
+            Comment(payload) => { Comment(payload.clone()) }
+        }
+    }
+
+    pub fn get_predicate_arguments_of_atomic(&self) -> Option<PredicateArguments>
+    {
+        let mut get_predicate_arguments_of_atomic_from_tuple = |(p, q) : (&Formula, &Formula)|
+            p.get_predicate_arguments_of_atomic().or_else(|| q.get_predicate_arguments_of_atomic());
+
+        return match self
+        {
+            Atomic(_, extras) => { Some(extras.predicate_args.clone()) }
+            Non(p, _) => { p.get_predicate_arguments_of_atomic() }
+            And(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            Or(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            Imply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            BiImply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            StrictImply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            Conditional(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
+            Exists(_, p, _) => { p.get_predicate_arguments_of_atomic() }
+            ForAll(_, p, _) => { p.get_predicate_arguments_of_atomic() }
+            Equals(_, _, _) => { None }
+            Possible(p, _) => { p.get_predicate_arguments_of_atomic() }
+            Necessary(p, _) => { p.get_predicate_arguments_of_atomic() }
+            InPast(p, _) => { p.get_predicate_arguments_of_atomic() }
+            InFuture(p, _) => { p.get_predicate_arguments_of_atomic() }
+            Comment(_) => { None }
+        }
+    }
+
+    pub fn get_all_predicate_arguments(&self) -> BTreeSet<PredicateArgument>
+    {
+        let mut output : BTreeSet<PredicateArgument> = BTreeSet::new();
+        self.get_all_predicate_arguments_recursively(&mut output);
+        return output;
+    }
+
+    fn get_all_predicate_arguments_recursively(&self, output : &mut BTreeSet<PredicateArgument>)
+    {
+        let mut get_all_predicate_arguments_recursively_from_tuple = |(p, q) : (&Formula, &Formula)|
+        {
+            p.get_all_predicate_arguments_recursively(output);
+            q.get_all_predicate_arguments_recursively(output);
+        };
+
+        match self
+        {
+            Atomic(_, extras) =>
+            {
+                for predicate_arg in extras.predicate_args.iter()
+                {
+                    if !output.contains(predicate_arg)
+                    {
+                        output.insert(predicate_arg.clone());
+                    }
+                }
+            }
+
+            Exists(x, p, _) =>
+            {
+                output.insert(x.clone());
+                p.get_all_predicate_arguments_recursively(output);
+            }
+            ForAll(x, p, _) =>
+            {
+                output.insert(x.clone());
+                p.get_all_predicate_arguments_recursively(output);
+            }
+
+            Non(box p, _) => { p.get_all_predicate_arguments_recursively(output); }
+            And(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            Or(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            Imply(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            BiImply(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            StrictImply(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            Conditional(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
+            Possible(box p, _) => { p.get_all_predicate_arguments_recursively(output) }
+            Necessary(box p, _) => { p.get_all_predicate_arguments_recursively(output) }
+            InPast(box p, _) => { p.get_all_predicate_arguments_recursively(output) }
+            InFuture(box p, _) => { p.get_all_predicate_arguments_recursively(output) }
+
+            _ => {}
         }
     }
 }

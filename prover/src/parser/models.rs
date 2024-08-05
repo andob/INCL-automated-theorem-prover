@@ -1,3 +1,4 @@
+use anyhow::Result;
 use std::fmt::{Display, Formatter};
 use regex::Regex;
 use strum_macros::Display;
@@ -54,5 +55,5 @@ pub struct TokenType
     pub regex : Regex,
     pub category : TokenCategory,
     pub precedence : OperatorPrecedence,
-    pub to_formula : fn(String, Vec<Formula>) -> Formula,
+    pub to_formula : fn(String, Vec<Formula>) -> Result<Formula>,
 }

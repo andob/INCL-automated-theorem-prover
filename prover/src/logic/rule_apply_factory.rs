@@ -31,11 +31,6 @@ impl <'a> RuleApplyFactory<'a>
         return self.tree_node_factory.new_node_with_subnode(formula, child);
     }
 
-    pub fn new_predicate_argument_instance_name(&mut self) -> String
-    {
-        return self.tree_node_factory.new_predicate_argument_instance_name();
-    }
-
     pub fn set_spawner_node_id(&mut self, spawner_node_id_option : Option<ProofTreeNodeID>)
     {
         if let Some(spawner_node_id) = spawner_node_id_option &&

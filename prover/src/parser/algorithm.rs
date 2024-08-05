@@ -34,12 +34,12 @@ struct LogicalExpressionParserImpl<'a>
     state : &'a mut LogicalExpressionParserState,
 }
 
-const REPLACE_TABLE : [&str; 48] =
+const REPLACE_TABLE : [&str; 50] =
 [
     "∀", " ∀", "∃", " ∃", "(", " ( ", ")", " ) ", ", ", ",", "◇", " ◇ ", "□", " □ ",
     "~", " ~ ", "¬", " ¬ ", "!", " ! ", "&", " & ", "∧", " ∧ ", "|", " | ", "∨", " ∨ ",
     "→", " → ", "⇒", " ⇒ ", "⊃", " ⊃ ", "⥽", " ⥽ ", "↔", " ↔ ", "⇔", " ⇔ ", "≡", " ≡ ",
-    "ᶠ", " ᶠ ", "ᵖ", " ᵖ ", "ᐅ", " ᐅ "
+    "ᶠ", " ᶠ ", "ᵖ", " ᵖ ", "ᐅ", " ᐅ ", "=", " = "
 ];
 
 impl <'a> LogicalExpressionParserImpl<'a>
@@ -70,19 +70,6 @@ impl <'a> LogicalExpressionParserImpl<'a>
             if !legal_syntax_in_this_logic.contains(&token.type_id)
             {
                 return Err(anyhow!("Invalid syntax: {} operation is not available in {}!", token.type_id, logic.get_name()));
-            }
-        }
-
-        let quantifier_args = tokens.iter()
-            .filter(|token| token.type_id == TokenTypeID::Exists || token.type_id == TokenTypeID::ForAll)
-            .map(|token| token.value.replace("∃", "").replace("∀", "").trim().to_string())
-            .collect::<Vec<String>>();
-        for arg in &quantifier_args
-        {
-            let number_of_uses = quantifier_args.iter().filter(|another| *another==arg).count();
-            if number_of_uses > 1
-            {
-                return Err(anyhow!("Invalid syntax: {} is used more than once in quantifiers!", arg));
             }
         }
 
@@ -136,7 +123,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
                 let to_formula = self.token_type_at_index(index_before_eat).to_formula;
                 let name = self.token_at_index(index_before_eat).value.clone();
-                node = to_formula(name, vec![left, right]);
+                node = to_formula(name, vec![left, right])?;
             }
             else if self.current_token_type().category == TokenCategory::UnaryOperation
             {
@@ -145,7 +132,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
                 let to_formula = self.token_type_at_index(index_before_eat).to_formula;
                 let name = self.token_at_index(index_before_eat).value.clone();
-                node = to_formula(name, vec![node]);
+                node = to_formula(name, vec![node])?;
             }
             else { break; }
         }
@@ -164,7 +151,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
             let to_formula = self.token_type_at_index(index_before_eat).to_formula;
             let name = self.token_at_index(index_before_eat).value.clone();
-            return Ok(to_formula(name, vec![]));
+            return to_formula(name, vec![]);
         }
 
         if self.current_token_type().category == TokenCategory::UnaryOperation
@@ -181,7 +168,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
                 let to_formula = self.token_type_at_index(index_before_eat).to_formula;
                 let name = self.token_at_index(index_before_eat).value.clone();
-                return Ok(to_formula(name, vec![operand]));
+                return to_formula(name, vec![operand]);
             }
 
             return Err(anyhow!("Expected an expression at word index {}, but the text ended", self.state.current_index));

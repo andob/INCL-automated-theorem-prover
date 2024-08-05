@@ -133,6 +133,11 @@ impl Formula
                 return format!("∀{}({})", x, p.to_string_impl(options, index+1));
             }
 
+            Formula::Equals(x, y, _) =>
+            {
+                return format!("{} = {}", x, y);
+            }
+
             Formula::Possible(p, _) =>
             {
                 return format!("◇{}", p.to_string_impl(options, index+1));
@@ -177,9 +182,9 @@ impl Display for PredicateArgument
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        return if let Some(instance_name) = &self.instance_name
-            { write!(f, "{}:{}", instance_name, self.type_name) }
-        else { write!(f, "{}", self.type_name) };
+        return if self.is_instantiated()
+            { write!(f, "{}:{}", self.object_name, self.variable_name) }
+        else { write!(f, "{}", self.variable_name) };
     }
 }
 

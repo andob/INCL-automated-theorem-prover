@@ -1,8 +1,13 @@
-use std::any::Any;
+mod exists;
+mod forall;
+mod identity;
 
+use std::any::Any;
 use box_macro::bx;
 use crate::formula::Formula::{Exists, ForAll, Non};
 use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::first_order_logic::exists::apply_existential_quantification;
+use crate::logic::first_order_logic::forall::apply_for_all_quantification;
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -29,7 +34,7 @@ impl Logic for FirstOrderLogic
         [
             TokenTypeID::AtomicWithArgs,
             TokenTypeID::AtomicWithoutArgs,
-            TokenTypeID::Exists, TokenTypeID::ForAll,
+            TokenTypeID::Exists, TokenTypeID::ForAll, TokenTypeID::Equals,
             TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
             TokenTypeID::Imply, TokenTypeID::BiImply,
             TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
@@ -53,7 +58,7 @@ impl LogicRule for QuantifierRules
     {
         return match &node.formula
         {
-            Non(box Exists(x, box p, _), extras) if !x.is_free =>
+            Non(box Exists(x, box p, _), extras) =>
             {
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
@@ -71,20 +76,14 @@ impl LogicRule for QuantifierRules
                 return Some(ProofSubtree::with_middle_node(exists_non_p_node));
             }
 
-            Exists(x, box p, extras) if !x.is_free =>
+            Exists(x, box p, extras) =>
             {
-                let instantiated_p = p.instantiated(factory, x, extras);
-                let instantiated_p_node = factory.new_node(instantiated_p);
-
-                return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+                return apply_existential_quantification(factory, node, x, p, extras);
             }
 
             ForAll(x, box p, extras) =>
             {
-                let instantiated_p = p.instantiated(factory, x, extras);
-                let instantiated_p_node = factory.new_node(instantiated_p);
-
-                return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+                return apply_for_all_quantification(factory, node, x, p, extras);
             }
 
             _ => None,

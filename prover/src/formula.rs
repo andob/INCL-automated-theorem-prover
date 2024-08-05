@@ -21,6 +21,7 @@ pub enum Formula
     Conditional(Box<Formula>, Box<Formula>, FormulaExtras),
     Exists(PredicateArgument, Box<Formula>, FormulaExtras),
     ForAll(PredicateArgument, Box<Formula>, FormulaExtras),
+    Equals(PredicateArgument, PredicateArgument, FormulaExtras),
     Possible(Box<Formula>, FormulaExtras),
     Necessary(Box<Formula>, FormulaExtras),
     InPast(Box<Formula>, FormulaExtras),
@@ -63,10 +64,9 @@ pub struct PredicateArguments
     args : Vec<PredicateArgument>
 }
 
-#[derive(Eq, PartialEq, Hash, Clone)]
+#[derive(Eq, Hash, Ord, PartialOrd, Clone)]
 pub struct PredicateArgument
 {
-    pub type_name : String, //variables eg: x,y,z
-    pub instance_name : Option<String>, //variable instances eg: a,b,c
-    pub is_free : bool, //is a free variable?
+    pub variable_name : String, //variable name eg: x,y,z
+    pub object_name : String, //object name eg: a,b,c
 }

@@ -1,5 +1,5 @@
 use regex::Regex;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use box_macro::bx;
 use strum_macros::{Display, EnumIter};
 use substring::Substring;
@@ -7,12 +7,10 @@ use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
-pub const QUANTIFIER_ANY_KEYWORD : &str = "any";
-
 #[derive(Eq, PartialEq, Hash, Clone, Copy, EnumIter, Display)]
 pub enum TokenTypeID
 {
-    Exists, ForAll,
+    Exists, ForAll, Equals,
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
     Possible, Necessary, InPast, InFuture,
@@ -37,17 +35,8 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    let mut predicate_arg = predicate_args[0].clone();
-
-                    if let Formula::Atomic(atomic_name, _) = &args[0] && *atomic_name == QUANTIFIER_ANY_KEYWORD
-                    {
-                        //this is a free variable. convert from "∃x(any)" to "∃x:any(any)"
-                        predicate_arg.instance_name = Some(predicate_arg.type_name.clone());
-                        predicate_arg.type_name = QUANTIFIER_ANY_KEYWORD.to_string();
-                        predicate_arg.is_free = true;
-                    }
-
-                    return Formula::Exists(predicate_arg, bx!(args[0].clone()), formula_extras);
+                    Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
+                    return Ok(Formula::Exists(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -62,15 +51,30 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    return Formula::ForAll(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras);
+                    Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
+                    return Ok(Formula::ForAll(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
                 },
+            },
+
+            TokenType
+            {
+                //matches equals: =
+                id: TokenTypeID::Equals,
+                regex: Regex::new(r"=").context(codeloc!())?,
+                category: TokenCategory::BinaryOperation,
+                precedence: OperatorPrecedence::Low,
+                to_formula: |_,args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    return Ok(Formula::Or(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
+                }
             },
 
             TokenType
             {
                 //matches atomic formulas with args: P(x,y), ...
                 id: TokenTypeID::AtomicWithArgs,
-                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z_,]+\]").context(codeloc!())?,
+                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z0-9_,]+\]").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name, args|
@@ -78,7 +82,7 @@ impl TokenType
                     let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_string();
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     let formula_extras = AtomicFormulaExtras::new(predicate_args);
-                    return Formula::Atomic(atomic_name, formula_extras);
+                    return Ok(Formula::Atomic(atomic_name, formula_extras));
                 },
             },
 
@@ -92,7 +96,7 @@ impl TokenType
                 to_formula: |name,_|
                 {
                     let formula_extras = AtomicFormulaExtras::empty();
-                    return Formula::Atomic(name, formula_extras);
+                    return Ok(Formula::Atomic(name, formula_extras));
                 },
             },
 
@@ -106,7 +110,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Non(bx!(args[0].clone()), formula_extras);
+                    return Ok(Formula::Non(bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -120,7 +124,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Possible(bx!(args[0].clone()), formula_extras);
+                    return Ok(Formula::Possible(bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -134,7 +138,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Necessary(bx!(args[0].clone()), formula_extras);
+                    return Ok(Formula::Necessary(bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -148,7 +152,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::InPast(bx!(args[0].clone()), formula_extras);
+                    return Ok(Formula::InPast(bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -162,7 +166,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::InFuture(bx!(args[0].clone()), formula_extras);
+                    return Ok(Formula::InFuture(bx!(args[0].clone()), formula_extras));
                 },
             },
 
@@ -176,7 +180,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::And(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::And(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -190,7 +194,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Or(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::Or(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -204,7 +208,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Imply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::Imply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -218,7 +222,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::BiImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::BiImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -232,7 +236,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::StrictImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::StrictImply(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -246,7 +250,7 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
-                    return Formula::Conditional(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras);
+                    return Ok(Formula::Conditional(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
                 }
             },
 
@@ -304,5 +308,16 @@ impl TokenType
         return PredicateArguments::new(input.split(",")
             .map(|token| PredicateArgument::new(token.trim().to_string()))
             .collect());
+    }
+
+    fn check_for_duplicate_quantifier_bindings(x : &PredicateArgument, p : &Formula) -> Result<()>
+    {
+        let regex = Regex::new(format!("(∃|∀){}(\\(| )", x.to_string()).as_str())?;
+        if regex.is_match(p.to_string().as_str())
+        {
+            return Err(anyhow!("Invalid syntax: {} is used more than once in quantifiers!", x.to_string()));
+        }
+
+        return Ok(());
     }
 }

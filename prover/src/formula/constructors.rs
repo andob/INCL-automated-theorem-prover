@@ -73,9 +73,8 @@ impl PredicateArgument
     {
         return PredicateArgument
         {
-            type_name: name,
-            instance_name: None,
-            is_free: false,
+            variable_name: name.to_string(),
+            object_name: name,
         }
     }
 }

@@ -98,4 +98,9 @@ impl DecompositionPriorityQueue
             _ => Priority::MostImportant,
         }
     }
+
+    fn should_node_be_reused(&self, node : &Box<ProofTreeNode>) -> bool
+    {
+        return matches!(&node.formula, ForAll(..));
+    }
 }

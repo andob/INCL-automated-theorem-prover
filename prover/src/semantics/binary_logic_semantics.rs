@@ -16,8 +16,6 @@ impl Semantics for BinaryLogicSemantics
 
     fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
     {
-        //todo this does not account for predicate arguments
-
         return match (p, q)
         {
             (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
@@ -31,7 +29,8 @@ impl Semantics for BinaryLogicSemantics
 
             => {
                 p_name == q_name &&
-                p.get_possible_world() == q.get_possible_world()
+                p.get_possible_world() == q.get_possible_world() &&
+                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
             (BiImply(box Atomic(n1, _), box Atomic(n2, _), _), Non(box BiImply(box Atomic(n3, _), box Atomic(n4, _), _), _)) |
@@ -39,7 +38,8 @@ impl Semantics for BinaryLogicSemantics
 
             => {
                 n1 == n3 && n2 == n4 &&
-                p.get_possible_world() == q.get_possible_world()
+                p.get_possible_world() == q.get_possible_world() &&
+                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
             _ => { false }

@@ -42,8 +42,6 @@ impl Semantics for ThreeValuedLogicSemantics
 
     fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
     {
-        //todo this does not account for predicate arguments
-
         for contradiction_behaviour in &self.contradiction_behaviours
         {
             let is_contradiction = match contradiction_behaviour
@@ -84,7 +82,8 @@ impl ThreeValuedLogicSemantics
             if p.get_sign() * q.get_sign() == Minus /* p/q is +/- or -/+ */ =>
             {
                 p_name == q_name &&
-                p.get_possible_world() == q.get_possible_world()
+                p.get_possible_world() == q.get_possible_world() &&
+                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
             _ => { false }
@@ -100,7 +99,8 @@ impl ThreeValuedLogicSemantics
             if p.get_sign() == Plus && q.get_sign() == Plus =>
             {
                 p_name == q_name &&
-                p.get_possible_world() == q.get_possible_world()
+                p.get_possible_world() == q.get_possible_world() &&
+                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
             _ => { false }
@@ -116,7 +116,8 @@ impl ThreeValuedLogicSemantics
             if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
                 p_name == q_name &&
-                p.get_possible_world() == q.get_possible_world()
+                p.get_possible_world() == q.get_possible_world() &&
+                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
             _ => { false }
