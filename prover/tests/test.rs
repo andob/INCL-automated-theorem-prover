@@ -43,6 +43,13 @@ fn test_proof_status()
 
             println!("\n{}\n{}\n{}", book_chapter.name, problem_id, proof_tree);
 
+            if problem_json.expected == "timeout" && !proof_tree.has_timeout
+            {
+                eprintln!("Expected problem {} to timeout but it did not!", problem_id);
+                assert!(proof_tree.has_timeout);
+                assert!(!proof_tree.is_proof_correct);
+            }
+
             if problem_json.expected == "proved" && !proof_tree.is_proof_correct
             {
                 eprintln!("Expected problem {} to be proved but it was not proved!", problem_id);

@@ -1,5 +1,5 @@
 use crate::formula::Formula;
-use crate::formula::Formula::{Atomic, Non};
+use crate::formula::Formula::{Atomic, Equals, Non};
 use crate::formula::Sign::{Minus, Plus};
 use crate::semantics::Semantics;
 
@@ -86,6 +86,13 @@ impl ThreeValuedLogicSemantics
                 p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
+            (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
+            (Non(box Equals(x, y, _), _), Equals(z, t, _))
+            if p.get_sign() * q.get_sign() == Minus /* p/q is +/- or -/+ */ =>
+            {
+                (x == z && y == t) || (x == t && y == z)
+            }
+
             _ => { false }
         }
     }
@@ -103,6 +110,13 @@ impl ThreeValuedLogicSemantics
                 p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
             }
 
+            (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
+            (Non(box Equals(x, y, _), _), Equals(z, t, _))
+            if p.get_sign() == Plus && q.get_sign() == Plus =>
+            {
+                (x == z && y == t) || (x == t && y == z)
+            }
+
             _ => { false }
         }
     }
@@ -118,6 +132,13 @@ impl ThreeValuedLogicSemantics
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
                 p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+            }
+
+            (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
+            (Non(box Equals(x, y, _), _), Equals(z, t, _))
+            if p.get_sign() == Minus && q.get_sign() == Minus =>
+            {
+                (x == z && y == t) || (x == t && y == z)
             }
 
             _ => { false }

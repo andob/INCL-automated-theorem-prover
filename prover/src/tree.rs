@@ -56,6 +56,11 @@ impl ProofTree
         return self.root_node.get_node_with_id(node_id);
     }
 
+    pub fn get_total_number_of_nodes(&self) -> usize
+    {
+        return 1 + self.root_node.get_total_number_of_nodes();
+    }
+
     pub fn check_for_contradictions(&mut self)
     {
         let mut number_of_contradictory_paths = 0usize;

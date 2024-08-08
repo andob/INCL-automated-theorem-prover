@@ -1,5 +1,5 @@
 use crate::graph::Graph;
-use crate::logic::LogicRule;
+use crate::logic::{LogicName, LogicRule};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
@@ -10,12 +10,14 @@ use crate::tree::subtree::ProofSubtree;
 pub mod decomposition_queue;
 mod initialize;
 
-const MAX_NUMBER_OF_POSSIBLE_WORLDS : usize = 25;
+const MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC : usize = 25;
+const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 110;
 
 pub struct ProofAlgorithm
 {
     proof_tree : ProofTree,
     decomposition_queue : DecompositionPriorityQueue,
+    logic_name : LogicName,
     logic_rules : Vec<Box<dyn LogicRule>>,
     node_factory : ProofTreeNodeFactory,
     modality_graph: Graph,
@@ -25,8 +27,10 @@ impl ProofAlgorithm
 {
     pub fn prove(mut self) -> ProofTree
     {
-        while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct
-                && self.modality_graph.nodes.len() < MAX_NUMBER_OF_POSSIBLE_WORLDS
+        //check for contradictions right in premises and non-conclusion
+        self.proof_tree.check_for_contradictions();
+
+        while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
             if let Some((node, mut subtree)) = self.consume_next_queue_node()
             {
@@ -38,7 +42,7 @@ impl ProofAlgorithm
             }
         }
 
-        self.proof_tree.has_timeout = self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS;
+        self.proof_tree.has_timeout = self.reached_timeout();
         self.proof_tree.modality_graph = self.modality_graph;
 
         return self.proof_tree;
@@ -67,5 +71,20 @@ impl ProofAlgorithm
         }
 
         return None;
+    }
+
+    fn reached_timeout(&self) -> bool
+    {
+        if self.logic_name.is_modal_logic()
+        {
+            return self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC;
+        }
+
+        if self.logic_name == LogicName::FirstOrderLogic
+        {
+            return self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC;
+        }
+
+        return false;
     }
 }

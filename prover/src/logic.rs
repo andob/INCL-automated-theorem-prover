@@ -137,7 +137,8 @@ impl LogicName
 {
     pub fn is_modal_logic(self) -> bool
     {
-        return self != LogicName::PropositionalLogic && self != LogicName::FirstOrderLogic;
+        return self != LogicName::PropositionalLogic && self != LogicName::FirstOrderLogic &&
+               self != LogicName::MinimalFirstDegreeEntailmentLogic;
     }
 
     pub fn is_non_normal_modal_logic(self) -> bool

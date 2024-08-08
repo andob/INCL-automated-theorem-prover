@@ -8,6 +8,7 @@ mod extras_with_is_hidden;
 
 impl Formula
 {
+    //todo refactor this to act similar to instantiated: attach world recursively
     pub fn in_world(&self, possible_world : PossibleWorld) -> Formula
     {
         return match self
@@ -171,6 +172,25 @@ impl Formula
                 return Atomic(p.clone(), new_extras);
             }
 
+            Equals(y, z, _) =>
+            {
+                if !y.is_instantiated() && y.variable_name == x.variable_name
+                {
+                    let mut instantiated_y = y.clone();
+                    instantiated_y.object_name = (*object_name_factory)();
+                    return Equals(instantiated_y, z.clone(), extras.clone());
+                }
+
+                if !z.is_instantiated() && z.variable_name == x.variable_name
+                {
+                    let mut instantiated_z = z.clone();
+                    instantiated_z.object_name = (*object_name_factory)();
+                    return Equals(y.clone(), instantiated_z, extras.clone());
+                }
+
+                return Equals(x.clone(), y.clone(), extras.clone());
+            }
+
             Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
             And(p, q, _) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
             Or(p, q, _) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
@@ -180,7 +200,6 @@ impl Formula
             Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
             Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
             ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
-            Equals(x, y, _) => { Equals(x.clone(), y.clone(), extras.clone()) }
             Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
             Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
             InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
@@ -267,6 +286,38 @@ impl Formula
             InFuture(box p, _) => { p.get_all_predicate_arguments_recursively(output) }
 
             _ => {}
+        }
+    }
+
+    pub fn contains_quantifier_with_argument(&self, y : &PredicateArgument) -> bool
+    {
+        return match self
+        {
+            Exists(x, box p, _) =>
+            {
+                return if x == y { true }
+                else { p.contains_quantifier_with_argument(y) }
+            }
+            ForAll(x, p, _) =>
+            {
+                return if x == y { true }
+                else { p.contains_quantifier_with_argument(y) }
+            }
+
+            Non(box p, _) => { p.contains_quantifier_with_argument(y) }
+            Possible(box p, _) => { p.contains_quantifier_with_argument(y) }
+            Necessary(box p, _) => { p.contains_quantifier_with_argument(y) }
+            InPast(box p, _) => { p.contains_quantifier_with_argument(y) }
+            InFuture(box p, _) => { p.contains_quantifier_with_argument(y) }
+
+            And(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+            Or(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+            Imply(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+            BiImply(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+            StrictImply(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+            Conditional(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
+
+            _ => { false }
         }
     }
 }

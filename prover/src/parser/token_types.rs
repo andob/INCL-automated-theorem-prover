@@ -5,6 +5,7 @@ use strum_macros::{Display, EnumIter};
 use substring::Substring;
 use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 
 #[derive(Eq, PartialEq, Hash, Clone, Copy, EnumIter, Display)]
@@ -62,11 +63,17 @@ impl TokenType
                 id: TokenTypeID::Equals,
                 regex: Regex::new(r"=").context(codeloc!())?,
                 category: TokenCategory::BinaryOperation,
-                precedence: OperatorPrecedence::Low,
+                precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args|
                 {
+                    let mut formula_format_options = FormulaFormatOptions::default();
+                    formula_format_options.should_show_possible_worlds = false;
+                    formula_format_options.should_show_sign = false;
+
+                    let left = PredicateArgument::new(args[0].to_string_with_options(&formula_format_options));
+                    let right = PredicateArgument::new(args[1].to_string_with_options(&formula_format_options));
                     let formula_extras = FormulaExtras::empty();
-                    return Ok(Formula::Or(bx!(args[0].clone()), bx!(args[1].clone()), formula_extras));
+                    return Ok(Formula::Equals(left, right, formula_extras));
                 }
             },
 

@@ -26,5 +26,12 @@
     "expected": "timeout",
     "premises": [ "¬P → ¬Q" ],
     "conclusion": "Q → P"
+  },
+  {
+    "id": "FirstOrderLogicTimeout",
+    "logic": "FirstOrderLogic",
+    "expected": "timeout",
+    "premises": [ "∃x(∀z S[x,z] ∧ ∀y(∀z S[y,z] ⊃ x = y))" ],
+    "conclusion": "∃x∃y(¬S[x,y] ∧ ¬S[y,x])"
   }
 ]

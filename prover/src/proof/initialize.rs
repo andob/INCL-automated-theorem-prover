@@ -21,12 +21,14 @@ impl ProofAlgorithm
 
         if problem.premises.is_empty()
         {
+            let logic_name = problem.logic.get_name();
             let logic_rules = problem.logic.get_rules();
             let proof_tree = ProofTree::new(problem, node_factory.clone(), non_conclusion_node);
 
-            return ProofAlgorithm { proof_tree, decomposition_queue, logic_rules, node_factory, modality_graph:Graph::new() };
+            return ProofAlgorithm { proof_tree, decomposition_queue, logic_name, logic_rules, node_factory, modality_graph:Graph::new() };
         }
 
+        let logic_name = problem.logic.get_name();
         let logic_rules = problem.logic.get_rules();
 
         let first_premise_node = node_factory.new_node(problem.premises[0].clone());
@@ -48,6 +50,6 @@ impl ProofAlgorithm
         let mut non_conclusion_subtree = ProofSubtree::with_middle_node(non_conclusion_node);
         proof_tree.append_subtree(&mut non_conclusion_subtree, first_premise_node_id);
 
-        return ProofAlgorithm { proof_tree, decomposition_queue, logic_rules, node_factory, modality_graph:Graph::new() };
+        return ProofAlgorithm { proof_tree, decomposition_queue, logic_name, logic_rules, node_factory, modality_graph:Graph::new() };
     }
 }

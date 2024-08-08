@@ -37,7 +37,10 @@ fn apply_for_all_quantification_impl(
         .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
         .collect::<BTreeSet<PredicateArgument>>();
 
-    let free_args = get_free_args(&all_formulas_on_path, &all_args_on_path);
+    let free_args = all_args_on_path.iter()
+        .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
+            .any(|formula| formula.contains_quantifier_with_argument(y)))
+        .collect::<BTreeSet<&PredicateArgument>>();
 
     let instantiated_xs = all_args_on_path.iter()
         .filter(|a| a.is_instantiated() && a.variable_name == x.variable_name)
@@ -59,8 +62,10 @@ fn apply_for_all_quantification_impl(
     if has_no_equivalent(x)
     {
         let ys_with_no_equivalent = all_args_on_path.iter()
-            .filter(|y| x!=*y && !y.is_instantiated() && has_no_equivalent(y))
+            .filter(|y| !y.is_instantiated() && has_no_equivalent(y))
+            .filter(|y| x.variable_name != y.variable_name)
             .collect::<BTreeSet<&PredicateArgument>>();
+
         for y in ys_with_no_equivalent
         {
             let instantiated_ys = all_args_on_path.iter()
@@ -77,28 +82,65 @@ fn apply_for_all_quantification_impl(
     }
     else
     {
-        //todo iterate equivalent types
-        //todo don't forget about equality transitivity
+        let equivalent_ys = equivalences.iter()
+            .filter(|(y, z)| x==*y || x==*z)
+            .map(|(y, z)| if x==*y { *z } else { *y })
+            .collect::<BTreeSet<&PredicateArgument>>();
+
+        for y in equivalent_ys
+        {
+            let instantiated_ys = all_args_on_path.iter()
+                .filter(|a| a.variable_name == y.variable_name)
+                .filter(|a| free_args.contains(a) || a.is_instantiated())
+                .collect::<BTreeSet<&PredicateArgument>>();
+            for instantiated_y in instantiated_ys
+            {
+                let binded_p = p.binded(x, instantiated_y.object_name.clone(), extras);
+                let binded_p_node = factory.new_node(binded_p);
+                output_nodes.push(binded_p_node);
+            }
+        }
     }
 }
 
-fn get_free_args(
-    all_formulas_on_path : &Vec<Formula>,
-    all_args_on_path : &BTreeSet<PredicateArgument>,
-) -> BTreeSet<PredicateArgument>
+pub fn generate_possible_atomic_contradictory_formulas(
+    factory : &mut RuleApplyFactory, node : &ProofTreeNode,
+    p : &Formula, extras : &FormulaExtras,
+) -> Vec<Formula>
 {
-    let does_not_appear_in_exists_or_for_all = |y : &PredicateArgument|
-        !all_formulas_on_path.iter().any(|formula|
-        {
-            match formula
-            {
-                Formula::Exists(x, _, _) => { x.variable_name == y.variable_name }
-                Formula::ForAll(x, _, _) => { x.variable_name == y.variable_name }
-                _ => { false }
-            }
-        });
+    let mut formulas : Vec<Formula> = vec![];
 
-    return all_args_on_path.iter()
-        .filter(|y| does_not_appear_in_exists_or_for_all(y))
-        .map(|y| y.clone()).collect();
+    let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
+        .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
+        .collect::<Vec<Formula>>();
+
+    let all_args_on_path = all_formulas_on_path.iter()
+        .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
+        .collect::<BTreeSet<PredicateArgument>>();
+
+    let free_args = all_args_on_path.iter()
+        .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
+            .any(|formula| formula.contains_quantifier_with_argument(y)))
+        .collect::<BTreeSet<&PredicateArgument>>();
+
+    let predicate_args = p.get_predicate_arguments_of_atomic().unwrap();
+    for predicate_arg in predicate_args.iter()
+    {
+        if predicate_arg.is_instantiated()
+        {
+            let equivalences = all_formulas_on_path.iter()
+                .filter_map(|formula| if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None })
+                .filter(|(x, y)| *x==predicate_arg && free_args.contains(y))
+                .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
+
+            for (_, equivalent_predicate_arg) in equivalences
+            {
+                let object_name = equivalent_predicate_arg.object_name.clone();
+                let binded_p = p.binded(predicate_arg, object_name, extras);
+                formulas.push(binded_p);
+            }
+        }
+    }
+
+    return formulas;
 }

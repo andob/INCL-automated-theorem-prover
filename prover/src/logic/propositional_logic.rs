@@ -50,6 +50,7 @@ impl LogicRule for PropositionalLogicRules
         {
             Non(box Non(box p, _), extras) =>
             {
+                //todo bad design. in_world should be called only on possible and necessary and should attach world recursively
                 let p = p.in_world(extras.possible_world);
                 let p_node = factory.new_node(p);
 

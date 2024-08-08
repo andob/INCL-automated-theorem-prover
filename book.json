@@ -127,25 +127,186 @@
     "name": "First order logic",
     "problems": [
       {
-        "id": "EXISTS.TEST1",
-        "logic": "FirstOrderLogic",
-        "expected": "not-proved",
-        "premises": [],
-        "conclusion": "~∃x ∃y ∃z ∃x1 ∃x2 ∃x3 ∃x4 ∃x5 ∃x6 ∃x7 ∃x8 ∃x9 ∃x10 ∃x11 ∃x12 ∃x13 ∃x14 ∃x15 ∃x16 ∃x17 ∃x18 ∃x19 ∃x20 ∃x21 ∃x22 ∃x23 ∃x24 ∃x25 ∃x26 ∃x27 ∃x28 ∃x29 ∃x30 W[x,y,z,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x30]"
-      },
-      {
-        "id": "EXISTS.TEST2",
-        "logic": "FirstOrderLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "∃x ∀y P[x,y] ≡ ∃x ∀y P[x,y]"
-      },
-      {
         "id": "Socrates",
         "logic": "FirstOrderLogic",
         "expected": "proved",
         "premises": [ "∀x(Human[x] ⊃ Mortal[x])", "Human[Socrates]" ],
         "conclusion": "Mortal[Socrates]"
+      },
+      {
+        "id": "12.13.2.a",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "∀y P[y]"
+      },
+      {
+        "id": "12.13.2.b",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∃x∃y S[x,y]" ],
+        "conclusion": "∃y∃x S[x,y]"
+      },
+      {
+        "id": "12.13.2.c",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "¬∃x A" ],
+        "conclusion": "∀x(A ⊃ B)"
+      },
+      {
+        "id": "12.13.2.d",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x C" ],
+        "conclusion": "∀x(A ⊃ (B ∨ C))"
+      },
+      {
+        "id": "12.13.3.a",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∀x(P[x] ⊃ Q[x])", "∃x ¬P[x]" ],
+        "conclusion": "∀x ¬Q[x]"
+      },
+      {
+        "id": "12.13.3.b",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ⊃ ∃y S[x,y])" ],
+        "conclusion": "∀x ∃y(P[x] ⊃ S[x,y])"
+      },
+      {
+        "id": "12.13.3.c",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∀x P[x] ⊃ ∀y Q[y]" ],
+        "conclusion": "∀x(P[x] ⊃ ∀y Q[y])"
+      },
+      {
+        "id": "12.13.3.d",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∃x(P[x] ⊃ ∀y Q[y])" ],
+        "conclusion": "∃x P[x] ⊃ ∀y Q[y]"
+      },
+      {
+        "id": "12.13.3.e",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∀x ∃y S[x,y]" ],
+        "conclusion": "∃x S[x,x]"
+      },
+      {
+        "id": "12.13.3.f",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∃x ¬∃y S[x,y]" ],
+        "conclusion": "∃x  ∀y S[x,y]"
+      },
+      {
+        "id": "12.13.5.a",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "a = a"
+      },
+      {
+        "id": "12.13.5.b",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "a = b" ],
+        "conclusion": "b = a"
+      },
+      {
+        "id": "12.13.5.c",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "a = b", "b = c" ],
+        "conclusion": "a = c"
+      },
+      {
+        "id": "12.13.5.c'",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "q=w", "w=e", "e=r", "r=t", "t=y", "y=u", "u=i", "i=o", "o=p" ],
+        "conclusion": "p=q"
+      },
+      {
+        "id": "12.13.5.d",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∀x(x = a ⊃ P[x])" ],
+        "conclusion": "P[a]"
+      },
+      {
+        "id": "12.13.5.e",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "P[a]" ],
+        "conclusion": "∀x(x = a ⊃ P[x])"
+      },
+      {
+        "id": "12.13.5.f",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∃x(x = a ∧ P[x])" ],
+        "conclusion": "P[a]"
+      },
+      {
+        "id": "12.13.5.g",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "P[a]" ],
+        "conclusion": "∃x(x = a ∧ P[x])"
+      },
+      {
+        "id": "12.13.6.a",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∃x P[x]", "∀x∀y((P[x] ∧ P[y]) ⊃ x = y)" ],
+        "conclusion": "∃x(P[x] ∧ ∀y(P[y] ⊃ x = y))"
+      },
+      {
+        "id": "12.13.6.b",
+        "logic": "FirstOrderLogic",
+        "expected": "not-proved",
+        "premises": [ "∀x(P[x] ⊃ (x = a ∨ x = b))", "a = b ∨ b = c ∨ c = a" ],
+        "conclusion": "P[c]"
+      },
+      {
+        "id": "12.13.6.c",
+        "logic": "FirstOrderLogic",
+        "expected": "timeout",
+        "premises": [ "∃x(P[x] ∧ ∀y(P[y] ⊃ x = y))" ],
+        "conclusion": "∃x∀y(P[y] ≡ x = y)"
+      },
+      {
+        "id": "12.13.6.d",
+        "logic": "FirstOrderLogic",
+        "expected": "timeout",
+        "premises": [ "∃x(∀z S[x,z] ∧ ∀y(∀z S[y,z] ⊃ x = y))" ],
+        "conclusion": "∃x∃y(¬S[x,y] ∧ ¬S[y,x])"
+      },
+      {
+        "id": "12.13.6.e",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [ "∃x∀y(P[y] ≡ x = y)" ],
+        "conclusion": "∃x P[x] ∧ ∀x∀y((P[x] ∧ P[y]) ⊃ x = y)"
+      },
+      {
+        "id": "12.13.8.a",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∃x(∃y P[y] ⊃ P[x])"
+      },
+      {
+        "id": "12.13.8.b",
+        "logic": "FirstOrderLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∃x(P[x] ⊃ ∀y P[y])"
       }
     ]
   },
@@ -419,7 +580,7 @@
       {
         "id": "3.10.6.d",
         "logic": "S4ModalLogic",
-        "expected": "not-proved",
+        "expected": "timeout",
         "premises": [],
         "conclusion": "◇□p ≡ □◇p"
       }
@@ -922,7 +1083,7 @@
       {
         "id": "6.10.4.b",
         "logic": "IntuitionisticLogic",
-        "expected": "not-proved",
+        "expected": "timeout",
         "premises": [ "¬P → P" ],
         "conclusion": "P"
       },
@@ -936,7 +1097,7 @@
       {
         "id": "6.10.4.d",
         "logic": "IntuitionisticLogic",
-        "expected": "not-proved",
+        "expected": "timeout",
         "premises": [ "¬P → ¬Q" ],
         "conclusion": "Q → P"
       },

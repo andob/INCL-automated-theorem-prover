@@ -1,6 +1,6 @@
 use box_macro::bx;
 use crate::formula::{Formula, FormulaExtras};
-use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply};
+use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply, Equals};
 use crate::semantics::Semantics;
 
 pub struct BinaryLogicSemantics {}
@@ -26,8 +26,8 @@ impl Semantics for BinaryLogicSemantics
 
             (Necessary(box Atomic(p_name, _), _), Non(box Necessary(box Atomic(q_name, _), _), _)) |
             (Non(box Necessary(box Atomic(p_name, _), _), _), Necessary(box Atomic(q_name, _), _))
-
-            => {
+            =>
+            {
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
                 p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
@@ -35,11 +35,18 @@ impl Semantics for BinaryLogicSemantics
 
             (BiImply(box Atomic(n1, _), box Atomic(n2, _), _), Non(box BiImply(box Atomic(n3, _), box Atomic(n4, _), _), _)) |
             (Non(box BiImply(box Atomic(n1, _), box Atomic(n2, _), _), _), BiImply(box Atomic(n3, _), box Atomic(n4, _), _))
-
-            => {
+            =>
+            {
                 n1 == n3 && n2 == n4 &&
                 p.get_possible_world() == q.get_possible_world() &&
                 p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+            }
+
+            (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
+            (Non(box Equals(x, y, _), _), Equals(z, t, _))
+            =>
+            {
+                (x == z && y == t) || (x == t && y == z)
             }
 
             _ => { false }
