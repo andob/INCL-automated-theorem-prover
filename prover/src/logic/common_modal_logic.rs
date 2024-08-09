@@ -13,7 +13,7 @@ use crate::tree::subtree::ProofSubtree;
 
 pub struct ModalLogicRules<LOGIC : Logic>
 {
-    modality : Rc<Modality<LOGIC>>,
+    modality : Rc<Modality<LOGIC>>
 }
 
 impl <LOGIC : Logic> ModalLogicRules<LOGIC>
@@ -37,6 +37,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let necessary_non_p = Necessary(bx!(non_p), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
+
                 return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
@@ -45,10 +46,11 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let possible_non_p = Possible(bx!(non_p), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
+
                 return Some(ProofSubtree::with_middle_node(possible_non_p_node));
             }
 
-            Possible(p, extras) =>
+            Possible(box p, extras) =>
             {
                 return self.modality.apply_possibility(factory, node, p, extras);
             }

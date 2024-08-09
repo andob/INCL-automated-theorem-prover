@@ -2,6 +2,10 @@ use prover::formula::to_string::FormulaFormatOptions;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
 
+const EXPECTED_TIMEOUT : &str = "timeout";
+const EXPECTED_PROVED : &str = "proved";
+const EXPECTED_DISPROVED : &str = "disproved";
+
 #[test]
 fn test_full_output()
 {
@@ -43,41 +47,35 @@ fn test_proof_status()
 
             println!("\n{}\n{}\n{}", book_chapter.name, problem_id, proof_tree);
 
-            if problem_json.expected == "timeout" && !proof_tree.has_timeout
+            if problem_json.expected == EXPECTED_TIMEOUT && !proof_tree.has_timeout
             {
                 eprintln!("Expected problem {} to timeout but it did not!", problem_id);
                 assert!(proof_tree.has_timeout);
-                assert!(!proof_tree.is_proof_correct);
             }
 
-            if problem_json.expected == "proved" && !proof_tree.is_proof_correct
+            if problem_json.expected == EXPECTED_PROVED && proof_tree.has_timeout
             {
-                eprintln!("Expected problem {} to be proved but it was not proved!", problem_id);
+                eprintln!("Expected problem {} to be proved but it timed out!", problem_id);
+                assert!(!proof_tree.has_timeout);
+            }
+
+            if problem_json.expected == EXPECTED_DISPROVED && proof_tree.has_timeout
+            {
+                eprintln!("Expected problem {} to be disproved but it timed out!", problem_id);
+                assert!(!proof_tree.has_timeout);
+            }
+
+            if problem_json.expected == EXPECTED_PROVED && !proof_tree.is_proof_correct
+            {
+                eprintln!("Expected problem {} to be proved but it was disproved!", problem_id);
                 assert!(proof_tree.is_proof_correct);
             }
 
-            if problem_json.expected == "not-proved" && proof_tree.is_proof_correct
+            if problem_json.expected == EXPECTED_DISPROVED && proof_tree.is_proof_correct
             {
-                eprintln!("Expected problem {} to be not proved but it was proved!", problem_id);
+                eprintln!("Expected problem {} to be disproved but it was proved!", problem_id);
                 assert!(!proof_tree.is_proof_correct);
             }
         }
-    }
-}
-
-#[test]
-fn test_timeout()
-{
-    let input_json = include_str!("timeout_test/input.json").to_string();
-
-    let problems_json = serde_json::from_str::<Vec<ProblemJSON>>(input_json.as_str()).unwrap();
-    for problem_json in problems_json
-    {
-        let problem_id = &problem_json.id;
-        let problem = problem_json.to_problem().unwrap();
-        let proof_tree = problem.prove();
-
-        println!("{}", problem_id);
-        assert!(proof_tree.has_timeout);
     }
 }

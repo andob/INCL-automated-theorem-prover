@@ -1,6 +1,7 @@
 mod exists;
 mod forall;
 mod identity;
+pub mod modal_logic;
 
 use std::any::Any;
 use std::collections::BTreeSet;
@@ -108,6 +109,7 @@ impl LogicRule for QuantifierRules
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 let equalities = factory.tree.get_paths_that_goes_through_node(node).into_iter()
                     .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
+                    .filter(|formula| formula.get_possible_world() == extras.possible_world)
                     .filter_map(|formula| if let Equals(x, y, _)
                         = formula { Some((x.clone(), y.clone())) } else { None })
                     .collect::<BTreeSet<(PredicateArgument, PredicateArgument)>>();

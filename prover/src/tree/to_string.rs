@@ -2,6 +2,7 @@ use std::fmt::{Display, Formatter};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::ProofTree;
+use crate::tree::subtree::ProofSubtree;
 
 impl Display for ProofTree
 {
@@ -25,6 +26,21 @@ impl ProofTree
         self.root_node.print_as_subtree_to_string(options, &mut output_string, 0);
 
         return output_string;
+    }
+}
+
+impl Display for ProofSubtree
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        let mut output_string = String::from("Subtree\n");
+
+        let options = FormulaFormatOptions::default();
+        if let Some(left) = &self.left { left.print_as_subtree_to_string(&options, &mut output_string, 1) }
+        if let Some(middle) = &self.middle { middle.print_as_subtree_to_string(&options, &mut output_string, 1) }
+        if let Some(right) = &self.right { right.print_as_subtree_to_string(&options, &mut output_string, 1) }
+
+        return write!(f, "{}", output_string);
     }
 }
 

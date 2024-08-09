@@ -16,14 +16,14 @@
   {
     "id": "1.14.1.c",
     "logic": "PropositionalLogic",
-    "expected": "not-proved",
+    "expected": "disproved",
     "premises": [],
     "conclusion": "((p ⊃ q) ⊃ q) ⊃ q"
   },
   {
     "id": "1.14.1.d",
     "logic": "PropositionalLogic",
-    "expected": "not-proved",
+    "expected": "disproved",
     "premises": [],
     "conclusion": "((p ⊃ q) ∧ (¬p ⊃ q)) ⊃ ¬p"
   },
@@ -44,7 +44,7 @@
   {
     "id": "1.14.1.g",
     "logic": "PropositionalLogic",
-    "expected": "not-proved",
+    "expected": "disproved",
     "premises": [ "p ∧ (¬r ∨ s)", "¬(q ⊃ s)" ],
     "conclusion": "r"
   },
@@ -58,7 +58,7 @@
   {
     "id": "1.14.1.i",
     "logic": "PropositionalLogic",
-    "expected": "not-proved",
+    "expected": "disproved",
     "premises": [ "¬(p ∧ ¬q) ∨ r", "p ⊃ (r ≡ s)" ],
     "conclusion": "p ≡ q"
   },

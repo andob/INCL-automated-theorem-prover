@@ -13,6 +13,7 @@ use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
 use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLogic;
 use crate::logic::first_order_logic::FirstOrderLogic;
+use crate::logic::first_order_logic::modal_logic::FirstOrderModalLogic;
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
@@ -65,6 +66,7 @@ pub enum LogicName
 {
     PropositionalLogic, FirstOrderLogic,
     KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
+    CKModalLogic, CTModalLogic, CBModalLogic, CS4ModalLogic, CS5ModalLogic,
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
     KTemporalModalLogic, KTemporalExtModalLogic,
     ConditionalModalLogic, ConditionalExtModalLogic,
@@ -94,6 +96,11 @@ impl Display for LogicName
             LogicName::BModalLogic => { write!(f, "{}", "BModalLogic") }
             LogicName::S4ModalLogic => { write!(f, "{}", "S4ModalLogic") }
             LogicName::S5ModalLogic => { write!(f, "{}", "S5ModalLogic") }
+            LogicName::CKModalLogic => { write!(f, "{}", "CKFirstOrderModalLogic") }
+            LogicName::CTModalLogic => { write!(f, "{}", "CTFirstOrderModalLogic") }
+            LogicName::CBModalLogic => { write!(f, "{}", "CBFirstOrderModalLogic") }
+            LogicName::CS4ModalLogic => { write!(f, "{}", "CS4FirstOrderModalLogic") }
+            LogicName::CS5ModalLogic => { write!(f, "{}", "CS5FirstOrderModalLogic") }
             LogicName::NModalLogic => { write!(f, "{}", "NModalLogic") }
             LogicName::S2ModalLogic => { write!(f, "{}", "S2ModalLogic") }
             LogicName::S3ModalLogic => { write!(f, "{}", "S3ModalLogic") }
@@ -137,8 +144,9 @@ impl LogicName
 {
     pub fn is_modal_logic(self) -> bool
     {
-        return self != LogicName::PropositionalLogic && self != LogicName::FirstOrderLogic &&
-               self != LogicName::MinimalFirstDegreeEntailmentLogic;
+        return self != LogicName::PropositionalLogic &&
+            self != LogicName::FirstOrderLogic &&
+            self != LogicName::MinimalFirstDegreeEntailmentLogic;
     }
 
     pub fn is_non_normal_modal_logic(self) -> bool
@@ -176,6 +184,12 @@ impl LogicFactory
             Rc::new(NormalModalLogic::B()),
             Rc::new(NormalModalLogic::S4()),
             Rc::new(NormalModalLogic::S5()),
+
+            Rc::new(FirstOrderModalLogic::CK()),
+            Rc::new(FirstOrderModalLogic::CT()),
+            Rc::new(FirstOrderModalLogic::CB()),
+            Rc::new(FirstOrderModalLogic::CS4()),
+            Rc::new(FirstOrderModalLogic::CS5()),
 
             Rc::new(NonNormalModalLogic::N()),
             Rc::new(NonNormalModalLogic::S2()),

@@ -65,6 +65,25 @@ impl ProofSubtree
         if let Some(middle) = &mut self.middle { middle.attach_new_ids(node_factory); }
         if let Some(right) = &mut self.right { right.attach_new_ids(node_factory); }
     }
+
+    pub fn append(&mut self, another_subtree : ProofSubtree)
+    {
+        let root_nodes_refs = [&mut self.left, &mut self.middle, &mut self.right];
+        for root_node_ref in root_nodes_refs
+        {
+            if let Some(ref mut root_node) = root_node_ref
+            {
+                let leaf_node_ids = root_node.get_all_paths().iter()
+                    .map(|path| path.get_leaf_node_id())
+                    .collect::<Vec<ProofTreeNodeID>>();
+
+                for leaf_node_id in leaf_node_ids
+                {
+                    root_node.append_subtree_recursive(&another_subtree, leaf_node_id);
+                }
+            }
+        }
+    }
 }
 
 impl ProofTree
@@ -108,20 +127,9 @@ impl ProofTreeNode
         }
         else
         {
-            if let Some(left) = &mut self.left
-            {
-                left.append_subtree_recursive(subtree, node_id);
-            }
-
-            if let Some(middle) = &mut self.middle
-            {
-                middle.append_subtree_recursive(subtree, node_id);
-            }
-
-            if let Some(right) = &mut self.right
-            {
-                right.append_subtree_recursive(subtree, node_id);
-            }
+            if let Some(left) = &mut self.left { left.append_subtree_recursive(subtree, node_id); }
+            if let Some(middle) = &mut self.middle { middle.append_subtree_recursive(subtree, node_id); }
+            if let Some(right) = &mut self.right { right.append_subtree_recursive(subtree, node_id); }
         }
     }
 

@@ -52,12 +52,13 @@ fn apply_for_all_quantification_impl(
         output_nodes.push(binded_p_node);
     }
 
-    let equivalences = all_formulas_on_path.iter().filter_map(|formula|
-        if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None }
-    ).collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
+    let equivalences = all_formulas_on_path.iter()
+        .filter(|formula| formula.get_possible_world() == extras.possible_world)
+        .filter_map(|formula| if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None })
+        .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
-    let has_no_equivalent = |x : &PredicateArgument|
-        !equivalences.iter().any(|(y, z)| x==*y || x==*z);
+    let has_no_equivalent = |x : &PredicateArgument| !equivalences.iter()
+        .any(|(y, z)| x.variable_name == *y.variable_name || x.variable_name == *z.variable_name);
 
     if has_no_equivalent(x)
     {
@@ -83,8 +84,8 @@ fn apply_for_all_quantification_impl(
     else
     {
         let equivalent_ys = equivalences.iter()
-            .filter(|(y, z)| x==*y || x==*z)
-            .map(|(y, z)| if x==*y { *z } else { *y })
+            .filter(|(y, z)| x.variable_name == *y.variable_name || x.variable_name == *z.variable_name)
+            .map(|(y, z)| if x.variable_name == *y.variable_name { *z } else { *y })
             .collect::<BTreeSet<&PredicateArgument>>();
 
         for y in equivalent_ys
@@ -129,6 +130,7 @@ pub fn generate_possible_atomic_contradictory_formulas(
         if predicate_arg.is_instantiated()
         {
             let equivalences = all_formulas_on_path.iter()
+                .filter(|formula| formula.get_possible_world() == extras.possible_world)
                 .filter_map(|formula| if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None })
                 .filter(|(x, y)| *x==predicate_arg && free_args.contains(y))
                 .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();

@@ -11,7 +11,7 @@ pub mod decomposition_queue;
 mod initialize;
 
 const MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC : usize = 25;
-const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 110;
+const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 250;
 
 pub struct ProofAlgorithm
 {
