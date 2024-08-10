@@ -59,11 +59,9 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
         {
             And(box p, box q, extras) if extras.sign == Plus =>
             {
-                let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(q.get_sign() * Plus);
                 let plus_q_node = factory.new_node(plus_q);
 
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(p.get_sign() * Plus);
                 let plus_p_node = factory.new_node_with_subnode(plus_p, plus_q_node);
 
@@ -72,11 +70,9 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             And(box p, box q, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(p.get_sign() * Minus);
                 let minus_p_node = factory.new_node(minus_p);
 
-                let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(q.get_sign() * Minus);
                 let minus_q_node = factory.new_node(minus_q);
 
@@ -85,11 +81,9 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             Or(box p, box q, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(p.get_sign() * Plus);
                 let plus_p_node = factory.new_node(plus_p);
 
-                let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(q.get_sign() * Plus);
                 let plus_q_node = factory.new_node(plus_q);
 
@@ -98,11 +92,9 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             Or(box p, box q, extras) if extras.sign == Minus =>
             {
-                let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(q.get_sign() * Minus);
                 let minus_q_node = factory.new_node(minus_q);
 
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(p.get_sign() * Minus);
                 let minus_p_node = factory.new_node_with_subnode(minus_p, minus_q_node);
 
@@ -111,10 +103,8 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             Non(box Or(box p, box q, _), extras) =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-                let non_p = Non(bx!(p), extras.clone()).with_sign(Plus);
-                let non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
+                let non_p = Non(bx!(p.clone()), extras.clone()).with_sign(Plus);
+                let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
 
                 let non_p_and_non_q = And(bx!(non_p), bx!(non_q), extras.clone()).with_sign(extras.sign);
                 let non_p_and_non_q_node = factory.new_node(non_p_and_non_q);
@@ -124,10 +114,8 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             Non(box And(box p, box q, _), extras) =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-                let non_p = Non(bx!(p), extras.clone()).with_sign(Plus);
-                let non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
+                let non_p = Non(bx!(p.clone()), extras.clone()).with_sign(Plus);
+                let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
 
                 let non_p_or_non_q = Or(bx!(non_p), bx!(non_q), extras.clone()).with_sign(extras.sign);
                 let non_p_or_non_q_node = factory.new_node(non_p_or_non_q);
@@ -137,10 +125,10 @@ impl LogicRule for FirstDegreeEntailmentLogicRules
 
             Non(box Non(box p, _), extras) =>
             {
-                let p = p.in_world(extras.possible_world).with_sign(extras.sign);
-                let p_node = factory.new_node(p);
+                let signed_p = p.with_sign(extras.sign);
+                let signed_p_node = factory.new_node(signed_p.clone());
 
-                return Some(ProofSubtree::with_middle_node(p_node));
+                return Some(ProofSubtree::with_middle_node(signed_p_node));
             }
 
             _ => None

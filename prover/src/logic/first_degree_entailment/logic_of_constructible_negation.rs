@@ -112,9 +112,6 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
         {
             Imply(box p, box q, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let minus_p = p.with_sign(Minus);
                 let plus_q = q.with_sign(Plus);
                 let minus_p_or_plus_q = Or(bx!(minus_p), bx!(plus_q), extras.with_sign(Plus).with_is_hidden(true));
@@ -124,9 +121,6 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
 
             Imply(box p, box q, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let plus_p = p.with_sign(Plus);
                 let minus_q = q.with_sign(Minus);
                 let plus_p_and_minus_q = And(bx!(plus_p), bx!(minus_q), extras.with_sign(Plus).with_is_hidden(true));
@@ -137,11 +131,8 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             Non(box Imply(box p, box q, _), extras)
             if extras.sign == Plus && self.logic_name != LogicName::WLogicOfConstructibleNegation =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let plus_p = p.with_sign(Plus);
-                let plus_non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
+                let plus_non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
                 let plus_p_and_plus_non_q = And(bx!(plus_p), bx!(plus_non_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_possibility(factory, node, &plus_p_and_plus_non_q, extras);
@@ -150,11 +141,8 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             Non(box Imply(box p, box q, _), extras)
             if extras.sign == Minus && self.logic_name != LogicName::WLogicOfConstructibleNegation =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let minus_p = p.with_sign(Minus);
-                let minus_non_q = Non(bx!(q), extras.clone()).with_sign(Minus);
+                let minus_non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Minus);
                 let minus_p_or_minus_non_q = Or(bx!(minus_p), bx!(minus_non_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_necessity(factory, node, &minus_p_or_minus_non_q, extras);
@@ -163,10 +151,8 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             Non(box Imply(box p, box q, _), extras)
             if self.logic_name == LogicName::WLogicOfConstructibleNegation =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-                let non_q = Non(bx!(q), extras.clone());
-                let p_imply_non_q = Imply(bx!(p), bx!(non_q), extras.clone());
+                let non_q = Non(bx!(q.clone()), extras.clone());
+                let p_imply_non_q = Imply(bx!(p.clone()), bx!(non_q), extras.clone());
                 let p_imply_non_q_node = factory.new_node(p_imply_non_q);
 
                 return Some(ProofSubtree::with_middle_node(p_imply_non_q_node));

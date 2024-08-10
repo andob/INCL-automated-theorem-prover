@@ -86,11 +86,9 @@ impl LogicRule for IntuitionisticLogicRules
         {
             And(box p, box q, extras) if extras.sign == Plus =>
             {
-                let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(q.get_sign() * Plus);
                 let plus_q_node = factory.new_node(plus_q);
 
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(p.get_sign() * Plus);
                 let plus_p_node = factory.new_node_with_subnode(plus_p, plus_q_node);
 
@@ -99,11 +97,9 @@ impl LogicRule for IntuitionisticLogicRules
 
             And(box p, box q, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(p.get_sign() * Minus);
                 let minus_p_node = factory.new_node(minus_p);
 
-                let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(q.get_sign() * Minus);
                 let minus_q_node = factory.new_node(minus_q);
 
@@ -112,11 +108,9 @@ impl LogicRule for IntuitionisticLogicRules
 
             Or(box p, box q, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(p.get_sign() * Plus);
                 let plus_p_node = factory.new_node(plus_p);
 
-                let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(q.get_sign() * Plus);
                 let plus_q_node = factory.new_node(plus_q);
 
@@ -125,11 +119,9 @@ impl LogicRule for IntuitionisticLogicRules
 
             Or(box p, box q, extras) if extras.sign == Minus =>
             {
-                let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(q.get_sign() * Minus);
                 let minus_q_node = factory.new_node(minus_q);
 
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(p.get_sign() * Minus);
                 let minus_p_node = factory.new_node_with_subnode(minus_p, minus_q_node);
 
@@ -138,12 +130,8 @@ impl LogicRule for IntuitionisticLogicRules
 
             Imply(box p, box q, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(Minus);
-
-                let q = q.in_world(extras.possible_world);
                 let plus_q = q.with_sign(Plus);
-
                 let minus_p_or_plus_q = Or(bx!(minus_p), bx!(plus_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_necessity(factory, node, &minus_p_or_plus_q, &extras);
@@ -151,12 +139,8 @@ impl LogicRule for IntuitionisticLogicRules
 
             Imply(box p, box q, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(Plus);
-
-                let q = q.in_world(extras.possible_world);
                 let minus_q = q.with_sign(Minus);
-
                 let plus_p_and_minus_q = And(bx!(plus_p), bx!(minus_q), extras.with_sign(Plus).with_is_hidden(true));
 
                 return self.modality.apply_possibility(factory, node, &plus_p_and_minus_q, &extras);
@@ -164,7 +148,6 @@ impl LogicRule for IntuitionisticLogicRules
 
             Non(box p, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let minus_p = p.with_sign(Minus);
 
                 return self.modality.apply_necessity(factory, node, &minus_p, extras);
@@ -172,7 +155,6 @@ impl LogicRule for IntuitionisticLogicRules
 
             Non(box p, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let plus_p = p.with_sign(Plus);
 
                 return self.modality.apply_possibility(factory, node, &plus_p, &extras);

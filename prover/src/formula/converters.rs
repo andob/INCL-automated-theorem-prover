@@ -1,4 +1,5 @@
 use std::collections::BTreeSet;
+use box_macro::bx;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 
@@ -8,26 +9,25 @@ mod extras_with_is_hidden;
 
 impl Formula
 {
-    //todo refactor this to act similar to instantiated: attach world recursively
-    pub fn in_world(&self, possible_world : PossibleWorld) -> Formula
+    pub fn in_world(&self, world : PossibleWorld) -> Formula
     {
         return match self
         {
-            Atomic(p, extras) => { Atomic(p.clone(), extras.in_world(possible_world)) }
-            Non(p, extras) => { Non(p.clone(), extras.in_world(possible_world)) }
-            And(p, q, extras) => { And(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            Or(p, q, extras) => { Or(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.in_world(possible_world)) }
-            Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.in_world(possible_world)) }
-            ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.in_world(possible_world)) }
-            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.in_world(possible_world)) }
-            Possible(p, extras) => { Possible(p.clone(), extras.in_world(possible_world)) }
-            Necessary(p, extras) => { Necessary(p.clone(), extras.in_world(possible_world)) }
-            InPast(p, extras) => { InPast(p.clone(), extras.in_world(possible_world)) }
-            InFuture(p, extras) => { InFuture(p.clone(), extras.in_world(possible_world)) }
+            Atomic(p, extras) => { Atomic(p.clone(), extras.in_world(world)) }
+            Non(p, extras) => { Non(bx!(p.in_world(world)), extras.in_world(world)) }
+            And(p, q, extras) => { And(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Or(p, q, extras) => { Or(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Imply(p, q, extras) => { Imply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            BiImply(p, q, extras) => { BiImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            StrictImply(p, q, extras) => { StrictImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Conditional(p, q, extras) => { Conditional(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Exists(x, p, extras) => { Exists(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
+            ForAll(x, p, extras) => { ForAll(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
+            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.in_world(world)) }
+            Possible(p, extras) => { Possible(bx!(p.in_world(world)), extras.in_world(world)) }
+            Necessary(p, extras) => { Necessary(bx!(p.in_world(world)), extras.in_world(world)) }
+            InPast(p, extras) => { InPast(bx!(p.in_world(world)), extras.in_world(world)) }
+            InFuture(p, extras) => { InFuture(bx!(p.in_world(world)), extras.in_world(world)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }

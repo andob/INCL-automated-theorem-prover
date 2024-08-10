@@ -12,11 +12,8 @@ impl GenericBiImplyAsConjunctionRule
 {
     fn build_generic_biimply_conjunction(&self, p : &Formula, q : &Formula, extras : &FormulaExtras) -> Formula
     {
-        let p = p.in_world(extras.possible_world);
-        let q = q.in_world(extras.possible_world);
-
         let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone()).with_sign(Plus);
-        let q_imply_p = Imply(bx!(q), bx!(p), extras.clone()).with_sign(Plus);
+        let q_imply_p = Imply(bx!(q.clone()), bx!(p.clone()), extras.clone()).with_sign(Plus);
 
         return And(bx!(p_imply_q), bx!(q_imply_p), extras.with_sign(Plus).with_is_hidden(true));
     }

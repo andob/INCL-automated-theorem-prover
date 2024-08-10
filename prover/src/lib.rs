@@ -10,12 +10,12 @@ use itertools::Itertools;
 use substring::Substring;
 
 pub mod parser;
-mod tree;
 pub mod formula;
 pub mod logic;
+pub mod problem;
+mod tree;
 mod proof;
 mod semantics;
-pub mod problem;
 mod graph;
 
 #[macro_export]

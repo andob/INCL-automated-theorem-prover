@@ -48,22 +48,17 @@ impl LogicRule for PropositionalLogicRules
     {
         return match &node.formula
         {
-            Non(box Non(box p, _), extras) =>
+            Non(box Non(box p, _), _) =>
             {
-                //todo bad design. in_world should be called only on possible and necessary and should attach world recursively
-                let p = p.in_world(extras.possible_world);
-                let p_node = factory.new_node(p);
+                let p_node = factory.new_node(p.clone());
 
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
 
-            And(box p, box q, extras) =>
+            And(box p, box q, _) =>
             {
-                let q = q.in_world(extras.possible_world);
-                let q_node = factory.new_node(q);
-
-                let p = p.in_world(extras.possible_world);
-                let p_node = factory.new_node_with_subnode(p, q_node);
+                let q_node = factory.new_node(q.clone());
+                let p_node = factory.new_node_with_subnode(p.clone(), q_node);
 
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
@@ -79,13 +74,10 @@ impl LogicRule for PropositionalLogicRules
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, non_q_node));
             }
 
-            Or(box p, box q, extras) =>
+            Or(box p, box q, _) =>
             {
-                let p = p.in_world(extras.possible_world);
-                let p_node = factory.new_node(p);
-
-                let q = q.in_world(extras.possible_world);
-                let q_node = factory.new_node(q);
+                let p_node = factory.new_node(p.clone());
+                let q_node = factory.new_node(q.clone());
 
                 return Some(ProofSubtree::with_left_right_nodes(p_node, q_node));
             }
@@ -106,8 +98,7 @@ impl LogicRule for PropositionalLogicRules
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let non_p_node = factory.new_node(non_p);
 
-                let q = q.in_world(extras.possible_world);
-                let q_node = factory.new_node(q);
+                let q_node = factory.new_node(q.clone());
 
                 return Some(ProofSubtree::with_left_right_nodes(non_p_node, q_node));
             }
@@ -117,18 +108,14 @@ impl LogicRule for PropositionalLogicRules
                 let non_q = Non(bx!(q.clone()), extras.clone());
                 let non_q_node = factory.new_node(non_q);
 
-                let p = p.in_world(extras.possible_world);
-                let p_node = factory.new_node_with_subnode(p, non_q_node);
+                let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
 
                 return Some(ProofSubtree::with_middle_node(p_node));
             }
 
             BiImply(box p, box q, extras) =>
             {
-                let q = q.in_world(extras.possible_world);
                 let q_node = factory.new_node(q.clone());
-
-                let p = p.in_world(extras.possible_world);
                 let p_node = factory.new_node_with_subnode(p.clone(), q_node);
 
                 let non_q = Non(bx!(q.clone()), extras.clone());
@@ -145,11 +132,8 @@ impl LogicRule for PropositionalLogicRules
                 let non_q = Non(bx!(q.clone()), extras.clone());
                 let non_q_node = factory.new_node(non_q);
 
-                let p = p.in_world(extras.possible_world);
                 let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
-
-                let q = q.in_world(extras.possible_world);
-                let q_node = factory.new_node(q);
+                let q_node = factory.new_node(q.clone());
 
                 let non_p = Non(bx!(p.clone()), extras.clone());
                 let non_p_node = factory.new_node_with_subnode(non_p, q_node);

@@ -118,20 +118,18 @@ impl LogicRule for LukasiewiczImplicationRules
         {
             Imply(box p, box q, extras) if extras.sign == Plus =>
             {
-                let p = p.in_world(extras.possible_world);
                 let non_p_plus = Non(bx!(p.clone()), extras.clone()).with_sign(Plus);
                 let non_p_plus_node = factory.new_node(non_p_plus);
 
-                let q = q.in_world(extras.possible_world);
                 let q_plus = q.with_sign(Plus);
                 let q_plus_node = factory.new_node(q_plus);
 
                 let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
-                let q_or_non_q_minus = Or(bx!(q), bx!(non_q), extras.clone()).with_sign(Minus);
+                let q_or_non_q_minus = Or(bx!(q.clone()), bx!(non_q), extras.clone()).with_sign(Minus);
                 let q_or_non_q_minus_node = factory.new_node(q_or_non_q_minus);
 
                 let non_p = Non(bx!(p.clone()), extras.clone()).with_sign(Plus);
-                let p_or_non_p_minus = Or(bx!(p), bx!(non_p), extras.clone()).with_sign(Minus);
+                let p_or_non_p_minus = Or(bx!(p.clone()), bx!(non_p), extras.clone()).with_sign(Minus);
                 let p_or_non_p_minus_node = factory.new_node_with_subnode(p_or_non_p_minus, q_or_non_q_minus_node);
 
                 return Some(ProofSubtree::with_left_middle_right_nodes(non_p_plus_node, q_plus_node, p_or_non_p_minus_node));
@@ -139,19 +137,16 @@ impl LogicRule for LukasiewiczImplicationRules
 
             Imply(box p, box q, extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let q_minus = q.with_sign(Minus);
                 let q_minus_node = factory.new_node(q_minus);
 
                 let p_plus = p.with_sign(Plus);
                 let p_plus_node = factory.new_node_with_subnode(p_plus, q_minus_node);
 
-                let non_p_minus = Non(bx!(p), extras.clone()).with_sign(Minus);
+                let non_p_minus = Non(bx!(p.clone()), extras.clone()).with_sign(Minus);
                 let non_p_minus_node = factory.new_node(non_p_minus);
 
-                let non_q_plus = Non(bx!(q), extras.clone()).with_sign(Plus);
+                let non_q_plus = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
                 let non_q_plus_node = factory.new_node_with_subnode(non_q_plus, non_p_minus_node);
 
                 return Some(ProofSubtree::with_left_right_nodes(p_plus_node, non_q_plus_node));
@@ -159,35 +154,30 @@ impl LogicRule for LukasiewiczImplicationRules
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Plus =>
             {
-                let q = q.in_world(extras.possible_world);
-                let non_q = Non(bx!(q), extras.clone()).with_sign(Plus);
+                let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
                 let non_q_node = factory.new_node(non_q);
 
-                let p = p.in_world(extras.possible_world).with_sign(Plus);
-                let p_node = factory.new_node_with_subnode(p, non_q_node);
+                let plus_p = p.with_sign(Plus);
+                let plus_p_node = factory.new_node_with_subnode(plus_p, non_q_node);
 
-                return Some(ProofSubtree::with_middle_node(p_node));
+                return Some(ProofSubtree::with_middle_node(plus_p_node));
             }
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Minus =>
             {
-                let p = p.in_world(extras.possible_world).with_sign(Minus);
-                let p_node = factory.new_node(p);
+                let minus_p = p.with_sign(Minus);
+                let minus_p_node = factory.new_node(minus_p);
 
-                let q = q.in_world(extras.possible_world);
-                let non_q = Non(bx!(q), extras.clone()).with_sign(Minus);
+                let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Minus);
                 let non_q_node = factory.new_node(non_q);
 
-                return Some(ProofSubtree::with_left_right_nodes(p_node, non_q_node));
+                return Some(ProofSubtree::with_left_right_nodes(minus_p_node, non_q_node));
             }
 
             BiImply(box p, box q, extras) =>
             {
-                let p = p.in_world(extras.possible_world);
-                let q = q.in_world(extras.possible_world);
-
                 let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone()).with_sign(Plus);
-                let q_imply_p = Imply(bx!(q), bx!(p), extras.clone()).with_sign(Plus);
+                let q_imply_p = Imply(bx!(q.clone()), bx!(p.clone()), extras.clone()).with_sign(Plus);
 
                 let conjunction = And(bx!(p_imply_q), bx!(q_imply_p), FormulaExtras
                 {
