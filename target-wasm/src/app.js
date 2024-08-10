@@ -47,6 +47,7 @@ function initialize_layout(callback)
                 content: [
                     {
                         type: 'column',
+                        width: 28,
                         content: [
                             {
                                 type: 'component',
@@ -58,6 +59,7 @@ function initialize_layout(callback)
                                 type: 'component',
                                 componentName: 'ProblemCatalogComponent',
                                 title: 'Problem Catalog',
+                                height: 66,
                                 isClosable: false,
                             }
                         ]
@@ -69,12 +71,19 @@ function initialize_layout(callback)
                         isClosable: false,
                     },
                     {
-                        type: 'stack',
+                        type: 'column',
                         content: [
                             {
                                 type: 'component',
                                 componentName: 'ModalityGraphComponent',
                                 title: 'Modality Graph',
+                                isClosable: false,
+                            },
+                            {
+                                type: 'component',
+                                componentName: 'CountermodelGraphComponent',
+                                title: 'Counter-model',
+                                height: 33,
                                 isClosable: false,
                             }
                         ]
@@ -89,17 +98,19 @@ function initialize_layout(callback)
     layout.registerComponent('ProblemCatalogComponent', problem_catalog_component =>
     layout.registerComponent('ProofTreeComponent', proof_tree_component =>
     layout.registerComponent('ModalityGraphComponent', modality_graph_component =>
+    layout.registerComponent('CountermodelGraphComponent', countermodel_graph_component =>
     callback({
         problem_input_container: problem_component.getElement(),
         problem_catalog_container: problem_catalog_component.getElement(),
         proof_tree_container: proof_tree_component.getElement(),
         modality_graph_container: modality_graph_component.getElement(),
-    })))));
+        countermodel_graph_container: countermodel_graph_component.getElement(),
+    }))))));
 
     layout.init();
 }
 
-function render_proof_tree(json)
+function render_proof_tree(proof_tree)
 {
     let nodes = [], edges = [];
 
@@ -125,7 +136,7 @@ function render_proof_tree(json)
         if (node.right != null) { iterate_proof_tree(node.right, node.id); }
     }
 
-    iterate_proof_tree(json.root_node, null);
+    iterate_proof_tree(proof_tree.root_node, null);
 
     let cy = cytoscape({
         container: window.containers.proof_tree_container,
@@ -223,20 +234,20 @@ function render_proof_tree(json)
     });
 }
 
-function render_modality_graph(json)
+function render_modality_graph(logic, modality_graph)
 {
-    if (incl.should_skip_rendering_modality_graph(json.problem.logic))
+    if (incl.should_skip_rendering_modality_graph(logic))
     {
         cytoscape({ container: window.containers.modality_graph_container });
         return;
     }
 
-    let nodes = json.modality_graph.nodes.map((node) =>
+    let nodes = modality_graph.nodes.map((node) =>
     {
         return { data: { id:node, text:node } };
     });
 
-    let edges = json.modality_graph.vertices.map((vertex) =>
+    let edges = modality_graph.vertices.map((vertex) =>
     {
         return { data: { source:vertex.from, target:vertex.to, text:vertex.tags } };
     });
@@ -274,6 +285,92 @@ function render_modality_graph(json)
                     'color': 'white',
                     'label': 'data(text)',
                     'width': 1.0,
+                }
+            },
+            {
+                selector: 'label',
+                style: {
+                    'text-wrap': 'wrap',
+                }
+            }
+        ],
+    });
+}
+
+function render_countermodel_graph(logic, countermodel)
+{
+    if (!countermodel)
+    {
+        cytoscape({ container: window.containers.countermodel_graph_container });
+        return;
+    }
+
+    let should_show_possible_worlds = !incl.should_skip_rendering_modality_graph(logic);
+
+    let nodes = countermodel.nodes.map((node) =>
+    {
+        let text = "";
+        if (should_show_possible_worlds)
+        {
+            text += node.possible_world.toString();
+            if (!node.is_normal_world)
+                text += '*';
+        }
+
+        for (let [key, value] of Object.entries(node.atomics))
+        {
+            if (value === null) text += '\n' + key + ' : unknown';
+            else if (value) text += '\n' + key + ' : true';
+            else text += '\n' + key + ' : false';
+        }
+
+        return { data: { id:node.possible_world, text:text } };
+    });
+
+    let edges = countermodel.vertices.map((vertex) =>
+    {
+        return { data: { source:vertex.from, target:vertex.to, text:vertex.tags } };
+    });
+
+    cytoscape({
+        container: window.containers.countermodel_graph_container,
+        elements: {
+            nodes: nodes,
+            edges: edges,
+        },
+        layout: {
+            name: 'avsdf',
+            animationDuration: 0,
+            nodeSeparation: 120
+        },
+        wheelSensitivity: 0.1,
+        style: [
+            {
+                selector: 'node',
+                style: {
+                    'background-color': 'black',
+                    'text-valign': 'center',
+                    'text-halign': 'center',
+                    'color': 'white',
+                    'label': 'data(text)',
+                }
+            },
+            {
+                selector: 'edge',
+                style: {
+                    'target-arrow-shape': 'triangle',
+                    'curve-style': 'bezier',
+                    'text-valign': 'center',
+                    'text-halign': 'center',
+                    'color': 'white',
+                    'label': 'data(text)',
+                    'width': 1.0,
+                }
+            },
+            {
+                selector: 'label',
+                style: {
+                    'text-wrap': 'wrap',
                 }
             }
         ],
@@ -350,11 +447,11 @@ function initialize_problem_input_container()
         </tr>
         <tr>
             <td>Premises:</td>
-            <td><textarea id="${ID_PREMISES_TEXTAREA}" style="width: 450px; height: 50px;"></textarea></td>
+            <td><textarea id="${ID_PREMISES_TEXTAREA}" style="width: 280px; height: 50px;"></textarea></td>
         </tr>
         <tr>
             <td>Conclusion:</td>
-            <td><textarea id="${ID_CONCLUSION_TEXTAREA}" style="width: 450px; height: 25px;"></textarea></td>
+            <td><textarea id="${ID_CONCLUSION_TEXTAREA}" style="width: 280px; height: 25px;"></textarea></td>
         </tr>
         <tr>
             <td></td>
@@ -490,7 +587,8 @@ function prove_problem(problem)
         update_problem_input_area(problem, proof_tree);
 
         render_proof_tree(proof_tree);
-        render_modality_graph(proof_tree);
+        render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
+        render_countermodel_graph(proof_tree.problem.logic, proof_tree.countermodel);
     }
     catch (e)
     {

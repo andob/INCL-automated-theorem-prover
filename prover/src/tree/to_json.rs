@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
+use crate::countermodel::CountermodelGraph;
 use crate::formula::notations::OperatorNotations;
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
@@ -18,6 +19,7 @@ struct ProofTreeJSON
     has_timeout : bool,
     root_node : ProofTreeNodeJSON,
     modality_graph : GraphJSON,
+    countermodel : Option<CountermodelGraph>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -44,6 +46,7 @@ impl ProofTree
             has_timeout: self.has_timeout,
             root_node: self.root_node.to_json(options),
             modality_graph: self.modality_graph.to_json(),
+            countermodel: self.find_countermodel(),
         };
 
         return serde_json::to_string_pretty(&json).context(codeloc!());

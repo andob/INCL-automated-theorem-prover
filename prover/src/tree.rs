@@ -7,7 +7,7 @@ use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::path::ProofTreePath;
 
 pub mod node;
-mod path;
+pub mod path;
 mod to_string;
 mod to_json;
 pub mod subtree;

@@ -17,6 +17,7 @@ mod tree;
 mod proof;
 mod semantics;
 mod graph;
+mod countermodel;
 
 #[macro_export]
 macro_rules! codeloc

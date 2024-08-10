@@ -27,11 +27,11 @@ pub struct FirstOrderModalLogic
 #[allow(non_snake_case)]
 impl FirstOrderModalLogic
 {
-    pub fn CK() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CKModalLogic, is_reflexive:false, is_symmetric:false, is_transitive:false }}
-    pub fn CT() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CTModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:false }}
-    pub fn CB() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CBModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:false }}
-    pub fn CS4() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CS4ModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:true }}
-    pub fn CS5() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CS5ModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:true }}
+    pub fn CK() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CKFirstOrderModalLogic, is_reflexive:false, is_symmetric:false, is_transitive:false }}
+    pub fn CT() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CTFirstOrderModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:false }}
+    pub fn CB() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CBFirstOrderModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:false }}
+    pub fn CS4() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CS4FirstOrderModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:true }}
+    pub fn CS5() -> FirstOrderModalLogic { FirstOrderModalLogic { name:LogicName::CS5FirstOrderModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:true }}
 }
 
 impl Logic for FirstOrderModalLogic

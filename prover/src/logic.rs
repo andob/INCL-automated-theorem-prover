@@ -66,7 +66,8 @@ pub enum LogicName
 {
     PropositionalLogic, FirstOrderLogic,
     KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
-    CKModalLogic, CTModalLogic, CBModalLogic, CS4ModalLogic, CS5ModalLogic,
+    CKFirstOrderModalLogic, CTFirstOrderModalLogic, CBFirstOrderModalLogic,
+    CS4FirstOrderModalLogic, CS5FirstOrderModalLogic,
     NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
     KTemporalModalLogic, KTemporalExtModalLogic,
     ConditionalModalLogic, ConditionalExtModalLogic,
@@ -96,11 +97,11 @@ impl Display for LogicName
             LogicName::BModalLogic => { write!(f, "{}", "BModalLogic") }
             LogicName::S4ModalLogic => { write!(f, "{}", "S4ModalLogic") }
             LogicName::S5ModalLogic => { write!(f, "{}", "S5ModalLogic") }
-            LogicName::CKModalLogic => { write!(f, "{}", "CKFirstOrderModalLogic") }
-            LogicName::CTModalLogic => { write!(f, "{}", "CTFirstOrderModalLogic") }
-            LogicName::CBModalLogic => { write!(f, "{}", "CBFirstOrderModalLogic") }
-            LogicName::CS4ModalLogic => { write!(f, "{}", "CS4FirstOrderModalLogic") }
-            LogicName::CS5ModalLogic => { write!(f, "{}", "CS5FirstOrderModalLogic") }
+            LogicName::CKFirstOrderModalLogic => { write!(f, "{}", "CKFirstOrderModalLogic") }
+            LogicName::CTFirstOrderModalLogic => { write!(f, "{}", "CTFirstOrderModalLogic") }
+            LogicName::CBFirstOrderModalLogic => { write!(f, "{}", "CBFirstOrderModalLogic") }
+            LogicName::CS4FirstOrderModalLogic => { write!(f, "{}", "CS4FirstOrderModalLogic") }
+            LogicName::CS5FirstOrderModalLogic => { write!(f, "{}", "CS5FirstOrderModalLogic") }
             LogicName::NModalLogic => { write!(f, "{}", "NModalLogic") }
             LogicName::S2ModalLogic => { write!(f, "{}", "S2ModalLogic") }
             LogicName::S3ModalLogic => { write!(f, "{}", "S3ModalLogic") }
@@ -159,6 +160,12 @@ impl LogicName
     pub fn is_normal_modal_logic(self) -> bool
     {
         return self.is_modal_logic() && !self.is_non_normal_modal_logic();
+    }
+
+    pub fn is_first_order_logic(self) -> bool
+    {
+        return self == LogicName::FirstOrderLogic ||
+            self.to_string().ends_with("FirstOrderModalLogic");
     }
 }
 

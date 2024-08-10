@@ -90,6 +90,11 @@ impl ProofTreePath
 
         return contradictory_ids;
     }
+
+    pub fn is_contradictory(&self, logic : &Rc<dyn Logic>) -> bool
+    {
+        return !self.get_contradictory_node_ids(logic).is_empty();
+    }
 }
 
 impl Display for ProofTreePath
