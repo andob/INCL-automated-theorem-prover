@@ -1,5 +1,6 @@
 use std::any::Any;
 use box_macro::bx;
+use str_macro::str;
 use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
 use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -13,7 +14,7 @@ use crate::tree::subtree::ProofSubtree;
 pub struct PropositionalLogic {}
 impl Logic for PropositionalLogic
 {
-    fn get_name(&self) -> LogicName { LogicName::PropositionalLogic }
+    fn get_name(&self) -> LogicName { LogicName::of("WithoutModality") }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

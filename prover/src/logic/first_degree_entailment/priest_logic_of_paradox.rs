@@ -1,9 +1,11 @@
 use std::any::Any;
 use std::rc::Rc;
+use str_macro::str;
 use strum::IntoEnumIterator;
-use crate::logic::{BaseLogicNameIndex, Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
+use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczModalLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 use crate::semantics::three_valued_logic_semantics::{ThreeValuedContradictionBehaviour, ThreeValuedLogicSemantics};
@@ -11,7 +13,7 @@ use crate::semantics::three_valued_logic_semantics::{ThreeValuedContradictionBeh
 //check out book chapters 8 and 11a
 pub struct PriestLPModalLogic
 {
-    pub base_name: LogicName,
+    pub name : LogicName,
     pub is_reflexive : bool,
     pub is_symmetric : bool,
     pub is_transitive : bool,
@@ -20,21 +22,16 @@ pub struct PriestLPModalLogic
 #[allow(non_snake_case)]
 impl PriestLPModalLogic
 {
-    pub fn LP_K() -> PriestLPModalLogic { PriestLPModalLogic { base_name:LogicName::KModalLogic, is_reflexive:false, is_symmetric:false, is_transitive:false }}
-    pub fn LP_T() -> PriestLPModalLogic { PriestLPModalLogic { base_name:LogicName::TModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:false }}
-    pub fn LP_B() -> PriestLPModalLogic { PriestLPModalLogic { base_name:LogicName::BModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:false }}
-    pub fn LP_S4() -> PriestLPModalLogic { PriestLPModalLogic { base_name:LogicName::S4ModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:true }}
-    pub fn LP_S5() -> PriestLPModalLogic { PriestLPModalLogic { base_name:LogicName::S5ModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:true }}
+    pub fn LP_K() -> PriestLPModalLogic { PriestLPModalLogic { name:LogicName::of("LP+KModalLogic"), is_reflexive:false, is_symmetric:false, is_transitive:false }}
+    pub fn LP_T() -> PriestLPModalLogic { PriestLPModalLogic { name:LogicName::of("LP+TModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:false }}
+    pub fn LP_B() -> PriestLPModalLogic { PriestLPModalLogic { name:LogicName::of("LP+BModalLogic"), is_reflexive:true, is_symmetric:true, is_transitive:false }}
+    pub fn LP_S4() -> PriestLPModalLogic { PriestLPModalLogic { name:LogicName::of("LP+S4ModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:true }}
+    pub fn LP_S5() -> PriestLPModalLogic { PriestLPModalLogic { name:LogicName::of("LP+S5ModalLogic"), is_reflexive:true, is_symmetric:true, is_transitive:true }}
 }
 
 impl Logic for PriestLPModalLogic
 {
-    fn get_name(&self) -> LogicName
-    {
-        let base_name_index = LogicName::iter().position(|name| self.base_name==name).unwrap();
-        return LogicName::PriestLogicOfParadoxModalLogic(base_name_index as BaseLogicNameIndex);
-    }
-
+    fn get_name(&self) -> LogicName { self.name.clone() }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

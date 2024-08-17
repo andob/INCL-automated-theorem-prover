@@ -5,7 +5,11 @@ pub mod modal_logic;
 
 use std::any::Any;
 use std::collections::BTreeSet;
+use std::rc::Rc;
 use box_macro::bx;
+use str_macro::str;
+use strum::IntoEnumIterator;
+use strum_macros::{Display, EnumIter};
 use crate::formula::Formula::{Atomic, Equals, Exists, ForAll, Non};
 use crate::formula::PredicateArgument;
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -21,37 +25,77 @@ use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
 //check out book chapter 12
-pub struct FirstOrderLogic {}
+pub struct FirstOrderLogic
+{
+    pub domain_type : FirstOrderDomainType,
+    pub identity_type : FirstOrderIdentityType,
+    pub base_logic : Rc<dyn Logic>
+}
+
+#[derive(Eq, PartialEq, Copy, Clone, EnumIter, Display)]
+pub enum FirstOrderDomainType
+{
+    ConstantDomain, VariableDomain
+}
+
+impl Default for FirstOrderDomainType
+{
+    fn default() -> Self { FirstOrderDomainType::ConstantDomain }
+}
+
+#[derive(Eq, PartialEq, Copy, Clone, EnumIter, Display)]
+pub enum FirstOrderIdentityType
+{
+    NecessaryIdentity, ContingentIdentity
+}
+
+impl Default for FirstOrderIdentityType
+{
+    fn default() -> Self { FirstOrderIdentityType::NecessaryIdentity }
+}
+
 impl Logic for FirstOrderLogic
 {
-    fn get_name(&self) -> LogicName { LogicName::FirstOrderLogic }
+    fn get_name(&self) -> LogicName
+    {
+        return LogicName::of(format!("FirstOrderLogic+{}+{}+{}",
+            self.domain_type, self.identity_type, self.base_logic.get_name()).as_str());
+    }
+
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(BinaryLogicSemantics {});
+        return self.base_logic.get_semantics();
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
     {
-        return vec!
+        let mut syntax = vec!
         [
             TokenTypeID::AtomicWithArgs,
-            TokenTypeID::AtomicWithoutArgs,
             TokenTypeID::Exists, TokenTypeID::ForAll, TokenTypeID::Equals,
-            TokenTypeID::Non, TokenTypeID::And, TokenTypeID::Or,
-            TokenTypeID::Imply, TokenTypeID::BiImply,
-            TokenTypeID::OpenParenthesis, TokenTypeID::ClosedParenthesis
-        ]
+        ];
+
+        syntax.append(&mut self.base_logic.get_parser_syntax());
+        return syntax;
     }
 
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        return vec!
+        let mut rules : Vec<Box<dyn LogicRule>> = vec!
         [
-            Box::new(PropositionalLogicRules {}),
             Box::new(QuantifierRules {}),
-        ]
+        ];
+
+        if self.base_logic.get_name().is_modal_logic()
+        {
+
+            //todo Box::new(IdentityInvarianceRule::new(modality.clone())),
+        }
+
+        rules.append(&mut self.base_logic.get_rules());
+        return rules;
     }
 }
 

@@ -4,7 +4,9 @@ use wasm_bindgen::JsError;
 use wasm_bindgen::prelude::wasm_bindgen;
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
+use prover::logic::Logic;
 use prover::logic::{LogicFactory, LogicName};
+use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::token_types::TokenTypeID;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
@@ -107,9 +109,10 @@ pub fn solve_problem(problem_raw_json : String) -> Result<String, JsError>
 #[wasm_bindgen]
 pub fn should_skip_rendering_modality_graph(logic_name_raw : String) -> bool
 {
-    let logic_name = LogicName::iter()
+    let logic_name = LogicFactory::get_logic_theories().iter()
+        .map(|logic| logic.get_name())
         .find(|logic_name| logic_name.to_string() == logic_name_raw)
-        .unwrap_or(LogicName::PropositionalLogic);
+        .unwrap_or(PropositionalLogic{}.get_name());
 
     return !logic_name.is_modal_logic();
 }

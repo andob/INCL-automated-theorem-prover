@@ -104,7 +104,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         if factory.modality_graph.is_empty()
         {
             let logic_pointer = factory.get_logic().clone();
-            let logic = logic_pointer.as_any().downcast_ref::<LOGIC>().unwrap();
+            let logic = logic_pointer.cast_to::<LOGIC>().unwrap();
 
             factory.modality_graph.nodes.insert(PossibleWorld::zero());
 
@@ -122,10 +122,10 @@ impl <LOGIC : Logic> Modality<LOGIC>
         if !(self.is_possibility_applicable)(factory, node, extras) { return None };
 
         let logic_pointer = factory.get_logic().clone();
-        let logic = logic_pointer.as_any().downcast_ref::<LOGIC>().unwrap();
+        let logic = logic_pointer.cast_to::<LOGIC>()?;
 
         let current_world = extras.possible_world;
-        let forked_world = factory.modality_graph.nodes.iter().max().unwrap().fork();
+        let forked_world = factory.modality_graph.nodes.iter().max()?.fork();
 
         factory.modality_graph.nodes.insert(forked_world);
         factory.modality_graph.add_and_log_vertex(GraphVertex::new(current_world, forked_world));

@@ -1,5 +1,6 @@
 use std::any::Any;
 use box_macro::bx;
+use str_macro::str;
 use crate::formula::Formula::{And, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -23,7 +24,7 @@ pub struct MinimalFirstDegreeEntailmentLogic {}
 
 impl Logic for MinimalFirstDegreeEntailmentLogic
 {
-    fn get_name(&self) -> LogicName { LogicName::MinimalFirstDegreeEntailmentLogic }
+    fn get_name(&self) -> LogicName { LogicName::of("MinimalFirstDegreeEntailmentLogic") }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

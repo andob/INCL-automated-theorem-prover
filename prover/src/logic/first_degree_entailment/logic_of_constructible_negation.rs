@@ -1,6 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
+use str_macro::str;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -17,27 +18,42 @@ use crate::tree::subtree::ProofSubtree;
 //check out book chapter 9
 pub struct LogicOfConstructibleNegation
 {
-    name : LogicName
+    variant : LogicOfConstructibleNegationVariant
+}
+
+#[derive(Eq, PartialEq, Copy, Clone)]
+pub enum LogicOfConstructibleNegationVariant { I4, I3, W }
+impl LogicOfConstructibleNegationVariant
+{
+    fn to_logic_name(self) -> LogicName
+    {
+        return match self
+        {
+            LogicOfConstructibleNegationVariant::I4 => LogicName::of("I4LogicOfConstructibleNegation"),
+            LogicOfConstructibleNegationVariant::I3 => LogicName::of("I3LogicOfConstructibleNegation"),
+            LogicOfConstructibleNegationVariant::W => LogicName::of("WLogicOfConstructibleNegation")
+        }
+    }
 }
 
 #[allow(non_snake_case)]
 impl LogicOfConstructibleNegation
 {
-    pub fn I4() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { name:LogicName::I4LogicOfConstructibleNegation } }
-    pub fn I3() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { name:LogicName::I3LogicOfConstructibleNegation } }
-    pub fn W() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { name:LogicName::WLogicOfConstructibleNegation } }
+    pub fn I4() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { variant:LogicOfConstructibleNegationVariant::I4 } }
+    pub fn I3() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { variant:LogicOfConstructibleNegationVariant::I3 } }
+    pub fn W() -> LogicOfConstructibleNegation { LogicOfConstructibleNegation { variant:LogicOfConstructibleNegationVariant::W } }
 }
 
 impl Logic for LogicOfConstructibleNegation
 {
-    fn get_name(&self) -> LogicName { self.name }
+    fn get_name(&self) -> LogicName { self.variant.to_logic_name() }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
         let mut semantics = ThreeValuedLogicSemantics::new();
 
-        if self.name == LogicName::I3LogicOfConstructibleNegation
+        if self.variant == LogicOfConstructibleNegationVariant::I3
         {
             semantics.add_behaviour(ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
         }
@@ -64,7 +80,7 @@ impl Logic for LogicOfConstructibleNegation
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
-            Box::new(LogicOfConstructibleNegationImplicationRules::new(self.name, modality)),
+            Box::new(LogicOfConstructibleNegationImplicationRules::new(self.variant, modality)),
             Box::new(GenericBiImplyAsConjunctionRule {}),
         ]
     }
@@ -90,15 +106,15 @@ impl LogicOfConstructibleNegation
 
 struct LogicOfConstructibleNegationImplicationRules
 {
-    logic_name : LogicName,
+    logic_variant : LogicOfConstructibleNegationVariant,
     modality : Rc<Modality<LogicOfConstructibleNegation>>
 }
 
 impl LogicOfConstructibleNegationImplicationRules
 {
-    fn new(logic_name : LogicName, modality : Rc<Modality<LogicOfConstructibleNegation>>) -> LogicOfConstructibleNegationImplicationRules
+    fn new(logic_variant : LogicOfConstructibleNegationVariant, modality : Rc<Modality<LogicOfConstructibleNegation>>) -> LogicOfConstructibleNegationImplicationRules
     {
-        return LogicOfConstructibleNegationImplicationRules { logic_name, modality };
+        return LogicOfConstructibleNegationImplicationRules { logic_variant, modality };
     }
 }
 
@@ -129,7 +145,7 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             }
 
             Non(box Imply(box p, box q, _), extras)
-            if extras.sign == Plus && self.logic_name != LogicName::WLogicOfConstructibleNegation =>
+            if extras.sign == Plus && self.logic_variant != LogicOfConstructibleNegationVariant::W =>
             {
                 let plus_p = p.with_sign(Plus);
                 let plus_non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
@@ -139,7 +155,7 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             }
 
             Non(box Imply(box p, box q, _), extras)
-            if extras.sign == Minus && self.logic_name != LogicName::WLogicOfConstructibleNegation =>
+            if extras.sign == Minus && self.logic_variant != LogicOfConstructibleNegationVariant::W =>
             {
                 let minus_p = p.with_sign(Minus);
                 let minus_non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Minus);
@@ -149,7 +165,7 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
             }
 
             Non(box Imply(box p, box q, _), extras)
-            if self.logic_name == LogicName::WLogicOfConstructibleNegation =>
+            if self.logic_variant == LogicOfConstructibleNegationVariant::W =>
             {
                 let non_q = Non(bx!(q.clone()), extras.clone());
                 let p_imply_non_q = Imply(bx!(p.clone()), bx!(non_q), extras.clone());

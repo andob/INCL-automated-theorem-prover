@@ -1,11 +1,13 @@
 use std::any::Any;
 use std::rc::Rc;
+use std::str;
 use box_macro::bx;
+use str_macro::str;
 use strum::IntoEnumIterator;
 use crate::formula::Formula::{BiImply, Imply, Non, Or, And};
 use crate::formula::FormulaExtras;
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{BaseLogicNameIndex, Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
@@ -19,7 +21,7 @@ use crate::tree::subtree::ProofSubtree;
 //check out book chapters 8 and 11a
 pub struct LukasiewiczModalLogic
 {
-    pub base_name: LogicName,
+    pub name : LogicName,
     pub is_reflexive : bool,
     pub is_symmetric : bool,
     pub is_transitive : bool,
@@ -28,21 +30,16 @@ pub struct LukasiewiczModalLogic
 #[allow(non_snake_case)]
 impl LukasiewiczModalLogic
 {
-    pub fn L3_K() -> LukasiewiczModalLogic { LukasiewiczModalLogic { base_name:LogicName::KModalLogic, is_reflexive:false, is_symmetric:false, is_transitive:false }}
-    pub fn L3_T() -> LukasiewiczModalLogic { LukasiewiczModalLogic { base_name:LogicName::TModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:false }}
-    pub fn L3_B() -> LukasiewiczModalLogic { LukasiewiczModalLogic { base_name:LogicName::BModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:false }}
-    pub fn L3_S4() -> LukasiewiczModalLogic { LukasiewiczModalLogic { base_name:LogicName::S4ModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:true }}
-    pub fn L3_S5() -> LukasiewiczModalLogic { LukasiewiczModalLogic { base_name:LogicName::S5ModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:true }}
+    pub fn L3_K() -> LukasiewiczModalLogic { LukasiewiczModalLogic { name:LogicName::of("Lukasiewicz+KModalLogic"), is_reflexive:false, is_symmetric:false, is_transitive:false }}
+    pub fn L3_T() -> LukasiewiczModalLogic { LukasiewiczModalLogic { name:LogicName::of("Lukasiewicz+TModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:false }}
+    pub fn L3_B() -> LukasiewiczModalLogic { LukasiewiczModalLogic { name:LogicName::of("Lukasiewicz+BModalLogic"), is_reflexive:true, is_symmetric:true, is_transitive:false }}
+    pub fn L3_S4() -> LukasiewiczModalLogic { LukasiewiczModalLogic { name:LogicName::of("Lukasiewicz+S4ModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:true }}
+    pub fn L3_S5() -> LukasiewiczModalLogic { LukasiewiczModalLogic { name:LogicName::of("Lukasiewicz+S5ModalLogic"), is_reflexive:true, is_symmetric:true, is_transitive:true }}
 }
 
 impl Logic for LukasiewiczModalLogic
 {
-    fn get_name(&self) -> LogicName
-    {
-        let base_name_index = LogicName::iter().position(|name| self.base_name==name).unwrap();
-        return LogicName::LukasiewiczModalLogic(base_name_index as BaseLogicNameIndex);
-    }
-
+    fn get_name(&self) -> LogicName { self.name.clone() }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

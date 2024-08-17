@@ -1,6 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
+use str_macro::str;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -16,7 +17,7 @@ use crate::tree::subtree::ProofSubtree;
 pub struct IntuitionisticLogic {}
 impl Logic for IntuitionisticLogic
 {
-    fn get_name(&self) -> LogicName { LogicName::IntuitionisticLogic }
+    fn get_name(&self) -> LogicName { LogicName::of("IntuitionisticLogic") }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

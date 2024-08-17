@@ -1,6 +1,7 @@
 use std::any::Any;
 use std::collections::BTreeSet;
 use box_macro::bx;
+use str_macro::str;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{And, Conditional, Necessary, Non, Possible};
 use crate::formula::to_string::FormulaFormatOptions;
@@ -31,8 +32,8 @@ impl Logic for ConditionalModalLogic
 {
     fn get_name(&self) -> LogicName
     {
-        return if !self.is_extended { LogicName::ConditionalModalLogic }
-        else { LogicName::ConditionalExtModalLogic };
+        return if !self.is_extended { LogicName::of("ConditionalModalLogic") }
+        else { LogicName::of("ConditionalExtModalLogic") };
     }
 
     fn as_any(&self) -> &dyn Any { self }

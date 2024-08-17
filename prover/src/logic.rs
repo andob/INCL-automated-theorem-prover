@@ -1,9 +1,14 @@
-use std::any::Any;
-use std::fmt::{Display, Formatter};
+use std::any::{Any, TypeId};
+use std::collections::BTreeMap;
+use std::fmt::{write, Display, Formatter};
 use std::rc::Rc;
 use anyhow::{Context, Result};
+use box_macro::bx;
+use maplit2::btreemap;
+use regex::Regex;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
+use crate::logic::common_modal_logic::Modality;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;
 use crate::logic::first_degree_entailment::logic_of_constructible_negation::LogicOfConstructibleNegation;
@@ -12,8 +17,7 @@ use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczM
 use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
 use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLogic;
-use crate::logic::first_order_logic::FirstOrderLogic;
-use crate::logic::first_order_logic::modal_logic::FirstOrderModalLogic;
+use crate::logic::first_order_logic::{FirstOrderDomainType, FirstOrderIdentityType, FirstOrderLogic};
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
@@ -59,113 +63,78 @@ pub trait Logic : Any
     fn get_rules(&self) -> Vec<Box<dyn LogicRule>>;
 }
 
-type BaseLogicNameIndex = u8;
-
-#[derive(Eq, PartialEq, Copy, Clone, EnumIter)]
-pub enum LogicName
+impl dyn Logic
 {
-    PropositionalLogic, FirstOrderLogic,
-    KModalLogic, TModalLogic, BModalLogic, S4ModalLogic, S5ModalLogic,
-    CKFirstOrderModalLogic, CTFirstOrderModalLogic, CBFirstOrderModalLogic,
-    CS4FirstOrderModalLogic, CS5FirstOrderModalLogic,
-    NModalLogic, S2ModalLogic, S3ModalLogic, S3_5ModalLogic,
-    KTemporalModalLogic, KTemporalExtModalLogic,
-    ConditionalModalLogic, ConditionalExtModalLogic,
-    IntuitionisticLogic,
-    MinimalFirstDegreeEntailmentLogic,
-    LukasiewiczModalLogic(BaseLogicNameIndex),
-    RMingle3ModalLogic(BaseLogicNameIndex),
-    KleeneModalLogic(BaseLogicNameIndex),
-    PriestLogicOfParadoxModalLogic(BaseLogicNameIndex),
-    K4LogicWithGapsGlutsAndWorlds,
-    N4LogicWithGapsGlutsAndWorlds,
-    I4LogicOfConstructibleNegation,
-    I3LogicOfConstructibleNegation,
-    WLogicOfConstructibleNegation,
+    #[inline]
+    pub fn cast_to<LOGIC : Logic>(&self) -> Option<&LOGIC>
+    {
+        if self.get_name().is_first_order_logic() &&
+           TypeId::of::<LOGIC>() != TypeId::of::<FirstOrderLogic>()
+        {
+            //we're looking for something other than FirstOrderLogic, so we'll check the base logic
+            let first_order_logic = self.as_any().downcast_ref::<FirstOrderLogic>()?;
+            return first_order_logic.base_logic.cast_to::<LOGIC>();
+        }
+
+        return self.as_any().downcast_ref::<LOGIC>();
+    }
+}
+
+#[derive(Clone)]
+pub struct LogicName { value : String }
+
+impl LogicName
+{
+    pub fn of(value: &str) -> LogicName
+    {
+        return LogicName { value:String::from(value) }
+    }
 }
 
 impl Display for LogicName
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        return match self
-        {
-            LogicName::PropositionalLogic => { write!(f, "{}", "PropositionalLogic") }
-            LogicName::FirstOrderLogic => { write!(f, "{}", "FirstOrderLogic") }
-            LogicName::KModalLogic => { write!(f, "{}", "KModalLogic") }
-            LogicName::TModalLogic => { write!(f, "{}", "TModalLogic") }
-            LogicName::BModalLogic => { write!(f, "{}", "BModalLogic") }
-            LogicName::S4ModalLogic => { write!(f, "{}", "S4ModalLogic") }
-            LogicName::S5ModalLogic => { write!(f, "{}", "S5ModalLogic") }
-            LogicName::CKFirstOrderModalLogic => { write!(f, "{}", "CKFirstOrderModalLogic") }
-            LogicName::CTFirstOrderModalLogic => { write!(f, "{}", "CTFirstOrderModalLogic") }
-            LogicName::CBFirstOrderModalLogic => { write!(f, "{}", "CBFirstOrderModalLogic") }
-            LogicName::CS4FirstOrderModalLogic => { write!(f, "{}", "CS4FirstOrderModalLogic") }
-            LogicName::CS5FirstOrderModalLogic => { write!(f, "{}", "CS5FirstOrderModalLogic") }
-            LogicName::NModalLogic => { write!(f, "{}", "NModalLogic") }
-            LogicName::S2ModalLogic => { write!(f, "{}", "S2ModalLogic") }
-            LogicName::S3ModalLogic => { write!(f, "{}", "S3ModalLogic") }
-            LogicName::S3_5ModalLogic => { write!(f, "{}", "S3.5ModalLogic") }
-            LogicName::KTemporalModalLogic => { write!(f, "{}", "KTemporalModalLogic") }
-            LogicName::KTemporalExtModalLogic => { write!(f, "{}", "KTemporalExtModalLogic") }
-            LogicName::ConditionalModalLogic => { write!(f, "{}", "ConditionalModalLogic") }
-            LogicName::ConditionalExtModalLogic => { write!(f, "{}", "ConditionalExtModalLogic") }
-            LogicName::IntuitionisticLogic => { write!(f, "{}", "IntuitionisticLogic") }
-            LogicName::MinimalFirstDegreeEntailmentLogic => { write!(f, "{}", "MinimalFirstDegreeEntailmentLogic") }
-            LogicName::LukasiewiczModalLogic(base_logic_name_index) =>
-            {
-                let base_logic_name = LogicName::iter().get(*base_logic_name_index as usize).unwrap();
-                write!(f, "Lukasiewicz+{}", base_logic_name.to_string())
-            }
-            LogicName::RMingle3ModalLogic(base_name_index) =>
-            {
-                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
-                write!(f, "RMingle3+{}", base_logic_name.to_string())
-            }
-            LogicName::KleeneModalLogic(base_name_index) =>
-            {
-                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
-                write!(f, "Kleene+{}", base_logic_name.to_string())
-            }
-            LogicName::PriestLogicOfParadoxModalLogic(base_name_index) =>
-            {
-                let base_logic_name = LogicName::iter().get(*base_name_index as usize).unwrap();
-                write!(f, "PriestLogicOfParadox+{}", base_logic_name.to_string())
-            }
-            LogicName::K4LogicWithGapsGlutsAndWorlds => { write!(f, "{}", "K4ModalLogicWithGapsAndGluts") }
-            LogicName::N4LogicWithGapsGlutsAndWorlds => { write!(f, "{}", "N4ModalLogicWithGapsAndGluts") }
-            LogicName::I4LogicOfConstructibleNegation => { write!(f, "{}", "I4LogicOfConstructibleNegation") }
-            LogicName::I3LogicOfConstructibleNegation => { write!(f, "{}", "I3LogicOfConstructibleNegation") }
-            LogicName::WLogicOfConstructibleNegation => { write!(f, "{}", "WLogicOfConstructibleNegation") }
-        }
+        return write!(f, "{}", self.value);
     }
 }
 
 impl LogicName
 {
-    pub fn is_modal_logic(self) -> bool
+    pub fn is_modal_logic(&self) -> bool
     {
-        return self != LogicName::PropositionalLogic &&
-            self != LogicName::FirstOrderLogic &&
-            self != LogicName::MinimalFirstDegreeEntailmentLogic;
+        return !self.matches_name_of_logic(bx!(PropositionalLogic{})) &&
+            !self.matches_name_of_logic(bx!(MinimalFirstDegreeEntailmentLogic{}));
     }
 
-    pub fn is_non_normal_modal_logic(self) -> bool
+    pub fn is_non_normal_modal_logic(&self) -> bool
     {
-        return self == LogicName::NModalLogic || self == LogicName::S2ModalLogic ||
-            self == LogicName::S3_5ModalLogic || self == LogicName::S3_5ModalLogic ||
-            self == LogicName::N4LogicWithGapsGlutsAndWorlds;
+        return self.matches_name_of_logic(bx!(NonNormalModalLogic::N())) ||
+            self.matches_name_of_logic(bx!(NonNormalModalLogic::S2())) ||
+            self.matches_name_of_logic(bx!(NonNormalModalLogic::S3())) ||
+            self.matches_name_of_logic(bx!(NonNormalModalLogic::S3_5())) ||
+            self.matches_name_of_logic(bx!(LogicWithGapsGlutsAndWorlds::N4()));
     }
 
-    pub fn is_normal_modal_logic(self) -> bool
+    fn matches_name_of_logic(&self, logic : Box<dyn Logic>) -> bool
+    {
+        let target_value = logic.get_name().to_string();
+
+        //not using a regex for efficiency
+        return self.value == target_value ||
+            self.value.ends_with(format!("+{}", target_value).as_str()) ||
+            self.value.contains(format!("+{}+", target_value).as_str()) ||
+            self.value.starts_with(format!("{}+", target_value).as_str());
+    }
+
+    pub fn is_normal_modal_logic(&self) -> bool
     {
         return self.is_modal_logic() && !self.is_non_normal_modal_logic();
     }
 
-    pub fn is_first_order_logic(self) -> bool
+    pub fn is_first_order_logic(&self) -> bool
     {
-        return self == LogicName::FirstOrderLogic ||
-            self.to_string().ends_with("FirstOrderModalLogic");
+        return self.value.starts_with("FirstOrderLogic+");
     }
 }
 
@@ -181,22 +150,15 @@ impl LogicFactory
 
     pub fn get_logic_theories() -> Vec<Rc<dyn Logic>>
     {
-        return vec!
+        let base_logics : Vec<Rc<dyn Logic>> = vec!
         [
             Rc::new(PropositionalLogic {}),
-            Rc::new(FirstOrderLogic {}),
 
             Rc::new(NormalModalLogic::K()),
             Rc::new(NormalModalLogic::T()),
             Rc::new(NormalModalLogic::B()),
             Rc::new(NormalModalLogic::S4()),
             Rc::new(NormalModalLogic::S5()),
-
-            Rc::new(FirstOrderModalLogic::CK()),
-            Rc::new(FirstOrderModalLogic::CT()),
-            Rc::new(FirstOrderModalLogic::CB()),
-            Rc::new(FirstOrderModalLogic::CS4()),
-            Rc::new(FirstOrderModalLogic::CS5()),
 
             Rc::new(NonNormalModalLogic::N()),
             Rc::new(NonNormalModalLogic::S2()),
@@ -243,6 +205,25 @@ impl LogicFactory
             Rc::new(LogicOfConstructibleNegation::I3()),
             Rc::new(LogicOfConstructibleNegation::I4()),
             Rc::new(LogicOfConstructibleNegation::W()),
-        ]
+        ];
+
+        let mut logics = base_logics.clone();
+
+        for domain_type in FirstOrderDomainType::iter()
+        {
+            for identity_type in FirstOrderIdentityType::iter()
+            {
+                for base_logic in &base_logics
+                {
+                    logics.push(Rc::new(FirstOrderLogic
+                    {
+                        domain_type, identity_type,
+                        base_logic: base_logic.clone()
+                    }));
+                }
+            }
+        }
+
+        return logics;
     }
 }

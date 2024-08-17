@@ -1,6 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
+use str_macro::str;
 use crate::formula::Formula::{And, Conditional, Non, Or};
 use crate::formula::{FormulaExtras, PossibleWorld};
 use crate::formula::Sign::{Minus, Plus};
@@ -31,8 +32,8 @@ impl Logic for LogicWithGapsGlutsAndWorlds
 {
     fn get_name(&self) -> LogicName
     {
-        return if self.is_normal { LogicName::K4LogicWithGapsGlutsAndWorlds }
-        else { LogicName::N4LogicWithGapsGlutsAndWorlds };
+        return if self.is_normal { LogicName::of("K4ModalLogicWithGapsAndGluts") }
+        else { LogicName::of("N4ModalLogicWithGapsAndGluts") };
     }
 
     fn as_any(&self) -> &dyn Any { self }

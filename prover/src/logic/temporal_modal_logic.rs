@@ -1,5 +1,6 @@
 use std::any::Any;
 use box_macro::bx;
+use str_macro::str;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{InFuture, InPast, Necessary, Non, Possible};
 use crate::graph::{Graph, GraphVertex};
@@ -29,8 +30,8 @@ impl Logic for TemporalModalLogic
 {
     fn get_name(&self) -> LogicName
     {
-        return if !self.is_extended { LogicName::KTemporalModalLogic }
-        else { LogicName::KTemporalExtModalLogic };
+        return if !self.is_extended { LogicName::of("KTemporalModalLogic") }
+        else { LogicName::of("KTemporalExtModalLogic") };
     }
 
     fn as_any(&self) -> &dyn Any { self }

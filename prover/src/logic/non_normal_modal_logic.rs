@@ -1,5 +1,6 @@
 use std::any::Any;
 use std::rc::Rc;
+use str_macro::str;
 use crate::formula::PossibleWorld;
 use crate::formula::Formula::{Necessary, StrictImply};
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -21,15 +22,15 @@ pub struct NonNormalModalLogic
 #[allow(non_snake_case)]
 impl NonNormalModalLogic
 {
-    pub fn N() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::NModalLogic, is_reflexive:false, is_symmetric:false, is_transitive:false }}
-    pub fn S2() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::S2ModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:false }}
-    pub fn S3() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::S3ModalLogic, is_reflexive:true, is_symmetric:false, is_transitive:true }}
-    pub fn S3_5() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::S3_5ModalLogic, is_reflexive:true, is_symmetric:true, is_transitive:true }}
+    pub fn N() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::of("NModalLogic"), is_reflexive:false, is_symmetric:false, is_transitive:false }}
+    pub fn S2() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::of("S2ModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:false }}
+    pub fn S3() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::of("S3ModalLogic"), is_reflexive:true, is_symmetric:false, is_transitive:true }}
+    pub fn S3_5() -> NonNormalModalLogic { NonNormalModalLogic { name:LogicName::of("S3.5ModalLogic"), is_reflexive:true, is_symmetric:true, is_transitive:true }}
 }
 
 impl Logic for NonNormalModalLogic
 {
-    fn get_name(&self) -> LogicName { self.name }
+    fn get_name(&self) -> LogicName { self.name.clone() }
     fn as_any(&self) -> &dyn Any { self }
 
     fn get_semantics(&self) -> Box<dyn Semantics>

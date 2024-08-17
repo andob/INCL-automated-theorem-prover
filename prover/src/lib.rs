@@ -3,7 +3,6 @@
 #![feature(box_patterns)]
 #![feature(let_chains)]
 
-use std::any;
 use std::fmt::Display;
 use anyhow::{Context};
 use itertools::Itertools;
@@ -23,9 +22,4 @@ mod countermodel;
 macro_rules! codeloc
 {
     () => { format!("{}:{}", file!(), line!()) }
-}
-
-pub fn get_type_name<T>(any : &T) -> String
-{
-    return any::type_name::<T>().to_string();
 }

@@ -75,16 +75,11 @@ impl ProofAlgorithm
 
     fn reached_timeout(&self) -> bool
     {
-        if self.logic_name.is_modal_logic()
-        {
-            return self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC;
-        }
-
-        if self.logic_name == LogicName::FirstOrderLogic
+        if !self.logic_name.is_modal_logic() && self.logic_name.is_first_order_logic()
         {
             return self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC;
         }
 
-        return false;
+        return self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC;
     }
 }
