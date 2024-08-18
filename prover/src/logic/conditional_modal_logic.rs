@@ -1,12 +1,11 @@
 use std::any::Any;
 use std::collections::BTreeSet;
 use box_macro::bx;
-use str_macro::str;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{And, Conditional, Necessary, Non, Possible};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::Modality;
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -55,13 +54,13 @@ impl Logic for ConditionalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ConditionalModalLogicRules::new(self.get_modality())),
-        ]
+        ])
     }
 }
 

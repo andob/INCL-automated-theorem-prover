@@ -1,8 +1,7 @@
 use std::any::Any;
 use box_macro::bx;
-use str_macro::str;
 use crate::formula::Formula::{And, BiImply, Imply, Non, Or};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
@@ -33,12 +32,12 @@ impl Logic for PropositionalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(PropositionalLogicRules {}),
-        ]
+        ])
     }
 }
 

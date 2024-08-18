@@ -1,11 +1,8 @@
 use std::any::Any;
 use std::rc::Rc;
-use str_macro::str;
-use strum::IntoEnumIterator;
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
-use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczModalLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 use crate::semantics::three_valued_logic_semantics::{ThreeValuedContradictionBehaviour, ThreeValuedLogicSemantics};
@@ -52,13 +49,13 @@ impl Logic for KleeneModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-        ]
+        ])
     }
 }
 

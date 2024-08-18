@@ -1,15 +1,12 @@
 use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
-use str_macro::str;
-use strum::IntoEnumIterator;
 use crate::formula::Formula::{Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
-use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczModalLogic;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -60,16 +57,16 @@ impl Logic for RMingle3ModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
         let modality = Rc::new(self.get_modality());
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(RMingle3ImplicationRules::new(modality)),
             Box::new(GenericBiImplyAsConjunctionRule {}),
-        ]
+        ])
     }
 }
 

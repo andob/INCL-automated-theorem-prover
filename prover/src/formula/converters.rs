@@ -147,67 +147,6 @@ impl Formula
         }
     }
 
-    pub fn binded(&self, x : &PredicateArgument, binding_name : String, extras : &FormulaExtras) -> Formula
-    {
-        let object_name_factory : Box<dyn Fn() -> String> = Box::new(move || binding_name.clone());
-        return self.instantiated(x, &object_name_factory, extras);
-    }
-
-    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> Formula
-    {
-        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiated(x, &object_name_factory, extras));
-
-        return match self
-        {
-            Atomic(p, old_extras) =>
-            {
-                let new_extras = AtomicFormulaExtras
-                {
-                    predicate_args: old_extras.predicate_args.instantiated(x, &object_name_factory),
-                    possible_world: extras.possible_world,
-                    is_hidden: old_extras.is_hidden,
-                    sign: old_extras.sign,
-                };
-
-                return Atomic(p.clone(), new_extras);
-            }
-
-            Equals(y, z, _) =>
-            {
-                if !y.is_instantiated() && y.variable_name == x.variable_name
-                {
-                    let mut instantiated_y = y.clone();
-                    instantiated_y.object_name = (*object_name_factory)();
-                    return Equals(instantiated_y, z.clone(), extras.clone());
-                }
-
-                if !z.is_instantiated() && z.variable_name == x.variable_name
-                {
-                    let mut instantiated_z = z.clone();
-                    instantiated_z.object_name = (*object_name_factory)();
-                    return Equals(y.clone(), instantiated_z, extras.clone());
-                }
-
-                return Equals(x.clone(), y.clone(), extras.clone());
-            }
-
-            Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
-            And(p, q, _) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Or(p, q, _) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Imply(p, q, _) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            BiImply(p, q, _) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            StrictImply(p, q, _) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
-            ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
-            Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
-            Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
-            InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
-            InFuture(p, _) => { InFuture(instantiated_box(p), extras.clone()) }
-            Comment(payload) => { Comment(payload.clone()) }
-        }
-    }
-
     pub fn get_predicate_arguments_of_atomic(&self) -> Option<PredicateArguments>
     {
         let mut get_predicate_arguments_of_atomic_from_tuple = |(p, q) : (&Formula, &Formula)|
@@ -273,6 +212,12 @@ impl Formula
                 p.get_all_predicate_arguments_recursively(output);
             }
 
+            Equals(x, y, _) =>
+            {
+                output.insert(x.clone());
+                output.insert(y.clone());
+            }
+
             Non(box p, _) => { p.get_all_predicate_arguments_recursively(output); }
             And(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
             Or(box p, box q, _) => { get_all_predicate_arguments_recursively_from_tuple((p, q)) }
@@ -318,42 +263,6 @@ impl Formula
             Conditional(box p, box q, _) => { p.contains_quantifier_with_argument(y) || q.contains_quantifier_with_argument(y) }
 
             _ => { false }
-        }
-    }
-
-    pub fn get_all_atomic_names(&self) -> BTreeSet<String>
-    {
-        let mut output : BTreeSet<String> = BTreeSet::new();
-        self.get_all_atomic_names_recursively(&mut output);
-        return output;
-    }
-
-    fn get_all_atomic_names_recursively(&self, output : &mut BTreeSet<String>)
-    {
-        let mut get_all_atomic_names_recursively_from_tuple = |(p, q) : (&Formula, &Formula)|
-        {
-            p.get_all_atomic_names_recursively(output);
-            q.get_all_atomic_names_recursively(output);
-        };
-
-        match self
-        {
-            Atomic(name, _) => { output.insert(name.clone()); }
-            Non(box p, _) => { p.get_all_atomic_names_recursively(output); }
-            And(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            Or(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            Imply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            BiImply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            StrictImply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            Conditional(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
-            Exists(_, box p, _) => { p.get_all_atomic_names_recursively(output); }
-            ForAll(_, box p, _) => { p.get_all_atomic_names_recursively(output); }
-            Possible(box p, _) => { p.get_all_atomic_names_recursively(output); }
-            Necessary(box p, _) => { p.get_all_atomic_names_recursively(output); }
-            InPast(box p, _) => { p.get_all_atomic_names_recursively(output); }
-            InFuture(box p, _) => { p.get_all_atomic_names_recursively(output); }
-            Equals(_, _, _) => {}
-            Comment(_) => {}
         }
     }
 }

@@ -70,3 +70,19 @@ pub struct PredicateArgument
     pub variable_name : String, //variable name eg: x,y,z
     pub object_name : String, //object name eg: a,b,c
 }
+
+impl PredicateArgument
+{
+    pub fn is_instantiated(&self) -> bool
+    {
+        return self.object_name != self.variable_name;
+    }
+}
+
+impl PartialEq<Self> for PredicateArgument
+{
+    fn eq(&self, other : &Self) -> bool
+    {
+        return self.object_name == other.object_name;
+    }
+}

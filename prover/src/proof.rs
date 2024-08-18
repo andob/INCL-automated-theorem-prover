@@ -1,5 +1,5 @@
 use crate::graph::Graph;
-use crate::logic::{LogicName, LogicRule};
+use crate::logic::{LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
@@ -18,7 +18,7 @@ pub struct ProofAlgorithm
     proof_tree : ProofTree,
     decomposition_queue : DecompositionPriorityQueue,
     logic_name : LogicName,
-    logic_rules : Vec<Box<dyn LogicRule>>,
+    logic_rules : LogicRuleCollection,
     node_factory : ProofTreeNodeFactory,
     modality_graph: Graph,
 }
@@ -61,12 +61,9 @@ impl ProofAlgorithm
         {
             factory.set_spawner_node_id(Some(node.id));
 
-            for logic_rule in &self.logic_rules
+            if let Some(subtree) = self.logic_rules.apply(&mut factory, &node)
             {
-                if let Some(subtree) = logic_rule.apply(&mut factory, &node)
-                {
-                    return Some((node, Box::new(subtree)));
-                }
+                return Some((node, Box::new(subtree)));
             }
         }
 

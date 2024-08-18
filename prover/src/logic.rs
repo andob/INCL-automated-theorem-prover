@@ -1,14 +1,9 @@
 use std::any::{Any, TypeId};
-use std::collections::BTreeMap;
-use std::fmt::{write, Display, Formatter};
+use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use anyhow::{Context, Result};
 use box_macro::bx;
-use maplit2::btreemap;
-use regex::Regex;
 use strum::IntoEnumIterator;
-use strum_macros::EnumIter;
-use crate::logic::common_modal_logic::Modality;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;
 use crate::logic::first_degree_entailment::logic_of_constructible_negation::LogicOfConstructibleNegation;
@@ -17,7 +12,7 @@ use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczM
 use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
 use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLogic;
-use crate::logic::first_order_logic::{FirstOrderDomainType, FirstOrderIdentityType, FirstOrderLogic};
+use crate::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FirstOrderLogic, FIRST_ORDER_LOGIC_NAME_PREFIX};
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
@@ -40,11 +35,6 @@ mod temporal_modal_logic;
 mod conditional_modal_logic;
 mod first_degree_entailment;
 
-pub trait LogicRule
-{
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>;
-}
-
 pub trait Logic : Any
 {
     //the logic name, eg: PropositionalLogic
@@ -60,7 +50,7 @@ pub trait Logic : Any
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>;
 
     //tree decomposition rules
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>;
+    fn get_rules(&self) -> LogicRuleCollection;
 }
 
 impl dyn Logic
@@ -77,6 +67,40 @@ impl dyn Logic
         }
 
         return self.as_any().downcast_ref::<LOGIC>();
+    }
+}
+
+pub trait LogicRule
+{
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>;
+}
+
+pub struct LogicRuleCollection
+{
+    rules : Vec<Box<dyn LogicRule>>
+}
+
+impl LogicRuleCollection
+{
+    pub fn of(rules : Vec<Box<dyn LogicRule>>) -> LogicRuleCollection
+    {
+        return LogicRuleCollection { rules };
+    }
+
+    pub fn to_vec(self) -> Vec<Box<dyn LogicRule>> { self.rules }
+
+    pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    {
+        for logic_rule in &self.rules
+        {
+            //todo implement logging here
+            if let Some(subtree) = logic_rule.apply(factory, node)
+            {
+                return Some(subtree);
+            }
+        }
+
+        return None;
     }
 }
 
@@ -134,7 +158,7 @@ impl LogicName
 
     pub fn is_first_order_logic(&self) -> bool
     {
-        return self.value.starts_with("FirstOrderLogic+");
+        return self.value.starts_with(FIRST_ORDER_LOGIC_NAME_PREFIX);
     }
 }
 
@@ -209,9 +233,9 @@ impl LogicFactory
 
         let mut logics = base_logics.clone();
 
-        for domain_type in FirstOrderDomainType::iter()
+        for domain_type in FirstOrderLogicDomainType::iter()
         {
-            for identity_type in FirstOrderIdentityType::iter()
+            for identity_type in FirstOrderLogicIdentityType::iter()
             {
                 for base_logic in &base_logics
                 {
