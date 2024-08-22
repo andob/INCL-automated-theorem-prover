@@ -1,8 +1,11 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
-use crate::formula::Formula::{Exists, ForAll, Non};
+use itertools::Itertools;
+use crate::formula::Formula::{DefinitelyExists, Equals, Exists, ForAll, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
+use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
+use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -25,35 +28,84 @@ impl LogicRule for ForAllQuantifierRule
 
         if let ForAll(x, box p, extras) = &node.formula
         {
-            let mut output_nodes : Vec<ProofTreeNode> = vec![];
+            let logic_pointer = factory.get_logic().clone();
+            let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
 
-            self.apply_for_all_quantification_impl(factory, node, x, p, extras, &mut output_nodes);
+            let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
+            self.apply_for_all_quantification(factory, node, x, p, extras, &mut output_nodes);
 
             if output_nodes.is_empty()
             {
-                //when there are no nodes, act similar to exists quantifier
-                let object_name_factory = ExistsQuantifierRule::get_object_name_factory(factory, node);
-                let instantiated_p = p.instantiated(x, &object_name_factory, extras);
-                let instantiated_p_node = factory.new_node(instantiated_p);
-
-                return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+                //there are no objects to be iterated, act similar to exists quantifier
+                return ExistsQuantifierRule{}.apply_exists_quantification(factory, node, x, p, extras);
             }
 
-            return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+            return Some(output_nodes.to_proof_subtree(factory));
         }
 
         return None;
     }
 }
 
+struct ForAllQuantifierOutputNodes
+{
+    domain_type : FirstOrderLogicDomainType,
+    nodes_on_left : Vec<ProofTreeNode>,
+    nodes_on_right : Vec<ProofTreeNode>,
+}
+
+impl ForAllQuantifierOutputNodes
+{
+    pub fn new(domain_type : FirstOrderLogicDomainType) -> ForAllQuantifierOutputNodes
+    {
+        return ForAllQuantifierOutputNodes { domain_type, nodes_on_left:vec![], nodes_on_right:vec![] };
+    }
+
+    pub fn add(&mut self, factory : &mut RuleApplyFactory, binded_x : PredicateArgument, binded_p : Formula, extras : &FormulaExtras)
+    {
+        let binded_p_node = factory.new_node(binded_p);
+        self.nodes_on_right.push(binded_p_node);
+
+        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        {
+            let definitely_exists_x = DefinitelyExists(binded_x, extras.clone());
+            let non_definitely_exists_x = Non(bx!(definitely_exists_x), extras.clone());
+            let non_definitely_exists_x_node = factory.new_node(non_definitely_exists_x);
+            self.nodes_on_left.push(non_definitely_exists_x_node);
+        }
+    }
+
+    pub fn is_empty(&self) -> bool
+    {
+        return self.nodes_on_right.is_empty();
+    }
+
+    pub fn to_proof_subtree(self, factory : &mut RuleApplyFactory) -> ProofSubtree
+    {
+        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        {
+            let zipped_nodes = self.nodes_on_left
+                .into_iter().zip(self.nodes_on_right.into_iter())
+                .collect::<Vec<(ProofTreeNode, ProofTreeNode)>>();
+
+            return ProofSubtree::with_zipped_left_right_vertical_nodes(zipped_nodes, factory.tree_node_factory);
+        }
+
+        return ProofSubtree::with_middle_vertical_nodes(self.nodes_on_right);
+    }
+}
+
 impl ForAllQuantifierRule
 {
-    fn apply_for_all_quantification_impl(&self,
+    fn apply_for_all_quantification(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
-        output_nodes : &mut Vec<ProofTreeNode>,
+        output_nodes : &mut ForAllQuantifierOutputNodes,
     )
     {
+        let logic_pointer = factory.get_logic().clone();
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
+
         let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .collect::<Vec<Formula>>();
@@ -62,26 +114,31 @@ impl ForAllQuantifierRule
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
             .collect::<BTreeSet<PredicateArgument>>();
 
-        //todo create is_free_arg closure
         let free_args = all_args_on_path.iter()
             .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
                 .any(|formula| formula.contains_quantifier_with_argument(y)))
             .collect::<BTreeSet<&PredicateArgument>>();
 
-        //todo check definite existence
+        let args_that_definitely_exists = all_formulas_on_path.iter()
+            .filter(|formula| formula.get_possible_world() == extras.possible_world)
+            .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
+            .collect::<BTreeSet<&PredicateArgument>>();
+
+        //todo test check definite existence
         let instantiated_xs = all_args_on_path.iter()
             .filter(|a| a.is_instantiated() && a.variable_name == x.variable_name)
+            .filter(|a| logic.domain_type == ConstantDomain ||
+                args_that_definitely_exists.iter().any(|d| d==a))
             .collect::<BTreeSet<&PredicateArgument>>();
         for instantiated_x in instantiated_xs
         {
-            let binded_p = p.binded(x, instantiated_x.object_name.clone(), extras);
-            let binded_p_node = factory.new_node(binded_p);
-            output_nodes.push(binded_p_node);
+            let (binded_p, binded_x) = p.binded(x, instantiated_x.object_name.clone(), extras);
+            output_nodes.add(factory, binded_x.unwrap(), binded_p, extras);
         }
 
         let equivalences = all_formulas_on_path.iter()
             .filter(|formula| formula.get_possible_world() == extras.possible_world)
-            .filter_map(|formula| if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None })
+            .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x,y)) } else { None })
             .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
         let has_no_equivalent = |x : &PredicateArgument| !equivalences.iter()
@@ -90,22 +147,23 @@ impl ForAllQuantifierRule
         if has_no_equivalent(x)
         {
             let ys_with_no_equivalent = all_args_on_path.iter()
-                .filter(|y| !y.is_instantiated() && has_no_equivalent(y))
                 .filter(|y| x.variable_name != y.variable_name)
+                .filter(|y| (!y.is_instantiated() && has_no_equivalent(y)) || free_args.contains(y))
                 .collect::<BTreeSet<&PredicateArgument>>();
 
             for y in ys_with_no_equivalent
             {
-                //todo check definite existence
+                //todo test check definite existence
                 let instantiated_ys = all_args_on_path.iter()
                     .filter(|a| a.variable_name == y.variable_name)
                     .filter(|a| free_args.contains(a) || a.is_instantiated())
+                    .filter(|a| logic.domain_type == ConstantDomain ||
+                        args_that_definitely_exists.iter().any(|d| d==a))
                     .collect::<BTreeSet<&PredicateArgument>>();
                 for instantiated_y in instantiated_ys
                 {
-                    let binded_p = p.binded(x, instantiated_y.object_name.clone(), extras);
-                    let binded_p_node = factory.new_node(binded_p);
-                    output_nodes.push(binded_p_node);
+                    let (binded_p, binded_x) = p.binded(x, instantiated_y.object_name.clone(), extras);
+                    output_nodes.add(factory, binded_x.unwrap(), binded_p, extras);
                 }
             }
         }
@@ -118,16 +176,17 @@ impl ForAllQuantifierRule
 
             for y in equivalent_ys
             {
-                //todo check definite existence
+                //todo test check definite existence
                 let instantiated_ys = all_args_on_path.iter()
                     .filter(|a| a.variable_name == y.variable_name)
                     .filter(|a| free_args.contains(a) || a.is_instantiated())
+                    .filter(|a| logic.domain_type == ConstantDomain ||
+                        args_that_definitely_exists.iter().any(|d| d==a))
                     .collect::<BTreeSet<&PredicateArgument>>();
                 for instantiated_y in instantiated_ys
                 {
-                    let binded_p = p.binded(x, instantiated_y.object_name.clone(), extras);
-                    let binded_p_node = factory.new_node(binded_p);
-                    output_nodes.push(binded_p_node);
+                    let (binded_p, binded_x) = p.binded(x, instantiated_y.object_name.clone(), extras);
+                    output_nodes.add(factory, binded_x.unwrap(), binded_p, extras);
                 }
             }
         }

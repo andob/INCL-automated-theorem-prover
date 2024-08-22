@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
+use crate::formula::Formula::Equals;
 use crate::graph::GraphVertex;
 use crate::logic::{LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -30,7 +31,7 @@ impl LogicRule for IdentityInvarianceRule
             .tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .filter(|formula| formula.get_possible_world() == original_world)
-            .filter_map(|formula| if let Formula::Equals(x, y, _) = formula { Some((x,y)) } else { None })
+            .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x,y)) } else { None })
             .collect::<BTreeSet<(PredicateArgument, PredicateArgument)>>();
 
         if let Some(mut subtree) = self.base_logic_rules.apply(factory, node)
@@ -50,7 +51,7 @@ impl LogicRule for IdentityInvarianceRule
 
             let new_equality_formulas = new_graph_vertices.iter().map(|vertex| vertex.to)
                 .flat_map(|new_world| equalities_in_original_world.iter().map(move |(x, y)|
-                    Formula::Equals(x.clone(), y.clone(), new_equality_formula_extras(new_world))))
+                    Equals(x.clone(), y.clone(), new_equality_formula_extras(new_world))))
                 .collect::<Vec<Formula>>();
 
             let new_equality_nodes = new_equality_formulas.into_iter()

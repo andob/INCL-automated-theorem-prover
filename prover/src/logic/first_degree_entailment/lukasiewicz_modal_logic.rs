@@ -11,7 +11,7 @@ use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiIm
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
-use crate::semantics::three_valued_logic_semantics::{ThreeValuedContradictionBehaviour, ThreeValuedLogicSemantics};
+use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehaviour, ManyValuedLogicSemantics};
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
@@ -41,8 +41,8 @@ impl Logic for LukasiewiczModalLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let mut semantics = ThreeValuedLogicSemantics::new();
-        semantics.add_behaviour(ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
+        let mut semantics = ManyValuedLogicSemantics::new();
+        semantics.add_behaviour(ManyValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
         return Box::new(semantics);
     }
 

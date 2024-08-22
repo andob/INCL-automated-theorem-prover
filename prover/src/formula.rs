@@ -22,6 +22,7 @@ pub enum Formula
     Exists(PredicateArgument, Box<Formula>, FormulaExtras),
     ForAll(PredicateArgument, Box<Formula>, FormulaExtras),
     Equals(PredicateArgument, PredicateArgument, FormulaExtras),
+    DefinitelyExists(PredicateArgument, FormulaExtras),
     Possible(Box<Formula>, FormulaExtras),
     Necessary(Box<Formula>, FormulaExtras),
     InPast(Box<Formula>, FormulaExtras),

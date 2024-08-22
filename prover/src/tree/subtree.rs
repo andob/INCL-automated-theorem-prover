@@ -32,21 +32,45 @@ impl ProofSubtree
     pub fn with_middle_vertical_nodes(nodes : Vec<ProofTreeNode>) -> ProofSubtree
     {
         if nodes.is_empty() { return ProofSubtree::empty() };
-        let linked_nodes = Self::link_nodes_recursively(&nodes, 0);
-        return ProofSubtree::new(None, Some(Box::new(linked_nodes)), None);
+        let middle = Self::link_middle_nodes_recursively(&nodes, 0);
+        return ProofSubtree::new(None, Some(Box::new(middle)), None);
     }
 
-    fn link_nodes_recursively(nodes : &Vec<ProofTreeNode>, index : usize) -> ProofTreeNode
+    fn link_middle_nodes_recursively(nodes : &Vec<ProofTreeNode>, index : usize) -> ProofTreeNode
     {
         if index < nodes.len()-1
         {
             let mut current_linked_node = nodes[index].clone();
-            let next_linked_node = Self::link_nodes_recursively(nodes, index+1);
+            let next_linked_node = Self::link_middle_nodes_recursively(nodes, index+1);
             current_linked_node.middle = Some(Box::new(next_linked_node));
             return current_linked_node;
         }
 
         return nodes[index].clone();
+    }
+
+    pub fn with_zipped_left_right_vertical_nodes(nodes : Vec<(ProofTreeNode, ProofTreeNode)>, node_factory : &mut ProofTreeNodeFactory) -> ProofSubtree
+    {
+        if nodes.is_empty() { return ProofSubtree::empty() };
+
+        let (mut root_left, mut root_right) = nodes.first().cloned().unwrap();
+        let (mut id_on_left, mut id_on_right) = (root_left.id, root_right.id);
+
+        for index in 1..nodes.len()
+        {
+            let (left, right) = nodes[index].clone();
+            let (next_id_on_left, next_id_on_right) = (left.id, right.id);
+            let subtree = ProofSubtree::new(Some(Box::new(left)), None, Some(Box::new(right)));
+            root_left.append_subtree_recursively(&subtree, id_on_left);
+            root_right.append_subtree_recursively(&subtree, id_on_right);
+            id_on_left = next_id_on_left;
+            id_on_right = next_id_on_right;
+        }
+
+        root_left.attach_new_ids(node_factory);
+        root_right.attach_new_ids(node_factory);
+
+        return ProofSubtree::new(Some(Box::new(root_left)), None, Some(Box::new(root_right)));
     }
 
     pub fn with_left_right_nodes(left : ProofTreeNode, right : ProofTreeNode) -> ProofSubtree
@@ -79,7 +103,7 @@ impl ProofSubtree
 
                 for leaf_node_id in leaf_node_ids
                 {
-                    root_node.append_subtree_recursive(&another_subtree, leaf_node_id);
+                    root_node.append_subtree_recursively(&another_subtree, leaf_node_id);
                 }
             }
         }
@@ -90,6 +114,8 @@ impl ProofTree
 {
     pub fn append_subtree(&mut self, subtree : &mut ProofSubtree, node_id : ProofTreeNodeID)
     {
+        if subtree.left.is_none() && subtree.middle.is_none() && subtree.right.is_none() { return };
+
         let mut should_clone_subtree_with_new_ids = false;
 
         let paths = self.get_all_paths();
@@ -100,14 +126,14 @@ impl ProofTree
             {
                 if !should_clone_subtree_with_new_ids
                 {
-                    self.root_node.append_subtree_recursive(&subtree, leaf.id);
+                    self.root_node.append_subtree_recursively(&subtree, leaf.id);
                     should_clone_subtree_with_new_ids = true;
                 }
                 else
                 {
                     let mut subtree_with_new_ids = subtree.clone();
                     subtree_with_new_ids.attach_new_ids(&mut self.node_factory);
-                    self.root_node.append_subtree_recursive(&subtree_with_new_ids, leaf.id);
+                    self.root_node.append_subtree_recursively(&subtree_with_new_ids, leaf.id);
                     subtree.cloned_subtrees_with_new_ids.push(Box::new(subtree_with_new_ids));
                 }
             }
@@ -117,7 +143,7 @@ impl ProofTree
 
 impl ProofTreeNode
 {
-    fn append_subtree_recursive(&mut self, subtree : &ProofSubtree, node_id : ProofTreeNodeID)
+    fn append_subtree_recursively(&mut self, subtree : &ProofSubtree, node_id : ProofTreeNodeID)
     {
         if self.id == node_id
         {
@@ -127,13 +153,13 @@ impl ProofTreeNode
         }
         else
         {
-            if let Some(left) = &mut self.left { left.append_subtree_recursive(subtree, node_id); }
-            if let Some(middle) = &mut self.middle { middle.append_subtree_recursive(subtree, node_id); }
-            if let Some(right) = &mut self.right { right.append_subtree_recursive(subtree, node_id); }
+            if let Some(left) = &mut self.left { left.append_subtree_recursively(subtree, node_id); }
+            if let Some(middle) = &mut self.middle { middle.append_subtree_recursively(subtree, node_id); }
+            if let Some(right) = &mut self.right { right.append_subtree_recursively(subtree, node_id); }
         }
     }
 
-    fn attach_new_ids(&mut self, node_factory: &mut ProofTreeNodeFactory)
+    fn attach_new_ids(&mut self, node_factory : &mut ProofTreeNodeFactory)
     {
         self.id = node_factory.new_node_id();
         if let Some(left) = &mut self.left { left.attach_new_ids(node_factory); }

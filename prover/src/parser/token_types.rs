@@ -11,7 +11,7 @@ use crate::parser::models::{OperatorPrecedence, TokenCategory, TokenType};
 #[derive(Eq, PartialEq, Hash, Clone, Copy, EnumIter, Display)]
 pub enum TokenTypeID
 {
-    Exists, ForAll, Equals,
+    Exists, ForAll, Equals, DefinitelyExists,
     AtomicWithoutArgs, AtomicWithArgs,
     Non, And, Or, Imply, BiImply,
     Possible, Necessary, InPast, InFuture,
@@ -38,7 +38,7 @@ impl TokenType
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
                     return Ok(Formula::Exists(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -54,7 +54,7 @@ impl TokenType
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
                     return Ok(Formula::ForAll(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -79,6 +79,21 @@ impl TokenType
 
             TokenType
             {
+                //matches definitely exists: 𝔈
+                id: TokenTypeID::DefinitelyExists,
+                regex: Regex::new(r"𝔈[A-Za-z_]+").context(codeloc!())?,
+                category: TokenCategory::Atomic,
+                precedence: OperatorPrecedence::Highest,
+                to_formula: |name, args|
+                {
+                    let formula_extras = FormulaExtras::empty();
+                    let predicate_args = Self::parse_predicate_arguments(&name);
+                    return Ok(Formula::DefinitelyExists(predicate_args[0].clone(), formula_extras));
+                }
+            },
+
+            TokenType
+            {
                 //matches atomic formulas with args: P(x,y), ...
                 id: TokenTypeID::AtomicWithArgs,
                 regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z0-9_,]+\]").context(codeloc!())?,
@@ -90,7 +105,7 @@ impl TokenType
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     let formula_extras = AtomicFormulaExtras::new(predicate_args);
                     return Ok(Formula::Atomic(atomic_name, formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -104,7 +119,7 @@ impl TokenType
                 {
                     let formula_extras = AtomicFormulaExtras::empty();
                     return Ok(Formula::Atomic(name, formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -118,7 +133,7 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::Non(bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -132,7 +147,7 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::Possible(bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -146,7 +161,7 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::Necessary(bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -160,7 +175,7 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::InPast(bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -174,7 +189,7 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::InFuture(bx!(args[0].clone()), formula_extras));
-                },
+                }
             },
 
             TokenType
@@ -309,6 +324,12 @@ impl TokenType
         if let Some(index_of_for_all) = input.find('∀')
         {
             let new_input = input.substring(index_of_for_all+1, input.len()-1).to_string();
+            return Self::parse_predicate_arguments(&new_input);
+        }
+
+        if let Some(index_of_definitely_exists) = input.find('𝔈')
+        {
+            let new_input = input.substring(index_of_definitely_exists+1, input.len()-1).to_string();
             return Self::parse_predicate_arguments(&new_input);
         }
 

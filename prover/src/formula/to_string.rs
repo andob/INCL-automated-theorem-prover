@@ -3,6 +3,7 @@ use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::notations::OperatorNotations;
 use crate::parser::token_types::TokenTypeID;
 
@@ -53,7 +54,7 @@ impl Formula
             formula_string = format!("[HIDDEN] {}", formula_string);
         }
 
-        let is_comment = matches!(self, Formula::Comment(..));
+        let is_comment = matches!(self, Comment(..));
         if options.should_show_possible_worlds && !is_comment
         {
             formula_string.push(' ');
@@ -77,88 +78,93 @@ impl Formula
 
         return match self
         {
-            Formula::Atomic(p, args) =>
+            Atomic(p, args) =>
             {
                 if args.predicate_args.is_empty() { return p.clone() };
                 return format!("{}[{}]", p, args.predicate_args);
             }
 
-            Formula::Non(p, _) =>
+            Non(p, _) =>
             {
                 let non = options.notations.get_operator_character(TokenTypeID::Non);
                 return format!("{}{}", non, p.to_string_impl(options, index+1));
             }
 
-            Formula::And(p, q, _) =>
+            And(p, q, _) =>
             {
                 let and = options.notations.get_operator_character(TokenTypeID::And);
                 return format_binary_formula(p, and, q);
             }
 
-            Formula::Or(p, q, _) =>
+            Or(p, q, _) =>
             {
                 let or = options.notations.get_operator_character(TokenTypeID::Or);
                 return format_binary_formula(p, or, q);
             }
 
-            Formula::Imply(p, q, _) =>
+            Imply(p, q, _) =>
             {
                 let imply = options.notations.get_operator_character(TokenTypeID::Imply);
                 return format_binary_formula(p, imply, q);
             }
 
-            Formula::BiImply(p, q, _) =>
+            BiImply(p, q, _) =>
             {
                 let bi_imply = options.notations.get_operator_character(TokenTypeID::BiImply);
                 return format_binary_formula(p, bi_imply, q);
             }
 
-            Formula::StrictImply(p, q, _) =>
+            StrictImply(p, q, _) =>
             {
                 return format_binary_formula(p, '⥽', q);
             }
 
-            Formula::Conditional(p, q, _) =>
+            Conditional(p, q, _) =>
             {
                 return format_binary_formula(p, 'ᐅ', q);
             }
 
-            Formula::Exists(x, p, _) =>
+            Exists(x, p, _) =>
             {
                 return format!("∃{}({})", x, p.to_string_impl(options, index+1));
             }
 
-            Formula::ForAll(x, p, _) =>
+            ForAll(x, p, _) =>
             {
                 return format!("∀{}({})", x, p.to_string_impl(options, index+1));
             }
 
-            Formula::Equals(x, y, _) =>
+            Equals(x, y, _) =>
             {
                 return format!("{} = {}", x, y);
             }
 
-            Formula::Possible(p, _) =>
+            DefinitelyExists(x, _) =>
+            {
+                return format!("𝔈{}", x);
+            }
+
+            Possible(p, _) =>
             {
                 return format!("◇{}", p.to_string_impl(options, index+1));
             }
 
-            Formula::Necessary(p, _) =>
+            Necessary(p, _) =>
             {
                 return format!("□{}", p.to_string_impl(options, index+1));
             }
 
-            Formula::InPast(p, _) =>
+            InPast(p, _) =>
             {
                 return format!("ᵖ{}", p.to_string_impl(options, index+1));
             }
 
-            Formula::InFuture(p, _) =>
+            InFuture(p, _) =>
             {
                 return format!("ᶠ{}", p.to_string_impl(options, index+1));
             }
 
-            Formula::Comment(payload) =>
+            Comment(payload) =>
             {
                 return payload.clone();
             }

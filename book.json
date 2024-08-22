@@ -162,48 +162,6 @@
         "conclusion": "∀x(A ⊃ (B ∨ C))"
       },
       {
-        "id": "12.13.3.a",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
-        "premises": [ "∀x(P[x] ⊃ Q[x])", "∃x ¬P[x]" ],
-        "conclusion": "∀x ¬Q[x]"
-      },
-      {
-        "id": "12.13.3.b",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "proved",
-        "premises": [ "∀x(P[x] ⊃ ∃y S[x,y])" ],
-        "conclusion": "∀x ∃y(P[x] ⊃ S[x,y])"
-      },
-      {
-        "id": "12.13.3.c",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
-        "premises": [ "∀x P[x] ⊃ ∀y Q[y]" ],
-        "conclusion": "∀x(P[x] ⊃ ∀y Q[y])"
-      },
-      {
-        "id": "12.13.3.d",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
-        "premises": [ "∃x(P[x] ⊃ ∀y Q[y])" ],
-        "conclusion": "∃x P[x] ⊃ ∀y Q[y]"
-      },
-      {
-        "id": "12.13.3.e",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
-        "premises": [ "∀x ∃y S[x,y]" ],
-        "conclusion": "∃x S[x,x]"
-      },
-      {
-        "id": "12.13.3.f",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
-        "premises": [ "∃x ¬∃y S[x,y]" ],
-        "conclusion": "∃x  ∀y S[x,y]"
-      },
-      {
         "id": "12.13.5.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
         "expected": "proved",
@@ -260,41 +218,6 @@
         "conclusion": "∃x(x = a ∧ P[x])"
       },
       {
-        "id": "12.13.6.a",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "proved",
-        "premises": [ "∃x P[x]", "∀x∀y((P[x] ∧ P[y]) ⊃ x = y)" ],
-        "conclusion": "∃x(P[x] ∧ ∀y(P[y] ⊃ x = y))"
-      },
-      {
-        "id": "12.13.6.b",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
-        "premises": [ "∀x(P[x] ⊃ (x = a ∨ x = b))", "a = b ∨ b = c ∨ c = a" ],
-        "conclusion": "P[c]"
-      },
-      {
-        "id": "12.13.6.c",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
-        "premises": [ "∃x(P[x] ∧ ∀y(P[y] ⊃ x = y))" ],
-        "conclusion": "∃x∀y(P[y] ≡ x = y)"
-      },
-      {
-        "id": "12.13.6.d",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
-        "premises": [ "∃x(∀z S[x,z] ∧ ∀y(∀z S[y,z] ⊃ x = y))" ],
-        "conclusion": "∃x∃y(¬S[x,y] ∧ ¬S[y,x])"
-      },
-      {
-        "id": "12.13.6.e",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
-        "premises": [ "∃x∀y(P[y] ≡ x = y)" ],
-        "conclusion": "∃x P[x] ∧ ∀x∀y((P[x] ∧ P[y]) ⊃ x = y)"
-      },
-      {
         "id": "12.13.8.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
         "expected": "proved",
@@ -307,6 +230,69 @@
         "expected": "proved",
         "premises": [],
         "conclusion": "∃x(P[x] ⊃ ∀y P[y])"
+      },
+      {
+        "id": "13.10.2.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ⊃ Q[x])", "∃x P[x]" ],
+        "conclusion": "∃x Q[x]"
+      },
+      {
+        "id": "13.10.2.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "∀x P[x] ⊃ ∃y Q[y]" ],
+        "conclusion": "∃y(∀x P[x] ⊃ Q[y])"
+      },
+      {
+        "id": "13.10.2.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∃x ∀y R[x,y] ⊃ ∀y ∃x R[x,y]"
+      },
+      {
+        "id": "13.10.2.d",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [ "∃x P[x]", "∃x Q[x]" ],
+        "conclusion": "∀x(P[x] ∧ Q[x])"
+      },
+      {
+        "id": "13.10.2.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x P[x] ⊃ P[a]"
+      },
+      {
+        "id": "13.10.2.f",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(∀x P[x] ∧ \uD835\uDD08a) ⊃ P[a]"
+      },
+      {
+        "id": "13.10.2.g",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "P[a] ⊃ ∃x P[x]"
+      },
+      {
+        "id": "13.10.2.h",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(P[a] ∧ \uD835\uDD08a) ⊃ ∃x P[x]"
+      },
+      {
+        "id": "13.10.2.i",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "∃x P[x]"
       }
     ]
   },
@@ -660,48 +646,6 @@
         "conclusion": "∃x □ ◇ P[x] ⊃ ∃x ◇ □ P[x]"
       },
       {
-        "id": "14.10.4.a",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+TModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "∀x □ P[x] ⊃ ∃x P[x]"
-      },
-      {
-        "id": "14.10.4.b",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+TModalLogic",
-        "expected": "disproved",
-        "premises": [],
-        "conclusion": "∃x ◇◇ Q[x] ⊃ ◇ ∃x Q[x]"
-      },
-      {
-        "id": "14.10.4.c",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S4ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "∃x ◇◇ Q[x] ⊃ ◇ ∃x Q[x]"
-      },
-      {
-        "id": "14.10.4.d",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S5ModalLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "∃x ◇◇ Q[x] ⊃ ◇ ∃x Q[x]"
-      },
-      {
-        "id": "14.10.4.e",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+TModalLogic",
-        "expected": "disproved",
-        "premises": [],
-        "conclusion": "□□ ∀x P[x] ≡ ◇ ∀x □ P[x]"
-      },
-      {
-        "id": "14.10.4.f",
-        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S4ModalLogic",
-        "expected": "timeout",
-        "premises": [],
-        "conclusion": "□□ ∀x P[x] ≡ ◇ ∀x □ P[x]"
-      },
-      {
         "id": "16.10.2.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+KModalLogic",
         "expected": "disproved",
@@ -749,6 +693,32 @@
         "expected": "proved",
         "premises": [],
         "conclusion": "□ ∀x P[x] ⊃ □ P[a]"
+      }
+    ]
+  },
+  {
+    "name": "First order normal modal logic (variable domain)",
+    "problems": [
+      {
+        "id": "16.10.3.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
+        "expected": "disproved",
+        "premises": [ "□ P[a]" ],
+        "conclusion": "∃x(x = a ∧ P[x])"
+      },
+      {
+        "id": "16.10.3.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
+        "expected": "proved",
+        "premises": [ "◇ ∃x (x = a ∧ P[x])" ],
+        "conclusion": "∃x ◇ P[x]"
+      },
+      {
+        "id": "16.10.3.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
+        "expected": "disproved",
+        "premises": [ "□ ∃x (x = a)" ],
+        "conclusion": "∃x □ (x = a)"
       }
     ]
   },

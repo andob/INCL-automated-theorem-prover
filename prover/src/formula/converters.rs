@@ -1,7 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 
 mod extras_in_world;
 mod extras_with_sign;
@@ -24,6 +24,7 @@ impl Formula
             Exists(x, p, extras) => { Exists(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
             Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.in_world(world)) }
+            DefinitelyExists(x, extras) => { DefinitelyExists(x.clone(), extras.in_world(world)) }
             Possible(p, extras) => { Possible(bx!(p.in_world(world)), extras.in_world(world)) }
             Necessary(p, extras) => { Necessary(bx!(p.in_world(world)), extras.in_world(world)) }
             InPast(p, extras) => { InPast(bx!(p.in_world(world)), extras.in_world(world)) }
@@ -47,6 +48,7 @@ impl Formula
             Exists(_, _, extras) => { extras.possible_world }
             ForAll(_, _, extras) => { extras.possible_world }
             Equals(_, _, extras) => { extras.possible_world }
+            DefinitelyExists(_, extras) => { extras.possible_world }
             Possible(_, extras) => { extras.possible_world }
             Necessary(_, extras) => { extras.possible_world }
             InPast(_, extras) => { extras.possible_world }
@@ -70,6 +72,7 @@ impl Formula
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_sign(sign)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_sign(sign)) }
             Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.with_sign(sign)) }
+            DefinitelyExists(x, extras) => { DefinitelyExists(x.clone(), extras.with_sign(sign)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_sign(sign)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_sign(sign)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_sign(sign)) }
@@ -93,6 +96,7 @@ impl Formula
             Exists(_, _, extras) => { extras.sign }
             ForAll(_, _, extras) => { extras.sign }
             Equals(_, _, extras) => { extras.sign }
+            DefinitelyExists(_, extras) => { extras.sign }
             Possible(_, extras) => { extras.sign }
             Necessary(_, extras) => { extras.sign }
             InPast(_, extras) => { extras.sign }
@@ -116,6 +120,7 @@ impl Formula
             Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_is_hidden(is_hidden)) }
             Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.with_is_hidden(is_hidden)) }
+            DefinitelyExists(x, extras) => { DefinitelyExists(x.clone(), extras.with_is_hidden(is_hidden)) }
             Possible(p, extras) => { Possible(p.clone(), extras.with_is_hidden(is_hidden)) }
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_is_hidden(is_hidden)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_is_hidden(is_hidden)) }
@@ -139,6 +144,7 @@ impl Formula
             Exists(_, _, extras) => { extras.is_hidden }
             ForAll(_, _, extras) => { extras.is_hidden }
             Equals(_, _, extras) => { extras.is_hidden }
+            DefinitelyExists(_, extras) => { extras.is_hidden }
             Possible(_, extras) => { extras.is_hidden }
             Necessary(_, extras) => { extras.is_hidden }
             InPast(_, extras) => { extras.is_hidden }
@@ -165,6 +171,7 @@ impl Formula
             Exists(_, p, _) => { p.get_predicate_arguments_of_atomic() }
             ForAll(_, p, _) => { p.get_predicate_arguments_of_atomic() }
             Equals(_, _, _) => { None }
+            DefinitelyExists(_, _) => { None }
             Possible(p, _) => { p.get_predicate_arguments_of_atomic() }
             Necessary(p, _) => { p.get_predicate_arguments_of_atomic() }
             InPast(p, _) => { p.get_predicate_arguments_of_atomic() }
@@ -211,11 +218,14 @@ impl Formula
                 output.insert(x.clone());
                 p.get_all_predicate_arguments_recursively(output);
             }
-
             Equals(x, y, _) =>
             {
                 output.insert(x.clone());
                 output.insert(y.clone());
+            }
+            DefinitelyExists(x, _) =>
+            {
+                output.insert(x.clone());
             }
 
             Non(box p, _) => { p.get_all_predicate_arguments_recursively(output); }

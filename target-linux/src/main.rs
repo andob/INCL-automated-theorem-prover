@@ -30,7 +30,7 @@ fn main() -> Result<()>
         prove_problems_from_the_book(template, output_dir_path).context(codeloc!())?;
         create_proof_index_html_file(output_dir_path).context(codeloc!())?;
 
-        open_firefox(format!("{}/index.html", output_dir_path)).context(codeloc!())?;
+        open_browser(format!("{}/index.html", output_dir_path)).context(codeloc!())?;
     }
     else if args.len() == 2
     {
@@ -44,7 +44,7 @@ fn main() -> Result<()>
         let proof_file_path = format!("{}/proof.html", output_dir_path);
         prove_problem(template, &proof_file_path, problem).context(codeloc!())?;
 
-        open_firefox(proof_file_path).context(codeloc!())?;
+        open_browser(proof_file_path).context(codeloc!())?;
     }
     else if args.len() == 3
     {
@@ -55,7 +55,7 @@ fn main() -> Result<()>
         let proof_file_path = format!("{}/proof.html", output_dir_path);
         prove_problem(template, &proof_file_path, problem).context(codeloc!())?;
 
-        open_firefox(proof_file_path).context(codeloc!())?;
+        open_browser(proof_file_path).context(codeloc!())?;
     }
     else
     {
@@ -136,11 +136,11 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
     return Ok(());
 }
 
-fn open_firefox(file_path : String) -> Result<()>
+fn open_browser(file_path : String) -> Result<()>
 {
     unsafe
     {
-        let command_string = format!("firefox {}", file_path);
+        let command_string = format!("chromium {}", file_path);
         let command_cstring = CString::new(command_string).context(codeloc!())?;
         libc::system(command_cstring.as_ptr() as *const c_char);
 

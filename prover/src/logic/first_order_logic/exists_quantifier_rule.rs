@@ -1,7 +1,8 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
+use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -24,11 +25,7 @@ impl LogicRule for ExistsQuantifierRule
 
         if let Exists(x, box p, extras) = &node.formula
         {
-            let object_name_factory = Self::get_object_name_factory(factory, node);
-            let instantiated_p = p.instantiated(x, &object_name_factory, extras);
-            let instantiated_p_node = factory.new_node(instantiated_p);
-
-            return Some(ProofSubtree::with_middle_node(instantiated_p_node));
+            return self.apply_exists_quantification(factory, node, x, p, extras);
         }
 
         return None;
@@ -37,7 +34,31 @@ impl LogicRule for ExistsQuantifierRule
 
 impl ExistsQuantifierRule
 {
-    pub fn get_object_name_factory(factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> String>
+    pub fn apply_exists_quantification(&self,
+        factory : &mut RuleApplyFactory, node : &ProofTreeNode,
+        x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
+    ) -> Option<ProofSubtree>
+    {
+        let mut output_nodes: Vec<ProofTreeNode> = vec![];
+
+        let object_name_factory = self.get_object_name_factory(factory, node);
+        let (instantiated_p, instantiated_x) = p.instantiated(x, &object_name_factory, extras);
+        let instantiated_p_node = factory.new_node(instantiated_p);
+        output_nodes.push(instantiated_p_node);
+
+        let logic_pointer = factory.get_logic().clone();
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
+        if logic.domain_type == FirstOrderLogicDomainType::VariableDomain
+        {
+            let definitely_exists_x = DefinitelyExists(instantiated_x?, extras.clone());
+            let definitely_exists_x_node = factory.new_node(definitely_exists_x);
+            output_nodes.push(definitely_exists_x_node);
+        }
+
+        return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+    }
+
+    fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> String>
     {
         let used_names = factory.tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
@@ -65,15 +86,25 @@ impl ExistsQuantifierRule
 
 impl Formula
 {
-    pub fn binded(&self, x : &PredicateArgument, binding_name : String, extras : &FormulaExtras) -> Formula
+    pub fn binded(&self, x : &PredicateArgument, binding_name : String, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
     {
         let object_name_factory : Box<dyn Fn() -> String> = Box::new(move || binding_name.clone());
+
         return self.instantiated(x, &object_name_factory, extras);
     }
 
-    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> Formula
+    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
     {
-        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiated(x, &object_name_factory, extras));
+        let instantiated_p = self.instantiate_impl(x, object_name_factory, extras);
+        let instantiated_x = instantiated_p.get_all_predicate_arguments().into_iter()
+            .find(|y| y.variable_name == x.variable_name && y.is_instantiated());
+
+        return (instantiated_p, instantiated_x);
+    }
+
+    fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> Formula
+    {
+        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory, extras));
 
         return match self
         {
@@ -118,6 +149,7 @@ impl Formula
             Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
             Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
             ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
+            DefinitelyExists(x, _) => { DefinitelyExists(x.clone(), extras.clone()) }
             Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
             Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
             InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }

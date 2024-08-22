@@ -70,6 +70,11 @@ impl Logic for FirstOrderLogic
             TokenTypeID::Exists, TokenTypeID::ForAll, TokenTypeID::Equals,
         ];
 
+        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        {
+            syntax.push(TokenTypeID::DefinitelyExists);
+        }
+
         syntax.append(&mut self.base_logic.get_parser_syntax());
         return syntax;
     }
@@ -85,7 +90,7 @@ impl Logic for FirstOrderLogic
 
         rules.append(&mut self.base_logic.get_rules().to_vec());
 
-        if self.base_logic.get_name().is_modal_logic()
+        if self.base_logic.get_name().is_modal_logic() && self.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity
         {
             let identity_invariance_rule = IdentityInvarianceRule::with_base_rules(LogicRuleCollection::of(rules));
             return LogicRuleCollection::of(vec![ Box::new(identity_invariance_rule) ]);

@@ -6,7 +6,7 @@ use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
-use crate::semantics::three_valued_logic_semantics::ThreeValuedLogicSemantics;
+use crate::semantics::many_valued_logic_semantics::ManyValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
@@ -28,7 +28,7 @@ impl Logic for MinimalFirstDegreeEntailmentLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(ThreeValuedLogicSemantics::new());
+        return Box::new(ManyValuedLogicSemantics::new());
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>

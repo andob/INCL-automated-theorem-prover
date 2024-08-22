@@ -1,6 +1,6 @@
 use box_macro::bx;
 use crate::formula::{Formula, FormulaExtras};
-use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply, Equals};
+use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply, Equals, DefinitelyExists};
 use crate::semantics::Semantics;
 
 pub struct BinaryLogicSemantics {}
@@ -47,6 +47,13 @@ impl Semantics for BinaryLogicSemantics
             =>
             {
                 (x == z && y == t) || (x == t && y == z)
+            }
+
+            (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
+            (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
+            =>
+            {
+                x == y
             }
 
             _ => { false }

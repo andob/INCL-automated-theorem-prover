@@ -56,17 +56,17 @@ pub trait Logic : Any
 impl dyn Logic
 {
     #[inline]
-    pub fn cast_to<LOGIC : Logic>(&self) -> Option<&LOGIC>
+    pub fn cast_to<OutputLogic : Logic>(&self) -> Option<&OutputLogic>
     {
         if self.get_name().is_first_order_logic() &&
-           TypeId::of::<LOGIC>() != TypeId::of::<FirstOrderLogic>()
+           TypeId::of::<OutputLogic>() != TypeId::of::<FirstOrderLogic>()
         {
             //we're looking for something other than FirstOrderLogic, so we'll check the base logic
             let first_order_logic = self.as_any().downcast_ref::<FirstOrderLogic>()?;
-            return first_order_logic.base_logic.cast_to::<LOGIC>();
+            return first_order_logic.base_logic.cast_to::<OutputLogic>();
         }
 
-        return self.as_any().downcast_ref::<LOGIC>();
+        return self.as_any().downcast_ref::<OutputLogic>();
     }
 }
 

@@ -1,38 +1,40 @@
 use crate::formula::Formula;
-use crate::formula::Formula::{Atomic, Equals, Non};
+use crate::formula::Formula::{Atomic, DefinitelyExists, Equals, Non};
 use crate::formula::Sign::{Minus, Plus};
 use crate::semantics::Semantics;
 
-pub struct ThreeValuedLogicSemantics
+pub struct ManyValuedLogicSemantics
 {
-    contradiction_behaviours : Vec<ThreeValuedContradictionBehaviour>
+    contradiction_behaviours : Vec<ManyValuedContradictionBehaviour>
 }
 
 #[derive(Eq, PartialEq)]
-pub enum ThreeValuedContradictionBehaviour
+pub enum ManyValuedContradictionBehaviour
 {
     FormulaPlusWithFormulaMinus,
     FormulaPlusWithNonFormulaPlus,
     FormulaMinusWithNonFormulaMinus,
 }
 
-impl ThreeValuedLogicSemantics
+impl ManyValuedLogicSemantics
 {
-    pub fn new() -> ThreeValuedLogicSemantics
+    pub fn new() -> ManyValuedLogicSemantics
     {
-        return ThreeValuedLogicSemantics
+        return ManyValuedLogicSemantics
         {
             contradiction_behaviours: vec!
             [
-                ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
+                ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
             ]
         };
     }
 }
 
-impl Semantics for ThreeValuedLogicSemantics
+impl Semantics for ManyValuedLogicSemantics
 {
     //P could be true or false or unknown
+    //the unknown could be interpreted as neither true nor false
+    //the unknown could also be interpreted as both true and false
     fn number_of_truth_values(&self) -> u8 { 3 }
 
     fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
@@ -46,13 +48,13 @@ impl Semantics for ThreeValuedLogicSemantics
         {
             let is_contradiction = match contradiction_behaviour
             {
-                ThreeValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
+                ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
                 { self.are_formulas_contradictory_formula_plus_with_formula_minus(p, q) }
 
-                ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus =>
+                ManyValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus =>
                 { self.are_formulas_contradictory_formula_plus_with_non_formula_plus(p, q) }
 
-                ThreeValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus =>
+                ManyValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus =>
                 { self.are_formulas_contradictory_formula_minus_with_non_formula_minus(p, q) }
             };
 
@@ -66,9 +68,9 @@ impl Semantics for ThreeValuedLogicSemantics
     }
 }
 
-impl ThreeValuedLogicSemantics
+impl ManyValuedLogicSemantics
 {
-    pub fn add_behaviour(&mut self, contradiction_behaviour : ThreeValuedContradictionBehaviour)
+    pub fn add_behaviour(&mut self, contradiction_behaviour : ManyValuedContradictionBehaviour)
     {
         self.contradiction_behaviours.push(contradiction_behaviour);
     }
@@ -88,9 +90,16 @@ impl ThreeValuedLogicSemantics
 
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
             (Non(box Equals(x, y, _), _), Equals(z, t, _))
-            if p.get_sign() * q.get_sign() == Minus /* p/q is +/- or -/+ */ =>
+            if p.get_sign() * q.get_sign() == Minus =>
             {
                 (x == z && y == t) || (x == t && y == z)
+            }
+
+            (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
+            (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
+            if p.get_sign() * q.get_sign() == Minus =>
+            {
+                x == y
             }
 
             _ => { false }
@@ -117,6 +126,13 @@ impl ThreeValuedLogicSemantics
                 (x == z && y == t) || (x == t && y == z)
             }
 
+            (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
+            (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
+            if p.get_sign() == Plus && q.get_sign() == Plus =>
+            {
+                x == y
+            }
+
             _ => { false }
         }
     }
@@ -139,6 +155,13 @@ impl ThreeValuedLogicSemantics
             if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
                 (x == z && y == t) || (x == t && y == z)
+            }
+
+            (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
+            (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
+            if p.get_sign() == Minus && q.get_sign() == Minus =>
+            {
+                x == y
             }
 
             _ => { false }

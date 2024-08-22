@@ -5,7 +5,7 @@ use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
-use crate::semantics::three_valued_logic_semantics::{ThreeValuedContradictionBehaviour, ThreeValuedLogicSemantics};
+use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehaviour, ManyValuedLogicSemantics};
 
 //check out book chapters 8 and 11a
 pub struct KleeneModalLogic
@@ -33,8 +33,8 @@ impl Logic for KleeneModalLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let mut semantics = ThreeValuedLogicSemantics::new();
-        semantics.add_behaviour(ThreeValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
+        let mut semantics = ManyValuedLogicSemantics::new();
+        semantics.add_behaviour(ManyValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
         return Box::new(semantics);
     }
 
