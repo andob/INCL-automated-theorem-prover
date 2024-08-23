@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
+use itertools::Itertools;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
@@ -16,7 +17,7 @@ impl LogicRule for ExistsQuantifierRule
     {
         if let Non(box Exists(x, box p, _), extras) = &node.formula
         {
-            let non_p = Non(bx!(p.clone()), extras.clone());
+            let non_p = factory.get_logic().get_semantics().negate(p);
             let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
             let for_all_non_p_node = factory.new_node(for_all_non_p);
 
@@ -48,7 +49,7 @@ impl ExistsQuantifierRule
 
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
-        if logic.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && instantiated_x.is_some()
         {
             let definitely_exists_x = DefinitelyExists(instantiated_x?, extras.clone());
             let definitely_exists_x_node = factory.new_node(definitely_exists_x);
@@ -123,21 +124,41 @@ impl Formula
 
             Equals(y, z, _) =>
             {
-                if !y.is_instantiated() && y.variable_name == x.variable_name
+                if !y.is_instantiated() && x.variable_name == y.variable_name && y.variable_name == z.variable_name
+                {
+                    let mut instantiated_y = y.clone();
+                    let mut instantiated_z = z.clone();
+                    let object_name = (*object_name_factory)();
+                    instantiated_y.object_name = object_name.clone();
+                    instantiated_z.object_name = object_name;
+                    return Equals(instantiated_y, instantiated_z, extras.clone());
+                }
+                else if !y.is_instantiated() && y.variable_name == x.variable_name
                 {
                     let mut instantiated_y = y.clone();
                     instantiated_y.object_name = (*object_name_factory)();
                     return Equals(instantiated_y, z.clone(), extras.clone());
                 }
-
-                if !z.is_instantiated() && z.variable_name == x.variable_name
+                else if !z.is_instantiated() && z.variable_name == x.variable_name
                 {
                     let mut instantiated_z = z.clone();
                     instantiated_z.object_name = (*object_name_factory)();
                     return Equals(y.clone(), instantiated_z, extras.clone());
                 }
 
-                return Equals(x.clone(), y.clone(), extras.clone());
+                return Equals(y.clone(), z.clone(), extras.clone());
+            }
+
+            DefinitelyExists(y, _) =>
+            {
+                if !y.is_instantiated() && y.variable_name == x.variable_name
+                {
+                    let mut instantiated_y = y.clone();
+                    instantiated_y.object_name = (*object_name_factory)();
+                    return DefinitelyExists(instantiated_y, extras.clone());
+                }
+
+                return DefinitelyExists(y.clone(), extras.clone());
             }
 
             Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
@@ -149,7 +170,6 @@ impl Formula
             Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
             Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
             ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
-            DefinitelyExists(x, _) => { DefinitelyExists(x.clone(), extras.clone()) }
             Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
             Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
             InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }

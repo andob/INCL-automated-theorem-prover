@@ -1,3 +1,5 @@
+use std::ops::Index;
+use substring::Substring;
 use crate::formula::{AtomicFormulaExtras, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 
 impl AtomicFormulaExtras
@@ -71,10 +73,16 @@ impl PredicateArgument
 {
     pub fn new(name : String) -> PredicateArgument
     {
-        return PredicateArgument
+        if name.contains(':')
         {
-            variable_name: name.to_string(),
-            object_name: name,
+            //this is an instantiated predicate argument
+            let index_of_colon = name.find(':').unwrap();
+            let object_name = name.substring(0, index_of_colon).to_string();
+            let variable_name = name.substring(index_of_colon+1, name.len()).to_string();
+            return PredicateArgument { variable_name, object_name };
         }
+
+        //this is an uninstantiated predicate argument
+        return PredicateArgument { variable_name:name.to_string(), object_name:name }
     }
 }

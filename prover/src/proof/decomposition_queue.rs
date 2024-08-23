@@ -10,12 +10,13 @@ use crate::tree::node_factory::ProofTreeNodeID;
 enum Priority
 {
     MostImportant,
-    MoreImportant,
     Important,
     Normal,
-    Unimportant,
-    MoreUnimportant,
-    MostUnimportant,
+    UnimportantMinus1,
+    UnimportantMinus2,
+    UnimportantMinus3,
+    UnimportantMinus4,
+    UnimportantMinus5,
 }
 
 pub struct DecompositionPriorityQueue
@@ -103,28 +104,29 @@ impl DecompositionPriorityQueue
     {
         return match &node.formula
         {
-            //atomics are the least important
-            Atomic(..) => Priority::MostUnimportant,
-            Non(box Atomic(..), ..) => Priority::MostUnimportant,
+            //atomics needs to be applied last after all
+            Atomic(..) => Priority::UnimportantMinus5,
+            Non(box Atomic(..), ..) => Priority::UnimportantMinus5,
 
             //forall needs to be applied after all instantiations
-            ForAll(..) => Priority::MoreUnimportant,
+            ForAll(..) => Priority::UnimportantMinus4,
 
             //conditional needs to be applied after possibility
-            Conditional(..) => Priority::Unimportant,
+            Conditional(..) => Priority::UnimportantMinus3,
 
             //on non-normal modal logic, possibility needs to be applied after necessity
             Non(box StrictImply(..), ..) | Possible(..)
-            if self.logic.get_name().is_non_normal_modal_logic() => Priority::Normal,
+            if self.logic.get_name().is_non_normal_modal_logic() => Priority::UnimportantMinus2,
 
-            //propositional operations that will split the tree
-            BiImply(..) | Non(box BiImply(..), ..) => Priority::Important,
-            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::Important,
+            //tree-splitting operations needs to be applied after non-tree-splitting operations
+            BiImply(..) | Non(box BiImply(..), ..) => Priority::UnimportantMinus1,
+            Or(..) | Non(box And(..), ..) | Imply(..) => Priority::UnimportantMinus1,
 
-            //equals and non-equals are most important
-            Equals(..) | Non(box Equals(..), ..) => Priority::MostImportant,
+            //equals and non-equals needs to be applied before all else
+            Non(box Equals(..), ..) => Priority::Important,
+            Equals(..) => Priority::MostImportant,
 
-            _ => Priority::MoreImportant,
+            _ => Priority::Normal,
         }
     }
 

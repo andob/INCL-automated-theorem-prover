@@ -31,7 +31,7 @@ impl TokenType
                 id: TokenTypeID::Exists,
                 regex: Regex::new(r"∃[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |name, args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -47,7 +47,7 @@ impl TokenType
                 id: TokenTypeID::ForAll,
                 regex: Regex::new(r"∀[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |name, args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -83,7 +83,7 @@ impl TokenType
                 id: TokenTypeID::DefinitelyExists,
                 regex: Regex::new(r"𝔈[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::Atomic,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |name, args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -96,7 +96,7 @@ impl TokenType
             {
                 //matches atomic formulas with args: P(x,y), ...
                 id: TokenTypeID::AtomicWithArgs,
-                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z0-9_,]+\]").context(codeloc!())?,
+                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z0-9_,:]+\]").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name, args|
@@ -128,7 +128,7 @@ impl TokenType
                 id: TokenTypeID::Non,
                 regex: Regex::new(r"(~)|(¬)|(!)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -142,7 +142,7 @@ impl TokenType
                 id: TokenTypeID::Possible,
                 regex: Regex::new(r"(◇)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -156,7 +156,7 @@ impl TokenType
                 id: TokenTypeID::Necessary,
                 regex: Regex::new(r"(□)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -170,7 +170,7 @@ impl TokenType
                 id: TokenTypeID::InPast,
                 regex: Regex::new(r"(ᵖ)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -184,7 +184,7 @@ impl TokenType
                 id: TokenTypeID::InFuture,
                 regex: Regex::new(r"(ᶠ)").context(codeloc!())?,
                 category: TokenCategory::UnaryOperation,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     let formula_extras = FormulaExtras::empty();
@@ -282,7 +282,7 @@ impl TokenType
                 id: TokenTypeID::OpenParenthesis,
                 regex: Regex::new(r"\(").context(codeloc!())?,
                 category: TokenCategory::Grouping,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     panic!("Cannot convert ( to formula!");
@@ -295,7 +295,7 @@ impl TokenType
                 id: TokenTypeID::ClosedParenthesis,
                 regex: Regex::new(r"\)").context(codeloc!())?,
                 category: TokenCategory::Grouping,
-                precedence: OperatorPrecedence::Highest,
+                precedence: OperatorPrecedence::Higher,
                 to_formula: |_,args|
                 {
                     panic!("Cannot convert ) to formula!");

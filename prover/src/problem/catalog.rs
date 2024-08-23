@@ -1,4 +1,5 @@
-use anyhow::{Context, Result};
+use std::collections::HashSet;
+use anyhow::{anyhow, Context, Result};
 use crate::codeloc;
 use crate::formula::notations::OperatorNotations;
 use crate::formula::to_string::FormulaFormatOptions;
@@ -11,6 +12,8 @@ pub fn get_demo_problem_catalog() -> Result<Vec<BookChapterJSON>>
         let json = include_str!("../../../book.json");
         let book_chapters = serde_json::from_str::<Vec<BookChapterJSON>>(json).context(codeloc!())?;
 
+        check_for_duplicate_problem_ids(&book_chapters)?;
+
         let operator_notations = *operator_notations_ref.borrow();
         if operator_notations == OperatorNotations::BookNotations
         {
@@ -22,6 +25,25 @@ pub fn get_demo_problem_catalog() -> Result<Vec<BookChapterJSON>>
 
         return Ok(book_chapters_with_custom_notations);
     });
+}
+
+fn check_for_duplicate_problem_ids(book_chapters : &Vec<BookChapterJSON>) -> Result<()>
+{
+    let mut problem_ids : HashSet<&String> = HashSet::new();
+    for book_chapter in book_chapters
+    {
+        for problem in &book_chapter.problems
+        {
+            if problem_ids.contains(&problem.id)
+            {
+                return Err(anyhow!("Problem ID {} is duplicated!", problem.id));
+            }
+
+            problem_ids.insert(&problem.id);
+        }
+    }
+
+    return Ok(());
 }
 
 impl BookChapterJSON

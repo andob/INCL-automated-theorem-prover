@@ -32,6 +32,7 @@ impl OperatorNotations
                     TokenTypeID::InFuture => { 'ᶠ' }
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
+                    TokenTypeID::DefinitelyExists => { '𝔈' }
                     _ => { ' ' }
                 }
             }
@@ -53,6 +54,7 @@ impl OperatorNotations
                     TokenTypeID::InFuture => { 'ᶠ' }
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
+                    TokenTypeID::DefinitelyExists => { '𝔈' }
                     _ => { ' ' }
                 }
             }
@@ -74,6 +76,7 @@ impl OperatorNotations
                     TokenTypeID::InFuture => { 'ᶠ' }
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
+                    TokenTypeID::DefinitelyExists => { '𝔈' }
                     _ => { ' ' }
                 }
             }

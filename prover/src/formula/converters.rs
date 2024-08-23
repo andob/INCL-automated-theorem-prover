@@ -201,10 +201,7 @@ impl Formula
             {
                 for predicate_arg in extras.predicate_args.iter()
                 {
-                    if !output.contains(predicate_arg)
-                    {
-                        output.insert(predicate_arg.clone());
-                    }
+                    output.insert(predicate_arg.clone());
                 }
             }
 

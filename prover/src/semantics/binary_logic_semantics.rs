@@ -2,6 +2,7 @@ use box_macro::bx;
 use crate::formula::{Formula, FormulaExtras};
 use crate::formula::Formula::{Atomic, Necessary, Non, Possible, BiImply, Equals, DefinitelyExists};
 use crate::semantics::Semantics;
+use crate::tree::path::ProofTreePath;
 
 pub struct BinaryLogicSemantics {}
 impl Semantics for BinaryLogicSemantics
@@ -9,12 +10,12 @@ impl Semantics for BinaryLogicSemantics
     //P could be true or false
     fn number_of_truth_values(&self) -> u8 { 2 }
 
-    fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
+    fn negate(&self, formula : &Formula) -> Formula
     {
         return Non(bx!(formula.clone()), FormulaExtras::empty());
     }
 
-    fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory(&self, _path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         return match (p, q)
         {
@@ -46,14 +47,15 @@ impl Semantics for BinaryLogicSemantics
             (Non(box Equals(x, y, _), _), Equals(z, t, _))
             =>
             {
-                (x == z && y == t) || (x == t && y == z)
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
             (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
             (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
             =>
             {
-                x == y
+                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             _ => { false }

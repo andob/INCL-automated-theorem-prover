@@ -2,6 +2,7 @@ use crate::formula::Formula;
 use crate::formula::Formula::{Atomic, DefinitelyExists, Equals, Non};
 use crate::formula::Sign::{Minus, Plus};
 use crate::semantics::Semantics;
+use crate::tree::path::ProofTreePath;
 
 pub struct ManyValuedLogicSemantics
 {
@@ -37,12 +38,12 @@ impl Semantics for ManyValuedLogicSemantics
     //the unknown could also be interpreted as both true and false
     fn number_of_truth_values(&self) -> u8 { 3 }
 
-    fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
+    fn negate(&self, formula : &Formula) -> Formula
     {
         return formula.with_sign(Minus);
     }
 
-    fn are_formulas_contradictory(&self, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory(&self, _path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         for contradiction_behaviour in &self.contradiction_behaviours
         {
@@ -92,14 +93,15 @@ impl ManyValuedLogicSemantics
             (Non(box Equals(x, y, _), _), Equals(z, t, _))
             if p.get_sign() * q.get_sign() == Minus =>
             {
-                (x == z && y == t) || (x == t && y == z)
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
             (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
             (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
             if p.get_sign() * q.get_sign() == Minus =>
             {
-                x == y
+                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             _ => { false }
@@ -123,14 +125,15 @@ impl ManyValuedLogicSemantics
             (Non(box Equals(x, y, _), _), Equals(z, t, _))
             if p.get_sign() == Plus && q.get_sign() == Plus =>
             {
-                (x == z && y == t) || (x == t && y == z)
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
             (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
             (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
             if p.get_sign() == Plus && q.get_sign() == Plus =>
             {
-                x == y
+                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             _ => { false }
@@ -154,14 +157,15 @@ impl ManyValuedLogicSemantics
             (Non(box Equals(x, y, _), _), Equals(z, t, _))
             if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
-                (x == z && y == t) || (x == t && y == z)
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
             }
 
             (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
             (Non(box DefinitelyExists(x, _), _), DefinitelyExists(y, _))
             if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
-                x == y
+                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             _ => { false }

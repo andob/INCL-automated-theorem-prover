@@ -11,7 +11,7 @@ pub mod decomposition_queue;
 mod initialize;
 
 const MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC : usize = 25;
-const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 250;
+const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 190;
 
 pub struct ProofAlgorithm
 {
@@ -72,11 +72,14 @@ impl ProofAlgorithm
 
     fn reached_timeout(&self) -> bool
     {
-        if !self.logic_name.is_modal_logic() && self.logic_name.is_first_order_logic()
-        {
-            return self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC;
-        }
+        let proof_tree_is_too_large = if self.logic_name.is_first_order_logic()
+            { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC }
+        else { false };
 
-        return self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC;
+        let modality_graph_is_too_large = if self.logic_name.is_modal_logic()
+            { self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC }
+        else { false };
+
+        return proof_tree_is_too_large || modality_graph_is_too_large;
     }
 }

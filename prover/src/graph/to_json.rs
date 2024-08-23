@@ -41,16 +41,16 @@ impl Graph
 {
     pub fn to_json(&self) -> GraphJSON
     {
-        let mut vertices_json : BTreeSet<GraphVertexJSON> = BTreeSet::new();
+        let mut vertices_for_json : BTreeSet<GraphVertexJSON> = BTreeSet::new();
         for vertex in &self.vertices
         {
             let tags = self.vertices_tags.iter()
                 .filter(|(v, _tag)| v.from==vertex.from && v.to==vertex.to)
                 .map(|(_v, tag)| tag.clone()).collect::<Vec<String>>();
 
-            vertices_json.insert(GraphVertexJSON { from:vertex.from, to:vertex.to, tags:tags });
+            vertices_for_json.insert(GraphVertexJSON { from:vertex.from, to:vertex.to, tags:tags });
         }
 
-        return GraphJSON { nodes:self.nodes.clone(), vertices:vertices_json }
+        return GraphJSON { nodes:self.nodes.clone(), vertices:vertices_for_json }
     }
 }

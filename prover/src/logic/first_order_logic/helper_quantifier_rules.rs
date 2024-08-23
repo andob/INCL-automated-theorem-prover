@@ -4,6 +4,7 @@ use crate::formula::Formula::{Atomic, DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
+use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -15,6 +16,9 @@ impl LogicRule for HelperQuantifierRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
+        let logic_pointer = factory.get_logic().clone();
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
+
         return match &node.formula
         {
             Non(box Equals(x, y, _), extras) =>
@@ -25,17 +29,15 @@ impl LogicRule for HelperQuantifierRules
                     let x_equals_x = Equals(x.clone(), x.clone(), extras.clone());
                     let x_equals_x_node = factory.new_node(x_equals_x);
 
-                    //todo test check definite existence
-                    let logic_pointer = factory.get_logic().clone();
-                    let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
                     if logic.domain_type == FirstOrderLogicDomainType::VariableDomain
                     {
-                        let x_definitely_exists = factory.tree.get_paths_that_goes_through_node(node).into_iter()
+                        let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
                             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
-                            .filter(|formula| formula.get_possible_world() == extras.possible_world)
-                            .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
-                            .any(|definitely_existing_arg| definitely_existing_arg == *x);
-                        if !x_definitely_exists { return None };
+                            .collect::<Vec<Formula>>();
+
+                        let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
+                        if !args_that_definitely_exists.into_iter().any(|arg| arg==x)
+                        { return None; }
                     }
 
                     return Some(ProofSubtree::with_middle_node(x_equals_x_node));
@@ -68,14 +70,17 @@ impl LogicRule for HelperQuantifierRules
                     .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
                     .filter_map(|formula| if let Atomic(q_name, _) = formula { Some(q_name) } else { None })
                     .any(|q_name| *p_name == q_name);
-                if !there_is_a_p { return None };
+                if there_is_a_p
+                {
+                    //foreach node pair (~P[b:x], b:x = a), generate a potentially contradictory node P[a:x]
+                    let nodes = self.generate_potentially_contradictory_atomics(factory, node, p, extras).into_iter()
+                        .map(|formula| factory.new_node(formula))
+                        .collect::<Vec<ProofTreeNode>>();
 
-                //foreach node pair (~P[b:x], b:x = a), generate a possible contradictory node P[a:x]
-                let nodes = self.generate_potentially_contradictory_atomics(factory, node, p, extras).into_iter()
-                    .map(|formula| factory.new_node(formula))
-                    .collect::<Vec<ProofTreeNode>>();
+                    return Some(ProofSubtree::with_middle_vertical_nodes(nodes));
+                }
 
-                return Some(ProofSubtree::with_middle_vertical_nodes(nodes));
+                return None;
             }
 
             p@Atomic(p_name, extras) =>
@@ -85,14 +90,17 @@ impl LogicRule for HelperQuantifierRules
                     .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
                     .filter_map(|formula| if let Non(box Atomic(q_name, _), _) = formula { Some(q_name) } else { None })
                     .any(|q_name| *p_name == q_name);
-                if !there_is_a_non_p { return None };
+                if there_is_a_non_p
+                {
+                    //foreach node pair (P[b:x], b:x = a), generate a potentially contradictory node ~P[a:x]
+                    let nodes = self.generate_potentially_contradictory_atomics(factory, node, p, &extras.to_formula_extras()).into_iter()
+                        .map(|formula| factory.new_node(Non(Box::new(formula), extras.to_formula_extras())))
+                        .collect::<Vec<ProofTreeNode>>();
 
-                //foreach node pair (P[b:x], b:x = a), generate a possible contradictory node ~P[a:x]
-                let nodes = self.generate_potentially_contradictory_atomics(factory, node, p, &extras.to_formula_extras()).into_iter()
-                    .map(|formula| factory.new_node(Non(Box::new(formula), extras.to_formula_extras())))
-                    .collect::<Vec<ProofTreeNode>>();
+                    return Some(ProofSubtree::with_middle_vertical_nodes(nodes));
+                }
 
-                return Some(ProofSubtree::with_middle_vertical_nodes(nodes));
+                return None;
             }
 
             _ => None,
@@ -144,14 +152,11 @@ impl HelperQuantifierRules
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
             .collect::<BTreeSet<PredicateArgument>>();
 
+        let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
+
         let free_args = all_args_on_path.iter()
             .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
                 .any(|formula| formula.contains_quantifier_with_argument(y)))
-            .collect::<BTreeSet<&PredicateArgument>>();
-
-        let args_that_definitely_exists = all_formulas_on_path.iter()
-            .filter(|formula| formula.get_possible_world() == extras.possible_world)
-            .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
             .collect::<BTreeSet<&PredicateArgument>>();
 
         let predicate_args = p.get_predicate_arguments_of_atomic().unwrap();
@@ -159,7 +164,6 @@ impl HelperQuantifierRules
         {
             if predicate_arg.is_instantiated()
             {
-                //todo test check definite existence
                 let equivalences = all_formulas_on_path.iter()
                     .filter(|formula| formula.get_possible_world() == extras.possible_world)
                     .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x,y)) } else { None })
@@ -170,7 +174,6 @@ impl HelperQuantifierRules
 
                 for (_, equivalent_predicate_arg) in equivalences
                 {
-                    //todo there is nothing to do with binded_x here?
                     let object_name = equivalent_predicate_arg.object_name.clone();
                     let (binded_p, _binded_x) = p.binded(predicate_arg, object_name, extras);
                     formulas.push(binded_p);

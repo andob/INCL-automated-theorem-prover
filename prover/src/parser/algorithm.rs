@@ -1,8 +1,9 @@
 use std::any;
 use std::rc::Rc;
 use anyhow::{anyhow, Context, Result};
+use substring::Substring;
 use crate::codeloc;
-use crate::formula::Formula;
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras};
 use crate::logic::Logic;
 use crate::parser::models::{OperatorPrecedence, Token, TokenCategory, TokenType};
 use crate::parser::token_types::TokenTypeID;
@@ -18,7 +19,6 @@ impl LogicalExpressionParser
 
 struct LogicalExpressionParserInput
 {
-    text : String,
     token_types : Vec<TokenType>,
     tokens : Vec<Token>,
 }
@@ -39,7 +39,7 @@ const REPLACE_TABLE : [&str; 52] =
     "∀", " ∀", "∃", " ∃", "(", " ( ", ")", " ) ", ", ", ",", "◇", " ◇ ", "□", " □ ",
     "~", " ~ ", "¬", " ¬ ", "!", " ! ", "&", " & ", "∧", " ∧ ", "|", " | ", "∨", " ∨ ",
     "→", " → ", "⇒", " ⇒ ", "⊃", " ⊃ ", "⥽", " ⥽ ", "↔", " ↔ ", "⇔", " ⇔ ", "≡", " ≡ ",
-    "ᶠ", " ᶠ ", "ᵖ", " ᵖ ", "ᐅ", " ᐅ ", "=", " = ", "𝔈", " 𝔈"
+    "ᶠ", " ᶠ ", "ᵖ", " ᵖ ", "ᐅ", " ᐅ ", " = ", "=", "𝔈", " 𝔈"
 ];
 
 impl <'a> LogicalExpressionParserImpl<'a>
@@ -73,7 +73,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
             }
         }
 
-        let parser_input = LogicalExpressionParserInput { text:text.clone(), token_types, tokens };
+        let parser_input = LogicalExpressionParserInput { token_types, tokens };
         let mut parser_state = LogicalExpressionParserState { current_index:0 };
 
         let mut parser = LogicalExpressionParserImpl { input: &parser_input, state: &mut parser_state };
@@ -93,7 +93,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
         if let Some(full_match) = token_types.iter()
             .find(|token_type| token_type.regex.is_match(word))
         {
-            tokens.push(Token { type_id: full_match.id, value: word.to_string() })
+            tokens.push(Token { type_id:full_match.id, value:word.to_string() })
         }
 
         return tokens;
@@ -103,7 +103,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
     {
         //the recursion here ensures that the first thing that gets called is factor, and then under it, in lowering priority, calls to expression
         let mut node =
-            if precedence == OperatorPrecedence::Highest { self.next_factor().context(codeloc!())? }
+            if precedence == OperatorPrecedence::Higher { self.next_factor().context(codeloc!())? }
             else { self.next_expression(precedence.incremented()).context(codeloc!())? };
 
         //then go along the tokens until we have eaten all the ones of the current precedence
@@ -117,7 +117,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
                 //infix means the (now previous) node is the first arg, next node is the next arg
                 let left = node;
                 let right = (
-                    if precedence == OperatorPrecedence::Highest { self.next_factor() }
+                    if precedence == OperatorPrecedence::Higher { self.next_factor() }
                     else { self.next_expression(precedence.incremented()) }
                 ).context(codeloc!())?;
 
@@ -163,7 +163,7 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
                 let precedence = self.token_type_at_index(index_before_eat).precedence;
 
-                let operand = (if precedence == OperatorPrecedence::Highest { self.next_factor() }
+                let operand = (if precedence == OperatorPrecedence::Higher { self.next_factor() }
                 else { self.next_expression(precedence.incremented()) }).context(codeloc!())?;
 
                 let to_formula = self.token_type_at_index(index_before_eat).to_formula;
@@ -172,6 +172,19 @@ impl <'a> LogicalExpressionParserImpl<'a>
             }
 
             return Err(anyhow!("Expected an expression at word index {}, but the text ended", self.state.current_index));
+        }
+
+        if self.current_token().type_id == TokenTypeID::Equals
+        {
+            let index_before_eat = self.state.current_index;
+            self.eat(self.current_token_type().id).context(codeloc!())?;
+
+            let to_formula = self.token_type_at_index(index_before_eat).to_formula;
+            let name = self.token_at_index(index_before_eat).value.clone();
+            let index_of_equals = name.find('=').unwrap();
+            let left = Formula::Atomic(name.substring(0, index_of_equals).trim().to_string(), AtomicFormulaExtras::empty());
+            let right = Formula::Atomic(name.substring(index_of_equals+1, name.len()).trim().to_string(), AtomicFormulaExtras::empty());
+            return to_formula(name, vec![left, right]);
         }
 
         if self.current_token_type().id == TokenTypeID::OpenParenthesis

@@ -87,7 +87,10 @@ impl LogicRuleCollection
         return LogicRuleCollection { rules };
     }
 
-    pub fn to_vec(self) -> Vec<Box<dyn LogicRule>> { self.rules }
+    pub fn append(&mut self, another : &mut LogicRuleCollection)
+    {
+        self.rules.append(&mut another.rules);
+    }
 
     pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {

@@ -43,7 +43,7 @@ impl LogicRule for IdentityInvarianceRule
             if equalities_in_original_world.is_empty() { return Some(subtree) };
 
             let new_graph_vertices = factory.modality_graph.vertices.iter()
-                .filter(|vertex| !original_graph_vertices.contains(vertex))
+                .filter(|vertex| !original_graph_vertices.contains(*vertex))
                 .collect::<BTreeSet<&GraphVertex>>();
 
             let new_equality_formula_extras = |world : PossibleWorld|

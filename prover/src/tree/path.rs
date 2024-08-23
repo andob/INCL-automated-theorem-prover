@@ -81,7 +81,7 @@ impl ProofTreePath
             for j in 0..i
             {
                 let semantics = logic.get_semantics();
-                if semantics.are_formulas_contradictory(&self.nodes[i].formula, &self.nodes[j].formula)
+                if semantics.are_formulas_contradictory(self, &self.nodes[i].formula, &self.nodes[j].formula)
                 {
                     contradictory_ids.push((self.nodes[i].id, self.nodes[j].id));
                 }

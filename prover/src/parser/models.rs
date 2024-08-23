@@ -8,7 +8,7 @@ use crate::parser::token_types::TokenTypeID;
 #[derive(Eq, PartialEq, Hash, Clone, Copy, Display)]
 pub enum OperatorPrecedence
 {
-    Lowest, Low, Medium, High, Highest,
+    Lowest, Low, Medium, High, Higher, Highest
 }
 
 impl OperatorPrecedence
@@ -20,7 +20,8 @@ impl OperatorPrecedence
             OperatorPrecedence::Lowest => OperatorPrecedence::Low,
             OperatorPrecedence::Low => OperatorPrecedence::Medium,
             OperatorPrecedence::Medium => OperatorPrecedence::High,
-            OperatorPrecedence::High => OperatorPrecedence::Highest,
+            OperatorPrecedence::High => OperatorPrecedence::Higher,
+            OperatorPrecedence::Higher => OperatorPrecedence::Highest,
             OperatorPrecedence::Highest => OperatorPrecedence::Highest,
         }
     }
