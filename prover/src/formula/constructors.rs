@@ -1,4 +1,3 @@
-use std::ops::Index;
 use substring::Substring;
 use crate::formula::{AtomicFormulaExtras, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 

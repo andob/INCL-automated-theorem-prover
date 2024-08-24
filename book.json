@@ -758,6 +758,13 @@
     "name": "First order normal modal logic (constant domain)",
     "problems": [
       {
+        "id": "Barcan",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S5ModalLogic",
+        "expected": "proved",
+        "premises": [ "◇◇◇◇◇P" ],
+        "conclusion": "∀x □ A[x] ≡ □ ∀x A[x]"
+      },
+      {
         "id": "14.10.2.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+KModalLogic",
         "expected": "proved",
@@ -986,6 +993,13 @@
   {
     "name": "First order normal modal logic (variable domain)",
     "problems": [
+      {
+        "id": "Barcan'",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+S5ModalLogic",
+        "expected": "disproved",
+        "premises": [ "◇◇◇◇◇P" ],
+        "conclusion": "∀x □ A[x] ≡ □ ∀x A[x]"
+      },
       {
         "id": "15.12.2.a",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
@@ -1326,6 +1340,118 @@
         "expected": "proved",
         "premises": [],
         "conclusion": "(p ⥽ q) ⥽ (□p ⥽ □q)"
+      },
+      {
+        "id": "18.10.2.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "□(∃x P[x] ⊃ ∃x □ P[x])"
+      },
+      {
+        "id": "18.10.2.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇□(∀x P[x] ⊃ ∃x □ P[x])"
+      },
+      {
+        "id": "18.10.2.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇(∃x □ P[x] ∧ ∃x □ ¬P[x])"
+      },
+      {
+        "id": "18.10.2.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "□(∃x(P[x] ∧ □ P[x]))"
+      },
+      {
+        "id": "18.10.3.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "□(∃x P[x] ⊃ ∃x □ P[x])"
+      },
+      {
+        "id": "18.10.3.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇□(∀x P[x] ⊃ ∃x □ P[x])"
+      },
+      {
+        "id": "18.10.3.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇(∃x □ P[x] ∧ ∃x □ ¬P[x])"
+      },
+      {
+        "id": "18.10.3.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "□(∃x(P[x] ∧ □ P[x]))"
+      },
+      {
+        "id": "18.10.4.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇(a = b) ⊃ □(a = b)"
+      },
+      {
+        "id": "18.10.4.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x∀y(□(x = y) ⊃ □□(x = y))"
+      },
+      {
+        "id": "18.10.4.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x∀y(◇(P[x] ∧ ¬P[y]) ⊃ ¬(x = y))"
+      },
+      {
+        "id": "18.10.4.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S0.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "(□□(a = b) ∧ □□(b = c)) ⊃ □□(a = c)"
+      },
+      {
+        "id": "18.10.5.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "◇(a = b) ⊃ □(a = b)"
+      },
+      {
+        "id": "18.10.5.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x∀y(□(x = y) ⊃ □□(x = y))"
+      },
+      {
+        "id": "18.10.5.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+S3.5ModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x∀y(◇(P[x] ∧ ¬P[y]) ⊃ ¬(x = y))"
+      },
+      {
+        "id": "18.10.5.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+NModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(□□(a = b) ∧ □□(b = c)) ⊃ □□(a = c)"
       }
     ]
   },

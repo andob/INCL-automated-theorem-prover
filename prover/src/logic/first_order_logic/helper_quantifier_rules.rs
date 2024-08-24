@@ -1,6 +1,6 @@
 use std::collections::BTreeSet;
 use itertools::Itertools;
-use crate::formula::Formula::{Atomic, DefinitelyExists, Equals, Non};
+use crate::formula::Formula::{Atomic, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;

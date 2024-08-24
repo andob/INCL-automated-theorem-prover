@@ -187,6 +187,7 @@ impl LogicFactory
             Rc::new(NormalModalLogic::S4()),
             Rc::new(NormalModalLogic::S5()),
 
+            Rc::new(NonNormalModalLogic::S0_5()),
             Rc::new(NonNormalModalLogic::N()),
             Rc::new(NonNormalModalLogic::S2()),
             Rc::new(NonNormalModalLogic::S3()),

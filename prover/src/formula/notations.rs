@@ -33,7 +33,11 @@ impl OperatorNotations
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
                     TokenTypeID::DefinitelyExists => { '𝔈' }
-                    _ => { ' ' }
+                    TokenTypeID::Equals => { '=' }
+                    TokenTypeID::AtomicWithoutArgs => { ' '}
+                    TokenTypeID::AtomicWithArgs => { ' ' }
+                    TokenTypeID::OpenParenthesis => { '(' }
+                    TokenTypeID::ClosedParenthesis => { ')' }
                 }
             }
 
@@ -55,7 +59,11 @@ impl OperatorNotations
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
                     TokenTypeID::DefinitelyExists => { '𝔈' }
-                    _ => { ' ' }
+                    TokenTypeID::Equals => { '=' }
+                    TokenTypeID::AtomicWithoutArgs => { ' '}
+                    TokenTypeID::AtomicWithArgs => { ' ' }
+                    TokenTypeID::OpenParenthesis => { '(' }
+                    TokenTypeID::ClosedParenthesis => { ')' }
                 }
             }
 
@@ -77,7 +85,11 @@ impl OperatorNotations
                     TokenTypeID::Exists => { '∃' }
                     TokenTypeID::ForAll => { '∀' }
                     TokenTypeID::DefinitelyExists => { '𝔈' }
-                    _ => { ' ' }
+                    TokenTypeID::Equals => { '=' }
+                    TokenTypeID::AtomicWithoutArgs => { ' '}
+                    TokenTypeID::AtomicWithArgs => { ' ' }
+                    TokenTypeID::OpenParenthesis => { '(' }
+                    TokenTypeID::ClosedParenthesis => { ')' }
                 }
             }
         }
