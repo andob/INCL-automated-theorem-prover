@@ -15,7 +15,7 @@ impl Semantics for BinaryLogicSemantics
         return Non(bx!(formula.clone()), FormulaExtras::empty());
     }
 
-    fn are_formulas_contradictory(&self, _path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         return match (p, q)
         {
@@ -31,7 +31,8 @@ impl Semantics for BinaryLogicSemantics
             {
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
-                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+                p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
+                q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
             (BiImply(box Atomic(n1, _), box Atomic(n2, _), _), Non(box BiImply(box Atomic(n3, _), box Atomic(n4, _), _), _)) |
@@ -40,7 +41,8 @@ impl Semantics for BinaryLogicSemantics
             {
                 n1 == n3 && n2 == n4 &&
                 p.get_possible_world() == q.get_possible_world() &&
-                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+                p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
+                q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |

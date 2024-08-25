@@ -1,6 +1,7 @@
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use crate::formula::Formula;
+use crate::logic::first_order_logic::FirstOrderLogicDomainType;
 use crate::logic::Logic;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
@@ -9,7 +10,8 @@ use crate::tree::node_factory::ProofTreeNodeID;
 #[derive(Clone)]
 pub struct ProofTreePath
 {
-    pub nodes : Vec<ProofTreePathNodeData>
+    pub nodes : Vec<ProofTreePathNodeData>,
+    pub domain_type : FirstOrderLogicDomainType,
 }
 
 #[derive(Clone)]
@@ -35,11 +37,11 @@ impl ProofTreePathNodeData
 
 impl ProofTreePath
 {
-    pub fn new(initial_node : &ProofTreeNode) -> ProofTreePath
+    pub fn new(initial_node : &ProofTreeNode, domain_type : FirstOrderLogicDomainType) -> ProofTreePath
     {
         let initial_node_data = ProofTreePathNodeData::from_node(initial_node);
 
-        return ProofTreePath { nodes: vec![initial_node_data] }
+        return ProofTreePath { nodes:vec![initial_node_data], domain_type:domain_type }
     }
 
     pub fn contains(&self, node : &ProofTreeNode) -> bool
@@ -56,7 +58,7 @@ impl ProofTreePath
     {
         let mut nodes = self.nodes.clone();
         nodes.push(ProofTreePathNodeData::from_node(node));
-        return ProofTreePath { nodes };
+        return ProofTreePath { nodes:nodes, domain_type:self.domain_type };
     }
 
     pub fn append(&self, nodes : &Vec<ProofTreeNode>) -> ProofTreePath
@@ -64,7 +66,7 @@ impl ProofTreePath
         let mut out_nodes = self.nodes.clone();
         nodes.iter().for_each(|node| out_nodes
             .push(ProofTreePathNodeData::from_node(node)));
-        return ProofTreePath { nodes:out_nodes };
+        return ProofTreePath { nodes:out_nodes, domain_type:self.domain_type };
     }
 
     pub fn get_leaf_node_id(&self) -> ProofTreeNodeID

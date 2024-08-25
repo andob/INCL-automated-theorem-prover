@@ -1,7 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
-use crate::logic::{Logic, LogicName, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -49,13 +49,18 @@ impl Logic for KleeneModalLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 

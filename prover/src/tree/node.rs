@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
 use crate::formula::Formula;
+use crate::logic::first_order_logic::FirstOrderLogicDomainType;
 use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::path::ProofTreePath;
 
@@ -11,6 +12,7 @@ pub struct ProofTreeNode
     pub left : Option<Box<ProofTreeNode>>,
     pub middle : Option<Box<ProofTreeNode>>,
     pub right : Option<Box<ProofTreeNode>>,
+    pub domain_type : FirstOrderLogicDomainType,
     pub spawner_node_id : Option<ProofTreeNodeID>,
     pub contrarian_node_id: Option<ProofTreeNodeID>,
     pub is_contradictory : bool,
@@ -22,7 +24,7 @@ impl ProofTreeNode
     {
         let root_node = self;
         let mut paths : Vec<ProofTreePath> = vec![];
-        let path = ProofTreePath::new(&root_node);
+        let path = ProofTreePath::new(&root_node, self.domain_type);
         root_node.find_all_paths(&mut paths, path);
         return paths;
     }

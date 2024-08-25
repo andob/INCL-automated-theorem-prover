@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::Logic;
-use prover::logic::{LogicFactory, LogicName};
+use prover::logic::LogicFactory;
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::token_types::TokenTypeID;
 use prover::problem::catalog::get_demo_problem_catalog;

@@ -3,8 +3,8 @@ use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{InFuture, InPast, Necessary, Non, Possible};
 use crate::graph::{Graph, GraphVertex};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::Modality;
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -53,13 +53,18 @@ impl Logic for TemporalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(TemporalModalLogicRules::new(self.get_modality())),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 

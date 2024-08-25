@@ -233,4 +233,55 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
         return output_nodes;
     }
+
+    pub fn was_necessity_already_applied(&self, factory : &mut RuleApplyFactory, p : &Formula) -> bool
+    {
+        let p_with_stripped_extras = p.with_stripped_extras();
+        return factory.modality_graph.necessity_reapplications.iter()
+            .map(|reapplication| reapplication.input_formula.with_stripped_extras())
+            .any(|reapplication_formula| reapplication_formula == p_with_stripped_extras);
+    }
+}
+
+pub struct ModalityRef
+{
+    apply_possibility_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
+    apply_necessity_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
+    was_necessity_already_applied_ref : Box<dyn Fn(&mut RuleApplyFactory, &Formula) -> bool>,
+}
+
+impl ModalityRef
+{
+    pub fn new<LOGIC : Logic>(modality : Modality<LOGIC>) -> ModalityRef
+    {
+        let modality_pointer1 = Rc::new(modality);
+        let modality_pointer2 = modality_pointer1.clone();
+        let modality_pointer3 = modality_pointer1.clone();
+        return ModalityRef
+        {
+            apply_possibility_ref: Box::new(move
+                |factory, node, p, extras|
+                { modality_pointer1.apply_possibility(factory, node, p, extras) }),
+            apply_necessity_ref: Box::new(move
+                |factory, node, p, extras|
+                { modality_pointer2.apply_necessity(factory, node, p, extras) }),
+            was_necessity_already_applied_ref: Box::new(move |factory, p|
+                { modality_pointer3.was_necessity_already_applied(factory, p) }),
+        }
+    }
+
+    pub fn apply_possibility(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> Option<ProofSubtree>
+    {
+        return (self.apply_possibility_ref)(factory, node, p, extras);
+    }
+
+    pub fn apply_necessity(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> Option<ProofSubtree>
+    {
+        return (self.apply_necessity_ref)(factory, node, p, extras);
+    }
+
+    pub fn was_necessity_already_applied(&self, factory : &mut RuleApplyFactory, p : &Formula) -> bool
+    {
+        return (self.was_necessity_already_applied_ref)(factory, p);
+    }
 }

@@ -2,7 +2,8 @@ use std::any::Any;
 use box_macro::bx;
 use crate::formula::Formula::{And, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -41,13 +42,15 @@ impl Logic for MinimalFirstDegreeEntailmentLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {})
-        ])
+        ]
     }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef> { None }
 }
 
 pub struct FirstDegreeEntailmentLogicRules {}

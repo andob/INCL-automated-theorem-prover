@@ -1,14 +1,10 @@
+use std::borrow::Borrow;
 use std::collections::BTreeSet;
 use itertools::Itertools;
-use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument, Sign};
+use crate::formula::{Formula, PossibleWorld, PredicateArgument};
 use crate::formula::Formula::{DefinitelyExists, Equals};
-use crate::graph::GraphVertex;
-use crate::logic::{LogicRule, LogicRuleCollection};
-use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::semantics::Semantics;
-use crate::tree::node::ProofTreeNode;
 use crate::tree::path::ProofTreePath;
-use crate::tree::subtree::ProofSubtree;
 
 pub struct VariableDomainSemantics
 {
@@ -63,7 +59,7 @@ impl VariableDomainSemantics
 
         return p_predicate_args.into_iter()
             .filter(|a| free_args.contains(a) || a.is_instantiated())
-            .any(|a| args_that_definitely_exists.iter().any(|d| **d==a)); //todo shall I use .all or .any here?
+            .any(|a| args_that_definitely_exists.iter().any(|d| **d==a));
     }
 }
 
@@ -82,64 +78,5 @@ pub fn get_args_that_definitely_exists(all_formulas_on_path : &Vec<Formula>, pos
         .collect::<BTreeSet<&PredicateArgument>>();
 
     args_that_definitely_exists.append(&mut equivalences_of_args_that_definitely_exists);
-
     return args_that_definitely_exists;
-}
-
-pub struct DefinitelyExistingArgsInheritanceRule
-{
-    pub base_logic_rules : LogicRuleCollection
-}
-
-impl DefinitelyExistingArgsInheritanceRule
-{
-    pub fn with_base_rules(base_logic_rules : LogicRuleCollection) -> DefinitelyExistingArgsInheritanceRule
-    {
-        return DefinitelyExistingArgsInheritanceRule { base_logic_rules };
-    }
-}
-
-impl LogicRule for DefinitelyExistingArgsInheritanceRule
-{
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
-    {
-        let original_world = node.formula.get_possible_world();
-        let original_graph_vertices = factory.modality_graph.vertices.clone();
-
-        let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
-            .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
-            .collect::<Vec<Formula>>();
-
-        let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, original_world);
-
-        if let Some(mut subtree) = self.base_logic_rules.apply(factory, node)
-        {
-            //modality graph was not modified. nothing to do.
-            if original_graph_vertices.len() == factory.modality_graph.vertices.len() { return Some(subtree) };
-
-            //no equalities to inherit further. nothing to do.
-            if args_that_definitely_exists.is_empty() { return Some(subtree) };
-
-            let new_graph_vertices = factory.modality_graph.vertices.iter()
-                .filter(|vertex| !original_graph_vertices.contains(*vertex))
-                .collect::<BTreeSet<&GraphVertex>>();
-
-            let new_definite_existence_formula_extras = |world : PossibleWorld|
-                FormulaExtras { possible_world: world, is_hidden: false, sign: Sign::Plus };
-
-            let new_definite_existence_formulas = new_graph_vertices.iter().map(|vertex| vertex.to)
-                .flat_map(|new_world| args_that_definitely_exists.iter().map(move |a|
-                    DefinitelyExists((*a).clone(), new_definite_existence_formula_extras(new_world))))
-                .collect::<Vec<Formula>>();
-
-            let new_definite_existence_nodes = new_definite_existence_formulas.into_iter()
-                .map(|formula| factory.new_node(formula))
-                .collect::<Vec<ProofTreeNode>>();
-
-            subtree.append(ProofSubtree::with_middle_vertical_nodes(new_definite_existence_nodes));
-            return Some(subtree);
-        }
-
-        return None;
-    }
 }

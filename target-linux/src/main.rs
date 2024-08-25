@@ -79,6 +79,7 @@ fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> 
             let problem = problem_json.to_problem().context(codeloc!())?;
             let (problem_id, logic) = (problem.id.clone(), problem.logic.clone());
 
+            println!("Solving {}", problem_id);
             let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
             let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 

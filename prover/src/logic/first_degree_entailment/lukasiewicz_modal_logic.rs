@@ -4,8 +4,8 @@ use box_macro::bx;
 use crate::formula::Formula::{BiImply, Imply, Non, Or, And};
 use crate::formula::FormulaExtras;
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -58,16 +58,21 @@ impl Logic for LukasiewiczModalLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
         let modality = Rc::new(self.get_modality());
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(LukasiewiczImplicationRules::new(modality)),
             Box::new(GenericBiImplyAsConjunctionRule {}),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 

@@ -14,21 +14,21 @@ impl Formula
         return match self
         {
             Atomic(p, extras) => { Atomic(p.clone(), extras.in_world(world)) }
-            Non(p, extras) => { Non(bx!(p.in_world(world)), extras.in_world(world)) }
-            And(p, q, extras) => { And(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            Or(p, q, extras) => { Or(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            Imply(p, q, extras) => { Imply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            BiImply(p, q, extras) => { BiImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            StrictImply(p, q, extras) => { StrictImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            Conditional(p, q, extras) => { Conditional(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
-            Exists(x, p, extras) => { Exists(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
-            ForAll(x, p, extras) => { ForAll(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
+            Non(box p, extras) => { Non(bx!(p.in_world(world)), extras.in_world(world)) }
+            And(box p, box q, extras) => { And(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Or(box p, box q, extras) => { Or(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Imply(box p, box q, extras) => { Imply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            BiImply(box p, box q, extras) => { BiImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            StrictImply(box p, box q, extras) => { StrictImply(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Conditional(box p, box q, extras) => { Conditional(bx!(p.in_world(world)), bx!(q.in_world(world)), extras.in_world(world)) }
+            Exists(x, box p, extras) => { Exists(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
+            ForAll(x, box p, extras) => { ForAll(x.clone(), bx!(p.in_world(world)), extras.in_world(world)) }
             Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.in_world(world)) }
             DefinitelyExists(x, extras) => { DefinitelyExists(x.clone(), extras.in_world(world)) }
-            Possible(p, extras) => { Possible(bx!(p.in_world(world)), extras.in_world(world)) }
-            Necessary(p, extras) => { Necessary(bx!(p.in_world(world)), extras.in_world(world)) }
-            InPast(p, extras) => { InPast(bx!(p.in_world(world)), extras.in_world(world)) }
-            InFuture(p, extras) => { InFuture(bx!(p.in_world(world)), extras.in_world(world)) }
+            Possible(box p, extras) => { Possible(bx!(p.in_world(world)), extras.in_world(world)) }
+            Necessary(box p, extras) => { Necessary(bx!(p.in_world(world)), extras.in_world(world)) }
+            InPast(box p, extras) => { InPast(bx!(p.in_world(world)), extras.in_world(world)) }
+            InFuture(box p, extras) => { InFuture(bx!(p.in_world(world)), extras.in_world(world)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -153,6 +153,30 @@ impl Formula
         }
     }
 
+    pub fn with_stripped_extras(&self) -> Formula
+    {
+        return match self
+        {
+            Atomic(p, _) => { Atomic(p.clone(), AtomicFormulaExtras::empty()) }
+            Non(box p, _) => { Non(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            And(box p, box q, _) => { And(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            Or(box p, box q, _) => { Or(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            Imply(box p, box q, _) => { Imply(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            BiImply(box p, box q, _) => { BiImply(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            StrictImply(box p, box q, _) => { StrictImply(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            Conditional(box p, box q, _) => { Conditional(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
+            Exists(x, box p, _) => { Exists(x.clone(), bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            ForAll(x, box p, _) => { ForAll(x.clone(), bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            Equals(x, y, _) => { Equals(x.clone(), y.clone(), FormulaExtras::empty()) }
+            DefinitelyExists(x, _) => { DefinitelyExists(x.clone(), FormulaExtras::empty()) }
+            Possible(box p, _) => { Possible(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            Necessary(box p, _) => { Necessary(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            InPast(box p, _) => { InPast(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            InFuture(box p, _) => { InFuture(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            Comment(payload) => { Comment(payload.clone()) }
+        }
+    }
+
     pub fn get_predicate_arguments_of_atomic(&self) -> Option<PredicateArguments>
     {
         let mut get_predicate_arguments_of_atomic_from_tuple = |(p, q) : (&Formula, &Formula)|
@@ -161,21 +185,21 @@ impl Formula
         return match self
         {
             Atomic(_, extras) => { Some(extras.predicate_args.clone()) }
-            Non(p, _) => { p.get_predicate_arguments_of_atomic() }
+            Non(box p, _) => { p.get_predicate_arguments_of_atomic() }
             And(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
             Or(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
             Imply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
             BiImply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
             StrictImply(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
             Conditional(box p, box q, _) => { get_predicate_arguments_of_atomic_from_tuple((p, q)) }
-            Exists(_, p, _) => { p.get_predicate_arguments_of_atomic() }
-            ForAll(_, p, _) => { p.get_predicate_arguments_of_atomic() }
+            Exists(_, box p, _) => { p.get_predicate_arguments_of_atomic() }
+            ForAll(_, box p, _) => { p.get_predicate_arguments_of_atomic() }
             Equals(_, _, _) => { None }
             DefinitelyExists(_, _) => { None }
-            Possible(p, _) => { p.get_predicate_arguments_of_atomic() }
-            Necessary(p, _) => { p.get_predicate_arguments_of_atomic() }
-            InPast(p, _) => { p.get_predicate_arguments_of_atomic() }
-            InFuture(p, _) => { p.get_predicate_arguments_of_atomic() }
+            Possible(box p, _) => { p.get_predicate_arguments_of_atomic() }
+            Necessary(box p, _) => { p.get_predicate_arguments_of_atomic() }
+            InPast(box p, _) => { p.get_predicate_arguments_of_atomic() }
+            InFuture(box p, _) => { p.get_predicate_arguments_of_atomic() }
             Comment(_) => { None }
         }
     }
@@ -205,12 +229,12 @@ impl Formula
                 }
             }
 
-            Exists(x, p, _) =>
+            Exists(x, box p, _) =>
             {
                 output.insert(x.clone());
                 p.get_all_predicate_arguments_recursively(output);
             }
-            ForAll(x, p, _) =>
+            ForAll(x, box p, _) =>
             {
                 output.insert(x.clone());
                 p.get_all_predicate_arguments_recursively(output);
@@ -250,7 +274,7 @@ impl Formula
                 return if x == y { true }
                 else { p.contains_quantifier_with_argument(y) }
             }
-            ForAll(x, p, _) =>
+            ForAll(x, box p, _) =>
             {
                 return if x == y { true }
                 else { p.contains_quantifier_with_argument(y) }

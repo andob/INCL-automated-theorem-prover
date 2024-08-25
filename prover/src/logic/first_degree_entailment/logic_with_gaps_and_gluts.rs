@@ -4,8 +4,8 @@ use box_macro::bx;
 use crate::formula::Formula::{And, Conditional, Non, Or};
 use crate::formula::{FormulaExtras, PossibleWorld};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -53,15 +53,20 @@ impl Logic for LogicWithGapsGlutsAndWorlds
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
         let modality = Rc::new(self.get_modality());
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(LogicWithGapsGlutsAndWorldsConditionalRules::new(modality)),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 

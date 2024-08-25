@@ -2,6 +2,7 @@ pub mod binary_logic_semantics;
 pub mod many_valued_logic_semantics;
 
 use crate::formula::Formula;
+use crate::logic::Logic;
 use crate::tree::path::ProofTreePath;
 
 pub trait Semantics

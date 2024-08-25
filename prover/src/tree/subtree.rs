@@ -24,6 +24,11 @@ impl ProofSubtree
         return ProofSubtree::new(None, None, None);
     }
 
+    pub fn is_empty(&self) -> bool
+    {
+        return self.left.is_none() && self.middle.is_none() && self.right.is_none();
+    }
+
     pub fn with_middle_node(node : ProofTreeNode) -> ProofSubtree
     {
         return ProofSubtree::new(None, Some(Box::new(node)), None);
@@ -61,8 +66,8 @@ impl ProofSubtree
             let (left, right) = nodes[index].clone();
             let (next_id_on_left, next_id_on_right) = (left.id, right.id);
             let subtree = ProofSubtree::new(Some(Box::new(left)), None, Some(Box::new(right)));
-            root_left.append_subtree_recursively(&subtree, id_on_left);
-            root_right.append_subtree_recursively(&subtree, id_on_right);
+            root_left.append_subtree_on_leaf(&subtree, id_on_left);
+            root_right.append_subtree_on_leaf(&subtree, id_on_right);
             id_on_left = next_id_on_left;
             id_on_right = next_id_on_right;
         }
@@ -90,31 +95,30 @@ impl ProofSubtree
         if let Some(right) = &mut self.right { right.attach_new_ids(node_factory); }
     }
 
-    pub fn append(&mut self, another_subtree : ProofSubtree)
+    pub fn append(&mut self, another_subtree : &ProofSubtree)
     {
-        let root_nodes_refs = [&mut self.left, &mut self.middle, &mut self.right];
-        for root_node_ref in root_nodes_refs
+        if !another_subtree.is_empty()
         {
-            if let Some(ref mut root_node) = root_node_ref
-            {
-                let leaf_node_ids = root_node.get_all_paths().iter()
-                    .map(|path| path.get_leaf_node_id())
-                    .collect::<Vec<ProofTreeNodeID>>();
+            if let Some(ref mut left) = &mut self.left
+                { left.append_subtree(&another_subtree); }
+            else { self.left = another_subtree.left.clone(); }
 
-                for leaf_node_id in leaf_node_ids
-                {
-                    root_node.append_subtree_recursively(&another_subtree, leaf_node_id);
-                }
-            }
+            if let Some(ref mut middle) = &mut self.middle
+                { middle.append_subtree(&another_subtree); }
+            else { self.middle = another_subtree.middle.clone(); }
+
+            if let Some(ref mut right) = &mut self.right
+                { right.append_subtree(&another_subtree); }
+            else { self.right = another_subtree.right.clone(); }
         }
     }
 }
 
 impl ProofTree
 {
-    pub fn append_subtree(&mut self, subtree : &mut ProofSubtree, node_id : ProofTreeNodeID)
+    pub fn append_subtree(&mut self, another_subtree : &mut ProofSubtree, node_id : ProofTreeNodeID)
     {
-        if subtree.left.is_none() && subtree.middle.is_none() && subtree.right.is_none() { return };
+        if another_subtree.left.is_none() && another_subtree.middle.is_none() && another_subtree.right.is_none() { return };
 
         let mut should_clone_subtree_with_new_ids = false;
 
@@ -126,15 +130,15 @@ impl ProofTree
             {
                 if !should_clone_subtree_with_new_ids
                 {
-                    self.root_node.append_subtree_recursively(&subtree, leaf.id);
+                    self.root_node.append_subtree_on_leaf(&another_subtree, leaf.id);
                     should_clone_subtree_with_new_ids = true;
                 }
                 else
                 {
-                    let mut subtree_with_new_ids = subtree.clone();
+                    let mut subtree_with_new_ids = another_subtree.clone();
                     subtree_with_new_ids.attach_new_ids(&mut self.node_factory);
-                    self.root_node.append_subtree_recursively(&subtree_with_new_ids, leaf.id);
-                    subtree.cloned_subtrees_with_new_ids.push(Box::new(subtree_with_new_ids));
+                    self.root_node.append_subtree_on_leaf(&subtree_with_new_ids, leaf.id);
+                    another_subtree.cloned_subtrees_with_new_ids.push(Box::new(subtree_with_new_ids));
                 }
             }
         }
@@ -143,7 +147,19 @@ impl ProofTree
 
 impl ProofTreeNode
 {
-    fn append_subtree_recursively(&mut self, subtree : &ProofSubtree, node_id : ProofTreeNodeID)
+    fn append_subtree(&mut self, another_subtree: &ProofSubtree)
+    {
+        let leaf_node_ids = self.get_all_paths().iter()
+            .map(|path| path.get_leaf_node_id())
+            .collect::<Vec<ProofTreeNodeID>>();
+
+        for leaf_node_id in leaf_node_ids
+        {
+            self.append_subtree_on_leaf(another_subtree, leaf_node_id);
+        }
+    }
+
+    fn append_subtree_on_leaf(&mut self, subtree : &ProofSubtree, node_id : ProofTreeNodeID)
     {
         if self.id == node_id
         {
@@ -153,9 +169,9 @@ impl ProofTreeNode
         }
         else
         {
-            if let Some(left) = &mut self.left { left.append_subtree_recursively(subtree, node_id); }
-            if let Some(middle) = &mut self.middle { middle.append_subtree_recursively(subtree, node_id); }
-            if let Some(right) = &mut self.right { right.append_subtree_recursively(subtree, node_id); }
+            if let Some(left) = &mut self.left { left.append_subtree_on_leaf(subtree, node_id); }
+            if let Some(middle) = &mut self.middle { middle.append_subtree_on_leaf(subtree, node_id); }
+            if let Some(right) = &mut self.right { right.append_subtree_on_leaf(subtree, node_id); }
         }
     }
 
@@ -180,5 +196,13 @@ impl DecompositionPriorityQueue
         {
             self.push_subtree(alternative_subtree_data);
         }
+    }
+}
+
+impl Default for ProofSubtree
+{
+    fn default() -> Self
+    {
+        return ProofSubtree::empty();
     }
 }

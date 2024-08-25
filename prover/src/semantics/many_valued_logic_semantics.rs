@@ -43,20 +43,20 @@ impl Semantics for ManyValuedLogicSemantics
         return formula.with_sign(Minus);
     }
 
-    fn are_formulas_contradictory(&self, _path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         for contradiction_behaviour in &self.contradiction_behaviours
         {
             let is_contradiction = match contradiction_behaviour
             {
                 ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
-                { self.are_formulas_contradictory_formula_plus_with_formula_minus(p, q) }
+                { self.are_formulas_contradictory_formula_plus_with_formula_minus(path, p, q) }
 
                 ManyValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus =>
-                { self.are_formulas_contradictory_formula_plus_with_non_formula_plus(p, q) }
+                { self.are_formulas_contradictory_formula_plus_with_non_formula_plus(path, p, q) }
 
                 ManyValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus =>
-                { self.are_formulas_contradictory_formula_minus_with_non_formula_minus(p, q) }
+                { self.are_formulas_contradictory_formula_minus_with_non_formula_minus(path, p, q) }
             };
 
             if is_contradiction
@@ -76,7 +76,7 @@ impl ManyValuedLogicSemantics
         self.contradiction_behaviours.push(contradiction_behaviour);
     }
 
-    fn are_formulas_contradictory_formula_plus_with_formula_minus(&self, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory_formula_plus_with_formula_minus(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         match (p, q)
         {
@@ -86,7 +86,8 @@ impl ManyValuedLogicSemantics
             {
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
-                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+                p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
+                q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
@@ -108,7 +109,7 @@ impl ManyValuedLogicSemantics
         }
     }
 
-    fn are_formulas_contradictory_formula_plus_with_non_formula_plus(&self, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory_formula_plus_with_non_formula_plus(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         match (p, q)
         {
@@ -118,7 +119,8 @@ impl ManyValuedLogicSemantics
             {
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
-                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+                p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
+                q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
@@ -140,7 +142,7 @@ impl ManyValuedLogicSemantics
         }
     }
 
-    fn are_formulas_contradictory_formula_minus_with_non_formula_minus(&self, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory_formula_minus_with_non_formula_minus(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
     {
         match (p, q)
         {
@@ -150,7 +152,8 @@ impl ManyValuedLogicSemantics
             {
                 p_name == q_name &&
                 p.get_possible_world() == q.get_possible_world() &&
-                p.get_predicate_arguments_of_atomic() == q.get_predicate_arguments_of_atomic()
+                p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
+                q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |

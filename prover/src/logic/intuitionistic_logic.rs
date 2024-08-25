@@ -3,8 +3,8 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
@@ -35,14 +35,19 @@ impl Logic for IntuitionisticLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
         let modality = Rc::new(self.get_modality());
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(IntuitionisticLogicRules::new(modality)),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 
@@ -160,19 +165,10 @@ impl LogicRule for IntuitionisticLogicRules
                 return self.modality.apply_possibility(factory, node, &plus_p, &extras);
             }
 
-            p_as_formula@Atomic(p_as_string, extras) if extras.sign == Plus =>
+            p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                //this guard prevents infinite reapplication of □P
-                for reapplication in &factory.modality_graph.necessity_reapplications
-                {
-                    if let Atomic(q_as_string, _) = &reapplication.input_formula
-                    {
-                        if p_as_string == q_as_string { return None; }
-                    }
-                }
-
-                let extras = extras.to_formula_extras();
-                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras);
+                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return None };
+                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 
             _ => None

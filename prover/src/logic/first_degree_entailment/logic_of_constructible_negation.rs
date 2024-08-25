@@ -3,8 +3,8 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules};
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -72,16 +72,21 @@ impl Logic for LogicOfConstructibleNegation
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
         let modality = Rc::new(self.get_modality());
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(LogicOfConstructibleNegationImplicationRules::new(self.variant, modality)),
             Box::new(GenericBiImplyAsConjunctionRule {}),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 
@@ -173,32 +178,15 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
                 return Some(ProofSubtree::with_middle_node(p_imply_non_q_node));
             }
 
-            p_as_formula@Atomic(p_as_string, extras) if extras.sign == Plus =>
+            p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                //this guard prevents infinite reapplication of □P
-                for reapplication in &factory.modality_graph.necessity_reapplications
-                {
-                    if let Atomic(q_as_string, _) = &reapplication.input_formula
-                    {
-                        if p_as_string == q_as_string { return None; }
-                    }
-                }
-
-                let extras = extras.to_formula_extras();
-                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras);
+                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return None };
+                return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 
-            non_p_as_formula@Non(box Atomic(p_as_string, _), extras) if extras.sign == Plus =>
+            non_p_as_formula@Non(box Atomic(_, _), extras) if extras.sign == Plus =>
             {
-                //this guard prevents infinite reapplication of □!P
-                for reapplication in &factory.modality_graph.necessity_reapplications
-                {
-                    if let Non(box Atomic(q_as_string, _), _) = &reapplication.input_formula
-                    {
-                        if p_as_string == q_as_string { return None; }
-                    }
-                }
-
+                if self.modality.was_necessity_already_applied(factory, non_p_as_formula) { return None };
                 return self.modality.apply_necessity(factory, node, &non_p_as_formula, &extras);
             }
 

@@ -4,6 +4,7 @@ use std::rc::Rc;
 use anyhow::{Context, Result};
 use box_macro::bx;
 use strum::IntoEnumIterator;
+use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;
 use crate::logic::first_degree_entailment::logic_of_constructible_negation::LogicOfConstructibleNegation;
@@ -50,7 +51,11 @@ pub trait Logic : Any
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>;
 
     //tree decomposition rules
-    fn get_rules(&self) -> LogicRuleCollection;
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>;
+
+    //a reference to the modality or None if the logic is not modal logic
+    //cannot use Option<Modality<LOGIC>> because trait functions cannot return generic types :(
+    fn get_modality_ref(&self) -> Option<ModalityRef>;
 }
 
 impl dyn Logic
@@ -73,38 +78,6 @@ impl dyn Logic
 pub trait LogicRule
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>;
-}
-
-pub struct LogicRuleCollection
-{
-    rules : Vec<Box<dyn LogicRule>>
-}
-
-impl LogicRuleCollection
-{
-    pub fn of(rules : Vec<Box<dyn LogicRule>>) -> LogicRuleCollection
-    {
-        return LogicRuleCollection { rules };
-    }
-
-    pub fn append(&mut self, another : &mut LogicRuleCollection)
-    {
-        self.rules.append(&mut another.rules);
-    }
-
-    pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
-    {
-        for logic_rule in &self.rules
-        {
-            //todo implement logging here
-            if let Some(subtree) = logic_rule.apply(factory, node)
-            {
-                return Some(subtree);
-            }
-        }
-
-        return None;
-    }
 }
 
 #[derive(Clone)]

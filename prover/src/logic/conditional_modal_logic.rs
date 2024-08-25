@@ -5,8 +5,8 @@ use crate::default_log_line_formatter;
 use crate::formula::Formula::{And, Conditional, Necessary, Non, Possible};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::Modality;
+use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::common_modal_logic::{Modality, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -54,13 +54,18 @@ impl Logic for ConditionalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> LogicRuleCollection
+    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
     {
-        return LogicRuleCollection::of(vec!
+        return vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ConditionalModalLogicRules::new(self.get_modality())),
-        ])
+        ]
+    }
+
+    fn get_modality_ref(&self) -> Option<ModalityRef>
+    {
+        return Some(ModalityRef::new(self.get_modality()));
     }
 }
 
@@ -135,7 +140,7 @@ impl LogicRule for ConditionalModalLogicRules
             Non(box Conditional(box p, box q, _), extras) =>
             {
                 let logic_pointer = factory.get_logic().clone();
-                let logic = logic_pointer.as_any().downcast_ref::<ConditionalModalLogic>().unwrap();
+                let logic = logic_pointer.cast_to::<ConditionalModalLogic>()?;
 
                 let mut formula_format_options = FormulaFormatOptions::default();
                 formula_format_options.should_show_possible_worlds = false;
