@@ -2,6 +2,7 @@ use std::collections::BTreeSet;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use substring::Substring;
 use crate::formula::PossibleWorld;
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 
 #[derive(Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq)]
@@ -42,11 +43,16 @@ impl Graph
     pub fn to_json(&self) -> GraphJSON
     {
         let mut vertices_for_json : BTreeSet<GraphVertexJSON> = BTreeSet::new();
+
+        let mut formula_format_options = FormulaFormatOptions::default();
+        formula_format_options.should_show_possible_worlds = false;
+
         for vertex in &self.vertices
         {
             let tags = self.vertices_tags.iter()
                 .filter(|(v, _tag)| v.from==vertex.from && v.to==vertex.to)
-                .map(|(_v, tag)| tag.clone()).collect::<Vec<String>>();
+                .map(|(_v, tag)| tag.to_string_with_options(&formula_format_options))
+                .collect::<Vec<String>>();
 
             vertices_for_json.insert(GraphVertexJSON { from:vertex.from, to:vertex.to, tags:tags });
         }

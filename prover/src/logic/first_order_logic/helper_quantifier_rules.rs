@@ -17,7 +17,7 @@ impl LogicRule for HelperQuantifierRules
         let mut subtree = ProofSubtree::empty();
 
         let logic_pointer = factory.get_logic().clone();
-        let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
 
         match &node.formula
         {

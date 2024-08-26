@@ -14,7 +14,7 @@ use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehav
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapters 8 and 11a
+//check out book chapters 8, 11a and 21
 pub struct RMingle3ModalLogic
 {
     pub name : LogicName,

@@ -11,7 +11,7 @@ use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 
-//check out book chapter 4
+//check out book chapters 4 and 18
 pub struct NonNormalModalLogic
 {
     pub name : LogicName,

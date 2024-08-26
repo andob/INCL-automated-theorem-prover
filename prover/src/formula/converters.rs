@@ -157,7 +157,16 @@ impl Formula
     {
         return match self
         {
-            Atomic(p, _) => { Atomic(p.clone(), AtomicFormulaExtras::empty()) }
+            Atomic(p, old_extras) =>
+            {
+                Atomic(p.clone(), AtomicFormulaExtras
+                {
+                    predicate_args: old_extras.predicate_args.clone(),
+                    possible_world: PossibleWorld::zero(),
+                    is_hidden: false, sign: Sign::Plus,
+                })
+            }
+
             Non(box p, _) => { Non(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
             And(box p, box q, _) => { And(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }
             Or(box p, box q, _) => { Or(bx!(p.with_stripped_extras()), bx!(q.with_stripped_extras()), FormulaExtras::empty()) }

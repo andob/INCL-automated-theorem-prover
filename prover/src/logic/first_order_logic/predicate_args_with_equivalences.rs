@@ -16,7 +16,7 @@ impl Formula
 
 impl PredicateArguments
 {
-    pub fn with_equivalences(self, path : &ProofTreePath, possible_world : PossibleWorld) -> Vec<BTreeSet<PredicateArgument>>
+    pub fn with_equivalences(&self, path : &ProofTreePath, possible_world : PossibleWorld) -> Vec<BTreeSet<PredicateArgument>>
     {
         if self.is_empty() { return vec![] };
 

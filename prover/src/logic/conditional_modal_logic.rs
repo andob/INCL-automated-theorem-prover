@@ -2,7 +2,8 @@ use std::any::Any;
 use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::default_log_line_formatter;
-use crate::formula::Formula::{And, Conditional, Necessary, Non, Possible};
+use crate::formula::{AtomicFormulaExtras, Formula, PossibleWorld, PredicateArguments};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
 use crate::logic::{Logic, LogicName, LogicRule};
@@ -13,9 +14,10 @@ use crate::parser::token_types::TokenTypeID;
 use crate::semantics::binary_logic_semantics::BinaryLogicSemantics;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
+use crate::tree::path::ProofTreePath;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapter 5
+//check out book chapters 5 and 19
 pub struct ConditionalModalLogic
 {
     pub is_extended : bool
@@ -145,10 +147,9 @@ impl LogicRule for ConditionalModalLogicRules
                 let mut formula_format_options = FormulaFormatOptions::default();
                 formula_format_options.should_show_possible_worlds = false;
                 let p_as_string = p.to_string_with_options(&formula_format_options);
-                let p_as_string_cloned = p_as_string.clone();
 
                 factory.modality_graph.set_log_line_formatter(bx!(move |v|
-                    format!("{}R{} [{}]\n", v.from, v.to, p_as_string_cloned)));
+                    format!("{}R{} [{}]\n", v.from, v.to, p_as_string)));
 
                 let subtree = if logic.is_extended
                 {
@@ -165,13 +166,13 @@ impl LogicRule for ConditionalModalLogicRules
                 factory.modality_graph.set_log_line_formatter(default_log_line_formatter!());
 
                 let previous_world = extras.possible_world;
-                let current_world = *factory.modality_graph.nodes.iter().max().unwrap();
+                let current_world = *factory.modality_graph.nodes.iter().max()?;
                 let current_vertex = GraphVertex::new(previous_world, current_world);
-                factory.modality_graph.vertices_tags.push((current_vertex.clone(), p_as_string));
+                factory.modality_graph.vertices_tags.push((current_vertex.clone(), p.with_stripped_extras()));
 
                 let inherited_tags = factory.modality_graph.vertices_tags.iter()
                     .filter(|(vertex, _tag)| vertex.to == previous_world)
-                    .map(|(_vertex, tag)| tag.clone()).collect::<Vec<String>>();
+                    .map(|(_vertex, tag)| tag.clone()).collect::<Vec<Formula>>();
                 for inherited_tag in inherited_tags
                 {
                     factory.modality_graph.vertices_tags.push((current_vertex.clone(), inherited_tag));
@@ -182,17 +183,15 @@ impl LogicRule for ConditionalModalLogicRules
 
             Conditional(box p, box q, extras) =>
             {
-                let mut formula_format_options = FormulaFormatOptions::default();
-                formula_format_options.should_show_possible_worlds = false;
-                let p_as_string = p.to_string_with_options(&formula_format_options);
-
                 let reflexive_vertices = factory.modality_graph.vertices.iter()
                     .filter(|vertex| vertex.from == vertex.to)
                     .map(|vertex| vertex.clone())
                     .collect::<BTreeSet<GraphVertex>>();
 
+                let p_without_extras = p.with_stripped_extras();
+                let paths = factory.tree.get_paths_that_goes_through_node(node);
                 let vertices_with_right_tag = factory.modality_graph.vertices_tags.iter()
-                    .filter(|(_vertex, tag)| *tag == p_as_string)
+                    .filter(|(_vertex, tag)| p_without_extras.is_replaceable_with(tag, &paths))
                     .map(|(vertex, _tag)| vertex.clone())
                     .collect::<BTreeSet<GraphVertex>>();
 
@@ -212,5 +211,118 @@ impl LogicRule for ConditionalModalLogicRules
 
             _ => None
         }
+    }
+}
+
+impl Formula
+{
+    fn is_replaceable_with(&self, another : &Formula, paths : &Vec<ProofTreePath>) -> bool
+    {
+        return match self
+        {
+            Atomic(p_name, p_extras) =>
+            {
+                if let Atomic(q_name, q_extras) = another
+                { p_name == q_name && p_extras.is_replaceable_with(q_extras, paths) } else { false }
+            }
+            Non(box p, p_extras) =>
+            {
+                if let Non(box q, q_extras) = another
+                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            And(box p, box q, pq_extras) =>
+            {
+                if let And(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            Or(box p, box q, pq_extras) =>
+            {
+                if let Or(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            Imply(box p, box q, pq_extras) =>
+            {
+                if let Imply(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            BiImply(box p, box q, pq_extras) =>
+            {
+                if let BiImply(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            StrictImply(box p, box q, pq_extras) =>
+            {
+                if let StrictImply(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            Conditional(box p, box q, pq_extras) =>
+            {
+                if let Conditional(box w, box e, we_extras) = another
+                { p.is_replaceable_with(w, paths) && q.is_replaceable_with(e, paths) && pq_extras == we_extras } else { false }
+            }
+            Exists(x, box p, p_extras) =>
+            {
+                if let Exists(y, box q, q_extras) = another
+                { x==y && p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
+            }
+            ForAll(x, box p, p_extras) =>
+            {
+                if let ForAll(y, box q, q_extras) = another
+                { x==y && p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
+            }
+            Equals(x, y, p_extras) =>
+            {
+                if let Equals(z, t, q_extras) = another
+                { ((x==z && y==t) || (x==t && y==z)) && p_extras == q_extras } else { false }
+            }
+            DefinitelyExists(x, p_extras) =>
+            {
+                if let DefinitelyExists(y, q_extras) = another
+                { x==y && p_extras == q_extras } else { false }
+            }
+            Possible(box p, p_extras) =>
+            {
+                if let Possible(box q, q_extras) = another
+                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            Necessary(box p, p_extras) =>
+            {
+                if let Necessary(box q, q_extras) = another
+                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            InPast(box p, p_extras) =>
+            {
+                if let InPast(box q, q_extras) = another
+                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            InFuture(box p, p_extras) =>
+            {
+                if let InFuture(box q, q_extras) = another
+                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            Comment(payload) =>
+            {
+                if let Comment(another_payload) = another
+                { another_payload == payload } else { false }
+            }
+        }
+    }
+}
+
+impl AtomicFormulaExtras
+{
+    fn is_replaceable_with(&self, another : &AtomicFormulaExtras, paths : &Vec<ProofTreePath>) -> bool
+    {
+        return self.predicate_args.are_replaceable_with(&another.predicate_args, paths, another.possible_world) &&
+                self.sign == another.sign && self.is_hidden == another.is_hidden &&
+                self.possible_world == another.possible_world;
+    }
+}
+
+impl PredicateArguments
+{
+    fn are_replaceable_with(&self, another : &PredicateArguments, paths : &Vec<ProofTreePath>, possible_world : PossibleWorld) -> bool
+    {
+        return paths.iter().any(|path| self.with_equivalences(path, possible_world) == another.with_equivalences(path, possible_world));
     }
 }

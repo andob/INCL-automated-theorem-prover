@@ -12,7 +12,7 @@ use crate::semantics::many_valued_logic_semantics::ManyValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapter 6
+//check out book chapters 6 and 20
 pub struct IntuitionisticLogic {}
 impl Logic for IntuitionisticLogic
 {

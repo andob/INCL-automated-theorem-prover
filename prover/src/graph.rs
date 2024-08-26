@@ -3,14 +3,14 @@ mod missing_vertices;
 
 use std::collections::BTreeSet;
 use std::fmt::{Display, Formatter};
-use crate::formula::PossibleWorld;
+use crate::formula::{Formula, PossibleWorld};
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 
 pub struct Graph
 {
     pub nodes : BTreeSet<PossibleWorld>,
     pub vertices : BTreeSet<GraphVertex>,
-    pub vertices_tags : Vec<(GraphVertex, String)>,
+    pub vertices_tags : Vec<(GraphVertex, Formula)>,
     pub necessity_reapplications : Vec<NecessityReapplicationData>,
     log_line_formatter : Box<dyn Fn(&GraphVertex) -> String>,
     log : String,

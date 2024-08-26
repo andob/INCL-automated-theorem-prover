@@ -13,7 +13,7 @@ use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapter 3
+//check out book chapters 3, 14-17
 pub struct TemporalModalLogic
 {
     pub is_extended : bool

@@ -1854,6 +1854,174 @@
         "expected": "disproved",
         "premises": [ "P ᐅ Q", "Q ᐅ R" ],
         "conclusion": "P ᐅ R"
+      },
+      {
+        "id": "19.9.2.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalModalLogic",
+        "expected": "disproved",
+        "premises": [ "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∀x P[x] ⊃ ∀x Q[x]"
+      },
+      {
+        "id": "19.9.2.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "P[a] ᐅ ∃x P[x]"
+      },
+      {
+        "id": "19.9.2.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalModalLogic",
+        "expected": "disproved",
+        "premises": [ "P[a]", "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∃x Q[x]"
+      },
+      {
+        "id": "19.9.2.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalModalLogic",
+        "expected": "disproved",
+        "premises": [ "¬∃x(P[x] ∧ Q[x])" ],
+        "conclusion": "∀x(P[x] ᐅ ¬Q[x])"
+      },
+      {
+        "id": "19.9.3.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∀x P[x] ⊃ ∀x Q[x]"
+      },
+      {
+        "id": "19.9.3.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "P[a] ᐅ ∃x P[x]"
+      },
+      {
+        "id": "19.9.3.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [ "P[a]", "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∃x Q[x]"
+      },
+      {
+        "id": "19.9.3.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "disproved",
+        "premises": [ "¬∃x(P[x] ∧ Q[x])" ],
+        "conclusion": "∀x(P[x] ᐅ ¬Q[x])"
+      },
+      {
+        "id": "19.9.3.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∀x P[x] ⊃ ∀x Q[x]"
+      },
+      {
+        "id": "19.9.3.f",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "P[a] ᐅ ∃x P[x]"
+      },
+      {
+        "id": "19.9.3.g",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [ "P[a]", "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∃x Q[x]"
+      },
+      {
+        "id": "19.9.3.h",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "disproved",
+        "premises": [ "¬∃x(P[x] ∧ Q[x])" ],
+        "conclusion": "∀x(P[x] ᐅ ¬Q[x])"
+      },
+      {
+        "id": "19.9.7.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x(P[x] ᐅ (x = x))"
+      },
+      {
+        "id": "19.9.7.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x∀y((x = y) ᐅ (y = x))"
+      },
+      {
+        "id": "19.9.7.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x∀y∀z(((x = y) ∧ (y = z)) ᐅ (x = z))"
+      },
+      {
+        "id": "19.9.7.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x((x = a) ⊃ ((P[a] ᐅ Q[a]) ⊃ (P[x] ᐅ Q[x])))"
+      },
+      {
+        "id": "19.9.7.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x((x = a) ⊃ ((P[a] ᐅ Q[a]) ᐅ (P[x] ᐅ Q[x])))"
+      },
+      {
+        "id": "19.9.7.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(a = b) ᐅ (P[a] ᐅ P[b])"
+      },
+      {
+        "id": "19.9.8.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x(P[x] ᐅ (x = x))"
+      },
+      {
+        "id": "19.9.8.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x∀y((x = y) ᐅ (y = x))"
+      },
+      {
+        "id": "19.9.8.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x∀y∀z(((x = y) ∧ (y = z)) ᐅ (x = z))"
+      },
+      {
+        "id": "19.9.8.d",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x((x = a) ⊃ ((P[a] ᐅ Q[a]) ⊃ (P[x] ᐅ Q[x])))"
+      },
+      {
+        "id": "19.9.8.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x((x = a) ⊃ ((P[a] ᐅ Q[a]) ᐅ (P[x] ᐅ Q[x])))"
+      },
+      {
+        "id": "19.9.8.f",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "(a = b) ᐅ (P[a] ᐅ P[b])"
       }
     ]
   },

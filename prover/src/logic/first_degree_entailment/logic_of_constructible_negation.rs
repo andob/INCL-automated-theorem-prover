@@ -14,7 +14,7 @@ use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehav
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
 
-//check out book chapter 9
+//check out book chapters 9 and 23
 pub struct LogicOfConstructibleNegation
 {
     variant : LogicOfConstructibleNegationVariant

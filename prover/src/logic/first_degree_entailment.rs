@@ -19,7 +19,7 @@ pub mod logic_with_gaps_and_gluts;
 pub mod logic_of_constructible_negation;
 mod generic_biimply_fde_rule;
 
-//check out book chapter 8
+//check out book chapters 8 and 22
 pub struct MinimalFirstDegreeEntailmentLogic {}
 
 impl Logic for MinimalFirstDegreeEntailmentLogic
