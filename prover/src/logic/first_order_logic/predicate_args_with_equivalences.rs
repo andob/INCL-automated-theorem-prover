@@ -1,6 +1,6 @@
 use std::collections::BTreeSet;
-use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments};
-use crate::formula::Formula::Equals;
+use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Formula::{Equals, Non};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::tree::path::ProofTreePath;
@@ -24,7 +24,7 @@ impl PredicateArguments
             .map(|node| node.formula).collect::<Vec<Formula>>();
 
         let all_equivalences_on_path = all_formulas_on_path.iter()
-            .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x, y)) } else { None })
+            .filter_map(create_equality_formulas_filtering_lambda())
             .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
         let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, possible_world);
@@ -48,5 +48,27 @@ impl PredicateArguments
         }
 
         return args_with_equivalences;
+    }
+}
+
+pub fn create_equality_owned_formulas_filtering_lambda() -> fn(Formula) -> Option<(PredicateArgument, PredicateArgument)>
+{
+    return |formula|
+    {
+        let delegate = create_equality_formulas_filtering_lambda();
+        return if let Some((x, y)) = delegate(&formula) { Some((x.clone(), y.clone())) } else { None };
+    };
+}
+
+pub fn create_equality_formulas_filtering_lambda() -> fn(&Formula) -> Option<(&PredicateArgument, &PredicateArgument)>
+{
+    return |formula|
+    {
+        match formula
+        {
+            Equals(x, y, extras) if extras.sign == Sign::Plus => { Some((x, y)) }
+            Non(box Equals(x, y, _), extras) if extras.sign == Sign::Minus => { Some((x, y)) }
+            _ => None
+        }
     }
 }

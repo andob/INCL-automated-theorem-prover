@@ -9,7 +9,7 @@ pub trait Semantics
 {
     fn number_of_truth_values(&self) -> u8;
 
-    fn negate(&self, formula : &Formula) -> Formula;
+    fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula;
 
     fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool;
 }

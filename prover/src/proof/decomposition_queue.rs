@@ -1,7 +1,8 @@
 use std::rc::Rc;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Equals, ForAll, Imply, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Equals, Exists, ForAll, Imply, Non, Or, Possible, StrictImply};
+use crate::formula::Sign::{Minus, Plus};
 use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
@@ -132,7 +133,13 @@ impl DecompositionPriorityQueue
 
     fn should_node_be_reused(&self, node : &Box<ProofTreeNode>) -> bool
     {
-        return matches!(&node.formula, ForAll(..)) &&
-            !self.banned_reusable_nodes.contains(node);
+        if self.banned_reusable_nodes.contains(node) { return false };
+
+        match &node.formula
+        {
+            ForAll(_x, _p, extras) if extras.sign == Plus => true,
+            Exists(_x, _p, extras) if extras.sign == Minus => true,
+            _ => false
+        }
     }
 }

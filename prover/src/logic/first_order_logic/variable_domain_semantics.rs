@@ -2,7 +2,9 @@ use std::borrow::Borrow;
 use std::collections::BTreeSet;
 use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument};
-use crate::formula::Formula::{DefinitelyExists, Equals};
+use crate::formula::Formula::DefinitelyExists;
+use crate::formula::Sign::Plus;
+use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_formulas_filtering_lambda;
 use crate::semantics::Semantics;
 use crate::tree::path::ProofTreePath;
 
@@ -26,9 +28,9 @@ impl Semantics for VariableDomainSemantics
         return self.base_semantics.number_of_truth_values();
     }
 
-    fn negate(&self, formula : &Formula) -> Formula
+    fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
     {
-        return self.base_semantics.negate(formula);
+        return self.base_semantics.reductio_ad_absurdum(formula);
     }
 
     fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
@@ -66,13 +68,13 @@ impl VariableDomainSemantics
 pub fn get_args_that_definitely_exists(all_formulas_on_path : &Vec<Formula>, possible_world : PossibleWorld) -> BTreeSet<&PredicateArgument>
 {
     let mut args_that_definitely_exists = all_formulas_on_path.iter()
-        .filter(|formula| formula.get_possible_world() == possible_world)
+        .filter(|formula| formula.get_possible_world() == possible_world && formula.get_sign() == Plus)
         .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
         .collect::<BTreeSet<&PredicateArgument>>();
 
     let mut equivalences_of_args_that_definitely_exists = all_formulas_on_path.iter()
         .filter(|formula| formula.get_possible_world() == possible_world)
-        .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x, y)) } else { None })
+        .filter_map(create_equality_formulas_filtering_lambda())
         .filter(|(x, y)| args_that_definitely_exists.iter().any(|d| x==d || y==d))
         .flat_map(|(x, y)| vec![x, y])
         .collect::<BTreeSet<&PredicateArgument>>();

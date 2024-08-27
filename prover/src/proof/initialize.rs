@@ -13,7 +13,7 @@ impl ProofAlgorithm
     {
         let mut node_factory = ProofTreeNodeFactory::new(&problem.logic);
 
-        let non_conclusion = problem.logic.get_semantics().negate(&problem.conclusion);
+        let non_conclusion = problem.logic.get_semantics().reductio_ad_absurdum(&problem.conclusion);
         let non_conclusion_node = node_factory.new_node(non_conclusion);
 
         let mut decomposition_queue = DecompositionPriorityQueue::new(problem.logic.clone());

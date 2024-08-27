@@ -5,7 +5,8 @@ const KEY_PROBLEM = 'problem';
 const KEY_OPERATOR_NOTATIONS = 'operator_notations';
 
 const ID_OPERATOR_NOTATIONS_SELECT = 'operator_notations_select';
-const ID_LOGICS_SELECT = 'logics_select';
+const ID_LOGICS_SELECT1 = 'logics_select1';
+const ID_LOGICS_SELECT2 = 'logics_select2';
 const ID_PREMISES_TEXTAREA = 'premises_textarea';
 const ID_CONCLUSION_TEXTAREA = 'conclusion_textarea';
 const ID_ON_SCREEN_KEYBOARD_CONTAINER = 'on_screen_keyboard_container';
@@ -42,58 +43,369 @@ function initialize_layout(callback)
 {
     let config = {
         content: [
+        {
+            type: 'row',
+            content: [
             {
-                type: 'row',
+                type: 'column',
+                width: 35,
                 content: [
-                    {
-                        type: 'column',
-                        width: 28,
-                        content: [
-                            {
-                                type: 'component',
-                                componentName: 'ProblemComponent',
-                                title: 'Problem',
-                                isClosable: false,
-                            },
-                            {
-                                type: 'component',
-                                componentName: 'ProblemCatalogComponent',
-                                title: 'Problem Catalog',
-                                height: 66,
-                                isClosable: false,
-                            }
-                        ]
-                    },
+                {
+                    type: 'stack',
+                    content: [
                     {
                         type: 'component',
-                        componentName: 'ProofTreeComponent',
-                        title: 'Proof Tree',
+                        componentName: 'ProblemComponent',
+                        title: 'Problem',
                         isClosable: false,
                     },
                     {
                         type: 'component',
-                        componentName: 'ModalityGraphComponent',
-                        title: 'Modality Graph',
+                        componentName: 'AboutComponent',
+                        title: 'About',
                         isClosable: false,
-                    }
-                ]
+                    }]
+                },
+                {
+                    type: 'component',
+                    componentName: 'ProblemCatalogComponent',
+                    title: 'Problem Catalog',
+                    height: 66,
+                    isClosable: false,
+                }]
+            },
+            {
+                type: 'component',
+                componentName: 'ProofTreeComponent',
+                title: 'Proof Tree',
+                isClosable: false,
+            },
+            {
+                type: 'stack',
+                content: [
+                {
+                    type: 'component',
+                    componentName: 'ModalityGraphComponent',
+                    title: 'Modality Graph',
+                    isClosable: false,
+                },
+                {
+                    type: 'component',
+                    componentName: 'CountermodelComponent',
+                    title: 'Countermodel',
+                    isClosable: false,
+                }]
             }]
+        }]
     };
 
     let layout = new golden_layout.GoldenLayout(config);
 
     layout.registerComponent('ProblemComponent', problem_component =>
+    layout.registerComponent('AboutComponent', about_component =>
     layout.registerComponent('ProblemCatalogComponent', problem_catalog_component =>
     layout.registerComponent('ProofTreeComponent', proof_tree_component =>
     layout.registerComponent('ModalityGraphComponent', modality_graph_component =>
+    layout.registerComponent('CountermodelComponent', countermodel_component =>
     callback({
         problem_input_container: problem_component.getElement(),
         problem_catalog_container: problem_catalog_component.getElement(),
         proof_tree_container: proof_tree_component.getElement(),
         modality_graph_container: modality_graph_component.getElement(),
-    })))));
+        countermodel_container: countermodel_component.getElement(),
+        about_container: about_component.getElement(),
+    })))))));
 
     layout.init();
+}
+
+function show_problem_catalog()
+{
+    window.containers.problem_catalog_container.style.overflowY = 'scroll';
+    window.containers.problem_catalog_container.innerHTML = '';
+
+    let book_chapters_ol = document.createElement("ol");
+    book_chapters_ol.style.color = 'white';
+    book_chapters_ol.style.fontSize = '0.8em';
+
+    let problem_catalog = JSON.parse(incl.get_problem_catalog());
+    for (let book_chapter of problem_catalog)
+    {
+        let book_chapter_li = document.createElement("li");
+        book_chapter_li.appendChild(document.createTextNode(book_chapter.name));
+        book_chapter_li.appendChild(document.createElement("br"));
+
+        for (let problem of book_chapter.problems)
+        {
+            let div = document.createElement("div");
+            div.style.textDecoration = 'underline';
+            div.style.display = 'inline';
+            div.style.cursor = 'pointer';
+
+            div.appendChild(document.createTextNode(problem.id));
+            div.onclick = () =>
+            {
+                prove_problem(problem);
+
+                //changing browser URL without reloading the page, in order for the URL to contain problem ID argument
+                let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
+                let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
+                let url_arguments = new URLSearchParams();
+                url_arguments.append(KEY_PROBLEM, problem.id);
+                url_arguments.append(KEY_OPERATOR_NOTATIONS, operator_notations);
+                window.history.pushState(null, null, '?' + url_arguments.toString());
+            }
+
+            book_chapter_li.appendChild(div);
+            book_chapter_li.appendChild(document.createTextNode("  "))
+        }
+
+        book_chapter_li.appendChild(document.createElement("br"));
+        book_chapters_ol.appendChild(book_chapter_li);
+    }
+
+    window.containers.problem_catalog_container.appendChild(book_chapters_ol);
+}
+
+function initialize_problem_input_container()
+{
+    let operator_notations_select = document.createElement('select');
+    operator_notations_select.id = ID_OPERATOR_NOTATIONS_SELECT;
+    operator_notations_select.style.width = '96.5%';
+    for (let operator_notation of incl.get_operator_notations())
+    {
+        let option = document.createElement('option');
+        option.appendChild(document.createTextNode(operator_notation));
+        operator_notations_select.appendChild(option);
+    }
+
+    let logics_select1 = document.createElement('select');
+    logics_select1.id = ID_LOGICS_SELECT1;
+    logics_select1.style.width = '96.5%';
+
+    let logics_select2 = document.createElement('select');
+    logics_select2.id = ID_LOGICS_SELECT2;
+    logics_select2.style.width = '96.5%';
+
+    new LogicSelectGroupController(logics_select1, logics_select2).create_and_append_options();
+
+    window.containers.problem_input_container.style.overflowY = 'scroll';
+    window.containers.problem_input_container.innerHTML = `<br/>
+    <table style="width: 100%; padding-left: 2%; color: white; font-size: 0.9em;">
+        <tr>
+            <td>Operator notations:</td>
+            <td>${operator_notations_select.outerHTML}</td>
+        </tr>
+        <tr>
+            <td>Logic:</td>
+            <td>${logics_select1.outerHTML}<br/>${logics_select2.outerHTML}</td>
+        </tr>
+        <tr>
+            <td>Premises:</td>
+            <td><textarea id="${ID_PREMISES_TEXTAREA}" style="width: 95%; height: 50px;"></textarea></td>
+        </tr>
+        <tr>
+            <td>Conclusion:</td>
+            <td><textarea id="${ID_CONCLUSION_TEXTAREA}" style="width: 95%; height: 25px;"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><div id="${ID_ON_SCREEN_KEYBOARD_CONTAINER}"></div></td>
+        </tr>
+        <tr>
+            <td><br/><button id="${ID_PROVE_BUTTON}" style="font-size: 1.1em; font-style: italic; width: 75px; height: 50px;">PROVE!</button></td>
+            <td><br/><b id="${ID_PROOF_STATUS_LABEL}" style="font-size: 1.1em; font-style: italic; width: 75px; height: 50px;"><b></td>
+        </tr>
+    </table>`;
+
+    setTimeout(initialize_problem_input_container_after_delay, 10);
+}
+
+function initialize_problem_input_container_after_delay()
+{
+    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
+    let logics_select1 = document.getElementById(ID_LOGICS_SELECT1);
+    let logics_select2 = document.getElementById(ID_LOGICS_SELECT2);
+    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
+    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
+    let prove_button = document.getElementById(ID_PROVE_BUTTON);
+
+    operator_notations_select.onchange = event =>
+    {
+        localStorage.setItem(KEY_OPERATOR_NOTATIONS, event.target.value);
+        window.location = window.location.href.split("?")[0];
+    };
+
+    new LogicSelectGroupController(logics_select1, logics_select2)
+        .set_on_logic_chosen(logic => update_on_screen_keyboard(logic));
+
+    let initial_problem = {
+        id: 'Initial',
+        expected: '',
+        logic: incl.get_logics()[0],
+        premises: [],
+        conclusion: '',
+    };
+
+    let url_args = new URLSearchParams(window.location.search);
+    if (url_args.has(KEY_PROBLEM))
+    {
+        let problem = JSON.parse(incl.get_problem_catalog())
+            .flatMap(chapter => chapter.problems)
+            .find(problem => problem.id === url_args.get(KEY_PROBLEM).toString())
+        initial_problem = problem ? problem : initial_problem;
+    }
+
+    update_problem_input_area(initial_problem);
+
+    prove_button.onclick = () =>
+    {
+        prove_problem({
+            id: 'UserInput',
+            expected: '',
+            logic: new LogicSelectGroupController(logics_select1, logics_select2).get_logic(),
+            premises: premises_textarea.value.split(/\r?\n/).filter(line => line.trim().length>0),
+            conclusion: conclusion_textarea.value,
+        });
+    };
+
+    if (url_args.has(KEY_PROBLEM))
+    {
+        prove_button.click();
+    }
+}
+
+class LogicSelectGroupController
+{
+    constructor(category_select, logic_select)
+    {
+        this.category_select = category_select;
+        this.logic_select = logic_select;
+
+        this.categories = incl.get_logics_categories();
+        this.logics = incl.get_logics().filter(logic =>
+            this.categories.filter(category => logic.startsWith(category)).length === 0);
+    }
+
+    create_and_append_options()
+    {
+        for (let category of this.categories)
+        {
+            let option = document.createElement('option');
+            option.appendChild(document.createTextNode(category));
+            this.category_select.appendChild(option);
+        }
+
+        for (let logic of this.logics)
+        {
+            let option = document.createElement('option');
+            option.appendChild(document.createTextNode(logic));
+            this.logic_select.appendChild(option);
+        }
+    }
+
+    get_logic()
+    {
+        let category = this.categories[this.category_select.selectedIndex];
+        let logic = this.logics[this.logic_select.selectedIndex];
+        let category_prefix = (category === incl.get_default_logic_category()) ? '' : category+'+';
+        return category_prefix + logic;
+    }
+
+    set_logic(logic)
+    {
+        let category = this.categories.find(category => logic.startsWith(category+'+'));
+        logic = category ? logic.replace(category+'+', '') : logic;
+        category = category ? category : incl.get_default_logic_category();
+
+        this.category_select.selectedIndex = this.categories.indexOf(category);
+        this.logic_select.selectedIndex = this.logics.indexOf(logic);
+    }
+
+    set_on_logic_chosen(callback)
+    {
+        this.category_select.onchange = event => callback(this.get_logic());
+        this.logic_select.onchange = event => callback(this.get_logic());
+    }
+}
+
+function update_problem_input_area(problem, proof_tree)
+{
+    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
+    let logics_select1 = document.getElementById(ID_LOGICS_SELECT1);
+    let logics_select2 = document.getElementById(ID_LOGICS_SELECT2);
+    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
+    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
+    let proof_status_label = document.getElementById(ID_PROOF_STATUS_LABEL);
+
+    premises_textarea.value = problem.premises.join('\n');
+    conclusion_textarea.value = problem.conclusion;
+
+    if (!proof_tree)
+        proof_status_label.innerText = '';
+    else if (proof_tree.has_timeout)
+        proof_status_label.innerText = 'TIMEOUT!';
+    else if (proof_tree.was_proved)
+        proof_status_label.innerText = 'PROVED!';
+    else proof_status_label.innerText = 'NOT PROVED!';
+
+    operator_notations_select.options.selectedIndex = Math.max(0,
+        incl.get_operator_notations().indexOf(window.operator_notations));
+
+    new LogicSelectGroupController(logics_select1, logics_select2).set_logic(problem.logic);
+
+    update_on_screen_keyboard(problem.logic);
+}
+
+function update_on_screen_keyboard(logic)
+{
+    let on_screen_keyboard_container = document.getElementById(ID_ON_SCREEN_KEYBOARD_CONTAINER);
+    on_screen_keyboard_container.innerHTML = '';
+
+    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
+    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
+
+    let focused_textarea = conclusion_textarea;
+    premises_textarea.onfocus = () => { focused_textarea = premises_textarea; }
+    conclusion_textarea.onfocus = () => { focused_textarea = conclusion_textarea; }
+
+    for (let symbol of incl.get_operator_symbols(logic))
+    {
+        let symbol_button = document.createElement('button');
+        symbol_button.appendChild(document.createTextNode(symbol));
+
+        symbol_button.onclick = () =>
+        {
+            let position = focused_textarea.selectionStart;
+            let before = focused_textarea.value.substring(0, position);
+            let after = focused_textarea.value.substring(position, focused_textarea.value.length);
+            focused_textarea.value = before + symbol_button.textContent + after;
+            focused_textarea.selectionStart = focused_textarea.selectionEnd = position + symbol_button.textContent.length;
+            focused_textarea.focus();
+        };
+
+        on_screen_keyboard_container.appendChild(symbol_button);
+    }
+}
+
+function prove_problem(problem)
+{
+    try
+    {
+        let problem_json = JSON.stringify(problem);
+        let proof_tree_json = incl.solve_problem(problem_json);
+        let proof_tree = JSON.parse(proof_tree_json);
+
+        update_problem_input_area(problem, proof_tree);
+
+        render_proof_tree(proof_tree);
+        render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
+    }
+    catch (e)
+    {
+        console.log(e);
+        alert(e.toString());
+    }
 }
 
 function render_proof_tree(proof_tree)
@@ -281,223 +593,4 @@ function render_modality_graph(logic, modality_graph)
             }
         ],
     });
-}
-
-function show_problem_catalog()
-{
-    window.containers.problem_catalog_container.style.overflowY = 'scroll';
-    window.containers.problem_catalog_container.innerHTML = '';
-
-    let book_chapters_ol = document.createElement("ol");
-    book_chapters_ol.style.color = 'white';
-    book_chapters_ol.style.fontSize = '0.8em';
-
-    let problem_catalog = JSON.parse(incl.get_problem_catalog());
-    for (let book_chapter of problem_catalog)
-    {
-        let book_chapter_li = document.createElement("li");
-        book_chapter_li.appendChild(document.createTextNode(book_chapter.name));
-        book_chapter_li.appendChild(document.createElement("br"));
-
-        for (let problem of book_chapter.problems)
-        {
-            let div = document.createElement("div");
-            div.style.textDecoration = 'underline';
-            div.style.display = 'inline';
-            div.style.cursor = 'pointer';
-
-            div.appendChild(document.createTextNode(problem.id));
-            div.onclick = () => prove_problem(problem);
-
-            book_chapter_li.appendChild(div);
-            book_chapter_li.appendChild(document.createTextNode("  "))
-        }
-
-        book_chapter_li.appendChild(document.createElement("br"));
-        book_chapters_ol.appendChild(book_chapter_li);
-    }
-
-    window.containers.problem_catalog_container.appendChild(book_chapters_ol);
-}
-
-function initialize_problem_input_container()
-{
-    let operator_notations_select = document.createElement('select');
-    operator_notations_select.id = ID_OPERATOR_NOTATIONS_SELECT;
-    for (let operator_notation of incl.get_operator_notations())
-    {
-        let option = document.createElement('option');
-        option.appendChild(document.createTextNode(operator_notation));
-        operator_notations_select.appendChild(option);
-    }
-
-    let logics_select = document.createElement('select');
-    logics_select.id = ID_LOGICS_SELECT;
-    for (let logic of incl.get_logics())
-    {
-        let option = document.createElement('option');
-        option.appendChild(document.createTextNode(logic));
-        logics_select.appendChild(option);
-    }
-
-    window.containers.problem_input_container.style.overflowY = 'scroll';
-    window.containers.problem_input_container.innerHTML = `<br/>
-    <table style="width: 100%; color: white; font-size: 0.9em;">
-        <tr>
-            <td>Operator notations:</td>
-            <td>${operator_notations_select.outerHTML}</td>
-        </tr>
-        <tr>
-            <td>Logic:</td>
-            <td>${logics_select.outerHTML}</td>
-        </tr>
-        <tr>
-            <td>Premises:</td>
-            <td><textarea id="${ID_PREMISES_TEXTAREA}" style="width: 280px; height: 50px;"></textarea></td>
-        </tr>
-        <tr>
-            <td>Conclusion:</td>
-            <td><textarea id="${ID_CONCLUSION_TEXTAREA}" style="width: 280px; height: 25px;"></textarea></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><div id="${ID_ON_SCREEN_KEYBOARD_CONTAINER}"></div></td>
-        </tr>
-        <tr>
-            <td><br/><button id="${ID_PROVE_BUTTON}" style="font-size: 1.1em; font-style: italic; width: 75px; height: 50px;">PROVE!</button></td>
-            <td><br/><b id="${ID_PROOF_STATUS_LABEL}" style="font-size: 1.1em; font-style: italic; width: 75px; height: 50px;"><b></td>
-        </tr>
-    </table>`;
-
-    setTimeout(initialize_problem_input_container_after_delay, 10);
-}
-
-function initialize_problem_input_container_after_delay()
-{
-    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
-    let logics_select = document.getElementById(ID_LOGICS_SELECT);
-    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
-    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
-    let prove_button = document.getElementById(ID_PROVE_BUTTON);
-
-    operator_notations_select.onchange = event =>
-    {
-        localStorage.setItem(KEY_OPERATOR_NOTATIONS, event.target.value);
-        window.location = window.location.href.split("?")[0];
-    };
-
-    logics_select.onchange = event => update_on_screen_keyboard(event.target.value);
-
-    let initial_problem = {
-        id: 'Initial',
-        expected: '',
-        logic: incl.get_logics()[0],
-        premises: [],
-        conclusion: '',
-    };
-
-    let url_args = new URLSearchParams(window.location.search);
-    if (url_args.has(KEY_PROBLEM))
-    {
-        let problem = JSON.parse(incl.get_problem_catalog())
-            .flatMap(chapter => chapter.problems)
-            .find(problem => problem.id === url_args.get(KEY_PROBLEM).toString())
-        initial_problem = problem ? problem : initial_problem;
-    }
-
-    update_problem_input_area(initial_problem);
-
-    prove_button.onclick = () =>
-    {
-        prove_problem({
-            id: 'UserInput',
-            expected: '',
-            logic: logics_select.value,
-            premises: premises_textarea.value.split(/\r?\n/).filter(line => line.trim().length>0),
-            conclusion: conclusion_textarea.value,
-        });
-    };
-
-    if (url_args.has(KEY_PROBLEM))
-    {
-        prove_button.click();
-    }
-}
-
-function update_problem_input_area(problem, proof_tree)
-{
-    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
-    let logics_select = document.getElementById(ID_LOGICS_SELECT);
-    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
-    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
-    let proof_status_label = document.getElementById(ID_PROOF_STATUS_LABEL);
-
-    premises_textarea.value = problem.premises.join('\n');
-    conclusion_textarea.value = problem.conclusion;
-
-    if (!proof_tree)
-        proof_status_label.innerText = '';
-    else if (proof_tree.has_timeout)
-        proof_status_label.innerText = 'TIMEOUT!';
-    else if (proof_tree.was_proved)
-        proof_status_label.innerText = 'PROVED!';
-    else proof_status_label.innerText = 'NOT PROVED!';
-
-    operator_notations_select.options.selectedIndex = Math.max(0,
-        incl.get_operator_notations().indexOf(window.operator_notations));
-
-    logics_select.options.selectedIndex = incl.get_logics().indexOf(problem.logic);
-
-    update_on_screen_keyboard(problem.logic);
-}
-
-function update_on_screen_keyboard(logic)
-{
-    let on_screen_keyboard_container = document.getElementById(ID_ON_SCREEN_KEYBOARD_CONTAINER);
-    on_screen_keyboard_container.innerHTML = '';
-
-    let conclusion_textarea = document.getElementById(ID_CONCLUSION_TEXTAREA);
-    let premises_textarea = document.getElementById(ID_PREMISES_TEXTAREA);
-
-    let focused_textarea = conclusion_textarea;
-    premises_textarea.onfocus = () => { focused_textarea = premises_textarea; }
-    conclusion_textarea.onfocus = () => { focused_textarea = conclusion_textarea; }
-
-    for (let symbol of incl.get_operator_symbols(logic))
-    {
-        let symbol_button = document.createElement('button');
-        symbol_button.appendChild(document.createTextNode(symbol));
-
-        symbol_button.onclick = () =>
-        {
-            let position = focused_textarea.selectionStart;
-            let before = focused_textarea.value.substring(0, position);
-            let after = focused_textarea.value.substring(position, focused_textarea.value.length);
-            focused_textarea.value = before + symbol_button.textContent + after;
-            focused_textarea.selectionStart = focused_textarea.selectionEnd = position + symbol_button.textContent.length;
-            focused_textarea.focus();
-        };
-
-        on_screen_keyboard_container.appendChild(symbol_button);
-    }
-}
-
-function prove_problem(problem)
-{
-    try
-    {
-        let problem_json = JSON.stringify(problem);
-        let proof_tree_json = incl.solve_problem(problem_json);
-        let proof_tree = JSON.parse(proof_tree_json);
-
-        update_problem_input_area(problem, proof_tree);
-
-        render_proof_tree(proof_tree);
-        render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
-    }
-    catch (e)
-    {
-        console.log(e);
-        alert(e.toString());
-    }
 }

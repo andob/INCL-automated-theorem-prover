@@ -305,6 +305,30 @@ impl Formula
             _ => { false }
         }
     }
+
+    pub fn get_extras(&self) -> FormulaExtras
+    {
+        return match self
+        {
+            Atomic(_, extras) => { extras.to_formula_extras() }
+            Non(_, extras) => { extras.clone() }
+            And(_, _, extras) => { extras.clone() }
+            Or(_, _, extras) => { extras.clone() }
+            Imply(_, _, extras) => { extras.clone() }
+            BiImply(_, _, extras) => { extras.clone() }
+            StrictImply(_, _, extras) => { extras.clone() }
+            Conditional(_, _, extras) => { extras.clone() }
+            Exists(_, _, extras) => { extras.clone() }
+            ForAll(_, _, extras) => { extras.clone() }
+            Equals(_, _, extras) => { extras.clone() }
+            DefinitelyExists(_, extras) => { extras.clone() }
+            Possible(_, extras) => { extras.clone() }
+            Necessary(_, extras) => { extras.clone() }
+            InPast(_, extras) => { extras.clone() }
+            InFuture(_, extras) => { extras.clone() }
+            Comment(_) => { FormulaExtras::empty() }
+        }
+    }
 }
 
 impl AtomicFormulaExtras

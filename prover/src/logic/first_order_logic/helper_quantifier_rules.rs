@@ -1,9 +1,11 @@
 use std::collections::BTreeSet;
 use crate::formula::Formula::{DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
+use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType, FirstOrderLogicIdentityType};
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::{Logic, LogicRule};
+use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_owned_formulas_filtering_lambda;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -21,7 +23,7 @@ impl LogicRule for HelperQuantifierRules
 
         match &node.formula
         {
-            p@Equals(_, _, extras) =>
+            Equals(_, _, extras) if extras.sign == Plus =>
             {
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 subtree.append(&self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
@@ -29,14 +31,11 @@ impl LogicRule for HelperQuantifierRules
                 if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
                 {
                     //inherit x=y to all possible worlds by stating □(x=y)
-                    if let Some(modality) = logic.get_modality_ref() && !modality.was_necessity_already_applied(factory, p)
-                    {
-                        subtree.append(&modality.apply_necessity(factory, node, &p, extras).unwrap_or_default());
-                    }
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
                 }
             }
 
-            non_p @Non(box Equals(x, y, _), extras) =>
+            Non(box Equals(x, y, _), extras) if extras.sign == Plus =>
             {
                 if x == y
                 {
@@ -47,34 +46,70 @@ impl LogicRule for HelperQuantifierRules
                 if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
                 {
                     //inherit !(x=y) to all possible worlds by stating □!(x=y)
-                    if let Some(modality) = logic.get_modality_ref() && !modality.was_necessity_already_applied(factory, non_p)
-                    {
-                        subtree.append(&modality.apply_necessity(factory, node, &non_p, extras).unwrap_or_default());
-                    }
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
                 }
             }
 
-            p@DefinitelyExists(_, extras) =>
+            Non(box Equals(..), extras) if extras.sign == Minus =>
+            {
+                //foreach node pair (x = y, y = z), generate a transitive node x = z
+                subtree.append(&self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
+
+                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                {
+                    //inherit !(x=y)- to all possible worlds by stating □!(x=y)-
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+            }
+
+            Equals(x, y, extras) if extras.sign == Minus =>
+            {
+                if x == y
+                {
+                    //this is an object that is not equal to self (x=x)-? forcing contradiction by stating (x=x)+.
+                    subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
+                }
+
+                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                {
+                    //inherit (x=y)- to all possible worlds by stating □(x=y)-
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+            }
+
+            DefinitelyExists(_, extras) if extras.sign == Plus =>
             {
                 if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
                 {
                     //inherit 𝔈x to all possible worlds by stating □𝔈x
-                    if let Some(modality) = logic.get_modality_ref() && !modality.was_necessity_already_applied(factory, p)
-                    {
-                        subtree.append(&modality.apply_necessity(factory, node, &p, extras).unwrap_or_default());
-                    }
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
                 }
             }
 
-            non_p @Non(box DefinitelyExists(_, _), extras) =>
+            Non(box DefinitelyExists(_, _), extras) if extras.sign == Plus =>
             {
                 if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
                 {
                     //inherit !𝔈x to all possible worlds by stating □!𝔈x
-                    if let Some(modality) = logic.get_modality_ref() && !modality.was_necessity_already_applied(factory, non_p)
-                    {
-                        subtree.append(&modality.apply_necessity(factory, node, &non_p, extras).unwrap_or_default());
-                    }
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+            }
+
+            Non(box DefinitelyExists(_, _), extras) if extras.sign == Minus =>
+            {
+                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                {
+                    //inherit !𝔈x- to all possible worlds by stating □!𝔈x-
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+            }
+
+            DefinitelyExists(_, extras) if extras.sign == Minus =>
+            {
+                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                {
+                    //inherit 𝔈x- to all possible worlds by stating □𝔈x-
+                    subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
                 }
             }
 
@@ -92,7 +127,7 @@ impl HelperQuantifierRules
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
 
-        let x_equals_x = Equals(x.clone(), x.clone(), extras.clone());
+        let x_equals_x = Equals(x.clone(), x.clone(), extras.with_sign(Plus));
         let x_equals_x_node = factory.new_node(x_equals_x);
 
         if logic.domain_type == FirstOrderLogicDomainType::VariableDomain
@@ -116,8 +151,7 @@ impl HelperQuantifierRules
         let equalities = factory.tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .filter(|formula| formula.get_possible_world() == extras.possible_world)
-            .filter_map(|formula| if let Equals(x, y, _)
-                = formula { Some((x.clone(), y.clone())) } else { None })
+            .filter_map(create_equality_owned_formulas_filtering_lambda())
             .collect::<BTreeSet<(PredicateArgument, PredicateArgument)>>();
 
         let nodes = self.generate_missing_transitive_equalities(equalities, extras).into_iter()
@@ -149,5 +183,24 @@ impl HelperQuantifierRules
         return missing_equalities.into_iter()
             .map(|(x, y)| Equals(x, y, extras.clone()))
             .collect::<Vec<Formula>>();
+    }
+}
+
+impl ProofTreeNode
+{
+    fn inherit_on_all_adjacent_possible_worlds(&self, logic : &FirstOrderLogic, factory : &mut RuleApplyFactory) -> ProofSubtree
+    {
+        if let Some(modality) = logic.get_modality_ref()
+        {
+            if !modality.was_necessity_already_applied(factory, &self.formula)
+            {
+                if let Some(subtree) = modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras())
+                {
+                    return subtree;
+                }
+            }
+        }
+
+        return ProofSubtree::empty();
     }
 }

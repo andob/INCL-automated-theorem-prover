@@ -437,7 +437,7 @@
       {
         "id": "13.10.2.i",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "∀x P[x]" ],
         "conclusion": "∃x P[x]"
       },
@@ -451,7 +451,7 @@
       {
         "id": "13.10.6.b",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+WithoutModality",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "∃x (x = x)"
       },
@@ -1003,14 +1003,14 @@
       {
         "id": "15.12.2.a",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "(□ ∀x A ∧ □ ∀x B) ⊃ □ ∀x (A ∧ B)"
       },
       {
         "id": "15.12.2.b",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+KModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "◇ ∃x A ⊃ ◇ ∃x(A ∨ B)"
       },
@@ -1094,7 +1094,7 @@
       {
         "id": "15.12.4.c",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+S5ModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "∀x P[x] ⊃ ∃x □ ◇ P[x]"
       },
@@ -1928,7 +1928,7 @@
       {
         "id": "19.9.3.g",
         "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+ConditionalExtModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "P[a]", "∀x(P[x] ᐅ Q[x])" ],
         "conclusion": "∃x Q[x]"
       },
@@ -2209,6 +2209,228 @@
         "conclusion": "¬P ∨ (¬Q ∨ R)"
       },
       {
+        "id": "22.12.2.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "P[a]"
+      },
+      {
+        "id": "22.12.2.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x (P[x] ∨ Q[x])" ],
+        "conclusion": "∀x P[x] ∨ ∀x Q[x]"
+      },
+      {
+        "id": "22.12.2.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∃x (P[x] ∧ Q[x])" ],
+        "conclusion": "∃x P[x] ∧ ∃x Q[x]"
+      },
+      {
+        "id": "22.12.2.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x P[x] ∧ ∃x Q[x]" ],
+        "conclusion": "∃x(P[x] ∧ Q[x])"
+      },
+      {
+        "id": "22.12.2.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
+        "conclusion": "¬(∀x P[x]) ∨ (∀x Q[x])"
+      },
+      {
+        "id": "22.12.2.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
+        "conclusion": "¬(∃x P[x]) ∨ (∃x Q[x])"
+      },
+      {
+        "id": "22.12.2.g",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x ¬(P[x] ∧ Q[x])" ],
+        "conclusion": "∀x(¬P[x] ∨ ¬Q[x])"
+      },
+      {
+        "id": "22.12.2.h",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x ¬(P[x] ∨ Q[x])" ],
+        "conclusion": "∃x(¬P[x] ∧ ¬Q[x])"
+      },
+      {
+        "id": "22.12.2.i",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x (P[x] ∧ ¬P[x])" ],
+        "conclusion": "∀x Q[x]"
+      },
+      {
+        "id": "22.12.2.j",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x Q[x]" ],
+        "conclusion": "∃x(P[x] ∨ ¬P[x])"
+      },
+      {
+        "id": "22.12.3.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "P[a]"
+      },
+      {
+        "id": "22.12.3.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x (P[x] ∨ Q[x])" ],
+        "conclusion": "∀x P[x] ∨ ∀x Q[x]"
+      },
+      {
+        "id": "22.12.3.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∃x (P[x] ∧ Q[x])" ],
+        "conclusion": "∃x P[x] ∧ ∃x Q[x]"
+      },
+      {
+        "id": "22.12.3.d",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x P[x] ∧ ∃x Q[x]" ],
+        "conclusion": "∃x(P[x] ∧ Q[x])"
+      },
+      {
+        "id": "22.12.3.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
+        "conclusion": "¬(∀x P[x]) ∨ (∀x Q[x])"
+      },
+      {
+        "id": "22.12.3.f",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
+        "conclusion": "¬(∃x P[x]) ∨ (∃x Q[x])"
+      },
+      {
+        "id": "22.12.3.g",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x ¬(P[x] ∧ Q[x])" ],
+        "conclusion": "∀x(¬P[x] ∨ ¬Q[x])"
+      },
+      {
+        "id": "22.12.3.h",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x ¬(P[x] ∨ Q[x])" ],
+        "conclusion": "∃x(¬P[x] ∧ ¬Q[x])"
+      },
+      {
+        "id": "22.12.3.i",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∃x (P[x] ∧ ¬P[x])" ],
+        "conclusion": "∀x Q[x]"
+      },
+      {
+        "id": "22.12.3.j",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x Q[x]" ],
+        "conclusion": "∃x(P[x] ∨ ¬P[x])"
+      },
+      {
+        "id": "22.12.7.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "a = a"
+      },
+      {
+        "id": "22.12.7.a'",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "~(a = a)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "22.12.7.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "a = b" ],
+        "conclusion": "b = a"
+      },
+      {
+        "id": "22.12.7.b'",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "a = b", "~(b = a)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "22.12.7.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "a = b", "b = c" ],
+        "conclusion": "a = c"
+      },
+      {
+        "id": "22.12.7.c'",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "a = b", "b = c", "~(a = c)" ],
+        "conclusion": "Q"
+      },
+      {
+        "id": "22.12.7.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "(a = b) ∧ P[a]" ],
+        "conclusion": "P[b]"
+      },
+      {
+        "id": "22.12.7.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "¬(((a = b) ∧ P[a])) ∨ P[b]"
+      },
+      {
+        "id": "22.12.7.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "¬(a = b) ∨ (¬P[a] ∨ P[b])"
+      },
+      {
+        "id": "22.12.7.g",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "a = b", "¬(b = c)" ],
+        "conclusion": "¬(a = c)"
+      },
+      {
+        "id": "22.12.7.h",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "(a = b) ∧ ¬P[a]" ],
+        "conclusion": "¬P[b]"
+      }
+    ]
+  },
+  {
+    "name": "Three-valued logic",
+    "problems": [
+      {
         "id": "8.10.2.a",
         "logic": "Kleene+KModalLogic",
         "expected": "proved",
@@ -2277,6 +2499,118 @@
         "expected": "disproved",
         "premises": [ "(P ∧ Q) ⊃ R" ],
         "conclusion": "P ⊃ (¬Q ∨ R)"
+      },
+      {
+        "id": "21.14.2.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "∃x P[x]"
+      },
+      {
+        "id": "21.14.2.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x P[x] ⊃ ∃x P[x]"
+      },
+      {
+        "id": "21.14.2.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "¬∃x P[x]" ],
+        "conclusion": "∀x ¬P[x]"
+      },
+      {
+        "id": "21.14.2.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "¬∀x P[x]" ],
+        "conclusion": "∃x ¬P[x]"
+      },
+      {
+        "id": "21.14.2.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "∀x(P[a] ∨ Q[x])" ],
+        "conclusion": "P[a] ∨ ∀x Q[x]"
+      },
+      {
+        "id": "21.14.2.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "disproved",
+        "premises": [ "∀x(P[x] ⊃ Q[x])" ],
+        "conclusion": "∃x ¬P[x] ∨ ∃x Q[x]"
+      },
+      {
+        "id": "21.14.2.g",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "∀x(¬P[x] ∨ Q[x])" ],
+        "conclusion": "∃x P[x] ⊃ ∃x Q[x]"
+      },
+      {
+        "id": "21.14.3.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "disproved",
+        "premises": [ "∀x P[x]" ],
+        "conclusion": "∃x P[x]"
+      },
+      {
+        "id": "21.14.3.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x P[x] ⊃ ∃x P[x]"
+      },
+      {
+        "id": "21.14.3.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "proved",
+        "premises": [ "¬∃x P[x]" ],
+        "conclusion": "∀x ¬P[x]"
+      },
+      {
+        "id": "21.14.3.d",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "proved",
+        "premises": [ "¬∀x P[x]" ],
+        "conclusion": "∃x ¬P[x]"
+      },
+      {
+        "id": "21.14.3.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "disproved",
+        "premises": [ "∀x(P[a] ∨ Q[x])" ],
+        "conclusion": "P[a] ∨ ∀x Q[x]"
+      },
+      {
+        "id": "21.14.9.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [ "a = b" ],
+        "conclusion": "P[a] ⊃ P[b]"
+      },
+      {
+        "id": "21.14.9.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((a = b) ∧ P[a]) ⊃ P[b]"
+      },
+      {
+        "id": "21.14.9.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(a = b) ⊃ (P[a] ⊃ P[b])"
+      },
+      {
+        "id": "21.14.9.c'",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+RMingle3+KModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "(a = b) ⊃ (P[a] ⊃ P[b])"
       }
     ]
   },

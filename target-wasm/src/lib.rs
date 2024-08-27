@@ -4,12 +4,15 @@ use wasm_bindgen::JsError;
 use wasm_bindgen::prelude::wasm_bindgen;
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
+use prover::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FIRST_ORDER_LOGIC_NAME_PREFIX};
 use prover::logic::Logic;
 use prover::logic::LogicFactory;
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::token_types::TokenTypeID;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
+
+pub const PROPOSITIONAL_LOGIC_CATEGORY_NAME : &str = "PropositionalLogic";
 
 #[wasm_bindgen]
 pub fn setup_console_error_panic_hook()
@@ -39,6 +42,30 @@ pub fn get_logics() -> Vec<String>
 {
     return LogicFactory::get_logic_theories().iter()
         .map(|logic| logic.get_name().to_string()).collect();
+}
+
+#[wasm_bindgen]
+pub fn get_logics_categories() -> Vec<String>
+{
+    let mut categories: Vec<String> = Vec::new();
+    categories.push(String::from(PROPOSITIONAL_LOGIC_CATEGORY_NAME));
+
+    for domain_type in FirstOrderLogicDomainType::iter()
+    {
+        for identity_type in FirstOrderLogicIdentityType::iter()
+        {
+            let category = format!("{}+{}+{}", FIRST_ORDER_LOGIC_NAME_PREFIX, domain_type, identity_type);
+            categories.push(category);
+        }
+    }
+
+    return categories;
+}
+
+#[wasm_bindgen]
+pub fn get_default_logic_category() -> String
+{
+    return String::from(PROPOSITIONAL_LOGIC_CATEGORY_NAME);
 }
 
 #[wasm_bindgen]

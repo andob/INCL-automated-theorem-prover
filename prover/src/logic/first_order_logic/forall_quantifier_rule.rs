@@ -1,11 +1,13 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
-use crate::formula::Formula::{DefinitelyExists, Equals, Exists, ForAll, Non};
+use crate::formula::Formula::{DefinitelyExists, Exists, ForAll, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
+use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
+use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_formulas_filtering_lambda;
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -18,33 +20,29 @@ impl LogicRule for ForAllQuantifierRule
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        if let Non(box ForAll(x, box p, _), extras) = &node.formula
+        return match &node.formula
         {
-            let non_p = factory.get_logic().get_semantics().negate(p);
-            let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
-            let exists_non_p_node = factory.new_node(exists_non_p);
-
-            return Some(ProofSubtree::with_middle_node(exists_non_p_node));
-        }
-
-        if let ForAll(x, box p, extras) = &node.formula
-        {
-            let logic_pointer = factory.get_logic().clone();
-            let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
-
-            let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
-            self.apply_for_all_quantification(factory, node, x, p, extras, &mut output_nodes);
-
-            if output_nodes.is_empty()
+            Non(box ForAll(x, box p, _), extras) =>
             {
-                //there are no objects to be iterated, act similar to exists quantifier
-                return ExistsQuantifierRule{}.apply_exists_quantification(factory, node, x, p, extras);
+                let non_p = Non(bx!(p.clone()), extras.clone());
+                let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
+                let exists_non_p_node = factory.new_node(exists_non_p);
+
+                return Some(ProofSubtree::with_middle_node(exists_non_p_node));
             }
 
-            return Some(output_nodes.to_proof_subtree(factory));
-        }
+            ForAll(x, box p, extras) if extras.sign == Plus =>
+            {
+                return self.apply_for_all_quantification(factory, node, x, p, extras);
+            }
 
-        return None;
+            Exists(x, box p, extras) if extras.sign == Minus =>
+            {
+                return self.apply_for_all_quantification(factory, node, x, p, extras);
+            }
+
+            _ => None
+        }
     }
 }
 
@@ -70,9 +68,18 @@ impl ForAllQuantifierOutputNodes
         if self.domain_type == FirstOrderLogicDomainType::VariableDomain
         {
             let definitely_exists_x = DefinitelyExists(binded_x, extras.clone());
-            let non_definitely_exists_x = factory.get_logic().get_semantics().negate(&definitely_exists_x);
-            let non_definitely_exists_x_node = factory.new_node(non_definitely_exists_x);
-            self.nodes_on_left.push(non_definitely_exists_x_node);
+            if factory.get_logic().get_semantics().number_of_truth_values() == 2
+            {
+                let non_definitely_exists_x = Non(bx!(definitely_exists_x), extras.clone());
+                let non_definitely_exists_x_node = factory.new_node(non_definitely_exists_x);
+                self.nodes_on_left.push(non_definitely_exists_x_node);
+            }
+            else
+            {
+                let minus_definitely_exists_x = definitely_exists_x.with_sign(Minus);
+                let minus_definitely_exists_x_node = factory.new_node(minus_definitely_exists_x);
+                self.nodes_on_left.push(minus_definitely_exists_x_node);
+            }
         }
     }
 
@@ -99,6 +106,28 @@ impl ForAllQuantifierOutputNodes
 impl ForAllQuantifierRule
 {
     fn apply_for_all_quantification(&self,
+        factory : &mut RuleApplyFactory, node : &ProofTreeNode,
+        x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
+    ) -> Option<ProofSubtree>
+    {
+        let logic_pointer = factory.get_logic().clone();
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
+
+        let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
+        self.apply_for_all_quantification_impl(factory, node, x, p, extras, &mut output_nodes);
+
+        if output_nodes.is_empty()
+        {
+            //there are no objects to be iterated, act similar to exists quantifier
+            let object_name_factory = ExistsQuantifierRule{}.get_object_name_factory(factory, node);
+            let (instantiated_p, instantiated_x) = p.instantiated(x, &object_name_factory, extras);
+            output_nodes.add(factory, instantiated_x.unwrap_or(x.clone()), instantiated_p, extras);
+        }
+
+        return Some(output_nodes.to_proof_subtree(factory));
+    }
+
+    fn apply_for_all_quantification_impl(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
         output_nodes : &mut ForAllQuantifierOutputNodes,
@@ -134,8 +163,7 @@ impl ForAllQuantifierRule
         }
 
         let equivalences = all_formulas_on_path.iter()
-            .filter(|formula| formula.get_possible_world() == extras.possible_world)
-            .filter_map(|formula| if let Equals(x, y, _) = formula { Some((x,y)) } else { None })
+            .filter_map(create_equality_formulas_filtering_lambda())
             .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
         let has_no_equivalent = |x : &PredicateArgument| !equivalences.iter()
