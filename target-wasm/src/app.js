@@ -151,8 +151,8 @@ function show_problem_catalog()
                 let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
                 let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
                 let url_arguments = new URLSearchParams();
-                url_arguments.append(KEY_PROBLEM, problem.id);
                 url_arguments.append(KEY_OPERATOR_NOTATIONS, operator_notations);
+                url_arguments.append(KEY_PROBLEM, problem.id);
                 window.history.pushState(null, null, '?' + url_arguments.toString());
             }
 

@@ -3,7 +3,6 @@ use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::ProofTree;
 
-#[derive(Clone)]
 pub struct ProofSubtree
 {
     pub left : Option<Box<ProofTreeNode>>,
@@ -86,6 +85,14 @@ impl ProofSubtree
     pub fn with_left_middle_right_nodes(left : ProofTreeNode, middle : ProofTreeNode, right : ProofTreeNode) -> ProofSubtree
     {
         return ProofSubtree::new(Some(Box::new(left)), Some(Box::new(middle)), Some(Box::new(right)));
+    }
+
+    pub fn with_hidden_nodes(mut self) -> ProofSubtree
+    {
+        if let Some(left) = &mut self.left { left.hide_all_nodes(); }
+        if let Some(middle) = &mut self.middle { middle.hide_all_nodes(); }
+        if let Some(right) = &mut self.right { right.hide_all_nodes(); }
+        return self;
     }
 
     fn attach_new_ids(&mut self, node_factory : &mut ProofTreeNodeFactory)
@@ -175,6 +182,14 @@ impl ProofTreeNode
         }
     }
 
+    fn hide_all_nodes(&mut self)
+    {
+        self.formula = self.formula.with_is_hidden(true);
+        if let Some(left) = &mut self.left { left.hide_all_nodes(); }
+        if let Some(middle) = &mut self.middle { middle.hide_all_nodes(); }
+        if let Some(right) = &mut self.right { right.hide_all_nodes(); }
+    }
+
     fn attach_new_ids(&mut self, node_factory : &mut ProofTreeNodeFactory)
     {
         self.id = node_factory.new_node_id();
@@ -195,6 +210,18 @@ impl DecompositionPriorityQueue
         for alternative_subtree_data in subtree.cloned_subtrees_with_new_ids
         {
             self.push_subtree(alternative_subtree_data);
+        }
+    }
+}
+
+impl Clone for ProofSubtree
+{
+    fn clone(&self) -> Self
+    {
+        return ProofSubtree
+        {
+            left: self.left.clone(), middle: self.middle.clone(), right: self.right.clone(),
+            cloned_subtrees_with_new_ids: vec![],
         }
     }
 }

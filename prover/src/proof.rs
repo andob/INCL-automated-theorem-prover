@@ -1,5 +1,6 @@
 use crate::graph::Graph;
-use crate::logic::{LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
@@ -11,14 +12,15 @@ pub mod decomposition_queue;
 mod initialize;
 
 const MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC : usize = 25;
-const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 190;
+const MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC : usize = 250;
+const MAX_NUMBER_OF_TREE_NODES_ON_INTUITIONISTIC_LOGIC : usize = 1000;
 
 pub struct ProofAlgorithm
 {
     proof_tree : ProofTree,
     decomposition_queue : DecompositionPriorityQueue,
     logic_name : LogicName,
-    logic_rules : Vec<Box<dyn LogicRule>>,
+    logic_rules : LogicRuleCollection,
     node_factory : ProofTreeNodeFactory,
     modality_graph: Graph,
 }
@@ -61,12 +63,9 @@ impl ProofAlgorithm
         {
             factory.set_spawner_node_id(Some(node.id));
 
-            for logic_rule in &self.logic_rules
+            if let Some(subtree) = self.logic_rules.apply(&mut factory, &node)
             {
-                if let Some(subtree) = logic_rule.apply(&mut factory, &node)
-                {
-                    return Some((node, Box::new(subtree)));
-                }
+                return Some((node, Box::new(subtree)));
             }
         }
 
@@ -75,7 +74,9 @@ impl ProofAlgorithm
 
     fn reached_timeout(&self) -> bool
     {
-        let proof_tree_is_too_large = if self.logic_name.is_first_order_logic()
+        let proof_tree_is_too_large = if self.logic_name.is_intuitionistic_logic()
+            { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_INTUITIONISTIC_LOGIC }
+        else if self.logic_name.is_first_order_logic() && !self.logic_name.is_intuitionistic_logic()
             { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC }
         else { false };
 

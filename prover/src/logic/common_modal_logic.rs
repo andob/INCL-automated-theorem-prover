@@ -245,6 +245,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
 pub struct ModalityRef
 {
+    initialize_graph_if_needed_ref : Box<dyn Fn(&mut RuleApplyFactory) -> ()>,
     apply_possibility_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
     apply_necessity_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
     was_necessity_already_applied_ref : Box<dyn Fn(&mut RuleApplyFactory, &Formula) -> bool>,
@@ -257,17 +258,23 @@ impl ModalityRef
         let modality_pointer1 = Rc::new(modality);
         let modality_pointer2 = modality_pointer1.clone();
         let modality_pointer3 = modality_pointer1.clone();
+        let modality_pointer4 = modality_pointer1.clone();
         return ModalityRef
         {
-            apply_possibility_ref: Box::new(move
-                |factory, node, p, extras|
-                { modality_pointer1.apply_possibility(factory, node, p, extras) }),
-            apply_necessity_ref: Box::new(move
-                |factory, node, p, extras|
-                { modality_pointer2.apply_necessity(factory, node, p, extras) }),
+            initialize_graph_if_needed_ref: Box::new(move |factory|
+                { modality_pointer1.initialize_graph_if_needed(factory) }),
+            apply_possibility_ref: Box::new(move |factory, node, p, extras|
+                { modality_pointer2.apply_possibility(factory, node, p, extras) }),
+            apply_necessity_ref: Box::new(move |factory, node, p, extras|
+                { modality_pointer3.apply_necessity(factory, node, p, extras) }),
             was_necessity_already_applied_ref: Box::new(move |factory, p|
-                { modality_pointer3.was_necessity_already_applied(factory, p) }),
+                { modality_pointer4.was_necessity_already_applied(factory, p) }),
         }
+    }
+
+    pub fn initialize_graph_if_needed(&self, factory : &mut RuleApplyFactory)
+    {
+        (self.initialize_graph_if_needed_ref)(factory);
     }
 
     pub fn apply_possibility(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> Option<ProofSubtree>

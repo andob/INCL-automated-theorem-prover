@@ -2,7 +2,7 @@ use std::any::Any;
 use std::rc::Rc;
 use crate::formula::{FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Necessary, StrictImply};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -53,13 +53,13 @@ impl Logic for NonNormalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-        ]
+        ])
     }
 
     fn get_modality_ref(&self) -> Option<ModalityRef>

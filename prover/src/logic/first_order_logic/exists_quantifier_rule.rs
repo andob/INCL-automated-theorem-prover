@@ -29,12 +29,12 @@ impl LogicRule for ExistsQuantifierRule
 
             Exists(x, box p, extras) if extras.sign == Plus =>
             {
-                return self.apply_exists_quantification(factory, node, x, p, extras);
+                return self.apply_exists_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
             ForAll(x, box p, extras) if extras.sign == Minus =>
             {
-                return self.apply_exists_quantification(factory, node, x, p, extras);
+                return self.apply_exists_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
             _ => None
@@ -105,33 +105,29 @@ impl Formula
 
     pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
     {
-        let instantiated_p = self.instantiate_impl(x, object_name_factory, extras);
+        let instantiated_p = self.instantiate_impl(x, object_name_factory).with_sign(extras.sign);
         let instantiated_x = instantiated_p.get_all_predicate_arguments().into_iter()
             .find(|y| y.variable_name == x.variable_name && y.is_instantiated());
 
         return (instantiated_p, instantiated_x);
     }
 
-    fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> Formula
+    fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>) -> Formula
     {
-        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory, extras));
+        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory));
 
         return match self
         {
-            Atomic(p, old_extras) =>
+            Atomic(p, extras) =>
             {
-                let new_extras = AtomicFormulaExtras
+                return Atomic(p.clone(), AtomicFormulaExtras
                 {
-                    predicate_args: old_extras.predicate_args.instantiated(x, &object_name_factory),
-                    possible_world: extras.possible_world,
-                    is_hidden: old_extras.is_hidden,
-                    sign: old_extras.sign * extras.sign,
-                };
-
-                return Atomic(p.clone(), new_extras);
+                    predicate_args: extras.predicate_args.instantiated(x, &object_name_factory),
+                    possible_world: extras.possible_world, is_hidden: extras.is_hidden, sign: extras.sign,
+                });
             }
 
-            Equals(y, z, _) =>
+            Equals(y, z, extras) =>
             {
                 if !y.is_instantiated() && x.variable_name == y.variable_name && y.variable_name == z.variable_name
                 {
@@ -158,7 +154,7 @@ impl Formula
                 return Equals(y.clone(), z.clone(), extras.clone());
             }
 
-            DefinitelyExists(y, _) =>
+            DefinitelyExists(y, extras) =>
             {
                 if !y.is_instantiated() && y.variable_name == x.variable_name
                 {
@@ -170,19 +166,19 @@ impl Formula
                 return DefinitelyExists(y.clone(), extras.clone());
             }
 
-            Non(p, _) => { Non(instantiated_box(p), extras.clone()) }
-            And(p, q, _) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Or(p, q, _) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Imply(p, q, _) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            BiImply(p, q, _) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            StrictImply(p, q, _) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Conditional(p, q, _) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
-            Exists(x, p, _) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
-            ForAll(x, p, _) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
-            Possible(p, _) => { Possible(instantiated_box(p), extras.clone()) }
-            Necessary(p, _) => { Necessary(instantiated_box(p), extras.clone()) }
-            InPast(p, _) => { InPast(instantiated_box(p), extras.clone()) }
-            InFuture(p, _) => { InFuture(instantiated_box(p), extras.clone()) }
+            Non(p, extras) => { Non(instantiated_box(p), extras.clone()) }
+            And(p, q, extras) => { And(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Or(p, q, extras) => { Or(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Imply(p, q, extras) => { Imply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            BiImply(p, q, extras) => { BiImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            StrictImply(p, q, extras) => { StrictImply(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Conditional(p, q, extras) => { Conditional(instantiated_box(p), instantiated_box(q), extras.clone()) }
+            Exists(x, p, extras) => { Exists(x.clone(), instantiated_box(p), extras.clone()) }
+            ForAll(x, p, extras) => { ForAll(x.clone(), instantiated_box(p), extras.clone()) }
+            Possible(p, extras) => { Possible(instantiated_box(p), extras.clone()) }
+            Necessary(p, extras) => { Necessary(instantiated_box(p), extras.clone()) }
+            InPast(p, extras) => { InPast(instantiated_box(p), extras.clone()) }
+            InFuture(p, extras) => { InFuture(instantiated_box(p), extras.clone()) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }

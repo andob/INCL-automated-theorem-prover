@@ -3,16 +3,20 @@ mod forall_quantifier_rule;
 mod helper_quantifier_rules;
 mod variable_domain_semantics;
 mod predicate_args_with_equivalences;
+mod intuitionistic_quantifier_rules;
 
 use std::any::Any;
 use std::rc::Rc;
+use box_macro::bx;
 use strum_macros::{Display, EnumIter};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::first_order_logic::forall_quantifier_rule::ForAllQuantifierRule;
 use crate::logic::first_order_logic::helper_quantifier_rules::HelperQuantifierRules;
+use crate::logic::first_order_logic::intuitionistic_quantifier_rules::IntuitionisticQuantifierRules;
 use crate::logic::first_order_logic::variable_domain_semantics::VariableDomainSemantics;
+use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 
@@ -44,6 +48,12 @@ pub enum FirstOrderLogicIdentityType
 impl Default for FirstOrderLogicIdentityType
 {
     fn default() -> Self { FirstOrderLogicIdentityType::NecessaryIdentity }
+}
+
+impl Eq for FirstOrderLogic {}
+impl PartialEq for FirstOrderLogic
+{
+    fn eq(&self, other : &Self) -> bool { self.get_name() == other.get_name() }
 }
 
 pub const FIRST_ORDER_LOGIC_NAME_PREFIX : &str = "FirstOrderLogic";
@@ -88,16 +98,23 @@ impl Logic for FirstOrderLogic
         return syntax;
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        let mut rules : Vec<Box<dyn LogicRule>> = vec!
+        let mut rules : LogicRuleCollection = LogicRuleCollection::of(vec!
         [
             Box::new(ExistsQuantifierRule{}),
             Box::new(ForAllQuantifierRule{}),
             Box::new(HelperQuantifierRules{}),
-        ];
+        ]);
 
         rules.append(&mut self.base_logic.get_rules());
+
+        if self.base_logic.get_name() == (IntuitionisticLogic{}).get_name()
+        {
+            let wrapper_rule = IntuitionisticQuantifierRules::wrap(rules);
+            rules = LogicRuleCollection::of(vec![bx!(wrapper_rule)]);
+        }
+
         return rules;
     }
 

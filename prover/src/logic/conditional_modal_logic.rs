@@ -6,7 +6,7 @@ use crate::formula::{AtomicFormulaExtras, Formula, PossibleWorld, PredicateArgum
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -56,13 +56,13 @@ impl Logic for ConditionalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ConditionalModalLogicRules::new(self.get_modality())),
-        ]
+        ])
     }
 
     fn get_modality_ref(&self) -> Option<ModalityRef>

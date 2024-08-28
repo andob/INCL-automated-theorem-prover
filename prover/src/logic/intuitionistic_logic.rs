@@ -3,7 +3,8 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::formula::to_string::FormulaFormatOptions;
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -35,14 +36,14 @@ impl Logic for IntuitionisticLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
         let modality = Rc::new(self.get_modality());
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(ModalLogicRules::new(modality.clone())),
             Box::new(IntuitionisticLogicRules::new(modality)),
-        ]
+        ])
     }
 
     fn get_modality_ref(&self) -> Option<ModalityRef>

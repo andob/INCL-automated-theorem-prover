@@ -5,6 +5,8 @@ use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType, FirstOrderLogicIdentityType};
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::{Logic, LogicRule};
+use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;
+use crate::logic::first_order_logic::FirstOrderLogicIdentityType::NecessaryIdentity;
 use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_owned_formulas_filtering_lambda;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -28,7 +30,7 @@ impl LogicRule for HelperQuantifierRules
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 subtree.append(&self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
 
-                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit x=y to all possible worlds by stating □(x=y)
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -43,7 +45,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit !(x=y) to all possible worlds by stating □!(x=y)
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -55,7 +57,7 @@ impl LogicRule for HelperQuantifierRules
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 subtree.append(&self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
 
-                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit !(x=y)- to all possible worlds by stating □!(x=y)-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -70,7 +72,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.identity_type == FirstOrderLogicIdentityType::NecessaryIdentity && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit (x=y)- to all possible worlds by stating □(x=y)-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -79,7 +81,7 @@ impl LogicRule for HelperQuantifierRules
 
             DefinitelyExists(_, extras) if extras.sign == Plus =>
             {
-                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
                 {
                     //inherit 𝔈x to all possible worlds by stating □𝔈x
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -88,7 +90,7 @@ impl LogicRule for HelperQuantifierRules
 
             Non(box DefinitelyExists(_, _), extras) if extras.sign == Plus =>
             {
-                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
                 {
                     //inherit !𝔈x to all possible worlds by stating □!𝔈x
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -97,7 +99,7 @@ impl LogicRule for HelperQuantifierRules
 
             Non(box DefinitelyExists(_, _), extras) if extras.sign == Minus =>
             {
-                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
                 {
                     //inherit !𝔈x- to all possible worlds by stating □!𝔈x-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -106,7 +108,7 @@ impl LogicRule for HelperQuantifierRules
 
             DefinitelyExists(_, extras) if extras.sign == Minus =>
             {
-                if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && logic.get_name().is_modal_logic()
+                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
                 {
                     //inherit 𝔈x- to all possible worlds by stating □𝔈x-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));

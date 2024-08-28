@@ -1,6 +1,6 @@
 use std::any::Any;
 use std::rc::Rc;
-use crate::logic::{Logic, LogicName, LogicRule};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::parser::token_types::TokenTypeID;
@@ -48,13 +48,13 @@ impl Logic for NormalModalLogic
         ]
     }
 
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>
+    fn get_rules(&self) -> LogicRuleCollection
     {
-        return vec!
+        return LogicRuleCollection::of(vec!
         [
             Box::new(PropositionalLogicRules {}),
             Box::new(ModalLogicRules::new(Rc::new(self.get_modality()))),
-        ]
+        ])
     }
 
     fn get_modality_ref(&self) -> Option<ModalityRef>

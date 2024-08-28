@@ -14,6 +14,8 @@ use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
 use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLogic;
 use crate::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FirstOrderLogic, FIRST_ORDER_LOGIC_NAME_PREFIX};
+use crate::logic::first_order_logic::FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
+use crate::logic::first_order_logic::FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
@@ -51,7 +53,7 @@ pub trait Logic : Any
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>;
 
     //tree decomposition rules
-    fn get_rules(&self) -> Vec<Box<dyn LogicRule>>;
+    fn get_rules(&self) -> LogicRuleCollection;
 
     //a reference to the modality or None if the logic is not modal logic
     //cannot use Option<Modality<LOGIC>> because trait functions cannot return generic types :(
@@ -80,7 +82,38 @@ pub trait LogicRule
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>;
 }
 
-#[derive(Clone)]
+pub struct LogicRuleCollection
+{
+    rules : Vec<Box<dyn LogicRule>>
+}
+
+impl LogicRuleCollection
+{
+    pub fn of(rules : Vec<Box<dyn LogicRule>>) -> LogicRuleCollection
+    {
+        return LogicRuleCollection { rules };
+    }
+
+    pub fn append(&mut self, another : &mut LogicRuleCollection)
+    {
+        self.rules.append(&mut another.rules);
+    }
+
+    pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    {
+        for logic_rule in &self.rules
+        {
+            if let Some(subtree) = logic_rule.apply(factory, node)
+            {
+                return Some(subtree);
+            }
+        }
+
+        return None;
+    }
+}
+
+#[derive(Eq, PartialEq, Clone)]
 pub struct LogicName { value : String }
 
 impl LogicName
@@ -114,6 +147,11 @@ impl LogicName
             self.matches_name_of_logic(bx!(NonNormalModalLogic::S3())) ||
             self.matches_name_of_logic(bx!(NonNormalModalLogic::S3_5())) ||
             self.matches_name_of_logic(bx!(LogicWithGapsGlutsAndWorlds::N4()));
+    }
+
+    pub fn is_intuitionistic_logic(&self) -> bool
+    {
+        return self.matches_name_of_logic(bx!(IntuitionisticLogic{}));
     }
 
     fn matches_name_of_logic(&self, logic : Box<dyn Logic>) -> bool
@@ -150,6 +188,8 @@ impl LogicFactory
 
     pub fn get_logic_theories() -> Vec<Rc<dyn Logic>>
     {
+        let intuitionistic_logic = Rc::new(IntuitionisticLogic{});
+
         let base_logics : Vec<Rc<dyn Logic>> = vec!
         [
             Rc::new(PropositionalLogic {}),
@@ -172,7 +212,7 @@ impl LogicFactory
             Rc::new(ConditionalModalLogic::basic()),
             Rc::new(ConditionalModalLogic::extended()),
 
-            Rc::new(IntuitionisticLogic {}),
+            intuitionistic_logic.clone(),
 
             Rc::new(MinimalFirstDegreeEntailmentLogic {}),
 
@@ -208,7 +248,14 @@ impl LogicFactory
             Rc::new(LogicOfConstructibleNegation::W()),
         ];
 
-        let mut logics = base_logics.clone();
+        let excluded_logics = vec!
+        [
+            FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:NecessaryIdentity },
+            FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:ContingentIdentity },
+            FirstOrderLogic { base_logic:intuitionistic_logic, domain_type:VariableDomain, identity_type:NecessaryIdentity },
+        ];
+
+        let mut output_logics = base_logics.clone();
 
         for domain_type in FirstOrderLogicDomainType::iter()
         {
@@ -216,15 +263,20 @@ impl LogicFactory
             {
                 for base_logic in &base_logics
                 {
-                    logics.push(Rc::new(FirstOrderLogic
+                    let first_order_logic = FirstOrderLogic
                     {
                         domain_type, identity_type,
                         base_logic: base_logic.clone()
-                    }));
+                    };
+
+                    if !excluded_logics.contains(&first_order_logic)
+                    {
+                        output_logics.push(Rc::new(first_order_logic));
+                    }
                 }
             }
         }
 
-        return logics;
+        return output_logics;
     }
 }

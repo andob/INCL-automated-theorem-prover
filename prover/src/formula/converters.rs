@@ -2,6 +2,7 @@ use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::to_string::FormulaFormatOptions;
 
 mod extras_in_world;
 mod extras_with_sign;

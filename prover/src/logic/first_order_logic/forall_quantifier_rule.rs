@@ -33,12 +33,12 @@ impl LogicRule for ForAllQuantifierRule
 
             ForAll(x, box p, extras) if extras.sign == Plus =>
             {
-                return self.apply_for_all_quantification(factory, node, x, p, extras);
+                return self.apply_for_all_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
             Exists(x, box p, extras) if extras.sign == Minus =>
             {
-                return self.apply_for_all_quantification(factory, node, x, p, extras);
+                return self.apply_for_all_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
             _ => None
