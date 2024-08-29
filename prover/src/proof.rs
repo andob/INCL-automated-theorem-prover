@@ -1,6 +1,5 @@
 use crate::graph::Graph;
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
@@ -74,15 +73,17 @@ impl ProofAlgorithm
 
     fn reached_timeout(&self) -> bool
     {
-        let proof_tree_is_too_large = if self.logic_name.is_intuitionistic_logic()
-            { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_INTUITIONISTIC_LOGIC }
-        else if self.logic_name.is_first_order_logic() && !self.logic_name.is_intuitionistic_logic()
-            { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC }
-        else { false };
+        let proof_tree_is_too_large =
+            if self.logic_name.is_intuitionistic_logic()
+                { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_INTUITIONISTIC_LOGIC }
+            else if self.logic_name.is_first_order_logic()
+                { self.proof_tree.get_total_number_of_nodes() >= MAX_NUMBER_OF_TREE_NODES_ON_FIRST_ORDER_LOGIC }
+            else { false };
 
-        let modality_graph_is_too_large = if self.logic_name.is_modal_logic()
-            { self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC }
-        else { false };
+        let modality_graph_is_too_large =
+            if self.logic_name.is_modal_logic()
+                { self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC }
+            else { false };
 
         return proof_tree_is_too_large || modality_graph_is_too_large;
     }

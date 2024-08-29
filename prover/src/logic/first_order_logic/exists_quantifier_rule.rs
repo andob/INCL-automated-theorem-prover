@@ -20,8 +20,8 @@ impl LogicRule for ExistsQuantifierRule
         {
             Non(box Exists(x, box p, _), extras) =>
             {
-                let non_p = Non(bx!(p.clone()), extras.clone());
-                let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.clone());
+                let non_p = Non(bx!(p.clone()), extras.with_is_hidden(false));
+                let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.with_is_hidden(false));
                 let for_all_non_p_node = factory.new_node(for_all_non_p);
 
                 return Some(ProofSubtree::with_middle_node(for_all_non_p_node));

@@ -1,36 +1,44 @@
 use std::fs::File;
-use std::{env, fs, io};
+use std::{env, fs, io, thread};
 use std::any::Any;
+use std::collections::BTreeMap;
 use std::ffi::CString;
 use std::io::Write;
 use std::path::Path;
 use std::rc::Rc;
-use anyhow::{anyhow, Context, Result};
+use std::thread::JoinHandle;
+use std::time::Instant;
+use anyhow::{anyhow, Context, Error, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
-use prover::{codeloc, logic};
+use prover::{codeloc, logic, problem};
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::{Logic, LogicFactory, LogicName};
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
 use prover::problem::catalog::get_demo_problem_catalog;
+use prover::problem::json::ProblemJSON;
 use prover::problem::Problem;
+use prover::utils::parallel_for_each_problem;
+
+const OUTPUT_DIR_PATH : &str = "./target/html";
+const INDEX_FILE_PATH : &str = "./target/html/index.html";
+const PROOF_FILE_PATH : &str = "./target/html/proof.html";
+
+const TEMPLATE : &str = include_str!("template.html");
 
 fn main() -> Result<()>
 {
-    let output_dir_path = "./target/html";
-    fs::create_dir_all(output_dir_path).context(codeloc!())?;
-
-    let template = mustache::compile_str(include_str!("template.html")).context(codeloc!())?;
+    fs::create_dir_all(OUTPUT_DIR_PATH).context(codeloc!())?;
 
     let args = env::args().collect::<Vec<String>>();
     if args.contains(&String::from("solve-book"))
     {
-        prove_problems_from_the_book(template, output_dir_path).context(codeloc!())?;
-        create_proof_index_html_file(output_dir_path).context(codeloc!())?;
+        prove_problems_from_the_book().context(codeloc!())?;
+        create_proof_index_html_file().context(codeloc!())?;
 
-        open_browser(format!("{}/index.html", output_dir_path)).context(codeloc!())?;
+        open_browser(INDEX_FILE_PATH).context(codeloc!())?;
     }
     else if args.len() == 2
     {
@@ -41,10 +49,9 @@ fn main() -> Result<()>
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
         let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
 
-        let proof_file_path = format!("{}/proof.html", output_dir_path);
-        prove_problem(template, &proof_file_path, problem).context(codeloc!())?;
+        prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
-        open_browser(proof_file_path).context(codeloc!())?;
+        open_browser(PROOF_FILE_PATH).context(codeloc!())?;
     }
     else if args.len() == 3
     {
@@ -52,10 +59,9 @@ fn main() -> Result<()>
         let statement = LogicalExpressionParser::parse(&logic, &args[2]).context(codeloc!())?;
         let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
 
-        let proof_file_path = format!("{}/proof.html", output_dir_path);
-        prove_problem(template, &proof_file_path, problem).context(codeloc!())?;
+        prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
-        open_browser(proof_file_path).context(codeloc!())?;
+        open_browser(PROOF_FILE_PATH).context(codeloc!())?;
     }
     else
     {
@@ -69,39 +75,39 @@ fn main() -> Result<()>
     return Ok(());
 }
 
-fn prove_problems_from_the_book(template : Template, output_dir_path : &str) -> Result<()>
+fn prove_problems_from_the_book() -> Result<()>
 {
-    let book_chapters = get_demo_problem_catalog().context(codeloc!())?;
-    for book_chapter in &book_chapters
+    let problems = get_demo_problem_catalog()?.into_iter()
+        .flat_map(|book_chapter| book_chapter.problems)
+        .collect::<Vec<ProblemJSON>>();
+
+    return parallel_for_each_problem(problems, |problem_json|
     {
-        for problem_json in &book_chapter.problems
-        {
-            let problem = problem_json.to_problem().context(codeloc!())?;
-            let (problem_id, logic) = (problem.id.clone(), problem.logic.clone());
+        let problem = problem_json.to_problem().context(codeloc!())?;
+        let (problem_id, logic) = (problem.id.clone(), problem.logic.clone());
+        println!("Solving {}…", problem_id);
 
-            println!("Solving {}", problem_id);
-            let proof_file_path = format!("{}/{}.html", output_dir_path, problem_id);
-            let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
+        let proof_file_path = format!("{}/{}.html", OUTPUT_DIR_PATH, problem_json.id);
+        let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-            let mut formula_format_options = FormulaFormatOptions::default();
-            formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
-            formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
+        let mut formula_format_options = FormulaFormatOptions::default();
+        formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
+        formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
 
-            let proof_tree = problem.prove();
-            let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
+        let proof_tree = problem.prove();
+        let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
 
-            let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
-            template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
-        }
-    }
+        let template = mustache::compile_str(TEMPLATE).context(codeloc!())?;
+        let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
+        template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
 
-    return Ok(());
+        return Ok(());
+    });
 }
 
-fn create_proof_index_html_file(output_dir_path : &str) -> Result<()>
+fn create_proof_index_html_file() -> Result<()>
 {
-    let output_index_file_path = format!("{}/index.html", output_dir_path);
-    let mut output_index_file = File::create(output_index_file_path).context(codeloc!())?;
+    let mut output_index_file = File::create(INDEX_FILE_PATH).context(codeloc!())?;
     let mut output_index_html = String::from("<html><head><title>Index</title></head><body>");
 
     let book_chapters = get_demo_problem_catalog().context(codeloc!())?;
@@ -120,7 +126,7 @@ fn create_proof_index_html_file(output_dir_path : &str) -> Result<()>
     return Ok(());
 }
 
-fn prove_problem(template : Template, proof_file_path : &String, problem : Problem) -> Result<()>
+fn prove_problem(proof_file_path : &str, problem : Problem) -> Result<()>
 {
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
@@ -131,13 +137,14 @@ fn prove_problem(template : Template, proof_file_path : &String, problem : Probl
     let proof_tree = problem.prove();
     let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
 
+    let template = mustache::compile_str(TEMPLATE).context(codeloc!())?;
     let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
     template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
 
     return Ok(());
 }
 
-fn open_browser(file_path : String) -> Result<()>
+fn open_browser(file_path : &str) -> Result<()>
 {
     unsafe
     {

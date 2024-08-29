@@ -151,7 +151,10 @@ impl LogicName
 
     pub fn is_intuitionistic_logic(&self) -> bool
     {
-        return self.matches_name_of_logic(bx!(IntuitionisticLogic{}));
+        return self.matches_name_of_logic(bx!(IntuitionisticLogic{})) ||
+            self.matches_name_of_logic(bx!(LogicOfConstructibleNegation::I4())) ||
+            self.matches_name_of_logic(bx!(LogicOfConstructibleNegation::I3())) ||
+            self.matches_name_of_logic(bx!(LogicOfConstructibleNegation::W()));
     }
 
     fn matches_name_of_logic(&self, logic : Box<dyn Logic>) -> bool
@@ -188,8 +191,6 @@ impl LogicFactory
 
     pub fn get_logic_theories() -> Vec<Rc<dyn Logic>>
     {
-        let intuitionistic_logic = Rc::new(IntuitionisticLogic{});
-
         let base_logics : Vec<Rc<dyn Logic>> = vec!
         [
             Rc::new(PropositionalLogic {}),
@@ -212,7 +213,7 @@ impl LogicFactory
             Rc::new(ConditionalModalLogic::basic()),
             Rc::new(ConditionalModalLogic::extended()),
 
-            intuitionistic_logic.clone(),
+            Rc::new(IntuitionisticLogic{}),
 
             Rc::new(MinimalFirstDegreeEntailmentLogic {}),
 
@@ -248,12 +249,15 @@ impl LogicFactory
             Rc::new(LogicOfConstructibleNegation::W()),
         ];
 
-        let excluded_logics = vec!
-        [
-            FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:NecessaryIdentity },
-            FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:ContingentIdentity },
-            FirstOrderLogic { base_logic:intuitionistic_logic, domain_type:VariableDomain, identity_type:NecessaryIdentity },
-        ];
+        let excluded_logics = base_logics.iter()
+            .filter(|logic| logic.get_name().is_intuitionistic_logic())
+            .flat_map(|intuitionistic_logic| vec!
+            [
+                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:NecessaryIdentity },
+                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:ContingentIdentity },
+                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:VariableDomain, identity_type:NecessaryIdentity },
+            ])
+            .collect::<Vec<FirstOrderLogic>>();
 
         let mut output_logics = base_logics.clone();
 
@@ -269,7 +273,7 @@ impl LogicFactory
                         base_logic: base_logic.clone()
                     };
 
-                    if !excluded_logics.contains(&first_order_logic)
+                    if !excluded_logics.contains(&&first_order_logic)
                     {
                         output_logics.push(Rc::new(first_order_logic));
                     }

@@ -12,13 +12,8 @@ pub mod parser;
 pub mod formula;
 pub mod logic;
 pub mod problem;
+pub mod utils;
 mod tree;
 mod proof;
 mod semantics;
 mod graph;
-
-#[macro_export]
-macro_rules! codeloc
-{
-    () => { format!("{}:{}", file!(), line!()) }
-}

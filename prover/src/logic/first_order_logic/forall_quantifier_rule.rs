@@ -24,8 +24,8 @@ impl LogicRule for ForAllQuantifierRule
         {
             Non(box ForAll(x, box p, _), extras) =>
             {
-                let non_p = Non(bx!(p.clone()), extras.clone());
-                let exists_non_p = Exists(x.clone(), bx!(non_p), extras.clone());
+                let non_p = Non(bx!(p.clone()), extras.with_is_hidden(false));
+                let exists_non_p = Exists(x.clone(), bx!(non_p), extras.with_is_hidden(false));
                 let exists_non_p_node = factory.new_node(exists_non_p);
 
                 return Some(ProofSubtree::with_middle_node(exists_non_p_node));

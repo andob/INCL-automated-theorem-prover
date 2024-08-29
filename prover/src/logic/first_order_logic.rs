@@ -16,7 +16,6 @@ use crate::logic::first_order_logic::forall_quantifier_rule::ForAllQuantifierRul
 use crate::logic::first_order_logic::helper_quantifier_rules::HelperQuantifierRules;
 use crate::logic::first_order_logic::intuitionistic_quantifier_rules::IntuitionisticQuantifierRules;
 use crate::logic::first_order_logic::variable_domain_semantics::VariableDomainSemantics;
-use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 
@@ -109,7 +108,7 @@ impl Logic for FirstOrderLogic
 
         rules.append(&mut self.base_logic.get_rules());
 
-        if self.base_logic.get_name() == (IntuitionisticLogic{}).get_name()
+        if self.base_logic.get_name().is_intuitionistic_logic()
         {
             let wrapper_rule = IntuitionisticQuantifierRules::wrap(rules);
             rules = LogicRuleCollection::of(vec![bx!(wrapper_rule)]);

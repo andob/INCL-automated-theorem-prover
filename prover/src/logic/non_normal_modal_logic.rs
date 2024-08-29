@@ -2,7 +2,7 @@ use std::any::Any;
 use std::rc::Rc;
 use crate::formula::{FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Necessary, StrictImply};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;

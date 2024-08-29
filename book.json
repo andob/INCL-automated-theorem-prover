@@ -479,7 +479,7 @@
     ]
   },
   {
-    "name": "Basic normal modal logic",
+    "name": "Propositional normal modal logic",
     "problems": [
       {
         "id": "2.12.2.a",
@@ -634,12 +634,7 @@
         "expected": "disproved",
         "premises": [],
         "conclusion": "◇(p ∨ ¬p)"
-      }
-    ]
-  },
-  {
-    "name": "Normal modal logic",
-    "problems": [
+      },
       {
         "id": "3.10.3.a",
         "logic": "TModalLogic",
@@ -2734,7 +2729,7 @@
     ]
   },
   {
-    "name": "Logic with gaps, gluts and worlds (normal)",
+    "name": "Logic with gaps, gluts and worlds",
     "problems": [
       {
         "id": "9.11.2.a",
@@ -2826,12 +2821,7 @@
         "expected": "proved",
         "premises": [ "A ᐅ B", "B ᐅ C" ],
         "conclusion": "A ᐅ C"
-      }
-    ]
-  },
-  {
-    "name": "Logic with gaps, gluts and worlds (non-normal)",
-    "problems": [
+      },
       {
         "id": "9.11.3.a",
         "logic": "K4ModalLogicWithGapsAndGluts",
@@ -2957,6 +2947,167 @@
         "expected": "proved",
         "premises": [ "A ᐅ B", "B ᐅ C" ],
         "conclusion": "A ᐅ C"
+      },
+      {
+        "id": "23.15.2.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "∃x P[x] ᐅ ∃x Q[x]"
+      },
+      {
+        "id": "23.15.2.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "∀x(P[x] ᐅ Q[x]) ᐅ (∃x P[x] ᐅ ∃x Q[x])"
+      },
+      {
+        "id": "23.15.2.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(∀x P[x] ∧ ∀x Q[x]) ᐅ ∀x(P[x] ∧ Q[x])"
+      },
+      {
+        "id": "23.15.2.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x P[x] ᐅ P[a]"
+      },
+      {
+        "id": "23.15.2.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "P[a] ᐅ ∃x P[x]"
+      },
+      {
+        "id": "23.15.2.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "∀x(P[a] ∨ Q[x]) ᐅ (P[a] ∨ ∀x Q[x])"
+      },
+      {
+        "id": "23.15.2.g",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ᐅ Q[a])" ],
+        "conclusion": "∃x P[x] ᐅ Q[a]"
+      },
+      {
+        "id": "23.15.2.h",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "∃x P[x] ∧ Q[a]" ],
+        "conclusion": "∃x(P[x] ∧ Q[a])"
+      },
+      {
+        "id": "23.15.2.i",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "P[a] ∧ ¬Q[a]" ],
+        "conclusion": "∃x ¬(P[x] ᐅ Q[x])"
+      },
+      {
+        "id": "23.15.2.j",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [ "∀x(P[x] ᐅ Q[x])" ],
+        "conclusion": "¬∃x(P[x] ∧ ¬Q[x])"
+      },
+      {
+        "id": "23.15.6.a",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "a = a"
+      },
+      {
+        "id": "23.15.6.b",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "a = b" ],
+        "conclusion": "b = a"
+      },
+      {
+        "id": "23.15.6.c",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "a = b", "b = c" ],
+        "conclusion": "a = c"
+      },
+      {
+        "id": "23.15.6.d",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "a = b ᐅ b = a"
+      },
+      {
+        "id": "23.15.6.e",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(a = b ∧ b = c) ᐅ a = c"
+      },
+      {
+        "id": "23.15.6.f",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "a = b ᐅ (b = c ᐅ a = c)"
+      },
+      {
+        "id": "23.15.6.f'",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+K4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "a = b ᐅ (b = c ᐅ a = c)"
+      },
+      {
+        "id": "23.15.6.g",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "a = b", "P[a]" ],
+        "conclusion": "P[b]"
+      },
+      {
+        "id": "23.15.6.h",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [ "a = b" ],
+        "conclusion": "P[a] ᐅ P[b]"
+      },
+      {
+        "id": "23.15.6.i",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [ "P[a]" ],
+        "conclusion": "a = b ᐅ P[b]"
+      },
+      {
+        "id": "23.15.6.j",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(a = b ∧ P[a]) ᐅ P[b]"
+      },
+      {
+        "id": "23.15.6.k",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "a = b ᐅ (P[a] ᐅ P[b])"
+      },
+      {
+        "id": "23.15.6.l",
+        "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "P[a] ᐅ (a = b ᐅ P[b])"
       }
     ]
   },
@@ -3053,6 +3204,153 @@
         "expected": " proved",
         "premises": [],
         "conclusion": "(A ⊃ B) ⊃ ¬(A ⊃ ¬B)"
+      },
+      {
+        "id": "23.15.12.a",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "∀x(P[x] ⊃ Q[x])" ],
+        "conclusion": "∃x P[x] ⊃ ∃x Q[x]"
+      },
+      {
+        "id": "23.15.12.b",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "timeout",
+        "premises": [],
+        "conclusion": "∀x(P[x] ⊃ Q[x]) ⊃ (∃x P[x] ⊃ ∃x Q[x])"
+      },
+      {
+        "id": "23.15.12.c",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(∀x P[x] ∧ ∀x Q[x]) ⊃ ∀x(P[x] ∧ Q[x])"
+      },
+      {
+        "id": "23.15.12.d",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "∀x P[x] ⊃ P[a]"
+      },
+      {
+        "id": "23.15.12.e",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "P[a] ⊃ ∃x P[x]"
+      },
+      {
+        "id": "23.15.12.g",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "∀x(P[x] ⊃ Q[a])" ],
+        "conclusion": "∃x P[x] ⊃ Q[a]"
+      },
+      {
+        "id": "23.15.12.h",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "∃x P[x] ∧ Q[a]" ],
+        "conclusion": "∃x(P[x] ∧ Q[a])"
+      },
+      {
+        "id": "23.15.12.i",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "P[a] ∧ ¬Q[a]" ],
+        "conclusion": "∃x ¬(P[x] ⊃ Q[x])"
+      },
+      {
+        "id": "23.15.13.a",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "a = a"
+      },
+      {
+        "id": "23.15.13.b",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "a = b" ],
+        "conclusion": "b = a"
+      },
+      {
+        "id": "23.15.13.c",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "a = b", "b = c" ],
+        "conclusion": "a = c"
+      },
+      {
+        "id": "23.15.13.c'",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "disproved",
+        "premises": [ "a = b", "b = c" ],
+        "conclusion": "a = c"
+      },
+      {
+        "id": "23.15.13.d",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "a = b ⊃ b = a"
+      },
+      {
+        "id": "23.15.13.e",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "(a = b ∧ b = c) ⊃ a = c"
+      },
+      {
+        "id": "23.15.13.f",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a" ],
+        "conclusion": "a = b ⊃ (b = c ⊃ a = c)"
+      },
+      {
+        "id": "23.15.13.g",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b", "a = b", "P[a]" ],
+        "conclusion": "P[b]"
+      },
+      {
+        "id": "23.15.13.h",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b", "a = b" ],
+        "conclusion": "P[a] ⊃ P[b]"
+      },
+      {
+        "id": "23.15.13.i",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b", "P[a]" ],
+        "conclusion": "a = b ⊃ P[b]"
+      },
+      {
+        "id": "23.15.13.j",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b" ],
+        "conclusion": "(a = b ∧ P[a]) ⊃ P[b]"
+      },
+      {
+        "id": "23.15.13.k",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b" ],
+        "conclusion": "a = b ⊃ (P[a] ⊃ P[b])"
+      },
+      {
+        "id": "23.15.13.l",
+        "logic": "FirstOrderLogic+VariableDomain+ContingentIdentity+I4LogicOfConstructibleNegation",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08a", "\uD835\uDD08b" ],
+        "conclusion": "P[a] ⊃ (a = b ⊃ P[b])"
       }
     ]
   }

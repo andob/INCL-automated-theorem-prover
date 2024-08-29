@@ -10,14 +10,14 @@ use crate::logic::propositional_logic::PropositionalLogic;
 use crate::parser::algorithm::LogicalExpressionParser;
 use crate::problem::Problem;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct BookChapterJSON
 {
     pub name : String,
     pub problems : Vec<ProblemJSON>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ProblemJSON
 {
     pub id : String,
