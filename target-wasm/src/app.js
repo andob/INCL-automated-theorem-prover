@@ -611,7 +611,7 @@ function show_about_panel_contents()
             <td><a href="${book_url}" target="_blank"><img style="width: 150px; padding-right: 1em;" src="book.jpg" alt="Book picture"></a></td>
             <td>An automated theorem prover on first order modal logic and other non-classical formal logic systems.
                 Implements the algorithm theorized by renowned philosopher and logician Graham Priest in his 2008 book
-                <a href="${book_url}" target="_blank" style="color:white">"Introduction to Non-Classical Logic. From If to Is (second edition)"</a>.
+                <a href="${book_url}" target="_blank" style="color:white">"An Introduction to Non-Classical Logic. From If to Is (second edition)"</a>.
                 <br/><br/>This is free open source software, licensed under the Apache License.
                 This software was developed by Andrei Dobrescu and coordinated by Marian Calborean from Faculty of Philosophy, University of Bucharest.
             </td>
