@@ -27,6 +27,8 @@ const ID_PROOF_STATUS_LABEL = 'proof_status_label';
         initialize_problem_input_container();
 
         show_problem_catalog();
+
+        show_about_panel_contents();
     })
 })()
 
@@ -593,4 +595,32 @@ function render_modality_graph(logic, modality_graph)
             }
         ],
     });
+}
+
+function show_about_panel_contents()
+{
+    let book_url = 'https://www.cambridge.org/core/books/an-introduction-to-nonclassical-logic/61AD69C1D1B88006588B26C37F3A788E';
+    let github_repository_url = 'https://github.com/andob/INCL-automated-theorem-prover';
+    let contact_email_address = 'mc@filos.ro';
+
+    window.containers.about_container.style.overflowY = 'scroll';
+    window.containers.about_container.innerHTML = `
+    <span style="color: white; padding: 1em;">
+        <br/><b style="font-size: 1.1em;">INCL Automated Theorem Prover</b>
+        <table style="font-size: 0.8em;"><tr>
+            <td><a href="${book_url}" target="_blank"><img style="width: 150px; padding-right: 1em;" src="book.jpg" alt="Book picture"></a></td>
+            <td>An automated theorem prover on first order modal logic and other non-classical formal logic systems.
+                Implements the algorithm theorized by renowned philosopher and logician Graham Priest in his 2008 book
+                <a href="${book_url}" target="_blank" style="color:white">"Introduction to Non-Classical Logic. From If to Is (second edition)"</a>.
+                <br/><br/>This is free open source software, licensed under the Apache License.
+                This software was developed by Andrei Dobrescu and coordinated by Marian Calborean from Faculty of Philosophy, University of Bucharest.
+            </td>
+        </tr></table>
+        <br/>
+        <b>
+            Contact Marian at: <a href="mailto:${contact_email_address}" target="_blank" style="color:white">mc@filos.ro</a>
+            <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">here</a>
+            <br/>Version: 1.0.0
+        </b>
+    </p>`
 }
