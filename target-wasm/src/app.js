@@ -1,8 +1,10 @@
 import * as golden_layout from 'https://cdn.jsdelivr.net/npm/golden-layout@2.6.0/+esm';
 import init, * as incl from './target_wasm.js';
 
-const KEY_PROBLEM = 'problem';
 const KEY_OPERATOR_NOTATIONS = 'operator_notations';
+const KEY_LOGIC = 'logic';
+const KEY_PREMISES = 'premises';
+const KEY_CONCLUSION = 'conclusion';
 
 const ID_OPERATOR_NOTATIONS_SELECT = 'operator_notations_select';
 const ID_LOGICS_SELECT1 = 'logics_select1';
@@ -145,18 +147,7 @@ function show_problem_catalog()
             div.style.cursor = 'pointer';
 
             div.appendChild(document.createTextNode(problem.id));
-            div.onclick = () =>
-            {
-                prove_problem(problem);
-
-                //changing browser URL without reloading the page, in order for the URL to contain problem ID argument
-                let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
-                let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
-                let url_arguments = new URLSearchParams();
-                url_arguments.append(KEY_OPERATOR_NOTATIONS, operator_notations);
-                url_arguments.append(KEY_PROBLEM, problem.id);
-                window.history.pushState(null, null, '?' + url_arguments.toString());
-            }
+            div.onclick = () => prove_problem(problem);
 
             book_chapter_li.appendChild(div);
             book_chapter_li.appendChild(document.createTextNode("  "))
@@ -250,12 +241,11 @@ function initialize_problem_input_container_after_delay()
     };
 
     let url_args = new URLSearchParams(window.location.search);
-    if (url_args.has(KEY_PROBLEM))
+    if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
     {
-        let problem = JSON.parse(incl.get_problem_catalog())
-            .flatMap(chapter => chapter.problems)
-            .find(problem => problem.id === url_args.get(KEY_PROBLEM).toString())
-        initial_problem = problem ? problem : initial_problem;
+        initial_problem.logic = decodeURIComponent(url_args.get(KEY_LOGIC));
+        initial_problem.premises = decodeURIComponent(url_args.get(KEY_PREMISES)).split('\n');
+        initial_problem.conclusion = decodeURIComponent(url_args.get(KEY_CONCLUSION));
     }
 
     update_problem_input_area(initial_problem);
@@ -271,7 +261,7 @@ function initialize_problem_input_container_after_delay()
         });
     };
 
-    if (url_args.has(KEY_PROBLEM))
+    if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
     {
         prove_button.click();
     }
@@ -402,12 +392,28 @@ function prove_problem(problem)
 
         render_proof_tree(proof_tree);
         render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
+
+        //changing browser URL without reloading the page, in order for the URL to be shareable
+        window.history.pushState(null, null, '?' + create_shareable_url_args(problem).toString());
     }
     catch (e)
     {
         console.log(e);
         alert(e.toString());
     }
+}
+
+function create_shareable_url_args(problem)
+{
+    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
+    let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
+
+    let url_arguments = new URLSearchParams();
+    url_arguments.append(KEY_OPERATOR_NOTATIONS, operator_notations);
+    url_arguments.append(KEY_LOGIC, encodeURIComponent(problem.logic));
+    url_arguments.append(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
+    url_arguments.append(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
+    return url_arguments;
 }
 
 function render_proof_tree(proof_tree)
