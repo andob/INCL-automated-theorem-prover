@@ -69,7 +69,6 @@ fn main() -> Result<()>
         print!("\n\nUsage: incl solve-book to solve all problems from the book!");
         print!("\nUsage: incl <logic> <problem> to solve a problem given as input!");
         print!("\nUsage: incl <problem> to solve a propositional logic problem given as input!");
-        print!("\n\n∃ ∀ ◇ □ ¬ ∧ ∨ → ≡\n");
     }
 
     return Ok(());
