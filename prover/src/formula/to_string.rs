@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use std::fmt::{format, Display, Formatter};
+use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};

@@ -12,7 +12,6 @@ pub struct ManyValuedLogicSemantics
 #[derive(Eq, PartialEq)]
 pub enum ManyValuedContradictionBehaviour
 {
-    CommonBehaviour,
     FormulaPlusWithFormulaMinus,
     FormulaPlusWithNonFormulaPlus,
     FormulaMinusWithNonFormulaMinus,
@@ -26,8 +25,7 @@ impl ManyValuedLogicSemantics
         {
             contradiction_behaviours: vec!
             [
-                ManyValuedContradictionBehaviour::CommonBehaviour,
-                ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus,
+                ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
             ]
         };
     }
@@ -51,9 +49,6 @@ impl Semantics for ManyValuedLogicSemantics
         {
             let is_contradiction = match contradiction_behaviour
             {
-                ManyValuedContradictionBehaviour::CommonBehaviour =>
-                { self.are_common_equality_formulas_contradictory(path, p, q) }
-
                 ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus =>
                 { self.are_formulas_contradictory_formula_plus_with_formula_minus(path, p, q) }
 
@@ -95,6 +90,19 @@ impl ManyValuedLogicSemantics
                 q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
+            (Equals(x, y, _), Equals(z, t, _))
+            if p.get_sign() * q.get_sign() == Minus =>
+            {
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
+            }
+
+            (DefinitelyExists(x, _), DefinitelyExists(y, _))
+            if p.get_sign() * q.get_sign() == Minus =>
+            {
+                (x == y) && p.get_possible_world() == q.get_possible_world()
+            }
+
             _ => { false }
         }
     }
@@ -111,6 +119,21 @@ impl ManyValuedLogicSemantics
                 p.get_possible_world() == q.get_possible_world() &&
                 p.get_predicate_arguments_of_atomic_with_equivalences(path) ==
                 q.get_predicate_arguments_of_atomic_with_equivalences(path)
+            }
+
+            (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
+            (Non(box Equals(z, t, _), _), Equals(x, y, _))
+            if p.get_sign() == Plus && q.get_sign() == Plus =>
+            {
+                ((x == z && y == t) || (x == t && y == z)) &&
+                p.get_possible_world() == q.get_possible_world()
+            }
+
+            (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
+            (Non(box DefinitelyExists(y, _), _), DefinitelyExists(x, _))
+            if p.get_sign() == Plus && q.get_sign() == Plus =>
+            {
+                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             _ => { false }
@@ -131,38 +154,17 @@ impl ManyValuedLogicSemantics
                 q.get_predicate_arguments_of_atomic_with_equivalences(path)
             }
 
-            _ => { false }
-        }
-    }
-
-    fn are_common_equality_formulas_contradictory(&self, _path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
-    {
-        match (p, q)
-        {
-            (Equals(x, y, _), Equals(z, t, _))
-            if p.get_sign() * q.get_sign() == Minus =>
-            {
-                ((x == z && y == t) || (x == t && y == z)) &&
-                p.get_possible_world() == q.get_possible_world()
-            }
-
             (Equals(x, y, _), Non(box Equals(z, t, _), _)) |
             (Non(box Equals(z, t, _), _), Equals(x, y, _))
-            if p.get_sign() == q.get_sign() =>
+            if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
                 ((x == z && y == t) || (x == t && y == z)) &&
                 p.get_possible_world() == q.get_possible_world()
-            }
-
-            (DefinitelyExists(x, _), DefinitelyExists(y, _))
-            if p.get_sign() * q.get_sign() == Minus =>
-            {
-                (x == y) && p.get_possible_world() == q.get_possible_world()
             }
 
             (DefinitelyExists(x, _), Non(box DefinitelyExists(y, _), _)) |
             (Non(box DefinitelyExists(y, _), _), DefinitelyExists(x, _))
-            if p.get_sign() == q.get_sign() =>
+            if p.get_sign() == Minus && q.get_sign() == Minus =>
             {
                 (x == y) && p.get_possible_world() == q.get_possible_world()
             }

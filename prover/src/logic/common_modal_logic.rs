@@ -52,12 +52,14 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 
             Possible(box p, extras) =>
             {
-                return self.modality.apply_possibility(factory, node, p, extras);
+                let p_with_parent_sign = p.with_sign(extras.sign);
+                return self.modality.apply_possibility(factory, node, &p_with_parent_sign, extras);
             }
 
             Necessary(box p, extras) =>
             {
-                return self.modality.apply_necessity(factory, node, p, extras);
+                let p_with_parent_sign = p.with_sign(extras.sign);
+                return self.modality.apply_necessity(factory, node, &p_with_parent_sign, extras);
             }
 
             StrictImply(box p, box q, extras) =>

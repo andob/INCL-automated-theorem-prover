@@ -45,7 +45,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
+                if logic.get_name().is_modal_logic() && logic.identity_type == NecessaryIdentity
                 {
                     //inherit !(x=y) to all possible worlds by stating □!(x=y)
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -72,7 +72,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
+                if logic.get_name().is_modal_logic() && logic.identity_type == NecessaryIdentity
                 {
                     //inherit (x=y)- to all possible worlds by stating □(x=y)-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));

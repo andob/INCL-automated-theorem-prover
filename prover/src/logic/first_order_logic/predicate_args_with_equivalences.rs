@@ -24,6 +24,7 @@ impl PredicateArguments
             .map(|node| node.formula).collect::<Vec<Formula>>();
 
         let all_equivalences_on_path = all_formulas_on_path.iter()
+            .filter(|formula| formula.get_possible_world() == possible_world)
             .filter_map(create_equality_formulas_filtering_lambda())
             .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
