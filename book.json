@@ -4065,6 +4065,20 @@
         "conclusion": "∀x Q[x]"
       },
       {
+        "id": "22.4.4",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "proved",
+        "premises": [ "∀x(A[x] ∧ B[x])" ],
+        "conclusion": "∀x(A[x]) ∧ ∀x(B[x])"
+      },
+      {
+        "id": "22.4.5",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
+        "expected": "disproved",
+        "premises": [ "∀x P[x]", "∀x(¬P[x] ∨ Q[x])" ],
+        "conclusion": "∀x Q[x]"
+      },
+      {
         "id": "22.6.3.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
         "expected": "proved",
