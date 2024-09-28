@@ -95,7 +95,7 @@ function initialize_layout(callback)
                 },
                 {
                     type: 'component',
-                    componentName: 'CountermodelComponent',
+                    componentName: 'CountermodelGraphComponent',
                     title: 'Countermodel',
                     isClosable: false,
                 }]
@@ -110,13 +110,13 @@ function initialize_layout(callback)
     layout.registerComponent('ProblemCatalogComponent', problem_catalog_component =>
     layout.registerComponent('ProofTreeComponent', proof_tree_component =>
     layout.registerComponent('ModalityGraphComponent', modality_graph_component =>
-    layout.registerComponent('CountermodelComponent', countermodel_component =>
+    layout.registerComponent('CountermodelGraphComponent', countermodel_graph_container =>
     callback({
         problem_input_container: problem_component.getElement(),
         problem_catalog_container: problem_catalog_component.getElement(),
         proof_tree_container: proof_tree_component.getElement(),
         modality_graph_container: modality_graph_component.getElement(),
-        countermodel_container: countermodel_component.getElement(),
+        countermodel_graph_container: countermodel_graph_container.getElement(),
         about_container: about_component.getElement(),
     })))))));
 
@@ -392,6 +392,7 @@ function prove_problem(problem)
 
         render_proof_tree(proof_tree);
         render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
+        render_countermodel_graph(proof_tree.problem.logic, proof_tree.countermodel);
 
         //changing browser URL without reloading the page, in order for the URL to be shareable
         window.history.pushState(null, null, '?' + create_shareable_url_args(problem).toString());
@@ -560,6 +561,85 @@ function render_modality_graph(logic, modality_graph)
 
     cytoscape({
         container: window.containers.modality_graph_container,
+        elements: {
+            nodes: nodes,
+            edges: edges,
+        },
+        layout: {
+            name: 'avsdf',
+            animationDuration: 0,
+            nodeSeparation: 120
+        },
+        wheelSensitivity: 0.1,
+        style: [
+            {
+                selector: 'node',
+                style: {
+                    'background-color': 'black',
+                    'text-valign': 'center',
+                    'text-halign': 'center',
+                    'color': 'white',
+                    'label': 'data(text)',
+                }
+            },
+            {
+                selector: 'edge',
+                style: {
+                    'target-arrow-shape': 'triangle',
+                    'curve-style': 'bezier',
+                    'text-valign': 'center',
+                    'text-halign': 'center',
+                    'color': 'white',
+                    'label': 'data(text)',
+                    'width': 1.0,
+                }
+            },
+            {
+                selector: 'label',
+                style: {
+                    'text-wrap': 'wrap',
+                }
+            }
+        ],
+    });
+}
+
+function render_countermodel_graph(logic, countermodel)
+{
+    if (!countermodel)
+    {
+        cytoscape({ container: window.containers.countermodel_graph_container });
+        return;
+    }
+
+    let should_show_possible_worlds = !incl.should_skip_rendering_modality_graph(logic);
+    let nodes = countermodel.nodes.map((node) =>
+    {
+        let text = "";
+        if (should_show_possible_worlds)
+        {
+            text += node.possible_world.toString();
+            if (!node.is_normal_world)
+                text += '*';
+        }
+
+        for (let [key, value] of Object.entries(node.atomics))
+        {
+            if (value === null) text += '\n' + key + ' : unknown';
+            else if (value) text += '\n' + key + ' : true';
+            else text += '\n' + key + ' : false';
+        }
+
+        return { data: { id:node.possible_world, text:text } };
+    });
+
+    let edges = countermodel.vertices.map((vertex) =>
+    {
+        return { data: { source:vertex.from, target:vertex.to, text:vertex.tags } };
+    });
+
+    cytoscape({
+        container: window.containers.countermodel_graph_container,
         elements: {
             nodes: nodes,
             edges: edges,

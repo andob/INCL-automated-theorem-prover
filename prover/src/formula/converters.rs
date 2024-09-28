@@ -329,6 +329,42 @@ impl Formula
             Comment(_) => { FormulaExtras::empty() }
         }
     }
+
+    pub fn get_all_atomic_names(&self) -> BTreeSet<String>
+    {
+        let mut output : BTreeSet<String> = BTreeSet::new();
+        self.get_all_atomic_names_recursively(&mut output);
+        return output;
+    }
+    fn get_all_atomic_names_recursively(&self, output : &mut BTreeSet<String>)
+    {
+        let mut get_all_atomic_names_recursively_from_tuple = |(p, q) : (&Formula, &Formula)|
+        {
+            p.get_all_atomic_names_recursively(output);
+            q.get_all_atomic_names_recursively(output);
+        };
+
+        match self
+        {
+            Atomic(name, _) => { output.insert(name.clone()); }
+            Non(box p, _) => { p.get_all_atomic_names_recursively(output); }
+            And(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            Or(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            Imply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            BiImply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            StrictImply(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            Conditional(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
+            Exists(_, box p, _) => { p.get_all_atomic_names_recursively(output); }
+            ForAll(_, box p, _) => { p.get_all_atomic_names_recursively(output); }
+            Possible(box p, _) => { p.get_all_atomic_names_recursively(output); }
+            Necessary(box p, _) => { p.get_all_atomic_names_recursively(output); }
+            InPast(box p, _) => { p.get_all_atomic_names_recursively(output); }
+            InFuture(box p, _) => { p.get_all_atomic_names_recursively(output); }
+            DefinitelyExists(_, _) => {}
+            Equals(_, _, _) => {}
+            Comment(_) => {}
+        }
+    }
 }
 
 impl AtomicFormulaExtras
