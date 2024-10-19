@@ -27,3 +27,9 @@ count_instructions = "0.1.4"
 
 # RAM allocation counter
 allocation-counter = "0.8.1"
+
+# Simple DirectMedia Layer bindings
+sdl2 = "0.37.0"
+
+# iter extensions
+itertools = "0.13.0"

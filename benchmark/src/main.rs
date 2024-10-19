@@ -1,11 +1,20 @@
 #![feature(test)]
 
-mod csv;
-
 extern crate test;
+
+mod csv;
+mod visualization;
+mod complexity;
+
+use crate::csv::read_csv;
+use crate::complexity::calculate_complexity;
+use crate::visualization::visualize_data;
 
 fn main()
 {
+    let csv_lines = read_csv().unwrap();
+    let complexity = calculate_complexity(&csv_lines);
+    visualize_data(&csv_lines, complexity).unwrap();
 }
 
 #[cfg(test)]
