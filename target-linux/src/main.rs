@@ -47,7 +47,7 @@ fn main() -> Result<()>
 
         let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, skip_contradiction_check:false };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
@@ -57,7 +57,7 @@ fn main() -> Result<()>
     {
         let logic = LogicFactory::get_logic_by_name(&args[1]).context(codeloc!())?;
         let statement = LogicalExpressionParser::parse(&logic, &args[2]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, skip_contradiction_check:false };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 

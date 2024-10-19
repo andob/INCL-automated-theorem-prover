@@ -9,6 +9,8 @@ opt-level = 3
 opt-level = 3
 [profile.test]
 opt-level = 3
+[profile.bench]
+opt-level = 0
 
 [dependencies]
 # generic Result<> with any error
@@ -23,6 +25,7 @@ regex = "1.10.5"
 
 # random number generator
 rand = "0.8.5"
+random-string = "1.1.0"
 
 # enum utils
 strum = "0.26.1"

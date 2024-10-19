@@ -7,12 +7,14 @@ use crate::logic::Logic;
 use crate::proof::ProofAlgorithm;
 use crate::tree::ProofTree;
 
+#[derive(Clone)]
 pub struct Problem
 {
     pub id : String,
     pub logic : Rc<dyn Logic>,
     pub premises : Vec<Formula>,
     pub conclusion : Formula,
+    pub skip_contradiction_check : bool,
 }
 
 impl Problem

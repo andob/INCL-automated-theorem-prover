@@ -22,14 +22,18 @@ pub struct ProofAlgorithm
     logic_rules : LogicRuleCollection,
     node_factory : ProofTreeNodeFactory,
     modality_graph: Graph,
+    skip_contradiction_check : bool,
 }
 
 impl ProofAlgorithm
 {
     pub fn prove(mut self) -> ProofTree
     {
-        //check for contradictions right in premises and non-conclusion
-        self.proof_tree.check_for_contradictions();
+        if !self.skip_contradiction_check
+        {
+            //check for contradictions right in premises and non-conclusion
+            self.proof_tree.check_for_contradictions();
+        }
 
         while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
@@ -37,7 +41,10 @@ impl ProofAlgorithm
             {
                 self.proof_tree.append_subtree(&mut subtree, node.id);
 
-                self.proof_tree.check_for_contradictions();
+                if !self.skip_contradiction_check
+                {
+                    self.proof_tree.check_for_contradictions();
+                }
 
                 self.decomposition_queue.push_subtree(subtree);
             }

@@ -13,6 +13,8 @@ opt-level = 3
 opt-level = 3
 [profile.test]
 opt-level = 3
+[profile.bench]
+opt-level = 0
 
 [lib]
 crate-type = ["cdylib", "rlib"]

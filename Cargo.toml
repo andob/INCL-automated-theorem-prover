@@ -1,2 +1,2 @@
 [workspace]
-members = [ "prover", "target-linux", "target-wasm" ]
+members = [ "prover", "target-linux", "target-wasm", "benchmark" ]

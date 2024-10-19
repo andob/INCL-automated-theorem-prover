@@ -4,6 +4,7 @@ mod collections;
 pub mod converters;
 pub mod notations;
 mod operators;
+mod random;
 
 use std::fmt::Display;
 use itertools::Itertools;

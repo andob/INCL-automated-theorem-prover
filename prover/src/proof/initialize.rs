@@ -11,25 +11,29 @@ impl ProofAlgorithm
 {
     pub fn initialize(problem : Problem) -> ProofAlgorithm
     {
+        let logic = problem.logic.clone();
+        let skip_contradiction_check = problem.skip_contradiction_check;
+
         let mut node_factory = ProofTreeNodeFactory::new(&problem.logic);
 
-        let non_conclusion = problem.logic.get_semantics().reductio_ad_absurdum(&problem.conclusion);
+        let non_conclusion = logic.get_semantics().reductio_ad_absurdum(&problem.conclusion);
         let non_conclusion_node = node_factory.new_node(non_conclusion);
 
-        let mut decomposition_queue = DecompositionPriorityQueue::new(problem.logic.clone());
+        let mut decomposition_queue = DecompositionPriorityQueue::new(logic.clone());
         decomposition_queue.push_tree_node(Box::new(non_conclusion_node.clone()));
 
         if problem.premises.is_empty()
         {
-            let logic_name = problem.logic.get_name();
-            let logic_rules = problem.logic.get_rules();
             let proof_tree = ProofTree::new(problem, node_factory.clone(), non_conclusion_node);
 
-            return ProofAlgorithm { proof_tree, decomposition_queue, logic_name, logic_rules, node_factory, modality_graph:Graph::new() };
+            return ProofAlgorithm
+            {
+                proof_tree: proof_tree, decomposition_queue: decomposition_queue,
+                logic_name: logic.get_name(), logic_rules: logic.get_rules(),
+                node_factory: node_factory, modality_graph: Graph::new(),
+                skip_contradiction_check: skip_contradiction_check,
+            };
         }
-
-        let logic_name = problem.logic.get_name();
-        let logic_rules = problem.logic.get_rules();
 
         let first_premise_node = node_factory.new_node(problem.premises[0].clone());
         let first_premise_node_id = first_premise_node.id;
@@ -50,6 +54,12 @@ impl ProofAlgorithm
         let mut non_conclusion_subtree = ProofSubtree::with_middle_node(non_conclusion_node);
         proof_tree.append_subtree(&mut non_conclusion_subtree, first_premise_node_id);
 
-        return ProofAlgorithm { proof_tree, decomposition_queue, logic_name, logic_rules, node_factory, modality_graph:Graph::new() };
+        return ProofAlgorithm
+        {
+            proof_tree: proof_tree, decomposition_queue: decomposition_queue,
+            logic_name: logic.get_name(), logic_rules: logic.get_rules(),
+            node_factory: node_factory, modality_graph: Graph::new(),
+            skip_contradiction_check: skip_contradiction_check,
+        };
     }
 }
