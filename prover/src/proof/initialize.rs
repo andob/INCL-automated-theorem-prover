@@ -12,9 +12,8 @@ impl ProofAlgorithm
     pub fn initialize(problem : Problem) -> ProofAlgorithm
     {
         let logic = problem.logic.clone();
-        let skip_contradiction_check = problem.skip_contradiction_check;
 
-        let mut node_factory = ProofTreeNodeFactory::new(&problem.logic);
+        let mut node_factory = ProofTreeNodeFactory::new(&logic);
 
         let non_conclusion = logic.get_semantics().reductio_ad_absurdum(&problem.conclusion);
         let non_conclusion_node = node_factory.new_node(non_conclusion);
@@ -31,7 +30,6 @@ impl ProofAlgorithm
                 proof_tree: proof_tree, decomposition_queue: decomposition_queue,
                 logic_name: logic.get_name(), logic_rules: logic.get_rules(),
                 node_factory: node_factory, modality_graph: Graph::new(),
-                skip_contradiction_check: skip_contradiction_check,
             };
         }
 
@@ -59,7 +57,6 @@ impl ProofAlgorithm
             proof_tree: proof_tree, decomposition_queue: decomposition_queue,
             logic_name: logic.get_name(), logic_rules: logic.get_rules(),
             node_factory: node_factory, modality_graph: Graph::new(),
-            skip_contradiction_check: skip_contradiction_check,
         };
     }
 }

@@ -1,18 +1,38 @@
-use box_macro::bx;
-use rand::distributions::Standard;
-use rand::prelude::Distribution;
-use rand::{Rng, RngCore};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Imply, Non, Or};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArguments, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Imply, Necessary, Non, Or, Possible, StrictImply};
+use box_macro::bx;
+use rand::distributions::Uniform;
+use rand::prelude::Distribution;
+use rand::Rng;
 
+const UNIFORM_DISTRIBUTION_MAX : u32 = 1_000_000;
 const SMALL_LETTER_CHARSET : &str = "qwertyuiopasdfghjklzxcvbnm";
 
-impl Distribution<Formula> for Standard
+impl Formula
 {
-    fn sample<R : Rng + ?Sized>(&self, random : &mut R) -> Formula
+    pub fn random(number_of_operators : usize) -> Formula
     {
-        let probability = random.gen();
-        if random.gen_bool(probability)
+        loop
+        {
+            let seed = if number_of_operators == 0 { 0 }
+                else if number_of_operators < 10 { 1 }
+                else { (number_of_operators / 10) * 2 };
+
+            let formula = Formula::random_impl(seed as f64);
+            if formula.count_number_of_operators() == number_of_operators
+            {
+                return formula;
+            }
+        }
+    }
+
+    pub fn random_impl(seed : f64) -> Formula
+    {
+        let mut random_number_generator = rand::thread_rng();
+        let uniform_distribution = Uniform::from(0..UNIFORM_DISTRIBUTION_MAX);
+
+        let random_number = uniform_distribution.sample(&mut random_number_generator);
+        if (random_number as f64) / (UNIFORM_DISTRIBUTION_MAX as f64) >= seed
         {
             let name = random_string::generate(1, SMALL_LETTER_CHARSET);
             let extras = AtomicFormulaExtras
@@ -31,14 +51,14 @@ impl Distribution<Formula> for Standard
             is_hidden: false, sign: Sign::Plus,
         };
 
-        return match random.next_u32() % 5
+        let next = || Formula::random_impl(seed / 2.0);
+        match uniform_distribution.sample(&mut random_number_generator) % 4
         {
-            0 => Non(bx!(random.gen()), extras),
-            1 => And(bx!(random.gen()), bx!(random.gen()), extras),
-            2 => Or(bx!(random.gen()), bx!(random.gen()), extras),
-            3 => Imply(bx!(random.gen()), bx!(random.gen()), extras),
-            4 => BiImply(bx!(random.gen()), bx!(random.gen()), extras),
+            0 => And(bx!(next()), bx!(next()), extras),
+            1 => Or(bx!(next()), bx!(next()), extras),
+            2 => Imply(bx!(next()), bx!(next()), extras),
+            3 => BiImply(bx!(next()), bx!(next()), extras),
             _ => Comment(random_string::generate(1, SMALL_LETTER_CHARSET)),
-        };
+        }
     }
 }

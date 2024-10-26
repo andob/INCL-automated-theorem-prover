@@ -135,11 +135,11 @@ impl DecompositionPriorityQueue
     {
         if self.banned_reusable_nodes.contains(node) { return false };
 
-        match &node.formula
+        return match &node.formula
         {
             ForAll(_x, _p, extras) if extras.sign == Plus => true,
             Exists(_x, _p, extras) if extras.sign == Minus => true,
             _ => false
-        }
+        };
     }
 }

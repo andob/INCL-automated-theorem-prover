@@ -47,7 +47,7 @@ fn main() -> Result<()>
 
         let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, skip_contradiction_check:false };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
@@ -57,7 +57,7 @@ fn main() -> Result<()>
     {
         let logic = LogicFactory::get_logic_by_name(&args[1]).context(codeloc!())?;
         let statement = LogicalExpressionParser::parse(&logic, &args[2]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, skip_contradiction_check:false };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
@@ -65,10 +65,10 @@ fn main() -> Result<()>
     }
     else
     {
-        print!("\nGraham Priest Introduction to Non-Classical Logic Automated Theorem Prover");
-        print!("\n\nUsage: incl solve-book to solve all problems from the book!");
-        print!("\nUsage: incl <logic> <problem> to solve a problem given as input!");
-        print!("\nUsage: incl <problem> to solve a propositional logic problem given as input!");
+        println!("Graham Priest Introduction to Non-Classical Logic Automated Theorem Prover\n");
+        println!("Usage: incl solve-book to solve all problems from the book!");
+        println!("Usage: incl <logic> <problem> to solve a problem given as input!");
+        println!("Usage: incl <problem> to solve a propositional logic problem given as input!\n");
     }
 
     return Ok(());

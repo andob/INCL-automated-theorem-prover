@@ -14,7 +14,6 @@ pub struct Problem
     pub logic : Rc<dyn Logic>,
     pub premises : Vec<Formula>,
     pub conclusion : Formula,
-    pub skip_contradiction_check : bool,
 }
 
 impl Problem

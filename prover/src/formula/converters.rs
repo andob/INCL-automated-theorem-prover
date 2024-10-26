@@ -365,6 +365,30 @@ impl Formula
             Comment(_) => {}
         }
     }
+
+    pub fn count_number_of_operators(&self) -> usize
+    {
+        return match self
+        {
+            Atomic(_, _) => { 0 }
+            Non(box p, _) => { 1 + p.count_number_of_operators() }
+            And(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            Or(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            Imply(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            BiImply(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            StrictImply(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            Conditional(box p, box q, _) => { 1 + p.count_number_of_operators() + q.count_number_of_operators() }
+            Exists(_, box p, _) => { 1 + p.count_number_of_operators() }
+            ForAll(_, box p, _) => { 1 + p.count_number_of_operators() }
+            Equals(_, _, _) => { 0 }
+            DefinitelyExists(_, _) => { 0 }
+            Possible(box p, _) => { 1 + p.count_number_of_operators() }
+            Necessary(box p, _) => { 1 + p.count_number_of_operators() }
+            InPast(box p, _) => { 1 + p.count_number_of_operators() }
+            InFuture(box p, _) => { 1 + p.count_number_of_operators() }
+            Comment(_) => { 0 }
+        }
+    }
 }
 
 impl AtomicFormulaExtras

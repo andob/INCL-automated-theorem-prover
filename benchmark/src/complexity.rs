@@ -1,3 +1,6 @@
+use std::fmt::{Display, Formatter};
+use anyhow::{Context, Result};
+use prover::codeloc;
 use crate::csv::ParsedCSVLine;
 
 pub enum Complexity
@@ -56,8 +59,7 @@ impl Complexity
             return match n as u64
             {
                 0 => 1.0, 1 => 1.0, 2 => 2.0, 3 => 6.0, 4 => 24.0, 5 => 120.0, 6 => 720.0, 7 => 5040.0,
-                8 => 40320.0, 9 => 362880.0, 10 => 3628800.0, 11 => 39916800.0, 12 => 479001600.0,
-                13 => 6227020800.0, 14 => 87178291200.0, 15 => 1307674368000.0, _ => 20922789888000.0,
+                8 => 40320.0, 9 => 362880.0, 10 => 3628800.0, 11 => 39916800.0, _ => 479001600.0,
             };
         }
 
@@ -86,10 +88,18 @@ impl Complexity
     }
 }
 
-pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Complexity
+impl Display for Complexity
 {
-    let max_input = csv_lines.iter().map(|line| line.input).max().unwrap();
-    let max_output = csv_lines.iter().map(|line| line.output).max().unwrap();
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        return write!(f, "{}", self.as_str());
+    }
+}
+
+pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Result<Complexity>
+{
+    let max_input = csv_lines.iter().map(|line| line.input).max().context(codeloc!())?;
+    let max_output = csv_lines.iter().map(|line| line.output).max().context(codeloc!())?;
 
     let mut complexities =
     [
@@ -129,6 +139,7 @@ pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Complexity
         complexities[complexity_index].0 = r_squared;
     }
 
+    println!("\n\nR^2,Complexity");
     for (r_squared, complexity) in &complexities
     {
         println!("{},{}", r_squared, complexity.as_str());
@@ -138,5 +149,5 @@ pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Complexity
         .min_by(|(r_squared1, _), (r_squared2, _)| r_squared1.total_cmp(r_squared2))
         .expect("Cannot determine complexity!");
 
-    return complexity;
+    return Ok(complexity);
 }

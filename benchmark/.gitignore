@@ -1,2 +1,3 @@
 data.csv
-data.csv.bak
+data_*.csv
+random_formulas.txt

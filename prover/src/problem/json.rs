@@ -66,10 +66,6 @@ impl Problem
             premises.push(premise);
         }
 
-        return Ok(Problem
-        {
-            id: json.id.clone(), logic: logic, premises: premises,
-            conclusion: conclusion, skip_contradiction_check: false,
-        });
+        return Ok(Problem { id:json.id.clone(), logic:logic, premises:premises, conclusion:conclusion });
     }
 }

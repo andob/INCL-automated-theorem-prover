@@ -10,7 +10,7 @@ use prover::codeloc;
 use crate::complexity::Complexity;
 use crate::csv::ParsedCSVLine;
 
-pub fn visualize_data(csv_lines : &Vec<ParsedCSVLine>, complexity : Complexity) -> Result<()>
+pub fn visualize_data(csv_lines : &Vec<ParsedCSVLine>, complexity : &Complexity) -> Result<()>
 {
     let sdl = sdl2::init().map_err(|msg|anyhow!(msg)).context(codeloc!())?;
     let video_subsystem = sdl.video().map_err(|msg|anyhow!(msg)).context(codeloc!())?;
@@ -18,11 +18,11 @@ pub fn visualize_data(csv_lines : &Vec<ParsedCSVLine>, complexity : Complexity) 
     let (window_width, window_height) = (1400u32, 900u32);
     let window = video_subsystem.window(complexity.as_str(), window_width, window_height).opengl().build().context(codeloc!())?;
 
-    let (opengl_driver_index, _) = sdl2::render::drivers().find_position(|d| d.name=="opengl").unwrap();
+    let (opengl_driver_index, _) = sdl2::render::drivers().find_position(|d| d.name=="opengl").context(codeloc!())?;
     let mut canvas = window.into_canvas().index(opengl_driver_index as u32).accelerated().build().context(codeloc!())?;
 
-    let max_input = csv_lines.iter().map(|line| line.input).max().unwrap();
-    let max_output = csv_lines.iter().map(|line| line.output).max().unwrap();
+    let max_input = csv_lines.iter().map(|line| line.input).max().context(codeloc!())?;
+    let max_output = csv_lines.iter().map(|line| line.output).max().context(codeloc!())?;
 
     let scale_x = (window_width as f64) * 0.99 / (max_input as f64);
     let scale_y = (window_height as f64) * 0.99 / (max_output as f64);
