@@ -11,7 +11,8 @@ use prover::formula::Formula;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::Logic;
 use prover::parser::algorithm::LogicalExpressionParser;
-use prover::problem::Problem;
+use prover::problem::catalog::get_demo_problem_catalog;
+use prover::problem::{Problem, ProblemFlags};
 
 const RANDOM_FORMULAS_FILE_NAME : &str = "random_formulas.txt";
 const DATA_CSV_FILE_NAME : &str = "data.csv";
@@ -70,9 +71,14 @@ pub fn read_random_problems(logic : &Rc<dyn Logic>) -> Result<Vec<Problem>>
         if let Ok(line) = line_result
         {
             let formula = LogicalExpressionParser::parse(&logic, &line).context(codeloc!())?;
-            let problem_id = formula.to_string_with_options(&formula_format_options);
-            let problem = Problem { id:problem_id, logic:logic.clone(), premises:vec![], conclusion:formula };
-            problems.push(problem);
+            let formula_as_string = formula.to_string_with_options(&formula_format_options);
+
+            problems.push(Problem
+            {
+                id: formula_as_string, logic: logic.clone(),
+                premises: Vec::new(), conclusion: formula,
+                flags: ProblemFlags { should_skip_contradiction_check: true },
+            });
         }
     }
 
@@ -84,6 +90,11 @@ pub fn generate_csv(logic : &Rc<dyn Logic>) -> Result<()>
     let program_args = env::args().collect_vec();
 
     let problems = read_random_problems(logic).context(codeloc!())?;
+    // let problems = get_demo_problem_catalog().unwrap().into_iter()
+    //     .flat_map(|chapter| chapter.problems)
+    //     .map(|problem| problem.to_problem().unwrap())
+    //     .filter(|problem| problem.logic.get_name().is_first_order_logic())
+    //     .collect_vec();
 
     let data_file_path = Path::new(DATA_CSV_FILE_NAME);
     fs::remove_file(data_file_path).unwrap_or_default();

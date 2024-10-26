@@ -19,7 +19,7 @@ use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
-use prover::problem::Problem;
+use prover::problem::{Problem, ProblemFlags};
 use prover::utils::parallel_for_each_problem;
 
 const OUTPUT_DIR_PATH : &str = "./target/html";
@@ -47,7 +47,7 @@ fn main() -> Result<()>
 
         let logic : Rc<dyn Logic> = Rc::new(PropositionalLogic{});
         let statement = LogicalExpressionParser::parse(&logic, &args[1]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, flags:ProblemFlags::default() };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 
@@ -57,7 +57,7 @@ fn main() -> Result<()>
     {
         let logic = LogicFactory::get_logic_by_name(&args[1]).context(codeloc!())?;
         let statement = LogicalExpressionParser::parse(&logic, &args[2]).context(codeloc!())?;
-        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement };
+        let problem = Problem { id:String::from("Problem"), logic, premises:vec![], conclusion:statement, flags:ProblemFlags::default() };
 
         prove_problem(PROOF_FILE_PATH, problem).context(codeloc!())?;
 

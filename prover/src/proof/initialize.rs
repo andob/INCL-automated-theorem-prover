@@ -12,6 +12,7 @@ impl ProofAlgorithm
     pub fn initialize(problem : Problem) -> ProofAlgorithm
     {
         let logic = problem.logic.clone();
+        let problem_flags = problem.flags.clone();
 
         let mut node_factory = ProofTreeNodeFactory::new(&logic);
 
@@ -30,6 +31,7 @@ impl ProofAlgorithm
                 proof_tree: proof_tree, decomposition_queue: decomposition_queue,
                 logic_name: logic.get_name(), logic_rules: logic.get_rules(),
                 node_factory: node_factory, modality_graph: Graph::new(),
+                problem_flags: problem_flags,
             };
         }
 
@@ -57,6 +59,7 @@ impl ProofAlgorithm
             proof_tree: proof_tree, decomposition_queue: decomposition_queue,
             logic_name: logic.get_name(), logic_rules: logic.get_rules(),
             node_factory: node_factory, modality_graph: Graph::new(),
+            problem_flags: problem_flags,
         };
     }
 }

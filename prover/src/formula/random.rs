@@ -1,9 +1,9 @@
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Imply, Non, Or};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArguments, Sign};
 use box_macro::bx;
+use itertools::Itertools;
 use rand::distributions::Uniform;
 use rand::prelude::Distribution;
-use rand::Rng;
 
 const UNIFORM_DISTRIBUTION_MAX : u32 = 1_000_000;
 const SMALL_LETTER_CHARSET : &str = "qwertyuiopasdfghjklzxcvbnm";
@@ -34,7 +34,9 @@ impl Formula
         let random_number = uniform_distribution.sample(&mut random_number_generator);
         if (random_number as f64) / (UNIFORM_DISTRIBUTION_MAX as f64) >= seed
         {
-            let name = random_string::generate(1, SMALL_LETTER_CHARSET);
+            let charset = SMALL_LETTER_CHARSET.chars().collect_vec();
+            let character = charset[(random_number as usize) % charset.len()];
+
             let extras = AtomicFormulaExtras
             {
                 predicate_args: PredicateArguments::empty(),
@@ -42,7 +44,7 @@ impl Formula
                 is_hidden: false, sign: Sign::Plus,
             };
 
-            return Atomic(name, extras);
+            return Atomic(character.to_string(), extras);
         }
 
         let extras = FormulaExtras
@@ -58,7 +60,7 @@ impl Formula
             1 => Or(bx!(next()), bx!(next()), extras),
             2 => Imply(bx!(next()), bx!(next()), extras),
             3 => BiImply(bx!(next()), bx!(next()), extras),
-            _ => Comment(random_string::generate(1, SMALL_LETTER_CHARSET)),
+            _ => Comment(String::new()),
         }
     }
 }

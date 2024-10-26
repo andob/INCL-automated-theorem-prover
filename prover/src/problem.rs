@@ -14,6 +14,21 @@ pub struct Problem
     pub logic : Rc<dyn Logic>,
     pub premises : Vec<Formula>,
     pub conclusion : Formula,
+    pub flags : ProblemFlags,
+}
+
+#[derive(Clone)]
+pub struct ProblemFlags
+{
+    pub should_skip_contradiction_check : bool
+}
+
+impl Default for ProblemFlags
+{
+    fn default() -> Self
+    {
+        return ProblemFlags { should_skip_contradiction_check: false };
+    }
 }
 
 impl Problem

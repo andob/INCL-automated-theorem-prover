@@ -146,6 +146,7 @@ pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Result<Complexit
     }
 
     let (_, complexity) = complexities.into_iter()
+        .filter(|(r_squared, _)| !r_squared.is_nan())
         .min_by(|(r_squared1, _), (r_squared2, _)| r_squared1.total_cmp(r_squared2))
         .expect("Cannot determine complexity!");
 

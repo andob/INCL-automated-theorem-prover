@@ -8,7 +8,7 @@ use crate::formula::to_string::FormulaFormatOptions;
 use crate::logic::{Logic, LogicFactory};
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::parser::algorithm::LogicalExpressionParser;
-use crate::problem::Problem;
+use crate::problem::{Problem, ProblemFlags};
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct BookChapterJSON
@@ -66,6 +66,6 @@ impl Problem
             premises.push(premise);
         }
 
-        return Ok(Problem { id:json.id.clone(), logic:logic, premises:premises, conclusion:conclusion });
+        return Ok(Problem { id:json.id.clone(), logic:logic, premises:premises, conclusion:conclusion, flags:ProblemFlags::default() });
     }
 }

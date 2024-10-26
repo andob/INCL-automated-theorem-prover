@@ -1,6 +1,7 @@
 use crate::graph::Graph;
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
+use crate::problem::ProblemFlags;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
@@ -21,15 +22,19 @@ pub struct ProofAlgorithm
     logic_name : LogicName,
     logic_rules : LogicRuleCollection,
     node_factory : ProofTreeNodeFactory,
-    modality_graph: Graph,
+    modality_graph : Graph,
+    problem_flags : ProblemFlags,
 }
 
 impl ProofAlgorithm
 {
     pub fn prove(mut self) -> ProofTree
     {
-        //check for contradictions right in premises and non-conclusion
-        self.proof_tree.check_for_contradictions();
+        if !self.problem_flags.should_skip_contradiction_check
+        {
+            //check for contradictions right in premises and non-conclusion
+            self.proof_tree.check_for_contradictions();
+        }
 
         while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
@@ -37,7 +42,10 @@ impl ProofAlgorithm
             {
                 self.proof_tree.append_subtree(&mut subtree, node.id);
 
-                self.proof_tree.check_for_contradictions();
+                if !self.problem_flags.should_skip_contradiction_check
+                {
+                    self.proof_tree.check_for_contradictions();
+                }
 
                 self.decomposition_queue.push_subtree(subtree);
             }

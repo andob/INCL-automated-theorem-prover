@@ -141,5 +141,6 @@ impl DecompositionPriorityQueue
             Exists(_x, _p, extras) if extras.sign == Minus => true,
             _ => false
         };
+        // return false;
     }
 }
