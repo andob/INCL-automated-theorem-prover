@@ -50,7 +50,7 @@ impl Logic for LogicOfConstructibleNegation
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let mut semantics = ManyValuedLogicSemantics::new();
+        let mut semantics = ManyValuedLogicSemantics::with_four_values();
 
         if self.variant == LogicOfConstructibleNegationVariant::I3
         {

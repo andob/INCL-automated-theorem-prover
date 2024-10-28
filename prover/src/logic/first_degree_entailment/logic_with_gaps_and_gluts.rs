@@ -39,7 +39,7 @@ impl Logic for LogicWithGapsGlutsAndWorlds
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(ManyValuedLogicSemantics::new());
+        return Box::new(ManyValuedLogicSemantics::with_four_values());
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>

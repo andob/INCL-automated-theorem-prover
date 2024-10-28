@@ -7,6 +7,7 @@ use std::fmt::Display;
 use anyhow::{Context};
 use itertools::Itertools;
 use substring::Substring;
+use crate::semantics::fuzzy_logic_semantics::FuzzyLogicSemantics;
 
 pub mod parser;
 pub mod formula;

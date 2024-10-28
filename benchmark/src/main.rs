@@ -9,8 +9,9 @@ mod complexity;
 
 use anyhow::Result;
 use itertools::Itertools;
-use prover::logic::Logic;
+use prover::logic::{Logic, LogicFactory};
 use std::env;
+use std::hint::black_box;
 use std::str::FromStr;
 use anyhow::Context;
 use prover::codeloc;

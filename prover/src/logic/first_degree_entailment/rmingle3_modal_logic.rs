@@ -40,7 +40,7 @@ impl Logic for RMingle3ModalLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let mut semantics = ManyValuedLogicSemantics::new();
+        let mut semantics = ManyValuedLogicSemantics::with_three_values();
         semantics.add_behaviour(ManyValuedContradictionBehaviour::FormulaMinusWithNonFormulaMinus);
         return Box::new(semantics);
     }

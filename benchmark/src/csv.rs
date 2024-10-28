@@ -90,11 +90,11 @@ pub fn generate_csv(logic : &Rc<dyn Logic>) -> Result<()>
     let program_args = env::args().collect_vec();
 
     let problems = read_random_problems(logic).context(codeloc!())?;
-    // let problems = get_demo_problem_catalog().unwrap().into_iter()
-    //     .flat_map(|chapter| chapter.problems)
-    //     .map(|problem| problem.to_problem().unwrap())
-    //     .filter(|problem| problem.logic.get_name().is_first_order_logic())
-    //     .collect_vec();
+    /*let problems = get_demo_problem_catalog().unwrap().into_iter()
+        .flat_map(|chapter| chapter.problems)
+        .map(|problem| problem.to_problem().unwrap())
+        .filter(|problem| problem.logic.get_name().is_first_order_logic())
+        .collect_vec();*/
 
     let data_file_path = Path::new(DATA_CSV_FILE_NAME);
     fs::remove_file(data_file_path).unwrap_or_default();

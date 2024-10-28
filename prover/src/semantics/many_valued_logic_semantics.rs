@@ -6,8 +6,11 @@ use crate::tree::path::ProofTreePath;
 
 pub struct ManyValuedLogicSemantics
 {
-    contradiction_behaviours : Vec<ManyValuedContradictionBehaviour>
+    truth_value_set_cardinality : TruthValueSetCardinality,
+    contradiction_behaviours : Vec<ManyValuedContradictionBehaviour>,
 }
+
+enum TruthValueSetCardinality { Three, Four }
 
 #[derive(Eq, PartialEq)]
 pub enum ManyValuedContradictionBehaviour
@@ -19,10 +22,23 @@ pub enum ManyValuedContradictionBehaviour
 
 impl ManyValuedLogicSemantics
 {
-    pub fn new() -> ManyValuedLogicSemantics
+    pub fn with_three_values() -> ManyValuedLogicSemantics
     {
         return ManyValuedLogicSemantics
         {
+            truth_value_set_cardinality: TruthValueSetCardinality::Three,
+            contradiction_behaviours: vec!
+            [
+                ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
+            ]
+        };
+    }
+
+    pub fn with_four_values() -> ManyValuedLogicSemantics
+    {
+        return ManyValuedLogicSemantics
+        {
+            truth_value_set_cardinality: TruthValueSetCardinality::Four,
             contradiction_behaviours: vec!
             [
                 ManyValuedContradictionBehaviour::FormulaPlusWithFormulaMinus
@@ -33,10 +49,17 @@ impl ManyValuedLogicSemantics
 
 impl Semantics for ManyValuedLogicSemantics
 {
-    //P could be true or false or unknown
-    //the unknown could be interpreted as neither true nor false
-    //the unknown could also be interpreted as both true and false
-    fn number_of_truth_values(&self) -> u8 { 3 }
+    fn number_of_truth_values(&self) -> u8
+    {
+        return match self.truth_value_set_cardinality
+        {
+            //3-valued logic: true, false, unknown (neither true nor false)
+            TruthValueSetCardinality::Three => 3,
+
+            //4-valued logic: true, false, neither true nor false, both true and false
+            TruthValueSetCardinality::Four => 4,
+        };
+    }
 
     fn reductio_ad_absurdum(&self, formula : &Formula) -> Formula
     {

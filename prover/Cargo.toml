@@ -45,3 +45,6 @@ log = "0.4.22"
 # concurrency libraries
 crossbeam-channel = "0.5.13"
 num_cpus = "1.16.0"
+
+# linear programming
+minilp = "0.2.2"

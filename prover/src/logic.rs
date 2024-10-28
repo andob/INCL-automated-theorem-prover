@@ -16,6 +16,7 @@ use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLo
 use crate::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FirstOrderLogic, FIRST_ORDER_LOGIC_NAME_PREFIX};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
 use crate::logic::first_order_logic::FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
+use crate::logic::fuzzy_logic::LukasiewiczFuzzyLogic;
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
@@ -37,6 +38,7 @@ pub mod intuitionistic_logic;
 mod temporal_modal_logic;
 mod conditional_modal_logic;
 mod first_degree_entailment;
+mod fuzzy_logic;
 
 pub trait Logic : Any
 {
@@ -137,7 +139,8 @@ impl LogicName
     pub fn is_modal_logic(&self) -> bool
     {
         return !self.matches_name_of_logic(bx!(PropositionalLogic{})) &&
-            !self.matches_name_of_logic(bx!(MinimalFirstDegreeEntailmentLogic{}));
+            !self.matches_name_of_logic(bx!(MinimalFirstDegreeEntailmentLogic{})) &&
+            !self.matches_name_of_logic(bx!(LukasiewiczFuzzyLogic{}));
     }
 
     pub fn is_non_normal_modal_logic(&self) -> bool
@@ -247,6 +250,8 @@ impl LogicFactory
             Rc::new(LogicOfConstructibleNegation::I3()),
             Rc::new(LogicOfConstructibleNegation::I4()),
             Rc::new(LogicOfConstructibleNegation::W()),
+
+            Rc::new(LukasiewiczFuzzyLogic {}),
         ];
 
         let excluded_logics = base_logics.iter()

@@ -33,7 +33,7 @@ impl Logic for KleeneModalLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let mut semantics = ManyValuedLogicSemantics::new();
+        let mut semantics = ManyValuedLogicSemantics::with_three_values();
         semantics.add_behaviour(ManyValuedContradictionBehaviour::FormulaPlusWithNonFormulaPlus);
         return Box::new(semantics);
     }

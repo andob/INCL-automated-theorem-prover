@@ -21,7 +21,7 @@ impl Logic for IntuitionisticLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        return Box::new(ManyValuedLogicSemantics::new());
+        return Box::new(ManyValuedLogicSemantics::with_three_values());
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>
