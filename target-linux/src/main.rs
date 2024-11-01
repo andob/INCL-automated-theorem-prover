@@ -89,9 +89,7 @@ fn prove_problems_from_the_book() -> Result<()>
         let proof_file_path = format!("{}/{}.html", OUTPUT_DIR_PATH, problem_json.id);
         let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-        let mut formula_format_options = FormulaFormatOptions::default();
-        formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
-        formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
+        let formula_format_options = FormulaFormatOptions::recommended_for(&logic);
 
         let proof_tree = problem.prove();
         let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;
@@ -129,9 +127,7 @@ fn prove_problem(proof_file_path : &str, problem : Problem) -> Result<()>
 {
     let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
 
-    let mut formula_format_options = FormulaFormatOptions::default();
-    formula_format_options.should_show_possible_worlds = problem.logic.get_name().is_modal_logic();
-    formula_format_options.should_show_sign = problem.logic.get_semantics().number_of_truth_values()>2;
+    let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
 
     let proof_tree = problem.prove();
     let proof_tree_json = proof_tree.to_json(&formula_format_options).context(codeloc!())?;

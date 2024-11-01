@@ -180,8 +180,8 @@ impl LogicRule for LukasiewiczImplicationRules
 
                 let conjunction = And(bx!(p_imply_q), bx!(q_imply_p), FormulaExtras
                 {
-                    possible_world: extras.possible_world,
-                    is_hidden: true, sign: Plus
+                    possible_world: extras.possible_world, sign: Plus,
+                    fuzzy_tags: extras.fuzzy_tags.clone(), is_hidden: true,
                 });
 
                 let conjunction_node = factory.new_node(conjunction);

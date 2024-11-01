@@ -1,11 +1,12 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 
 mod extras_in_world;
 mod extras_with_sign;
 mod extras_with_is_hidden;
+mod extras_with_fuzzy_tags;
 
 impl Formula
 {
@@ -29,6 +30,8 @@ impl Formula
             Necessary(box p, extras) => { Necessary(bx!(p.in_world(world)), extras.in_world(world)) }
             InPast(box p, extras) => { InPast(bx!(p.in_world(world)), extras.in_world(world)) }
             InFuture(box p, extras) => { InFuture(bx!(p.in_world(world)), extras.in_world(world)) }
+            LessThan(x, y, extras) => { LessThan(x.clone(), y.clone(), extras.in_world(world)) }
+            GreaterOrEqualThan(x, y, extras) => { GreaterOrEqualThan(x.clone(), y.clone(), extras.in_world(world)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -53,6 +56,8 @@ impl Formula
             Necessary(_, extras) => { extras.possible_world }
             InPast(_, extras) => { extras.possible_world }
             InFuture(_, extras) => { extras.possible_world }
+            LessThan(_, _, extras) => { extras.possible_world }
+            GreaterOrEqualThan(_, _, extras) => { extras.possible_world }
             Comment(_) => { PossibleWorld::zero() }
         }
     }
@@ -77,6 +82,8 @@ impl Formula
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_sign(sign)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_sign(sign)) }
             InFuture(p, extras) => { InFuture(p.clone(), extras.with_sign(sign)) }
+            LessThan(x, y, extras) => { LessThan(x.clone(), y.clone(), extras.with_sign(sign)) }
+            GreaterOrEqualThan(x, y, extras) => { GreaterOrEqualThan(x.clone(), y.clone(), extras.with_sign(sign)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -101,7 +108,61 @@ impl Formula
             Necessary(_, extras) => { extras.sign }
             InPast(_, extras) => { extras.sign }
             InFuture(_, extras) => { extras.sign }
+            LessThan(_, _, extras) => { extras.sign }
+            GreaterOrEqualThan(_, _, extras) => { extras.sign }
             Comment(_) => { Sign::Plus }
+        }
+    }
+
+    pub fn with_fuzzy_tags(&self, tags : FuzzyTags) -> Formula
+    {
+        return match self
+        {
+            Atomic(p, extras) => { Atomic(p.clone(), extras.with_fuzzy_tags(tags)) }
+            Non(p, extras) => { Non(p.clone(), extras.with_fuzzy_tags(tags)) }
+            And(p, q, extras) => { And(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            Or(p, q, extras) => { Or(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            Imply(p, q, extras) => { Imply(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            BiImply(p, q, extras) => { BiImply(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            StrictImply(p, q, extras) => { StrictImply(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            Conditional(p, q, extras) => { Conditional(p.clone(), q.clone(), extras.with_fuzzy_tags(tags)) }
+            Exists(x, p, extras) => { Exists(x.clone(), p.clone(), extras.with_fuzzy_tags(tags)) }
+            ForAll(x, p, extras) => { ForAll(x.clone(), p.clone(), extras.with_fuzzy_tags(tags)) }
+            Equals(x, y, extras) => { Equals(x.clone(), y.clone(), extras.with_fuzzy_tags(tags)) }
+            DefinitelyExists(x, extras) => { DefinitelyExists(x.clone(), extras.with_fuzzy_tags(tags)) }
+            Possible(p, extras) => { Possible(p.clone(), extras.with_fuzzy_tags(tags)) }
+            Necessary(p, extras) => { Necessary(p.clone(), extras.with_fuzzy_tags(tags)) }
+            InPast(p, extras) => { InPast(p.clone(), extras.with_fuzzy_tags(tags)) }
+            InFuture(p, extras) => { InFuture(p.clone(), extras.with_fuzzy_tags(tags)) }
+            LessThan(x, y, extras) => { LessThan(x.clone(), y.clone(), extras.with_fuzzy_tags(tags)) }
+            GreaterOrEqualThan(x, y, extras) => { GreaterOrEqualThan(x.clone(), y.clone(), extras.with_fuzzy_tags(tags)) }
+            Comment(payload) => { Comment(payload.clone()) }
+        }
+    }
+
+    pub fn get_fuzzy_tags(&self) -> FuzzyTags
+    {
+        return match self
+        {
+            Atomic(_, extras) => { extras.fuzzy_tags.clone() }
+            Non(_, extras) => { extras.fuzzy_tags.clone() }
+            And(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Or(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Imply(_, _, extras) => { extras.fuzzy_tags.clone() }
+            BiImply(_, _, extras) => { extras.fuzzy_tags.clone() }
+            StrictImply(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Conditional(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Exists(_, _, extras) => { extras.fuzzy_tags.clone() }
+            ForAll(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Equals(_, _, extras) => { extras.fuzzy_tags.clone() }
+            DefinitelyExists(_, extras) => { extras.fuzzy_tags.clone() }
+            Possible(_, extras) => { extras.fuzzy_tags.clone() }
+            Necessary(_, extras) => { extras.fuzzy_tags.clone() }
+            InPast(_, extras) => { extras.fuzzy_tags.clone() }
+            InFuture(_, extras) => { extras.fuzzy_tags.clone() }
+            LessThan(_, _, extras) => { extras.fuzzy_tags.clone() }
+            GreaterOrEqualThan(_, _, extras) => { extras.fuzzy_tags.clone() }
+            Comment(_) => { FuzzyTags::empty() }
         }
     }
 
@@ -125,6 +186,8 @@ impl Formula
             Necessary(p, extras) => { Necessary(p.clone(), extras.with_is_hidden(is_hidden)) }
             InPast(p, extras) => { InPast(p.clone(), extras.with_is_hidden(is_hidden)) }
             InFuture(p, extras) => { InFuture(p.clone(), extras.with_is_hidden(is_hidden)) }
+            LessThan(x, y, extras) => { LessThan(x.clone(), y.clone(), extras.with_is_hidden(is_hidden)) }
+            GreaterOrEqualThan(x, y, extras) => { GreaterOrEqualThan(x.clone(), y.clone(), extras.with_is_hidden(is_hidden)) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -149,6 +212,8 @@ impl Formula
             Necessary(_, extras) => { extras.is_hidden }
             InPast(_, extras) => { extras.is_hidden }
             InFuture(_, extras) => { extras.is_hidden }
+            LessThan(_, _, extras) => { extras.is_hidden }
+            GreaterOrEqualThan(_, _, extras) => { extras.is_hidden }
             Comment(_) => { false }
         }
     }
@@ -163,7 +228,9 @@ impl Formula
                 {
                     predicate_args: old_extras.predicate_args.clone(),
                     possible_world: PossibleWorld::zero(),
-                    is_hidden: false, sign: Sign::Plus,
+                    sign: Sign::Plus,
+                    fuzzy_tags: FuzzyTags::empty(),
+                    is_hidden: false,
                 })
             }
 
@@ -182,6 +249,8 @@ impl Formula
             Necessary(box p, _) => { Necessary(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
             InPast(box p, _) => { InPast(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
             InFuture(box p, _) => { InFuture(bx!(p.with_stripped_extras()), FormulaExtras::empty()) }
+            LessThan(x, y, _) => { LessThan(x.clone(), y.clone(), FormulaExtras::empty()) }
+            GreaterOrEqualThan(x, y, _) => { GreaterOrEqualThan(x.clone(), y.clone(), FormulaExtras::empty()) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }
@@ -209,6 +278,8 @@ impl Formula
             Necessary(box p, _) => { p.get_predicate_arguments_of_atomic() }
             InPast(box p, _) => { p.get_predicate_arguments_of_atomic() }
             InFuture(box p, _) => { p.get_predicate_arguments_of_atomic() }
+            LessThan(_, _, _) => { None }
+            GreaterOrEqualThan(_, _, _) => { None }
             Comment(_) => { None }
         }
     }
@@ -326,6 +397,8 @@ impl Formula
             Necessary(_, extras) => { extras.clone() }
             InPast(_, extras) => { extras.clone() }
             InFuture(_, extras) => { extras.clone() }
+            LessThan(_, _, extras) => { extras.clone() }
+            GreaterOrEqualThan(_, _, extras) => { extras.clone() }
             Comment(_) => { FormulaExtras::empty() }
         }
     }
@@ -362,6 +435,8 @@ impl Formula
             InFuture(box p, _) => { p.get_all_atomic_names_recursively(output); }
             DefinitelyExists(_, _) => {}
             Equals(_, _, _) => {}
+            LessThan(_, _, _) => {}
+            GreaterOrEqualThan(_, _, _) => {}
             Comment(_) => {}
         }
     }
@@ -381,6 +456,8 @@ impl Formula
             Exists(_, box p, _) => { 1 + p.count_number_of_operators() }
             ForAll(_, box p, _) => { 1 + p.count_number_of_operators() }
             Equals(_, _, _) => { 0 }
+            LessThan(_, _, _) => { 0 }
+            GreaterOrEqualThan(_, _, _) => { 0 }
             DefinitelyExists(_, _) => { 0 }
             Possible(box p, _) => { 1 + p.count_number_of_operators() }
             Necessary(box p, _) => { 1 + p.count_number_of_operators() }
@@ -398,8 +475,9 @@ impl AtomicFormulaExtras
         return FormulaExtras
         {
             possible_world: self.possible_world,
-            is_hidden: self.is_hidden,
             sign: self.sign,
+            fuzzy_tags: self.fuzzy_tags.clone(),
+            is_hidden: self.is_hidden,
         }
     }
 }

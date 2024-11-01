@@ -2,9 +2,10 @@ use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
-use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::{Formula, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::notations::OperatorNotations;
+use crate::logic::Logic;
 use crate::parser::token_types::TokenTypeID;
 
 impl Display for Formula
@@ -21,6 +22,7 @@ pub struct FormulaFormatOptions
     pub notations : OperatorNotations,
     pub should_show_possible_worlds : bool,
     pub should_show_sign : bool,
+    pub should_show_fuzzy_tags : bool,
 }
 
 impl FormulaFormatOptions
@@ -34,12 +36,27 @@ impl FormulaFormatOptions
     pub fn default() -> FormulaFormatOptions
     {
         return Self::DEFAULT_NOTATIONS.with(|default_notations|
-            FormulaFormatOptions
+        {
+            return FormulaFormatOptions
             {
                 notations: *default_notations.borrow(),
                 should_show_possible_worlds: true,
                 should_show_sign: false,
-            });
+                should_show_fuzzy_tags: false,
+            }
+        })
+    }
+
+    pub fn recommended_for(logic : &Rc<dyn Logic>) -> FormulaFormatOptions
+    {
+        let mut formula_format_options = FormulaFormatOptions::default();
+        formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
+
+        let number_of_truth_values = logic.get_semantics().number_of_truth_values();
+        formula_format_options.should_show_sign = number_of_truth_values > 2;
+        formula_format_options.should_show_fuzzy_tags = number_of_truth_values == u8::MAX;
+
+        return formula_format_options;
     }
 }
 
@@ -49,22 +66,27 @@ impl Formula
     {
         let mut formula_string = self.to_string_impl(options, 0);
 
+        let is_comment = matches!(self, Comment(..));
+        let is_inequality = matches!(self, LessThan(..) | GreaterOrEqualThan(..));
+
+        if options.should_show_possible_worlds && !is_comment
+        {
+            formula_string = format!("{} {}", formula_string, self.get_possible_world());
+        }
+
+        if options.should_show_sign && !is_comment && !is_inequality
+        {
+            formula_string = format!("{} {}", formula_string, self.get_sign());
+        }
+
+        if options.should_show_fuzzy_tags && !is_comment && !is_inequality
+        {
+            formula_string = format!("{{ {} }} {}", self.get_fuzzy_tags(), formula_string);
+        }
+
         if self.is_hidden()
         {
             formula_string = format!("[HIDDEN] {}", formula_string);
-        }
-
-        let is_comment = matches!(self, Comment(..));
-        if options.should_show_possible_worlds && !is_comment
-        {
-            formula_string.push(' ');
-            formula_string.push_str(self.get_possible_world().to_string().as_str());
-        }
-
-        if options.should_show_sign && !is_comment
-        {
-            formula_string.push(' ');
-            formula_string.push_str(self.get_sign().to_string().as_str());
         }
 
         return formula_string;
@@ -165,6 +187,18 @@ impl Formula
                 return format!("ᶠ{}", p.to_string_impl(options, index+1));
             }
 
+            LessThan(x, y, _) =>
+            {
+                return if index == 0 { format!("{} < {}", x, y) }
+                else { format!("({} < {})", x, y) };
+            }
+
+            GreaterOrEqualThan(x, y, _) =>
+            {
+                return if index == 0 { format!("{} ≥ {}", x, y) }
+                else { format!("({} ≥ {})", x, y) };
+            }
+
             Comment(payload) =>
             {
                 return payload.clone();
@@ -178,8 +212,9 @@ impl Display for PredicateArguments
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
         let args_as_string = self.args.iter()
-            .map(|arg|arg.to_string())
-            .intersperse(String::from(",")).collect::<String>();
+            .map(|arg| arg.to_string())
+            .intersperse(String::from(","))
+            .collect::<String>();
 
         return write!(f, "{}", args_as_string);
     }
@@ -212,5 +247,28 @@ impl Display for Sign
             Sign::Plus => { '+' }
             Sign::Minus => { '-' }
         })
+    }
+}
+
+impl Display for FuzzyTags
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        let tags_as_string = self.tags.iter()
+            .map(|tag| tag.to_string())
+            .intersperse(String::from(" + "))
+            .collect::<String>();
+
+        return write!(f, "{}", tags_as_string);
+    }
+}
+
+impl Display for FuzzyTag
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        return if let Some(hint) = &self.hint
+            { write!(f, "{}:{}", self.object_name, hint) }
+        else { write!(f, "{}", self.object_name) }
     }
 }

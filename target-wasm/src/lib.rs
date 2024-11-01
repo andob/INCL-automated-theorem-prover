@@ -121,9 +121,7 @@ pub fn solve_problem(problem_raw_json : String) -> Result<String, JsError>
         let problem = problem_parsed_json.to_problem()
             .map_err(|err| JsError::new(format_error!(err)))?;
 
-        let mut formula_format_options = FormulaFormatOptions::default();
-        formula_format_options.should_show_possible_worlds = problem.logic.get_name().is_modal_logic();
-        formula_format_options.should_show_sign = problem.logic.get_semantics().number_of_truth_values()>2;
+        let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
 
         let proof_tree = problem.prove();
         let proof_tree_json = proof_tree.to_json(&formula_format_options)

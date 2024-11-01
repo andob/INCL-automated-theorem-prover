@@ -28,6 +28,8 @@ pub enum Formula
     Necessary(Box<Formula>, FormulaExtras),
     InPast(Box<Formula>, FormulaExtras),
     InFuture(Box<Formula>, FormulaExtras),
+    LessThan(FuzzyTags, FuzzyTags, FormulaExtras),
+    GreaterOrEqualThan(FuzzyTags, FuzzyTags, FormulaExtras),
     Comment(String),
 }
 
@@ -36,16 +38,18 @@ pub struct AtomicFormulaExtras
 {
     pub predicate_args : PredicateArguments,
     pub possible_world : PossibleWorld,
-    pub is_hidden : bool,
     pub sign : Sign,
+    pub fuzzy_tags : FuzzyTags,
+    pub is_hidden : bool,
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]
 pub struct FormulaExtras
 {
     pub possible_world : PossibleWorld,
-    pub is_hidden : bool,
     pub sign : Sign,
+    pub fuzzy_tags : FuzzyTags,
+    pub is_hidden : bool,
 }
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -79,6 +83,19 @@ impl PredicateArgument
     {
         return self.object_name != self.variable_name;
     }
+}
+
+#[derive(Eq, PartialEq, Hash, Clone)]
+pub struct FuzzyTags
+{
+    tags : Vec<FuzzyTag>
+}
+
+#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone)]
+pub struct FuzzyTag
+{
+    pub object_name : String, //eg: α,β,γ
+    pub hint : Option<String>,
 }
 
 impl PartialEq<Self> for PredicateArgument

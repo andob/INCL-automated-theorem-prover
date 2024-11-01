@@ -1,8 +1,10 @@
-use crate::formula::Formula;
+use crate::formula::Formula::{GreaterOrEqualThan, LessThan};
 use crate::formula::Sign::Minus;
+use crate::formula::{Formula, FuzzyTag, FuzzyTags};
 use crate::semantics::Semantics;
 use crate::tree::path::ProofTreePath;
-use minilp::{ComparisonOp, Error, OptimizationDirection, Problem as LinearProgram, Problem, Solution};
+use minilp::{ComparisonOp, OptimizationDirection, Problem as LinearProgram, Variable};
+use std::collections::BTreeMap;
 
 pub struct FuzzyLogicSemantics {}
 
@@ -15,52 +17,63 @@ impl Semantics for FuzzyLogicSemantics
         return formula.with_sign(Minus);
     }
 
-    fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, q : &Formula) -> bool
+    fn are_formulas_contradictory(&self, path : &ProofTreePath, p : &Formula, _ : &Formula) -> bool
     {
-        return false;
+        //don't check for contradictions on formulas other than < and >=
+        if !matches!(p, LessThan(..) | GreaterOrEqualThan(..)) { return false };
+
+        let mut linear_program = LinearProgram::new(OptimizationDirection::Maximize);
+
+        let variables = path.nodes.iter()
+            .flat_map(|node| node.formula.get_fuzzy_tags().into_iter())
+            .map(|fuzzy_tag| (fuzzy_tag, linear_program.add_var(1.0, (0.0, 1.0))))
+            .collect::<BTreeMap<FuzzyTag, Variable>>();
+
+        for formula in path.nodes.iter().map(|node| &node.formula)
+        {
+            if let LessThan(left, right, _) = formula
+            {
+                let vector = self.create_linear_program_constraint_vector(&variables, left, right);
+                linear_program.add_constraint(vector, ComparisonOp::Le, -f64::EPSILON);
+            }
+            else if let GreaterOrEqualThan(left, right, _) = formula
+            {
+                let vector = self.create_linear_program_constraint_vector(&variables, left, right);
+                linear_program.add_constraint(vector, ComparisonOp::Ge, 0.0);
+            }
+        }
+
+        if let Ok(solution) = linear_program.solve()
+        {
+            //linear program has at least one insignificant solution => contradiction!
+            return solution.iter().any(|(_, value)| value.abs() == f64::EPSILON);
+        }
+
+        //linear program has no solutions => contradiction!
+        return true;
     }
 }
 
 impl FuzzyLogicSemantics
 {
-    pub fn linear_programming_demo(&self) -> bool
+    fn create_linear_program_constraint_vector(&self,
+        variables : &BTreeMap<FuzzyTag, Variable>,
+        left_side_of_the_inequality : &FuzzyTags,
+        right_side_of_the_inequality : &FuzzyTags,
+    ) -> Box<[(Variable, f64)]>
     {
-        let mut linear_program = LinearProgram::new(OptimizationDirection::Maximize);
+        let mut vector: Vec<(Variable, f64)> = Vec::new();
 
-        let x = linear_program.add_var(1.0, (0.0, 1.0));
-        let y = linear_program.add_var(1.0, (0.0, 1.0));
-        let z = linear_program.add_var(1.0, (0.0, 1.0));
-        let s = linear_program.add_var(1.0, (0.0, 1.0));
-        let a = linear_program.add_var(1.0, (0.0, 1.0));
-        let b = linear_program.add_var(1.0, (0.0, 1.0));
-
-        // 0 + x + y < a
-        // x + y - a < 0
-        // [x 1] + [y 1] + [a -1] < 0
-        // [x 1] + [y 1] + [a -1] <= -epsilon
-        linear_program.add_constraint(&[(x, 1.0), (y, 1.0), (a, -1.0)], ComparisonOp::Le, -f64::EPSILON);
-
-        // z >= a
-        // z - a >= 0
-        // [z 1] + [a -1] >= 0
-        linear_program.add_constraint(&[(z, 1.0), (a, -1.0)], ComparisonOp::Ge, 0.0);
-
-        // s + z < b
-        // s + z - b < 0
-        // [s 1] + [z 1] + [b -1] < 0
-        linear_program.add_constraint(&[(s, 1.0), (z, 1.0), (b, -1.0)], ComparisonOp::Le, -f64::EPSILON);
-
-        let is_contradictory = Self::is_contradictory(linear_program);
-        println!("{}", is_contradictory);
-        return is_contradictory;
-    }
-
-    fn is_contradictory(linear_program : Problem) -> bool
-    {
-        return match linear_program.solve()
+        for fuzzy_tag in left_side_of_the_inequality.iter()
         {
-            Ok(solution) => solution.iter().any(|(_, value)| value.abs() == f64::EPSILON),
-            Err(_) => true,
-        };
+            vector.push((variables[fuzzy_tag], 1.0));
+        }
+
+        for fuzzy_tag in right_side_of_the_inequality.iter()
+        {
+            vector.push((variables[fuzzy_tag], -1.0));
+        }
+
+        return vector.into_boxed_slice();
     }
 }

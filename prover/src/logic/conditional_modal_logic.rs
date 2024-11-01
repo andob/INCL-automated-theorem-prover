@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::{AtomicFormulaExtras, Formula, PossibleWorld, PredicateArguments};
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
@@ -299,6 +299,16 @@ impl Formula
             {
                 if let InFuture(box q, q_extras) = another
                 { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+            }
+            LessThan(x, y, p_extras) =>
+            {
+                if let LessThan(z, t, q_extras) = another
+                { x==z && y==t && p_extras == q_extras } else { false }
+            }
+            GreaterOrEqualThan(x, y, p_extras) =>
+            {
+                if let GreaterOrEqualThan(z, t, q_extras) = another
+                { x==z && y==t && p_extras == q_extras } else { false }
             }
             Comment(payload) =>
             {

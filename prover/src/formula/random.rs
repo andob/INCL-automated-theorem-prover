@@ -1,5 +1,5 @@
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Imply, Non, Or};
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld, PredicateArguments, Sign};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Imply, Or};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, FuzzyTags, PossibleWorld, PredicateArguments, Sign};
 use box_macro::bx;
 use itertools::Itertools;
 use rand::distributions::Uniform;
@@ -41,7 +41,9 @@ impl Formula
             {
                 predicate_args: PredicateArguments::empty(),
                 possible_world: PossibleWorld::zero(),
-                is_hidden: false, sign: Sign::Plus,
+                sign: Sign::Plus,
+                fuzzy_tags: FuzzyTags::empty(),
+                is_hidden: false,
             };
 
             return Atomic(character.to_string(), extras);
@@ -50,7 +52,9 @@ impl Formula
         let extras = FormulaExtras
         {
             possible_world: PossibleWorld::zero(),
-            is_hidden: false, sign: Sign::Plus,
+            sign: Sign::Plus,
+            fuzzy_tags: FuzzyTags::empty(),
+            is_hidden: false,
         };
 
         let next = || Formula::random_impl(seed / 2.0);

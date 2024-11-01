@@ -19,11 +19,8 @@ fn test_full_output()
     for problem_json in problems_json
     {
         let problem = problem_json.to_problem().unwrap();
-        let logic = problem.logic.clone();
 
-        let mut formula_format_options = FormulaFormatOptions::default();
-        formula_format_options.should_show_possible_worlds = logic.get_name().is_modal_logic();
-        formula_format_options.should_show_sign = logic.get_semantics().number_of_truth_values()>2;
+        let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
 
         let proof_tree = problem.prove();
         let proof_tree_string = proof_tree.to_string_with_options(&formula_format_options);

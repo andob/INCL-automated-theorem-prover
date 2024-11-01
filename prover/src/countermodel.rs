@@ -1,5 +1,5 @@
-use crate::formula::Formula::{Atomic, Necessary, Non, StrictImply};
-use crate::formula::{PossibleWorld, Sign};
+use crate::formula::Formula::{Atomic, Necessary, StrictImply};
+use crate::formula::PossibleWorld;
 use crate::graph::GraphVertex;
 use crate::tree::path::ProofTreePath;
 use crate::tree::ProofTree;

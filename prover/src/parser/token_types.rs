@@ -68,7 +68,6 @@ impl TokenType
                 {
                     let mut formula_format_options = FormulaFormatOptions::default();
                     formula_format_options.should_show_possible_worlds = false;
-                    formula_format_options.should_show_sign = false;
 
                     let left = PredicateArgument::new(args[0].to_string_with_options(&formula_format_options));
                     let right = PredicateArgument::new(args[1].to_string_with_options(&formula_format_options));

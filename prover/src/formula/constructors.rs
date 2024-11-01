@@ -1,5 +1,5 @@
 use substring::Substring;
-use crate::formula::{AtomicFormulaExtras, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::{AtomicFormulaExtras, FormulaExtras, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 
 impl AtomicFormulaExtras
 {
@@ -9,8 +9,9 @@ impl AtomicFormulaExtras
         {
             predicate_args: PredicateArguments::empty(),
             possible_world: PossibleWorld::zero(),
-            is_hidden: false,
             sign: Sign::Plus,
+            fuzzy_tags: FuzzyTags::empty(),
+            is_hidden: false,
         }
     }
 
@@ -20,8 +21,9 @@ impl AtomicFormulaExtras
         {
             predicate_args: args,
             possible_world: PossibleWorld::zero(),
-            is_hidden: false,
             sign: Sign::Plus,
+            fuzzy_tags: FuzzyTags::empty(),
+            is_hidden: false,
         }
     }
 }
@@ -33,8 +35,9 @@ impl FormulaExtras
         return FormulaExtras
         {
             possible_world: PossibleWorld::zero(),
-            is_hidden: false,
             sign: Sign::Plus,
+            fuzzy_tags: FuzzyTags::empty(),
+            is_hidden: false,
         }
     }
 }
@@ -83,5 +86,26 @@ impl PredicateArgument
 
         //this is an uninstantiated predicate argument
         return PredicateArgument { variable_name:name.to_string(), object_name:name }
+    }
+}
+
+impl FuzzyTags
+{
+    pub fn empty() -> FuzzyTags
+    {
+        return FuzzyTags { tags:vec![] };
+    }
+
+    pub fn new(tags : Vec<FuzzyTag>) -> FuzzyTags
+    {
+        return FuzzyTags { tags };
+    }
+}
+
+impl FuzzyTag
+{
+    pub fn new(name : String) -> FuzzyTag
+    {
+        return FuzzyTag { object_name:name, hint:None };
     }
 }

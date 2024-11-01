@@ -1,7 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
-use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
@@ -123,7 +123,8 @@ impl Formula
                 return Atomic(p.clone(), AtomicFormulaExtras
                 {
                     predicate_args: extras.predicate_args.instantiated(x, &object_name_factory),
-                    possible_world: extras.possible_world, is_hidden: extras.is_hidden, sign: extras.sign,
+                    possible_world: extras.possible_world, sign: extras.sign,
+                    fuzzy_tags: extras.fuzzy_tags.clone(), is_hidden: extras.is_hidden,
                 });
             }
 
@@ -179,6 +180,8 @@ impl Formula
             Necessary(p, extras) => { Necessary(instantiated_box(p), extras.clone()) }
             InPast(p, extras) => { InPast(instantiated_box(p), extras.clone()) }
             InFuture(p, extras) => { InFuture(instantiated_box(p), extras.clone()) }
+            LessThan(x, y, extras) => { LessThan(x.clone(), y.clone(), extras.clone()) }
+            GreaterOrEqualThan(x, y, extras) => { GreaterOrEqualThan(x.clone(), y.clone(), extras.clone()) }
             Comment(payload) => { Comment(payload.clone()) }
         }
     }

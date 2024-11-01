@@ -8,8 +8,9 @@ impl AtomicFormulaExtras
         {
             predicate_args: self.predicate_args.clone(),
             possible_world: self.possible_world,
-            is_hidden: is_hidden,
             sign: self.sign,
+            fuzzy_tags: self.fuzzy_tags.clone(),
+            is_hidden: is_hidden,
         }
     }
 }
@@ -21,8 +22,9 @@ impl FormulaExtras
         return FormulaExtras
         {
             possible_world: self.possible_world,
-            is_hidden: is_hidden,
             sign: self.sign,
+            fuzzy_tags: self.fuzzy_tags.clone(),
+            is_hidden: is_hidden,
         }
     }
 }
