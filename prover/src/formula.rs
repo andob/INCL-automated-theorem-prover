@@ -58,7 +58,7 @@ pub struct PossibleWorld
     pub index : u8
 }
 
-#[derive(Eq, PartialEq, Hash, Copy, Clone)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Copy, Clone)]
 pub enum Sign
 {
     Plus, Minus
@@ -85,20 +85,45 @@ impl PredicateArgument
     }
 }
 
+impl PartialEq<Self> for PredicateArgument
+{
+    fn eq(&self, other : &Self) -> bool
+    {
+        return self.object_name == other.object_name;
+    }
+}
+
 #[derive(Eq, PartialEq, Hash, Clone)]
 pub struct FuzzyTags
 {
     tags : Vec<FuzzyTag>
 }
 
-#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone)]
+#[derive(Eq, Hash, Ord, PartialOrd, Clone)]
 pub struct FuzzyTag
 {
     pub object_name : String, //eg: α,β,γ
-    pub hint : Option<String>,
+    pub sign : Sign,
 }
 
-impl PartialEq<Self> for PredicateArgument
+impl FuzzyTag
+{
+    pub fn get_variable_range(&self) -> (f64, f64)
+    {
+        return if self == &FuzzyTag::zero() { (0.0, 0.0) }
+            else if self == &FuzzyTag::one() { (1.0, 1.0) }
+            else { (0.0, 1.0) };
+    }
+
+    pub fn abs(&self) -> FuzzyTag
+    {
+        let mut absolute_tag = self.clone();
+        absolute_tag.sign = Sign::Plus;
+        return absolute_tag;
+    }
+}
+
+impl PartialEq<Self> for FuzzyTag
 {
     fn eq(&self, other : &Self) -> bool
     {

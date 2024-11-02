@@ -1,31 +1,5 @@
 [
   {
-    "name": "Demo",
-    "problems": [
-      {
-        "id": "Demo1",
-        "logic": "LukasiewiczFuzzyLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "A ⊃ (B ⊃ A)"
-      },
-      {
-        "id": "Demo2",
-        "logic": "LukasiewiczFuzzyLogic",
-        "expected": "proved",
-        "premises": [],
-        "conclusion": "((A ⊃ B) ⊃ B) ⊃ ((B ⊃ A) ⊃ A)"
-      },
-      {
-        "id": "Demo3",
-        "logic": "LukasiewiczFuzzyLogic",
-        "expected": "disproved",
-        "premises": [ "A ⊃ B" ],
-        "conclusion": "A ⊃ B"
-      }
-    ]
-  },
-  {
     "name": "Propositional logic",
     "problems": [
       {
@@ -3363,6 +3337,151 @@
         "expected": "proved",
         "premises": [ "\uD835\uDD08a", "\uD835\uDD08b" ],
         "conclusion": "P[a] ⊃ (a = b ⊃ P[b])"
+      }
+    ]
+  },
+  {
+    "name": "Fuzzy logic",
+    "problems": [
+      {
+        "id": "11.5.1.a",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⊃ B) ⊃ ((B ⊃ C) ⊃ (A ⊃ C))"
+      },
+      {
+        "id": "11.5.1.b",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "A ⊃ (B ⊃ A)"
+      },
+      {
+        "id": "11.5.1.c",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⊃ ¬B) ⊃ (B ⊃ ¬A)"
+      },
+      {
+        "id": "11.5.1.d",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ⊃ B) ⊃ B) ⊃ ((B ⊃ A) ⊃ A)"
+      },
+      {
+        "id": "11.5.1.e",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "((A ⊃ B) ⊃ B) ≡ (A ∨ B)"
+      },
+      {
+        "id": "11.5.1.f",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ∧ B) ≡ ¬(¬A ∨ ¬B)"
+      },
+      {
+        "id": "11.6.5.a",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "A" ],
+        "conclusion": "B ⊃ A"
+      },
+      {
+        "id": "11.6.5.b",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "¬A" ],
+        "conclusion": "A ⊃ B"
+      },
+      {
+        "id": "11.6.5.c",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "(A ∧ B) ⊃ C" ],
+        "conclusion": "(A ⊃ C) ∨ (B ⊃ C)"
+      },
+      {
+        "id": "11.6.5.d",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "(A ⊃ B) ∧ (C ⊃ D)" ],
+        "conclusion": "(A ⊃ D) ∨ (C ⊃ B)"
+      },
+      {
+        "id": "11.6.5.e",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "¬(A ⊃ B)" ],
+        "conclusion": "A"
+      },
+      {
+        "id": "11.10.3.a",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⊃ B) ∨ (B ⊃ A)"
+      },
+      {
+        "id": "11.10.3.b",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "(A ⊃ (B ⊃ C)) ⊃ (B ⊃ (A ⊃ C))"
+      },
+      {
+        "id": "11.10.3.c",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "A ⊃ B" ],
+        "conclusion": "(A ∧ C) ⊃ B"
+      },
+      {
+        "id": "11.10.3.d",
+        "logic": "LukasiewiczFuzzyLogic",
+        "expected": "proved",
+        "premises": [ "A ⊃ B" ],
+        "conclusion": "¬B ⊃ ¬A"
+      },
+      {
+        "id": "11.10.4.a",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+LukasiewiczFuzzyLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "p ∨ ¬p"
+      },
+      {
+        "id": "11.10.4.b",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+LukasiewiczFuzzyLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "(p ∧ (¬p ∨ q)) ⊃ q"
+      },
+      {
+        "id": "11.10.4.c",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+LukasiewiczFuzzyLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "((p ⊃ q) ⊃ q) ⊃ q"
+      },
+      {
+        "id": "11.10.4.d",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+LukasiewiczFuzzyLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "((p ⊃ q) ∧ (q ⊃ r)) ⊃ (p ⊃ r)"
+      },
+      {
+        "id": "11.10.4.e",
+        "logic": "FirstOrderLogic+VariableDomain+NecessaryIdentity+LukasiewiczFuzzyLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "(p ⊃ ¬p) ⊃ ¬p"
       }
     ]
   },

@@ -52,6 +52,11 @@ impl FuzzyTags
         return self.tags.into_iter();
     }
 
+    pub fn contains(&self, tag : &FuzzyTag) -> bool
+    {
+        return self.tags.contains(tag);
+    }
+
     pub fn len(&self) -> usize
     {
         return self.tags.len();
@@ -62,6 +67,19 @@ impl FuzzyTags
         let mut tags = self.tags.clone();
         tags.push(new_tag);
         return FuzzyTags::new(tags);
+    }
+
+    pub fn plus_vec(&self, new_tags : &Vec<FuzzyTag>) -> FuzzyTags
+    {
+        let mut new_tags = new_tags.clone();
+        let mut tags = self.tags.clone();
+        tags.append(&mut new_tags);
+        return FuzzyTags::new(tags);
+    }
+
+    pub fn push(&mut self, new_tag : FuzzyTag)
+    {
+        self.tags.push(new_tag);
     }
 }
 

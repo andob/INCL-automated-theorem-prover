@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
+use substring::Substring;
 use crate::formula::{Formula, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::notations::OperatorNotations;
@@ -254,10 +255,15 @@ impl Display for FuzzyTags
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        let tags_as_string = self.tags.iter()
+        if self.is_empty() { return write!(f, "0") };
+
+        let mut tags_as_string = self.tags.iter()
             .map(|tag| tag.to_string())
-            .intersperse(String::from(" + "))
+            .intersperse(String::from(" "))
             .collect::<String>();
+
+        //trim trailing plus prefix (eg: "+ a + b + c" => "a + b + c")
+        tags_as_string = tags_as_string.trim_start_matches("+ ").to_string();
 
         return write!(f, "{}", tags_as_string);
     }
@@ -267,8 +273,6 @@ impl Display for FuzzyTag
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        return if let Some(hint) = &self.hint
-            { write!(f, "{}:{}", self.object_name, hint) }
-        else { write!(f, "{}", self.object_name) }
+        return write!(f, "{} {}", self.sign, self.object_name);
     }
 }

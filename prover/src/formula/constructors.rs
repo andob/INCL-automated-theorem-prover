@@ -1,5 +1,6 @@
 use substring::Substring;
 use crate::formula::{AtomicFormulaExtras, FormulaExtras, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
+use crate::formula::Sign::Plus;
 
 impl AtomicFormulaExtras
 {
@@ -106,6 +107,18 @@ impl FuzzyTag
 {
     pub fn new(name : String) -> FuzzyTag
     {
-        return FuzzyTag { object_name:name, hint:None };
+        return FuzzyTag { object_name:name, sign:Plus };
+    }
+
+    pub fn zero() -> FuzzyTag
+    {
+        let object_name = String::from('0');
+        return FuzzyTag { object_name, sign:Plus };
+    }
+
+    pub fn one() -> FuzzyTag
+    {
+        let object_name = String::from('1');
+        return FuzzyTag { object_name, sign:Plus };
     }
 }
