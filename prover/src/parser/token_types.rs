@@ -66,9 +66,7 @@ impl TokenType
                 precedence: OperatorPrecedence::Highest,
                 to_formula: |_,args|
                 {
-                    let mut formula_format_options = FormulaFormatOptions::default();
-                    formula_format_options.should_show_possible_worlds = false;
-
+                    let formula_format_options = FormulaFormatOptions::default();
                     let left = PredicateArgument::new(args[0].to_string_with_options(&formula_format_options));
                     let right = PredicateArgument::new(args[1].to_string_with_options(&formula_format_options));
                     let formula_extras = FormulaExtras::empty();

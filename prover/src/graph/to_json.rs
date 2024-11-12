@@ -43,9 +43,7 @@ impl Graph
     pub fn to_json(&self) -> GraphJSON
     {
         let mut vertices_for_json : BTreeSet<GraphVertexJSON> = BTreeSet::new();
-
-        let mut formula_format_options = FormulaFormatOptions::default();
-        formula_format_options.should_show_possible_worlds = false;
+        let formula_format_options = FormulaFormatOptions::default();
 
         for vertex in &self.vertices
         {

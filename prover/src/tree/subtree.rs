@@ -1,3 +1,4 @@
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
@@ -123,7 +124,18 @@ impl ProofSubtree
 
 impl ProofTree
 {
-    pub fn append_subtree(&mut self, another_subtree : &mut ProofSubtree, node_id : ProofTreeNodeID)
+    pub fn append_and_log_subtree(&mut self, another_subtree : &mut ProofSubtree, target_node : &ProofTreeNode)
+    {
+        let formula_format_options = FormulaFormatOptions::recommended_for(&self.problem.logic);
+        let target_node_formula_as_string = target_node.formula.to_string_with_options(&formula_format_options);
+        let another_subtree_as_string = another_subtree.to_string_with_options(&formula_format_options);
+
+        self.execution_log.push_str(format!("\n\nApply {}\nResult: {}", target_node_formula_as_string, another_subtree_as_string).as_str());
+
+        self.append_subtree(another_subtree, target_node.id);
+    }
+
+    pub fn append_subtree(&mut self, another_subtree : &mut ProofSubtree, target_node_id : ProofTreeNodeID)
     {
         if another_subtree.left.is_none() && another_subtree.middle.is_none() && another_subtree.right.is_none() { return };
 
@@ -133,7 +145,8 @@ impl ProofTree
         for path in &paths
         {
             let leaf = path.nodes.last().unwrap();
-            if !leaf.is_contradictory && (leaf.id == node_id || path.nodes.iter().any(|node| node.id == node_id))
+            if !leaf.is_contradictory && (leaf.id == target_node_id ||
+                path.nodes.iter().any(|node| node.id == target_node_id))
             {
                 if !should_clone_subtree_with_new_ids
                 {

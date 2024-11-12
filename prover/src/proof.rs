@@ -38,9 +38,9 @@ impl ProofAlgorithm
 
         while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
-            if let Some((node, mut subtree)) = self.consume_next_queue_node()
+            if let Some((box node, mut subtree)) = self.consume_next_queue_node()
             {
-                self.proof_tree.append_subtree(&mut subtree, node.id);
+                self.proof_tree.append_and_log_subtree(&mut subtree, &node);
 
                 if !self.problem_flags.should_skip_contradiction_check
                 {

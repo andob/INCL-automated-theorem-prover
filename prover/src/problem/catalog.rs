@@ -61,13 +61,8 @@ impl ProblemJSON
 {
     fn with_operator_notations(self, operator_notations : OperatorNotations) -> ProblemJSON
     {
-        let formula_format_options = FormulaFormatOptions
-        {
-            notations: operator_notations,
-            should_show_possible_worlds: false,
-            should_show_sign: false,
-            should_show_fuzzy_tags: false,
-        };
+        let mut formula_format_options = FormulaFormatOptions::default();
+        formula_format_options.notations = operator_notations;
 
         return self.to_problem().unwrap().to_json(&formula_format_options);
     }

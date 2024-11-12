@@ -8,7 +8,7 @@ impl Display for ProofTree
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        let options = FormulaFormatOptions::default();
+        let options = FormulaFormatOptions::recommended_for(&self.problem.logic);
         return write!(f, "{}", self.to_string_with_options(&options));
     }
 }
@@ -33,14 +33,22 @@ impl Display for ProofSubtree
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
+        let options = FormulaFormatOptions::default();
+        return write!(f, "{}", self.to_string_with_options(&options));
+    }
+}
+
+impl ProofSubtree
+{
+    pub fn to_string_with_options(&self, options : &FormulaFormatOptions) -> String
+    {
         let mut output_string = String::from("Subtree\n");
 
-        let options = FormulaFormatOptions::default();
         if let Some(left) = &self.left { left.print_as_subtree_to_string(&options, &mut output_string, 1) }
         if let Some(middle) = &self.middle { middle.print_as_subtree_to_string(&options, &mut output_string, 1) }
         if let Some(right) = &self.right { right.print_as_subtree_to_string(&options, &mut output_string, 1) }
 
-        return write!(f, "{}", output_string);
+        return output_string;
     }
 }
 

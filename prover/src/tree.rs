@@ -21,6 +21,7 @@ pub struct ProofTree
     pub modality_graph : Graph,
     pub is_proof_correct : bool,
     pub has_timeout : bool,
+    pub execution_log : String,
 }
 
 impl ProofTree
@@ -32,6 +33,7 @@ impl ProofTree
             problem, root_node, node_factory,
             modality_graph: Graph::new(),
             is_proof_correct:false, has_timeout:false,
+            execution_log: String::new(),
         }
     }
 
@@ -78,6 +80,11 @@ impl ProofTree
             {
                 number_of_contradictory_paths += 1;
             }
+        }
+
+        if number_of_contradictory_paths > 0
+        {
+            self.execution_log.push_str(format!("\n\nFound {} contradictions!", number_of_contradictory_paths).as_str());
         }
 
         if number_of_contradictory_paths == paths.len()

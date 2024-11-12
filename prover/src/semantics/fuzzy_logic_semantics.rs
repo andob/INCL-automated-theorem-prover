@@ -1,3 +1,4 @@
+use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{GreaterOrEqualThan, LessThan};
 use crate::formula::Sign::{Minus, Plus};
 use crate::formula::{Formula, FuzzyTag, FuzzyTags};
@@ -6,7 +7,6 @@ use crate::tree::path::ProofTreePath;
 use minilp::{ComparisonOp, OptimizationDirection, Problem as LinearProgram, Variable};
 use std::collections::BTreeMap;
 use itertools::Itertools;
-use crate::logic::first_order_logic::FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
 
 const EPSILON : f64 = 0.001;
 

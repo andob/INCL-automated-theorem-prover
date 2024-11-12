@@ -90,8 +90,7 @@ impl ProofTree
 
     fn populate_with_graph_vertices(&self, possible_world : PossibleWorld, output_vertices : &mut BTreeSet<CountermodelGraphVertex>)
     {
-        let mut formula_format_options = FormulaFormatOptions::default();
-        formula_format_options.should_show_possible_worlds = false;
+        let formula_format_options = FormulaFormatOptions::default();
 
         let original_vertices = self.modality_graph.vertices.iter()
             .filter(|vertex| vertex.from == possible_world || vertex.to == possible_world)

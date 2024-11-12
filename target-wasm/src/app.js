@@ -98,6 +98,12 @@ function initialize_layout(callback)
                     componentName: 'CountermodelGraphComponent',
                     title: 'Countermodel',
                     isClosable: false,
+                },
+                {
+                    type: 'component',
+                    componentName: 'ExecutionLogComponent',
+                    title: 'Execution Log',
+                    isClosable: false,
                 }]
             }]
         }]
@@ -110,15 +116,17 @@ function initialize_layout(callback)
     layout.registerComponent('ProblemCatalogComponent', problem_catalog_component =>
     layout.registerComponent('ProofTreeComponent', proof_tree_component =>
     layout.registerComponent('ModalityGraphComponent', modality_graph_component =>
-    layout.registerComponent('CountermodelGraphComponent', countermodel_graph_container =>
+    layout.registerComponent('CountermodelGraphComponent', countermodel_graph_component =>
+    layout.registerComponent('ExecutionLogComponent', execution_log_component =>
     callback({
         problem_input_container: problem_component.getElement(),
         problem_catalog_container: problem_catalog_component.getElement(),
         proof_tree_container: proof_tree_component.getElement(),
         modality_graph_container: modality_graph_component.getElement(),
-        countermodel_graph_container: countermodel_graph_container.getElement(),
+        countermodel_graph_container: countermodel_graph_component.getElement(),
+        execution_log_component: execution_log_component.getElement(),
         about_container: about_component.getElement(),
-    })))))));
+    }))))))));
 
     layout.init();
 }
@@ -393,6 +401,7 @@ function prove_problem(problem)
         render_proof_tree(proof_tree);
         render_modality_graph(proof_tree.problem.logic, proof_tree.modality_graph);
         render_countermodel_graph(proof_tree.problem.logic, proof_tree.countermodel);
+        show_execution_log_panel_contents(proof_tree.execution_log);
 
         //changing browser URL without reloading the page, in order for the URL to be shareable
         window.history.pushState(null, null, '?' + create_shareable_url_args(problem).toString());
@@ -681,6 +690,14 @@ function render_countermodel_graph(logic, countermodel)
             }
         ],
     });
+}
+
+function show_execution_log_panel_contents(execution_log)
+{
+    window.containers.execution_log_component.style.overflowX = 'scroll';
+    window.containers.execution_log_component.style.overflowY = 'scroll';
+    window.containers.execution_log_component.innerHTML =
+        `<pre style="color:white; padding:1em;"><code>${execution_log}</code></pre>`;
 }
 
 function show_about_panel_contents()

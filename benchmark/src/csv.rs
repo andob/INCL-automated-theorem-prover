@@ -40,8 +40,7 @@ pub fn generate_random_formulas(max_number_of_operators : usize, number_of_formu
     let mut random_formulas_file = OpenOptions::new().create_new(true)
         .write(true).open(random_formulas_file_path).context(codeloc!())?;
 
-    let mut formula_format_options = FormulaFormatOptions::default();
-    formula_format_options.should_show_possible_worlds = false;
+    let formula_format_options = FormulaFormatOptions::default();
 
     for number_of_operators in 1..max_number_of_operators
     {
@@ -63,8 +62,7 @@ pub fn read_random_problems(logic : &Rc<dyn Logic>) -> Result<Vec<Problem>>
     let random_formulas_file = File::open(RANDOM_FORMULAS_FILE_NAME).context(codeloc!())?;
     let random_formulas_file_reader = BufReader::new(random_formulas_file);
 
-    let mut formula_format_options = FormulaFormatOptions::default();
-    formula_format_options.should_show_possible_worlds = false;
+    let formula_format_options = FormulaFormatOptions::default();
 
     for line_result in random_formulas_file_reader.lines()
     {

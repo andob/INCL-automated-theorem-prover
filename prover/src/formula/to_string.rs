@@ -2,7 +2,6 @@ use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
-use substring::Substring;
 use crate::formula::{Formula, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::notations::OperatorNotations;
@@ -21,9 +20,9 @@ impl Display for Formula
 pub struct FormulaFormatOptions
 {
     pub notations : OperatorNotations,
-    pub should_show_possible_worlds : bool,
-    pub should_show_sign : bool,
-    pub should_show_fuzzy_tags : bool,
+    should_show_possible_worlds : bool,
+    should_show_sign : bool,
+    should_show_fuzzy_tags : bool,
 }
 
 impl FormulaFormatOptions
@@ -41,7 +40,7 @@ impl FormulaFormatOptions
             return FormulaFormatOptions
             {
                 notations: *default_notations.borrow(),
-                should_show_possible_worlds: true,
+                should_show_possible_worlds: false,
                 should_show_sign: false,
                 should_show_fuzzy_tags: false,
             }

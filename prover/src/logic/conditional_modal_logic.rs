@@ -144,8 +144,7 @@ impl LogicRule for ConditionalModalLogicRules
                 let logic_pointer = factory.get_logic().clone();
                 let logic = logic_pointer.cast_to::<ConditionalModalLogic>()?;
 
-                let mut formula_format_options = FormulaFormatOptions::default();
-                formula_format_options.should_show_possible_worlds = false;
+                let formula_format_options = FormulaFormatOptions::default();
                 let p_as_string = p.to_string_with_options(&formula_format_options);
 
                 factory.modality_graph.set_log_line_formatter(bx!(move |v|

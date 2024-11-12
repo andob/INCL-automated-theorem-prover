@@ -20,6 +20,7 @@ struct ProofTreeJSON
     root_node : ProofTreeNodeJSON,
     modality_graph : GraphJSON,
     countermodel : Option<CountermodelGraph>,
+    execution_log : String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -47,6 +48,7 @@ impl ProofTree
             root_node: self.root_node.to_json(options),
             modality_graph: self.modality_graph.to_json(),
             countermodel: self.find_countermodel(),
+            execution_log: self.execution_log.trim().to_string(),
         };
 
         return serde_json::to_string_pretty(&json).context(codeloc!());
