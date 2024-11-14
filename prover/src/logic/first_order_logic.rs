@@ -6,9 +6,11 @@ mod predicate_args_with_equivalences;
 mod intuitionistic_quantifier_rules;
 
 use std::any::Any;
+use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 use box_macro::bx;
-use strum_macros::{Display, EnumIter};
+use strum_macros::Display;
+use FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
@@ -27,18 +29,38 @@ pub struct FirstOrderLogic
     pub base_logic : Rc<dyn Logic>,
 }
 
-#[derive(Eq, PartialEq, Hash, Copy, Clone, EnumIter, Display)]
+#[derive(Eq, PartialEq, Hash, Copy, Clone)]
 pub enum FirstOrderLogicDomainType
 {
-    ConstantDomain, VariableDomain
+    ConstantDomain,
+    VariableDomain(VariableDomainFlags),
+}
+
+#[derive(Eq, PartialEq, Hash, Copy, Clone)]
+pub struct VariableDomainFlags
+{
+    pub has_domain_increasing_constraint : bool
 }
 
 impl Default for FirstOrderLogicDomainType
 {
-    fn default() -> Self { FirstOrderLogicDomainType::ConstantDomain }
+    fn default() -> Self { ConstantDomain }
 }
 
-#[derive(Eq, PartialEq, Hash, Copy, Clone, EnumIter, Display)]
+impl Display for FirstOrderLogicDomainType
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        return write!(f, "{}", match self
+        {
+            ConstantDomain => "ConstantDomain",
+            VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:false }) => "VariableDomain-DomainIncreasingConstraint",
+            VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true }) => "VariableDomain+DomainIncreasingConstraint",
+        });
+    }
+}
+
+#[derive(Eq, PartialEq, Hash, Copy, Clone, Display)]
 pub enum FirstOrderLogicIdentityType
 {
     NecessaryIdentity, ContingentIdentity
@@ -72,7 +94,7 @@ impl Logic for FirstOrderLogic
     {
         let base_semantics = self.base_logic.get_semantics();
 
-        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if matches!(self.domain_type, VariableDomain(..))
         {
             return Box::new(VariableDomainSemantics::new(base_semantics));
         }
@@ -88,7 +110,7 @@ impl Logic for FirstOrderLogic
             TokenTypeID::Exists, TokenTypeID::ForAll, TokenTypeID::Equals,
         ];
 
-        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if matches!(self.domain_type, VariableDomain(..))
         {
             syntax.push(TokenTypeID::DefinitelyExists);
         }

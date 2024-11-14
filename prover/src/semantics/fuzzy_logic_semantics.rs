@@ -65,7 +65,7 @@ impl Semantics for FuzzyLogicSemantics
             That's why x < 0 inequalities are implemented as x <= -EPSILON inequalities.
             However, this adds some ambiguity: sometimes, the program cannot distinguish between
             actual solutions and insignificant solutions. Is 1 - EPSILON a legit solution or not? */
-        if path.domain_type == VariableDomain && has_non_strict_constraints
+        if matches!(path.domain_type, VariableDomain(..)) && has_non_strict_constraints
         {
             variables.iter()
                 .filter(|(tag, _)| *tag != &FuzzyTag::zero() && *tag != &FuzzyTag::one())

@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
+use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{DefinitelyExists, Exists, ForAll, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
@@ -65,7 +66,7 @@ impl ForAllQuantifierOutputNodes
         let binded_p_node = factory.new_node(binded_p);
         self.nodes_on_right.push(binded_p_node);
 
-        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if matches!(self.domain_type, VariableDomain(..))
         {
             let definitely_exists_x = DefinitelyExists(binded_x, extras.clone());
             if factory.get_logic().get_semantics().number_of_truth_values() == 2
@@ -90,7 +91,7 @@ impl ForAllQuantifierOutputNodes
 
     pub fn to_proof_subtree(self, factory : &mut RuleApplyFactory) -> ProofSubtree
     {
-        if self.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if matches!(self.domain_type, VariableDomain(..))
         {
             let zipped_nodes = self.nodes_on_left
                 .into_iter().zip(self.nodes_on_right.into_iter())

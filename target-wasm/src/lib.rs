@@ -1,16 +1,18 @@
-use std::error::Error;
-use strum::IntoEnumIterator;
-use wasm_bindgen::JsError;
-use wasm_bindgen::prelude::wasm_bindgen;
 use prover::formula::notations::OperatorNotations;
 use prover::formula::to_string::FormulaFormatOptions;
-use prover::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FIRST_ORDER_LOGIC_NAME_PREFIX};
+use prover::logic::first_order_logic::FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
+use prover::logic::first_order_logic::FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
+use prover::logic::first_order_logic::{VariableDomainFlags, FIRST_ORDER_LOGIC_NAME_PREFIX};
+use prover::logic::propositional_logic::PropositionalLogic;
 use prover::logic::Logic;
 use prover::logic::LogicFactory;
-use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::token_types::TokenTypeID;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
+use std::error::Error;
+use strum::IntoEnumIterator;
+use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsError;
 
 pub const PROPOSITIONAL_LOGIC_CATEGORY_NAME : &str = "PropositionalLogic";
 
@@ -50,9 +52,16 @@ pub fn get_logics_categories() -> Vec<String>
     let mut categories: Vec<String> = Vec::new();
     categories.push(String::from(PROPOSITIONAL_LOGIC_CATEGORY_NAME));
 
-    for domain_type in FirstOrderLogicDomainType::iter()
+    let domain_types =
+    [
+        ConstantDomain,
+        VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:false }),
+        VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true }),
+    ];
+
+    for domain_type in domain_types
     {
-        for identity_type in FirstOrderLogicIdentityType::iter()
+        for identity_type in [NecessaryIdentity, ContingentIdentity]
         {
             let category = format!("{}+{}+{}", FIRST_ORDER_LOGIC_NAME_PREFIX, domain_type, identity_type);
             categories.push(category);

@@ -4,6 +4,7 @@ use std::rc::Rc;
 use anyhow::{Context, Result};
 use box_macro::bx;
 use strum::IntoEnumIterator;
+use FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
 use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;
@@ -13,9 +14,8 @@ use crate::logic::first_degree_entailment::lukasiewicz_modal_logic::LukasiewiczM
 use crate::logic::first_degree_entailment::MinimalFirstDegreeEntailmentLogic;
 use crate::logic::first_degree_entailment::priest_logic_of_paradox::PriestLPModalLogic;
 use crate::logic::first_degree_entailment::rmingle3_modal_logic::RMingle3ModalLogic;
-use crate::logic::first_order_logic::{FirstOrderLogicDomainType, FirstOrderLogicIdentityType, FirstOrderLogic, FIRST_ORDER_LOGIC_NAME_PREFIX};
+use crate::logic::first_order_logic::{FirstOrderLogicIdentityType, FirstOrderLogic, FIRST_ORDER_LOGIC_NAME_PREFIX, VariableDomainFlags};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
-use crate::logic::first_order_logic::FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
 use crate::logic::fuzzy_logic::LukasiewiczFuzzyLogic;
 use crate::logic::intuitionistic_logic::IntuitionisticLogic;
 use crate::logic::non_normal_modal_logic::NonNormalModalLogic;
@@ -254,21 +254,18 @@ impl LogicFactory
             Rc::new(LukasiewiczFuzzyLogic {}),
         ];
 
-        let excluded_logics = base_logics.iter()
-            .filter(|logic| logic.get_name().is_intuitionistic_logic())
-            .flat_map(|intuitionistic_logic| vec!
-            [
-                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:NecessaryIdentity },
-                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:ConstantDomain, identity_type:ContingentIdentity },
-                FirstOrderLogic { base_logic:intuitionistic_logic.clone(), domain_type:VariableDomain, identity_type:NecessaryIdentity },
-            ])
-            .collect::<Vec<FirstOrderLogic>>();
-
         let mut output_logics = base_logics.clone();
 
-        for domain_type in FirstOrderLogicDomainType::iter()
+        let domain_types =
+        [
+            ConstantDomain,
+            VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:false }),
+            VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true }),
+        ];
+
+        for domain_type in domain_types
         {
-            for identity_type in FirstOrderLogicIdentityType::iter()
+            for identity_type in [NecessaryIdentity, ContingentIdentity]
             {
                 for base_logic in &base_logics
                 {
@@ -278,10 +275,7 @@ impl LogicFactory
                         base_logic: base_logic.clone()
                     };
 
-                    if !excluded_logics.contains(&&first_order_logic)
-                    {
-                        output_logics.push(Rc::new(first_order_logic));
-                    }
+                    output_logics.push(Rc::new(first_order_logic));
                 }
             }
         }

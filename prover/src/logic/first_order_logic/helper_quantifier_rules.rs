@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use crate::formula::Formula::{DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
+use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType, VariableDomainFlags};
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::{Logic, LogicRule};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;
@@ -81,7 +81,8 @@ impl LogicRule for HelperQuantifierRules
 
             DefinitelyExists(_, extras) if extras.sign == Plus =>
             {
-                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
+                if logic.get_name().is_modal_logic() && logic.domain_type ==
+                    VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true })
                 {
                     //inherit 𝔈x to all possible worlds by stating □𝔈x
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -90,7 +91,8 @@ impl LogicRule for HelperQuantifierRules
 
             Non(box DefinitelyExists(_, _), extras) if extras.sign == Plus =>
             {
-                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
+                if logic.get_name().is_modal_logic() && logic.domain_type ==
+                    VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true })
                 {
                     //inherit !𝔈x to all possible worlds by stating □!𝔈x
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -99,7 +101,8 @@ impl LogicRule for HelperQuantifierRules
 
             Non(box DefinitelyExists(_, _), extras) if extras.sign == Minus =>
             {
-                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
+                if logic.get_name().is_modal_logic() && logic.domain_type ==
+                    VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true })
                 {
                     //inherit !𝔈x- to all possible worlds by stating □!𝔈x-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -108,7 +111,8 @@ impl LogicRule for HelperQuantifierRules
 
             DefinitelyExists(_, extras) if extras.sign == Minus =>
             {
-                if logic.get_name().is_modal_logic() && logic.domain_type == VariableDomain
+                if logic.get_name().is_modal_logic() && logic.domain_type ==
+                    VariableDomain(VariableDomainFlags { has_domain_increasing_constraint:true })
                 {
                     //inherit 𝔈x- to all possible worlds by stating □𝔈x-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -132,7 +136,7 @@ impl HelperQuantifierRules
         let x_equals_x = Equals(x.clone(), x.clone(), extras.with_sign(Plus));
         let x_equals_x_node = factory.new_node(x_equals_x);
 
-        if logic.domain_type == FirstOrderLogicDomainType::VariableDomain
+        if matches!(logic.domain_type, VariableDomain(..))
         {
             let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
                 .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))

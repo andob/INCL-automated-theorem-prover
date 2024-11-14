@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
+use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
 use crate::formula::Sign::{Minus, Plus};
@@ -58,7 +59,7 @@ impl ExistsQuantifierRule
 
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
-        if logic.domain_type == FirstOrderLogicDomainType::VariableDomain && instantiated_x.is_some()
+        if matches!(logic.domain_type, VariableDomain(..)) && instantiated_x.is_some()
         {
             let definitely_exists_x = DefinitelyExists(instantiated_x?, extras.with_sign(Plus));
             let definitely_exists_x_node = factory.new_node(definitely_exists_x);
