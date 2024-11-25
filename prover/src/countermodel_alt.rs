@@ -256,7 +256,7 @@ impl CountermodelGraph
 
             Formula::Non(box p, _) =>
             {
-                return self.evaluate(p, possible_world);
+                return !self.evaluate(p, possible_world);
             }
 
             Formula::And(box p, box q, _) =>
