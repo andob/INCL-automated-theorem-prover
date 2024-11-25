@@ -1,6 +1,6 @@
 use anyhow::Result;
 use std::collections::BTreeMap;
-use std::thread;
+use std::{panic, process, thread};
 use std::thread::JoinHandle;
 use anyhow::Error;
 use crossbeam_channel::{Receiver, Sender};
@@ -53,6 +53,8 @@ pub fn parallel_for_each_problem(problems : Vec<ProblemJSON>, consumer : fn(Prob
         }
     }
 
+    setup_panicking_from_all_future_threads();
+
     let number_of_cpus = num_cpus::get();
     let mut join_handles: Vec<JoinHandle<Result<(), Error>>> = vec![];
     for _cpu_index in 0..number_of_cpus
@@ -85,4 +87,14 @@ pub fn parallel_for_each_problem(problems : Vec<ProblemJSON>, consumer : fn(Prob
     }
 
     return Ok(());
+}
+
+fn setup_panicking_from_all_future_threads()
+{
+    let original_hook = panic::take_hook();
+    panic::set_hook(Box::new(move |panic_info|
+    {
+        original_hook(panic_info);
+        process::exit(1);
+    }));
 }

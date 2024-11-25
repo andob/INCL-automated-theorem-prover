@@ -26,6 +26,10 @@ regex = "1.10.5"
 # random number generator
 rand = "0.8.5"
 
+# bigint
+num-bigint = "0.4.6"
+num-traits = "0.2.19"
+
 # enum utils
 strum = "0.26.1"
 strum_macros = "0.26.1"

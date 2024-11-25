@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use crate::formula::Formula::{DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType, VariableDomainFlags};
+use crate::logic::first_order_logic::{FirstOrderLogic, VariableDomainFlags};
 use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::{Logic, LogicRule};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;

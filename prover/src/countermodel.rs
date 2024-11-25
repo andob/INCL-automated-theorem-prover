@@ -6,28 +6,41 @@ use crate::tree::ProofTree;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use crate::formula::to_string::FormulaFormatOptions;
+use crate::logic::Logic;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct CountermodelGraph
 {
     pub nodes : BTreeSet<CountermodelGraphNode>,
     pub vertices : BTreeSet<CountermodelGraphVertex>,
 }
 
-#[derive(Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct CountermodelGraphNode
 {
     pub possible_world : PossibleWorld,
     pub is_normal_world : bool,
-    pub atomics : BTreeMap<String, Option<bool>>,
+    pub atomics : BTreeMap<String, bool>,
 }
 
-#[derive(Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct CountermodelGraphVertex
 {
     pub from : PossibleWorld,
     pub to : PossibleWorld,
     pub tags : Vec<String>,
+}
+
+impl CountermodelGraph
+{
+    pub fn new() -> CountermodelGraph
+    {
+        return CountermodelGraph
+        {
+            nodes: BTreeSet::new(),
+            vertices: BTreeSet::new(),
+        };
+    }
 }
 
 impl ProofTree
@@ -37,8 +50,8 @@ impl ProofTree
         //no countermodel if proof is correct
         if self.is_proof_correct { return None };
 
-        //infinite countermodel not yet implemented
-        if self.has_timeout { return None };
+        //on timeout, the alternate algorithm is used
+        if self.has_timeout { return self.find_countermodel_alt() };
 
         //not yet implemented on first order logic and many valued logics
         let logic = self.problem.logic.clone();
@@ -111,9 +124,9 @@ impl ProofTree
         }
     }
 
-    fn populate_atomics(&self, atomic_names : &BTreeSet<String>, path : &ProofTreePath, possible_world : PossibleWorld) -> BTreeMap<String, Option<bool>>
+    fn populate_atomics(&self, atomic_names : &BTreeSet<String>, path : &ProofTreePath, possible_world : PossibleWorld) -> BTreeMap<String, bool>
     {
-        let mut values : BTreeMap<String, Option<bool>> = BTreeMap::new();
+        let mut values : BTreeMap<String, bool> = BTreeMap::new();
 
         for p in atomic_names.iter()
         {
@@ -122,7 +135,7 @@ impl ProofTree
                 .filter_map(|node| if let Atomic(p, _) = &node.formula { Some(p) } else { None })
                 .any(|q| p == q);
 
-            values.insert(p.clone(), Some(p_value));
+            values.insert(p.clone(), p_value);
         }
 
         return values;

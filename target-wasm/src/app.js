@@ -633,11 +633,7 @@ function render_countermodel_graph(logic, countermodel)
         }
 
         for (let [key, value] of Object.entries(node.atomics))
-        {
-            if (value === null) text += '\n' + key + ' : unknown';
-            else if (value) text += '\n' + key + ' : true';
-            else text += '\n' + key + ' : false';
-        }
+            text += '\n' + key + ' : ' + value;
 
         return { data: { id:node.possible_world, text:text } };
     });
