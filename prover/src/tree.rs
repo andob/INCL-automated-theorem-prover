@@ -21,6 +21,7 @@ pub struct ProofTree
     pub modality_graph : Graph,
     pub is_proof_correct : bool,
     pub has_timeout : bool,
+    //todo de implementat un log mai extins
     pub execution_log : String,
 }
 

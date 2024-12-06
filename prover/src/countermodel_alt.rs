@@ -5,6 +5,7 @@ use crate::logic::propositional_logic::PropositionalLogic;
 use crate::logic::Logic;
 use crate::tree::ProofTree;
 use crate::problem::Problem;
+use anyhow::{anyhow, Result};
 use itertools::Itertools;
 use num_bigint::BigUint;
 use num_traits::One;
@@ -22,6 +23,13 @@ impl ProofTree
     {
         //no countermodel if proof is correct
         if self.is_proof_correct { return None };
+
+        //todo de implementat un SAT solver
+        //https://en.wikipedia.org/wiki/SAT_solver
+        //https://crates.io/crates/splr
+        //https://docs.rs/sat/latest/sat/
+        //https://github.com/jix/varisat
+        //https://github.com/sarsko/CreuSAT
 
         //only implemented on propositional logic and basic normal modal logics
         let available_logics =
@@ -44,7 +52,7 @@ impl ProofTree
             .filter(|p| !p.starts_with(KEY_MAX_NO_GRAPH_NODES))
             .collect::<BTreeSet<String>>();
 
-        let graph_generator = CountermodelGraphGenerator { logic, atomic_names };
+        let graph_generator = CountermodelGraphGenerator { logic:logic.clone(), atomic_names };
         let min_number_of_graph_nodes = get_config_arg(&self.problem, KEY_MIN_NO_GRAPH_NODES, 0);
         let max_number_of_graph_nodes = get_config_arg(&self.problem, KEY_MAX_NO_GRAPH_NODES, u8::MAX);
 
@@ -53,7 +61,7 @@ impl ProofTree
             let premises = self.problem.premises.clone();
             let conclusion = self.problem.conclusion.clone();
 
-            let result = graph_generator.generate_graphs_with_values(number_of_graph_nodes, Box::new(move |graph|
+            let result = graph_generator.generate_graphs_with_values(&logic, number_of_graph_nodes, Box::new(move |graph|
             {
                 let are_all_premises_true = premises.iter()
                     .filter(|p| !p.to_string().starts_with(KEY_MIN_NO_GRAPH_NODES))
@@ -115,7 +123,8 @@ impl CountermodelGraphGenerator
         return generated_result;
     }
 
-    pub fn generate_graphs<R>(&self, number_of_nodes : u8, callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
+    pub fn generate_graphs<R>(&self, logic : &Rc<dyn Logic>, number_of_nodes : u8,
+        callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
     {
         let mut code = BigUint::ZERO;
         while code < BigUint::from(2u8).pow(number_of_nodes.pow(2) as u32)
@@ -150,12 +159,7 @@ impl CountermodelGraphGenerator
                 }
             }
 
-            let is_graph_valid = graph.nodes.iter()
-                .filter(|node| node.possible_world.index>0)
-                .all(|node| graph.vertices.iter().any(|vertex|
-                    vertex.from != vertex.to && vertex.to == node.possible_world));
-
-            if !graph.nodes.is_empty() && !graph.vertices.is_empty() && is_graph_valid
+            if graph.validate(logic).is_ok()
             {
                 let result = callback(graph);
                 let should_stop_generating = result.is_some();
@@ -201,12 +205,13 @@ impl CountermodelGraphGenerator
         return matrix;
     }
 
-    pub fn generate_graphs_with_values<R>(&self, number_of_nodes : u8, callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
+    pub fn generate_graphs_with_values<R>(&self, logic : &Rc<dyn Logic>, number_of_nodes : u8,
+        callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
     {
         let atomic_values = self.generate_atomic_values();
         let atomic_values_combinations = self.combine_atomic_values_to_matrix(atomic_values, number_of_nodes);
 
-        return self.generate_graphs(number_of_nodes, Box::new(move |graph|
+        return self.generate_graphs(logic, number_of_nodes, Box::new(move |graph|
         {
             for atomic_values_combination in &atomic_values_combinations
             {
@@ -240,6 +245,69 @@ impl CountermodelGraphGenerator
 
 impl CountermodelGraph
 {
+    pub fn validate(&self, logic : &Rc<dyn Logic>) -> Result<()>
+    {
+        let mut validation_message = String::new();
+        let mut is_valid = true;
+
+        if self.nodes.is_empty()
+        {
+            validation_message.push_str("Invalid graph: no nodes!");
+            is_valid = false;
+        }
+
+        if self.vertices.is_empty()
+        {
+            validation_message.push_str("Invalid graph: no vertices!");
+            is_valid = false;
+        }
+
+        if !self.nodes.iter()
+            .filter(|node| node.possible_world.index>0)
+            .all(|node| self.vertices.iter().any(|vertex|
+                vertex.from != vertex.to && vertex.to == node.possible_world))
+        {
+            validation_message.push_str("Invalid graph: completely disconnected worlds!");
+            is_valid = false;
+        }
+
+        if logic.get_name().is_normal_modal_logic()
+        {
+            let logic = logic.cast_to::<NormalModalLogic>().unwrap();
+
+            if logic.is_reflexive && !self.nodes.iter()
+                .all(|node| self.vertices.iter().any(|vertex|
+                    vertex.from == node.possible_world && vertex.from == vertex.to))
+            {
+                validation_message.push_str("Invalid graph: not reflexive!");
+                is_valid = false;
+            }
+
+            if logic.is_symmetric && !self.vertices.iter()
+                .filter(|v1| v1.from != v1.to)
+                .all(|v1| self.vertices.iter()
+                    .filter(|v2| v2.from != v2.to)
+                    .any(|v2| v1.from == v2.to && v1.to == v2.from))
+            {
+                validation_message.push_str("Invalid graph: not symmetric!");
+                is_valid = false;
+            }
+
+            if logic.is_transitive && !self.vertices.iter()
+                .cartesian_product(self.vertices.iter())
+                .filter(|(v1, v2)|
+                    v1.from != v1.to && v2.from != v2.to && v2.from == v1.to)
+                .all(|(v1, v2)| self.vertices.iter()
+                    .any(|v3| v3.from == v1.from && v3.to == v2.to))
+            {
+                validation_message.push_str("Invalid graph: not transitive!");
+                is_valid = false;
+            }
+        }
+
+        return if is_valid { Ok(()) } else { Err(anyhow!(validation_message)) };
+    }
+
     pub fn evaluate(&self, formula : &Formula, possible_world : PossibleWorld) -> bool
     {
         return match formula
