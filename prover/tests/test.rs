@@ -2,7 +2,7 @@ use anyhow::Result;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
-use prover::utils::parallel_for_each_problem;
+use prover::utils::{parallel_for_each_problem, setup_panicking_from_all_future_threads};
 
 const EXPECTED_TIMEOUT : &str = "timeout";
 const EXPECTED_PROVED : &str = "proved";
@@ -39,6 +39,7 @@ fn test_proof_status() -> Result<()>
         .flat_map(|book_chapter| book_chapter.problems)
         .collect::<Vec<ProblemJSON>>();
 
+    setup_panicking_from_all_future_threads();
     return parallel_for_each_problem(problems, |problem_json|
     {
         let problem_id = &problem_json.id;

@@ -5,6 +5,7 @@ const KEY_OPERATOR_NOTATIONS = 'operator_notations';
 const KEY_LOGIC = 'logic';
 const KEY_PREMISES = 'premises';
 const KEY_CONCLUSION = 'conclusion';
+const KEY_ACTIVE_TAB_INDEX = 'activeTabIndex';
 
 const ID_OPERATOR_NOTATIONS_SELECT = 'operator_notations_select';
 const ID_LOGICS_SELECT1 = 'logics_select1';
@@ -45,6 +46,10 @@ function initialize_operator_notations()
 
 function initialize_layout(callback)
 {
+    let url_arguments = new URLSearchParams(window.location.search);
+    let activeTabIndex = parseInt(url_arguments.get(KEY_ACTIVE_TAB_INDEX)) ?? 0;
+    activeTabIndex = isNaN(activeTabIndex) ? 0 : activeTabIndex;
+
     let config = {
         content: [
         {
@@ -86,6 +91,7 @@ function initialize_layout(callback)
             },
             {
                 type: 'stack',
+                activeItemIndex: activeTabIndex,
                 content: [
                 {
                     type: 'component',
@@ -118,15 +124,27 @@ function initialize_layout(callback)
     layout.registerComponent('ModalityGraphComponent', modality_graph_component =>
     layout.registerComponent('CountermodelGraphComponent', countermodel_graph_component =>
     layout.registerComponent('ExecutionLogComponent', execution_log_component =>
-    callback({
-        problem_input_container: problem_component.getElement(),
-        problem_catalog_container: problem_catalog_component.getElement(),
-        proof_tree_container: proof_tree_component.getElement(),
-        modality_graph_container: modality_graph_component.getElement(),
-        countermodel_graph_container: countermodel_graph_component.getElement(),
-        execution_log_component: execution_log_component.getElement(),
-        about_container: about_component.getElement(),
-    }))))))));
+    {
+        let set_active_tab_index = active_tab_index =>
+        {
+            url_arguments.set(KEY_ACTIVE_TAB_INDEX, active_tab_index);
+            window.history.pushState(null, null, '?' + url_arguments.toString());
+        };
+
+        modality_graph_component.on('show', () => set_active_tab_index(0))
+        countermodel_graph_component.on('show', () => set_active_tab_index(1));
+        execution_log_component.on('show', () => set_active_tab_index(2));
+
+        callback({
+            problem_input_container: problem_component.getElement(),
+            problem_catalog_container: problem_catalog_component.getElement(),
+            proof_tree_container: proof_tree_component.getElement(),
+            modality_graph_container: modality_graph_component.getElement(),
+            countermodel_graph_container: countermodel_graph_component.getElement(),
+            execution_log_component: execution_log_component.getElement(),
+            about_container: about_component.getElement(),
+        });
+    })))))));
 
     layout.init();
 }
@@ -418,11 +436,11 @@ function create_shareable_url_args(problem)
     let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
     let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
 
-    let url_arguments = new URLSearchParams();
-    url_arguments.append(KEY_OPERATOR_NOTATIONS, operator_notations);
-    url_arguments.append(KEY_LOGIC, encodeURIComponent(problem.logic));
-    url_arguments.append(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
-    url_arguments.append(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
+    let url_arguments = new URLSearchParams(window.location.search);
+    url_arguments.set(KEY_OPERATOR_NOTATIONS, operator_notations);
+    url_arguments.set(KEY_LOGIC, encodeURIComponent(problem.logic));
+    url_arguments.set(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
+    url_arguments.set(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
     return url_arguments;
 }
 

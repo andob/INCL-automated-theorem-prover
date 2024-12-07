@@ -1,6 +1,8 @@
 use anyhow::Result;
 use std::collections::BTreeMap;
 use std::{panic, process, thread};
+use std::fmt::Display;
+use std::str::FromStr;
 use std::thread::JoinHandle;
 use anyhow::Error;
 use crossbeam_channel::{Receiver, Sender};
@@ -10,9 +12,41 @@ use crate::logic::{LogicFactory, LogicName};
 use crate::problem::json::ProblemJSON;
 
 #[macro_export]
-macro_rules! codeloc
+macro_rules! codeloc { () => { format!("{}:{}", file!(), line!()) } }
+
+pub const CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES : &str = "min_countermodel_graph_nodes";
+pub const CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES : &str = "max_countermodel_graph_nodes";
+
+#[cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))]
+pub fn get_config_value<R>(key : &str) -> Option<R> where R : FromStr, R : Default, R : Display
 {
-    () => { format!("{}:{}", file!(), line!()) }
+    let key_with_delimiter = format!("{}:", key);
+
+    return std::env::args().into_iter()
+        .find(|arg| arg.starts_with(key_with_delimiter.as_str()))
+        .map(|arg| arg.trim_start_matches(key_with_delimiter.as_str()).to_string())
+        .map(|arg| R::from_str(arg.as_str()).ok())
+        .unwrap_or_default();
+}
+
+#[cfg(any(target_arch = "wasm32", target_arch = "wasm64"))]
+pub fn get_config_value<R>(key : &str) -> Option<R> where R : FromStr, R : Default, R : Display
+{
+    let window = web_sys::window()?;
+    let url_args_raw = window.location().search().ok()?;
+    let url_args = web_sys::UrlSearchParams::new_with_str(url_args_raw.as_str()).ok()?;
+    let url_arg = url_args.get(key)?;
+    return R::from_str(url_arg.as_str()).ok();
+}
+
+pub fn setup_panicking_from_all_future_threads()
+{
+    let original_hook = panic::take_hook();
+    panic::set_hook(Box::new(move |panic_info|
+    {
+        original_hook(panic_info);
+        process::exit(1);
+    }));
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, EnumIter)]
@@ -53,8 +87,6 @@ pub fn parallel_for_each_problem(problems : Vec<ProblemJSON>, consumer : fn(Prob
         }
     }
 
-    setup_panicking_from_all_future_threads();
-
     let number_of_cpus = num_cpus::get();
     let mut join_handles: Vec<JoinHandle<Result<(), Error>>> = vec![];
     for _cpu_index in 0..number_of_cpus
@@ -87,14 +119,4 @@ pub fn parallel_for_each_problem(problems : Vec<ProblemJSON>, consumer : fn(Prob
     }
 
     return Ok(());
-}
-
-fn setup_panicking_from_all_future_threads()
-{
-    let original_hook = panic::take_hook();
-    panic::set_hook(Box::new(move |panic_info|
-    {
-        original_hook(panic_info);
-        process::exit(1);
-    }));
 }

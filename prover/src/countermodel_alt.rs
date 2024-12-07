@@ -4,7 +4,6 @@ use crate::logic::normal_modal_logic::NormalModalLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
 use crate::logic::Logic;
 use crate::tree::ProofTree;
-use crate::problem::Problem;
 use anyhow::{anyhow, Result};
 use itertools::Itertools;
 use num_bigint::BigUint;
@@ -12,10 +11,8 @@ use num_traits::One;
 use std::collections::{BTreeMap, BTreeSet};
 use std::ops::Add;
 use std::rc::Rc;
-use std::str::FromStr;
-
-const KEY_MIN_NO_GRAPH_NODES : &str = "min_countermodel_graph_nodes";
-const KEY_MAX_NO_GRAPH_NODES : &str = "max_countermodel_graph_nodes";
+use rand::prelude::SliceRandom;
+use crate::utils::{get_config_value, CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES, CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES};
 
 impl ProofTree
 {
@@ -23,13 +20,6 @@ impl ProofTree
     {
         //no countermodel if proof is correct
         if self.is_proof_correct { return None };
-
-        //todo de implementat un SAT solver
-        //https://en.wikipedia.org/wiki/SAT_solver
-        //https://crates.io/crates/splr
-        //https://docs.rs/sat/latest/sat/
-        //https://github.com/jix/varisat
-        //https://github.com/sarsko/CreuSAT
 
         //only implemented on propositional logic and basic normal modal logics
         let available_logics =
@@ -48,13 +38,11 @@ impl ProofTree
         let atomic_names = self.problem.premises.iter()
             .chain(Some(&self.problem.conclusion).into_iter())
             .flat_map(|formula| formula.get_all_atomic_names())
-            .filter(|p| !p.starts_with(KEY_MIN_NO_GRAPH_NODES))
-            .filter(|p| !p.starts_with(KEY_MAX_NO_GRAPH_NODES))
             .collect::<BTreeSet<String>>();
 
         let graph_generator = CountermodelGraphGenerator { logic:logic.clone(), atomic_names };
-        let min_number_of_graph_nodes = get_config_arg(&self.problem, KEY_MIN_NO_GRAPH_NODES, 0);
-        let max_number_of_graph_nodes = get_config_arg(&self.problem, KEY_MAX_NO_GRAPH_NODES, u8::MAX);
+        let min_number_of_graph_nodes = get_config_value(CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES).unwrap_or(0);
+        let max_number_of_graph_nodes = get_config_value(CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES).unwrap_or(u8::MAX);
 
         for number_of_graph_nodes in min_number_of_graph_nodes..=max_number_of_graph_nodes
         {
@@ -64,8 +52,6 @@ impl ProofTree
             let result = graph_generator.generate_graphs_with_values(&logic, number_of_graph_nodes, Box::new(move |graph|
             {
                 let are_all_premises_true = premises.iter()
-                    .filter(|p| !p.to_string().starts_with(KEY_MIN_NO_GRAPH_NODES))
-                    .filter(|p| !p.to_string().starts_with(KEY_MAX_NO_GRAPH_NODES))
                     .all(|premise| graph.evaluate(premise, PossibleWorld::zero()));
 
                 let is_conclusion_true = graph.evaluate(&conclusion, PossibleWorld::zero());
@@ -79,19 +65,6 @@ impl ProofTree
 
         return None;
     }
-}
-
-fn get_config_arg(problem : &Problem, key : &str, default : u8) -> u8
-{
-    let key_with_comma = format!("{}:", key);
-
-    let value_as_string = problem.premises.iter()
-        .filter_map(|p| if let Formula::Atomic(payload, _) = p { Some(payload) } else { None })
-        .find(|payload| payload.starts_with(key_with_comma.as_str()))
-        .map(|payload| payload.trim_start_matches(key_with_comma.as_str()).to_string())
-        .unwrap_or_default();
-
-    return u8::from_str(value_as_string.as_str()).unwrap_or(default);
 }
 
 pub struct CountermodelGraphGenerator
@@ -123,11 +96,26 @@ impl CountermodelGraphGenerator
         return generated_result;
     }
 
+    fn generate_graph_codes(&self, number_of_nodes : u8) -> Vec<BigUint>
+    {
+        let mut random = rand::thread_rng();
+        let mut codes : Vec<BigUint> = Vec::new();
+        let mut code = BigUint::ZERO;
+
+        while code < BigUint::from(2u8).pow(number_of_nodes.pow(2) as u32)
+        {
+            codes.push(code.clone());
+            code = code.add(BigUint::one());
+        }
+
+        codes.shuffle(&mut random);
+        return codes;
+    }
+
     pub fn generate_graphs<R>(&self, logic : &Rc<dyn Logic>, number_of_nodes : u8,
         callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
     {
-        let mut code = BigUint::ZERO;
-        while code < BigUint::from(2u8).pow(number_of_nodes.pow(2) as u32)
+        for code in self.generate_graph_codes(number_of_nodes)
         {
             let mut graph = CountermodelGraph::new();
 
@@ -165,8 +153,6 @@ impl CountermodelGraphGenerator
                 let should_stop_generating = result.is_some();
                 if should_stop_generating { return result };
             }
-
-            code = code.add(BigUint::one());
         }
 
         return None;
@@ -205,6 +191,7 @@ impl CountermodelGraphGenerator
         return matrix;
     }
 
+    //todo replace with a SAT solver
     pub fn generate_graphs_with_values<R>(&self, logic : &Rc<dyn Logic>, number_of_nodes : u8,
         callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
     {
@@ -274,31 +261,19 @@ impl CountermodelGraph
         if logic.get_name().is_normal_modal_logic()
         {
             let logic = logic.cast_to::<NormalModalLogic>().unwrap();
-
-            if logic.is_reflexive && !self.nodes.iter()
-                .all(|node| self.vertices.iter().any(|vertex|
-                    vertex.from == node.possible_world && vertex.from == vertex.to))
+            if logic.is_reflexive && !self.is_reflexive()
             {
                 validation_message.push_str("Invalid graph: not reflexive!");
                 is_valid = false;
             }
 
-            if logic.is_symmetric && !self.vertices.iter()
-                .filter(|v1| v1.from != v1.to)
-                .all(|v1| self.vertices.iter()
-                    .filter(|v2| v2.from != v2.to)
-                    .any(|v2| v1.from == v2.to && v1.to == v2.from))
+            if logic.is_symmetric && !self.is_symmetric()
             {
                 validation_message.push_str("Invalid graph: not symmetric!");
                 is_valid = false;
             }
 
-            if logic.is_transitive && !self.vertices.iter()
-                .cartesian_product(self.vertices.iter())
-                .filter(|(v1, v2)|
-                    v1.from != v1.to && v2.from != v2.to && v2.from == v1.to)
-                .all(|(v1, v2)| self.vertices.iter()
-                    .any(|v3| v3.from == v1.from && v3.to == v2.to))
+            if logic.is_transitive && self.is_transitive()
             {
                 validation_message.push_str("Invalid graph: not transitive!");
                 is_valid = false;
@@ -306,6 +281,32 @@ impl CountermodelGraph
         }
 
         return if is_valid { Ok(()) } else { Err(anyhow!(validation_message)) };
+    }
+
+    pub fn is_reflexive(&self) -> bool
+    {
+        return self.nodes.iter().all(|node|
+            self.vertices.iter().any(|vertex|
+                vertex.from == node.possible_world && vertex.from == vertex.to))
+    }
+
+    pub fn is_symmetric(&self) -> bool
+    {
+        return self.vertices.iter()
+            .filter(|v1| v1.from != v1.to)
+            .all(|v1| self.vertices.iter()
+                .filter(|v2| v2.from != v2.to)
+                .any(|v2| v1.from == v2.to && v1.to == v2.from))
+    }
+
+    pub fn is_transitive(&self) -> bool
+    {
+        return !self.vertices.iter().cartesian_product(self.vertices.iter())
+            .filter(|(v1, v2)| v1.from != v1.to)
+            .filter(|(v1, v2)| v2.from != v2.to)
+            .filter(|(v1, v2)| v2.from == v1.to)
+            .all(|(v1, v2)| self.vertices.iter()
+                .any(|v3| v3.from == v1.from && v3.to == v2.to))
     }
 
     pub fn evaluate(&self, formula : &Formula, possible_world : PossibleWorld) -> bool

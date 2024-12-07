@@ -20,7 +20,7 @@ use prover::parser::algorithm::LogicalExpressionParser;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
 use prover::problem::{Problem, ProblemFlags};
-use prover::utils::parallel_for_each_problem;
+use prover::utils::{parallel_for_each_problem, setup_panicking_from_all_future_threads};
 
 const OUTPUT_DIR_PATH : &str = "./target/html";
 const INDEX_FILE_PATH : &str = "./target/html/index.html";
@@ -30,6 +30,7 @@ const TEMPLATE : &str = include_str!("template.html");
 
 fn main() -> Result<()>
 {
+    setup_panicking_from_all_future_threads();
     fs::create_dir_all(OUTPUT_DIR_PATH).context(codeloc!())?;
 
     let args = env::args().collect::<Vec<String>>();
