@@ -191,7 +191,7 @@ impl CountermodelGraphGenerator
         return matrix;
     }
 
-    //todo replace with a SAT solver
+    //todo refactor: replace with a SAT solver
     pub fn generate_graphs_with_values<R>(&self, logic : &Rc<dyn Logic>, number_of_nodes : u8,
         callback : Box<dyn Fn(CountermodelGraph) -> Option<R>>) -> Option<R> where R : 'static
     {

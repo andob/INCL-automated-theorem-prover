@@ -42,6 +42,8 @@ impl ProofSubtree
 {
     pub fn to_string_with_options(&self, options : &FormulaFormatOptions) -> String
     {
+        if self.is_empty() { return String::from("Empty subtree") }
+
         let mut output_string = String::from("Subtree\n");
 
         if let Some(left) = &self.left { left.print_as_subtree_to_string(&options, &mut output_string, 1) }
@@ -58,17 +60,27 @@ impl ProofTreeNode
     {
         if indent>0
         {
+            //append tree glyphs
             out_string.push('├');
             for _ in 0..indent { out_string.push_str("──"); }
             out_string.push(' ');
         }
 
+        //append node ID
+        out_string.push('<');
+        out_string.push_str(self.id.to_string().as_str());
+        out_string.push('>');
+        out_string.push(' ');
+
+        //append formula
         let formula_as_string = self.formula.to_string_with_options(options);
         out_string.push_str(formula_as_string.replace("\n", " ").as_str());
 
         if self.is_contradictory
         {
-            out_string.push_str(" X");
+            //append contradiction sign
+            out_string.push(' ');
+            out_string.push('X');
         }
 
         out_string.push('\n');

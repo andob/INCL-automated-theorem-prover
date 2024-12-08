@@ -7,6 +7,7 @@ use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 use crate::graph::to_json::GraphJSON;
 use crate::problem::json::ProblemJSON;
+use crate::proof::execution_log::ExecutionLog;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::ProofTree;
@@ -20,7 +21,7 @@ struct ProofTreeJSON
     root_node : ProofTreeNodeJSON,
     modality_graph : GraphJSON,
     countermodel : Option<CountermodelGraph>,
-    execution_log : String,
+    execution_log : Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -48,7 +49,7 @@ impl ProofTree
             root_node: self.root_node.to_json(options),
             modality_graph: self.modality_graph.to_json(),
             countermodel: self.find_countermodel(),
-            execution_log: self.execution_log.trim().to_string(),
+            execution_log: ExecutionLog::clear(),
         };
 
         return serde_json::to_string_pretty(&json).context(codeloc!());

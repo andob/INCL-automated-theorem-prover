@@ -1,4 +1,3 @@
-use crate::formula::to_string::FormulaFormatOptions;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
@@ -124,20 +123,9 @@ impl ProofSubtree
 
 impl ProofTree
 {
-    pub fn append_and_log_subtree(&mut self, another_subtree : &mut ProofSubtree, target_node : &ProofTreeNode)
-    {
-        let formula_format_options = FormulaFormatOptions::recommended_for(&self.problem.logic);
-        let target_node_formula_as_string = target_node.formula.to_string_with_options(&formula_format_options);
-        let another_subtree_as_string = another_subtree.to_string_with_options(&formula_format_options);
-
-        self.execution_log.push_str(format!("\n\nApply {}\nResult: {}", target_node_formula_as_string, another_subtree_as_string).as_str());
-
-        self.append_subtree(another_subtree, target_node.id);
-    }
-
     pub fn append_subtree(&mut self, another_subtree : &mut ProofSubtree, target_node_id : ProofTreeNodeID)
     {
-        if another_subtree.left.is_none() && another_subtree.middle.is_none() && another_subtree.right.is_none() { return };
+        if another_subtree.is_empty() { return }
 
         let mut should_clone_subtree_with_new_ids = false;
 
@@ -216,6 +204,8 @@ impl DecompositionPriorityQueue
 {
     pub fn push_subtree(&mut self, subtree : Box<ProofSubtree>)
     {
+        if subtree.is_empty() { return }
+
         if let Some(left) = subtree.left { self.push_tree_node(left); }
         if let Some(middle) = subtree.middle { self.push_tree_node(middle); }
         if let Some(right) = subtree.right { self.push_tree_node(right); }

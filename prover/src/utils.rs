@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::collections::BTreeMap;
 use std::{panic, process, thread};
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 use std::str::FromStr;
 use std::thread::JoinHandle;
 use anyhow::Error;

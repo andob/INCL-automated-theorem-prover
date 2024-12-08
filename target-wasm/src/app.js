@@ -125,15 +125,15 @@ function initialize_layout(callback)
     layout.registerComponent('CountermodelGraphComponent', countermodel_graph_component =>
     layout.registerComponent('ExecutionLogComponent', execution_log_component =>
     {
-        let set_active_tab_index = active_tab_index =>
+        let remember_active_tab_index = active_tab_index =>
         {
             url_arguments.set(KEY_ACTIVE_TAB_INDEX, active_tab_index);
             window.history.pushState(null, null, '?' + url_arguments.toString());
         };
 
-        modality_graph_component.on('show', () => set_active_tab_index(0))
-        countermodel_graph_component.on('show', () => set_active_tab_index(1));
-        execution_log_component.on('show', () => set_active_tab_index(2));
+        modality_graph_component.on('show', () => remember_active_tab_index(0))
+        countermodel_graph_component.on('show', () => remember_active_tab_index(1));
+        execution_log_component.on('show', () => remember_active_tab_index(2));
 
         callback({
             problem_input_container: problem_component.getElement(),
@@ -710,8 +710,27 @@ function show_execution_log_panel_contents(execution_log)
 {
     window.containers.execution_log_component.style.overflowX = 'scroll';
     window.containers.execution_log_component.style.overflowY = 'scroll';
-    window.containers.execution_log_component.innerHTML =
-        `<pre style="color:white; padding:1em;"><code>${execution_log}</code></pre>`;
+
+    let index = 0;
+    let table_contents = '';
+    for (let execution_log_line of execution_log)
+    {
+        table_contents += index % 4 === 0 ? '<tr>' : '';
+        table_contents += '<td><pre>' + execution_log_line + '</pre></td>';
+        table_contents += index % 4 === 3 ? '</tr>' : '';
+        index++;
+    }
+
+    window.containers.execution_log_component.innerHTML = `
+    <table style="width:100%; border-collapse:separate; border-spacing:1em; color:white; font-size:0.9em;">
+        <tr>
+            <td><b>Tree execution</b></td>
+            <td><b>Graph execution</b></td>
+            <td><b>Contradictions</b></td>
+            <td><b>RAM usage</b></td>
+        </tr>
+        ${table_contents}
+    </table>`;
 }
 
 function show_about_panel_contents()
@@ -739,5 +758,5 @@ function show_about_panel_contents()
             <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">here</a>
             <br/>Version: 1.0.0
         </b>
-    </p>`
+    </p>`;
 }

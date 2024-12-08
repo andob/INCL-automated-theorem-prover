@@ -28,6 +28,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
+        //todo refactor: move initialize_graph_if_needed at an upper level
         self.modality.initialize_graph_if_needed(factory);
 
         return match &node.formula
@@ -108,7 +109,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
             let logic_pointer = factory.get_logic().clone();
             let logic = logic_pointer.cast_to::<LOGIC>().unwrap();
 
-            factory.modality_graph.nodes.insert(PossibleWorld::zero());
+            factory.modality_graph.add_and_log_node(PossibleWorld::zero());
 
             (self.add_missing_graph_vertices)(&logic, factory.modality_graph);
 
@@ -129,7 +130,8 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let current_world = extras.possible_world;
         let forked_world = factory.modality_graph.nodes.iter().max()?.fork();
 
-        factory.modality_graph.nodes.insert(forked_world);
+        factory.modality_graph.add_and_log_node(forked_world);
+
         factory.modality_graph.add_and_log_vertex(GraphVertex::new(current_world, forked_world));
 
         (self.add_missing_graph_vertices)(logic, factory.modality_graph);

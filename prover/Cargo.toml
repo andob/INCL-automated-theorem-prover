@@ -55,3 +55,6 @@ minilp = "0.2.2"
 
 # Web API bindings
 web-sys = { version = "0.3.76", features = ["Window", "Location", "UrlSearchParams"] }
+
+# RAM allocation counter
+allocation-counter = "0.8.1"

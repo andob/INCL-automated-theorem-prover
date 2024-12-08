@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 use std::rc::Rc;
 use itertools::Itertools;
 use crate::formula::{Formula, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
@@ -231,6 +231,14 @@ impl Display for PredicateArgument
 }
 
 impl Display for PossibleWorld
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        return write!(f, "w{}", self.index);
+    }
+}
+
+impl Debug for PossibleWorld
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {

@@ -1,14 +1,18 @@
+use itertools::Itertools;
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::problem::ProblemFlags;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
+use crate::proof::execution_log::{ExecutionLog, ExecutionLogHelperData};
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::ProofTree;
 use crate::tree::subtree::ProofSubtree;
 
 pub mod decomposition_queue;
+pub mod execution_log;
 mod initialize;
 
 const MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC : usize = 25;
@@ -36,11 +40,19 @@ impl ProofAlgorithm
             self.proof_tree.check_for_contradictions();
         }
 
+        let formula_format_options = FormulaFormatOptions::recommended_for(&self.proof_tree.problem.logic);
+
         while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
-            if let Some((box node, mut subtree)) = self.consume_next_queue_node()
+            let ram_consumption = allocation_counter::measure(||
             {
-                self.proof_tree.append_and_log_subtree(&mut subtree, &node);
+                let (box node, mut subtree) = self.consume_next_queue_node().unwrap();
+
+                ExecutionLog::log(format!("Apply: <{}> {}\nResult: {}", node.id,
+                    node.formula.to_string_with_options(&formula_format_options),
+                    subtree.to_string_with_options(&formula_format_options)));
+
+                self.proof_tree.append_subtree(&mut subtree, node.id);
 
                 if !self.problem_flags.should_skip_contradiction_check
                 {
@@ -48,7 +60,14 @@ impl ProofAlgorithm
                 }
 
                 self.decomposition_queue.push_subtree(subtree);
-            }
+            });
+
+            let log_helper_data = ExecutionLogHelperData::flush();
+            ExecutionLog::log(format!("New nodes: {:?}\nNew vertices:\n{:?}", log_helper_data.new_graph_nodes, log_helper_data.new_graph_vertices));
+            ExecutionLog::log(format!("New contradictions:\n{:?}", log_helper_data.new_contradictions));
+
+            ExecutionLog::log(format!("Current (B): {}\nTotal (B): {}\nTotal (kB): {:.2}",
+                ram_consumption.bytes_current, ram_consumption.bytes_total, (ram_consumption.bytes_total as f64) / 1024.0));
         }
 
         self.proof_tree.has_timeout = self.reached_timeout();
@@ -74,6 +93,8 @@ impl ProofAlgorithm
             {
                 return Some((node, Box::new(subtree)));
             }
+
+            return Some((node, Box::new(ProofSubtree::empty())));
         }
 
         return None;

@@ -2,6 +2,7 @@ use itertools::Itertools;
 use rand::prelude::IteratorRandom;
 use crate::graph::Graph;
 use crate::problem::Problem;
+use crate::proof::execution_log::ExecutionLogHelperData;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::path::ProofTreePath;
@@ -21,8 +22,6 @@ pub struct ProofTree
     pub modality_graph : Graph,
     pub is_proof_correct : bool,
     pub has_timeout : bool,
-    //todo implement extended logger
-    pub execution_log : String,
 }
 
 impl ProofTree
@@ -34,7 +33,6 @@ impl ProofTree
             problem, root_node, node_factory,
             modality_graph: Graph::new(),
             is_proof_correct:false, has_timeout:false,
-            execution_log: String::new(),
         }
     }
 
@@ -77,15 +75,21 @@ impl ProofTree
                 self.root_node.mark_child_node_as_contradictory(*contradictory_node_id, *contrarian_node_id);
             }
 
+            ExecutionLogHelperData::with(|mut helper_data|
+            {
+                for contradictory_node_id_pair in &contradictory_node_ids
+                {
+                    if !helper_data.old_contradictions.contains(contradictory_node_id_pair)
+                    {
+                        helper_data.new_contradictions.insert(contradictory_node_id_pair.clone());
+                    }
+                }
+            });
+
             if !contradictory_node_ids.is_empty()
             {
                 number_of_contradictory_paths += 1;
             }
-        }
-
-        if number_of_contradictory_paths > 0
-        {
-            self.execution_log.push_str(format!("\n\nFound {} contradictions!", number_of_contradictory_paths).as_str());
         }
 
         if number_of_contradictory_paths == paths.len()
