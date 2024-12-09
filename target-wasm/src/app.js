@@ -46,9 +46,8 @@ function initialize_operator_notations()
 
 function initialize_layout(callback)
 {
-    let url_arguments = new URLSearchParams(window.location.search);
-    let activeTabIndex = parseInt(url_arguments.get(KEY_ACTIVE_TAB_INDEX)) ?? 0;
-    activeTabIndex = isNaN(activeTabIndex) ? 0 : activeTabIndex;
+    let activeTabIndex = parseInt(localStorage.getItem(KEY_ACTIVE_TAB_INDEX)) ?? 0;
+    activeTabIndex = !isNaN(activeTabIndex) ? activeTabIndex : 0;
 
     let config = {
         content: [
@@ -125,15 +124,9 @@ function initialize_layout(callback)
     layout.registerComponent('CountermodelGraphComponent', countermodel_graph_component =>
     layout.registerComponent('ExecutionLogComponent', execution_log_component =>
     {
-        let remember_active_tab_index = active_tab_index =>
-        {
-            url_arguments.set(KEY_ACTIVE_TAB_INDEX, active_tab_index);
-            window.history.pushState(null, null, '?' + url_arguments.toString());
-        };
-
-        modality_graph_component.on('show', () => remember_active_tab_index(0))
-        countermodel_graph_component.on('show', () => remember_active_tab_index(1));
-        execution_log_component.on('show', () => remember_active_tab_index(2));
+        modality_graph_component.on('show', () => localStorage.setItem(KEY_ACTIVE_TAB_INDEX, 0+""))
+        countermodel_graph_component.on('show', () => localStorage.setItem(KEY_ACTIVE_TAB_INDEX, 1+""));
+        execution_log_component.on('show', () => localStorage.setItem(KEY_ACTIVE_TAB_INDEX, 2+""));
 
         callback({
             problem_input_container: problem_component.getElement(),

@@ -1,19 +1,20 @@
 pub mod to_json;
 mod missing_vertices;
 
+use std::slice::{Iter as VecIter, Iter};
+use std::collections::btree_set::Iter as BTreeSetIter;
 use std::collections::BTreeSet;
 use std::fmt::{Debug, Display, Formatter};
 use crate::formula::{Formula, PossibleWorld};
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 use crate::proof::execution_log::ExecutionLogHelperData;
 
-//todo refactor: make all fields private
 pub struct Graph
 {
-    pub nodes : BTreeSet<PossibleWorld>,
-    pub vertices : BTreeSet<GraphVertex>,
-    pub vertices_tags : Vec<(GraphVertex, Formula)>,
-    pub necessity_reapplications : Vec<NecessityReapplicationData>,
+    nodes : BTreeSet<PossibleWorld>,
+    vertices : BTreeSet<GraphVertex>,
+    vertices_tags : Vec<(GraphVertex, Formula)>,
+    necessity_reapplications : Vec<NecessityReapplicationData>,
     log_line_formatter : Box<dyn Fn(&GraphVertex) -> String>,
     log : String,
 }
@@ -44,7 +45,12 @@ impl Graph
         return self.nodes.is_empty() && self.vertices.is_empty();
     }
 
-    pub fn add_and_log_node(&mut self, node : PossibleWorld)
+    pub fn nodes(&self) -> BTreeSetIter<'_, PossibleWorld>
+    {
+        return self.nodes.iter();
+    }
+
+    pub fn add_node(&mut self, node : PossibleWorld)
     {
         self.nodes.insert(node);
 
@@ -52,7 +58,17 @@ impl Graph
             helper_data.new_graph_nodes.insert(node));
     }
 
-    pub fn add_and_log_vertex(&mut self, vertex : GraphVertex)
+    pub fn vertices(&self) -> BTreeSetIter<'_, GraphVertex>
+    {
+        return self.vertices.iter();
+    }
+
+    pub fn set_vertices(&mut self, vertices : BTreeSet<GraphVertex>)
+    {
+        self.vertices = vertices;
+    }
+
+    pub fn add_vertex(&mut self, vertex : GraphVertex)
     {
         self.log.push_str((self.log_line_formatter)(&vertex).as_str());
 
@@ -62,7 +78,7 @@ impl Graph
             helper_data.new_graph_vertices.insert(vertex));
     }
 
-    pub fn add_and_log_vertices(&mut self, vertices_to_add : Vec<GraphVertex>)
+    pub fn add_vertices(&mut self, vertices_to_add : Vec<GraphVertex>)
     {
         for vertex in vertices_to_add
         {
@@ -73,6 +89,36 @@ impl Graph
             ExecutionLogHelperData::with(|mut helper_data|
                 helper_data.new_graph_vertices.insert(vertex));
         }
+    }
+
+    pub fn vertices_tags(&self) -> VecIter<'_, (GraphVertex, Formula)>
+    {
+        return self.vertices_tags.iter();
+    }
+
+    pub fn add_vertex_tag(&mut self, vertex : GraphVertex, tag : Formula)
+    {
+        self.vertices_tags.push((vertex, tag));
+    }
+
+    pub fn necessity_reapplications(&self) -> Iter<'_, NecessityReapplicationData>
+    {
+        return self.necessity_reapplications.iter();
+    }
+
+    pub fn push_necessity_reapplication(&mut self, reapplication : NecessityReapplicationData)
+    {
+        self.necessity_reapplications.push(reapplication);
+    }
+
+    pub fn pop_necessity_reapplication(&mut self) -> Option<NecessityReapplicationData>
+    {
+        return self.necessity_reapplications.pop();
+    }
+
+    pub fn clear_necessity_reapplications(&mut self)
+    {
+        self.necessity_reapplications.clear();
     }
 
     pub fn set_log_line_formatter(&mut self, formatter : Box<dyn Fn(&GraphVertex) -> String>)

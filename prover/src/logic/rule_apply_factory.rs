@@ -48,20 +48,20 @@ impl <'a> RuleApplyFactory<'a>
 
     pub fn push_necessity_reapplication(&mut self, data : NecessityReapplicationData)
     {
-        self.modality_graph.necessity_reapplications.push(data);
+        self.modality_graph.push_necessity_reapplication(data);
     }
 
     pub fn push_necessity_reapplications(&mut self, data : Vec<NecessityReapplicationData>)
     {
         for data_item in data
         {
-            self.modality_graph.necessity_reapplications.push(data_item);
+            self.modality_graph.push_necessity_reapplication(data_item);
         }
     }
 
     pub fn pop_next_necessity_reapplication(&mut self) -> Option<NecessityReapplicationData>
     {
-        return if let Some(reapplication) = self.modality_graph.necessity_reapplications.pop()
+        return if let Some(reapplication) = self.modality_graph.pop_necessity_reapplication()
         { Some(reapplication) } else { None };
     }
 }

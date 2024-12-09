@@ -24,7 +24,6 @@ impl LogicRule for IntuitionisticQuantifierRules
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
         let modality = factory.get_logic().get_modality_ref().unwrap();
-        modality.initialize_graph_if_needed(factory);
 
         match &node.formula
         {

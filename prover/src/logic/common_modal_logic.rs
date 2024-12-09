@@ -28,9 +28,6 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        //todo refactor: move initialize_graph_if_needed at an upper level
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             Non(box Possible(box p, _), extras) =>
@@ -109,7 +106,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
             let logic_pointer = factory.get_logic().clone();
             let logic = logic_pointer.cast_to::<LOGIC>().unwrap();
 
-            factory.modality_graph.add_and_log_node(PossibleWorld::zero());
+            factory.modality_graph.add_node(PossibleWorld::zero());
 
             (self.add_missing_graph_vertices)(&logic, factory.modality_graph);
 
@@ -128,11 +125,10 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let logic = logic_pointer.cast_to::<LOGIC>()?;
 
         let current_world = extras.possible_world;
-        let forked_world = factory.modality_graph.nodes.iter().max()?.fork();
+        let forked_world = factory.modality_graph.nodes().max()?.fork();
 
-        factory.modality_graph.add_and_log_node(forked_world);
-
-        factory.modality_graph.add_and_log_vertex(GraphVertex::new(current_world, forked_world));
+        factory.modality_graph.add_node(forked_world);
+        factory.modality_graph.add_vertex(GraphVertex::new(current_world, forked_world));
 
         (self.add_missing_graph_vertices)(logic, factory.modality_graph);
 
@@ -206,7 +202,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
     ) -> Vec<ProofTreeNode>
     {
         let mut output_nodes : Vec<ProofTreeNode> = vec![];
-        let output_formulas = factory.modality_graph.vertices.iter()
+        let output_formulas = factory.modality_graph.vertices()
             .filter(|vertex| vertex.from == reapplication_data.input_possible_world)
             .filter(|vertex| !reapplication_data.already_iterated_possible_worlds.contains(&vertex.to))
             .map(|vertex| reapplication_data.input_formula.in_world(vertex.to))
@@ -241,7 +237,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
     pub fn was_necessity_already_applied(&self, factory : &mut RuleApplyFactory, p : &Formula) -> bool
     {
         let p_with_stripped_extras = p.with_stripped_extras();
-        return factory.modality_graph.necessity_reapplications.iter()
+        return factory.modality_graph.necessity_reapplications()
             .map(|reapplication| reapplication.input_formula.with_stripped_extras())
             .any(|reapplication_formula| reapplication_formula == p_with_stripped_extras);
     }

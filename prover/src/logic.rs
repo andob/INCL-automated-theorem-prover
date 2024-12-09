@@ -64,7 +64,7 @@ pub trait Logic : Any
 
 impl dyn Logic
 {
-    #[inline]
+    #[inline(always)]
     pub fn cast_to<OutputLogic : Logic>(&self) -> Option<&OutputLogic>
     {
         if self.get_name().is_first_order_logic() &&
@@ -103,6 +103,11 @@ impl LogicRuleCollection
 
     pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
+        if let Some(modality) = factory.get_logic().get_modality_ref()
+        {
+            modality.initialize_graph_if_needed(factory);
+        }
+
         for logic_rule in &self.rules
         {
             if let Some(subtree) = logic_rule.apply(factory, node)

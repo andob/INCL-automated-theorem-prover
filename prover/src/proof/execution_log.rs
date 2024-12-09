@@ -77,7 +77,7 @@ impl ExecutionLogHelperData
         }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn with<F, R>(callback : F) -> R
     where F : FnOnce(RefMut<ExecutionLogHelperData>) -> R
     {

@@ -107,8 +107,6 @@ impl LogicRule for ConditionalModalLogicRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             Non(box Possible(box p, _), extras) =>
@@ -165,16 +163,16 @@ impl LogicRule for ConditionalModalLogicRules
                 factory.modality_graph.set_log_line_formatter(default_log_line_formatter!());
 
                 let previous_world = extras.possible_world;
-                let current_world = *factory.modality_graph.nodes.iter().max()?;
+                let current_world = *factory.modality_graph.nodes().max()?;
                 let current_vertex = GraphVertex::new(previous_world, current_world);
-                factory.modality_graph.vertices_tags.push((current_vertex.clone(), p.with_stripped_extras()));
+                factory.modality_graph.add_vertex_tag(current_vertex.clone(), p.with_stripped_extras());
 
-                let inherited_tags = factory.modality_graph.vertices_tags.iter()
+                let inherited_tags = factory.modality_graph.vertices_tags()
                     .filter(|(vertex, _tag)| vertex.to == previous_world)
                     .map(|(_vertex, tag)| tag.clone()).collect::<Vec<Formula>>();
                 for inherited_tag in inherited_tags
                 {
-                    factory.modality_graph.vertices_tags.push((current_vertex.clone(), inherited_tag));
+                    factory.modality_graph.add_vertex_tag(current_vertex.clone(), inherited_tag);
                 }
 
                 return subtree;
@@ -182,28 +180,30 @@ impl LogicRule for ConditionalModalLogicRules
 
             Conditional(box p, box q, extras) =>
             {
-                let reflexive_vertices = factory.modality_graph.vertices.iter()
+                let reflexive_vertices = factory.modality_graph.vertices()
                     .filter(|vertex| vertex.from == vertex.to)
                     .map(|vertex| vertex.clone())
                     .collect::<BTreeSet<GraphVertex>>();
 
                 let p_without_extras = p.with_stripped_extras();
                 let paths = factory.tree.get_paths_that_goes_through_node(node);
-                let vertices_with_right_tag = factory.modality_graph.vertices_tags.iter()
+                let vertices_with_right_tag = factory.modality_graph.vertices_tags()
                     .filter(|(_vertex, tag)| p_without_extras.is_replaceable_with(tag, &paths))
                     .map(|(vertex, _tag)| vertex.clone())
                     .collect::<BTreeSet<GraphVertex>>();
 
-                let old_graph_vertices = factory.modality_graph.vertices.clone();
+                let old_graph_vertices = factory.modality_graph.vertices()
+                    .cloned().collect::<BTreeSet<GraphVertex>>();
+
                 let mut new_graph_vertices = reflexive_vertices;
                 new_graph_vertices.extend(vertices_with_right_tag);
-                factory.modality_graph.vertices = new_graph_vertices;
+                factory.modality_graph.set_vertices(new_graph_vertices);
 
                 let subtree = self.modality.apply_necessity(factory, node, &q, extras);
 
                 //necessity reapplication not working properly in C
-                factory.modality_graph.necessity_reapplications.clear();
-                factory.modality_graph.vertices = old_graph_vertices;
+                factory.modality_graph.clear_necessity_reapplications();
+                factory.modality_graph.set_vertices(old_graph_vertices);
 
                 return subtree;
             }

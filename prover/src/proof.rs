@@ -10,6 +10,7 @@ use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::ProofTree;
 use crate::tree::subtree::ProofSubtree;
+use crate::utils::measure_total_number_of_allocated_bytes;
 
 pub mod decomposition_queue;
 pub mod execution_log;
@@ -44,7 +45,7 @@ impl ProofAlgorithm
 
         while !self.decomposition_queue.is_empty() && !self.proof_tree.is_proof_correct && !self.reached_timeout()
         {
-            let ram_consumption = allocation_counter::measure(||
+            let ram_consumption = measure_total_number_of_allocated_bytes(||
             {
                 let (box node, mut subtree) = self.consume_next_queue_node().unwrap();
 
@@ -65,9 +66,7 @@ impl ProofAlgorithm
             let log_helper_data = ExecutionLogHelperData::flush();
             ExecutionLog::log(format!("New nodes: {:?}\nNew vertices:\n{:?}", log_helper_data.new_graph_nodes, log_helper_data.new_graph_vertices));
             ExecutionLog::log(format!("New contradictions:\n{:?}", log_helper_data.new_contradictions));
-
-            ExecutionLog::log(format!("Current (B): {}\nTotal (B): {}\nTotal (kB): {:.2}",
-                ram_consumption.bytes_current, ram_consumption.bytes_total, (ram_consumption.bytes_total as f64) / 1024.0));
+            ExecutionLog::log(format!("{}B ({:.4}MB)", ram_consumption, ram_consumption/1024.0/1024.0));
         }
 
         self.proof_tree.has_timeout = self.reached_timeout();
@@ -111,7 +110,7 @@ impl ProofAlgorithm
 
         let modality_graph_is_too_large =
             if self.logic_name.is_modal_logic()
-                { self.modality_graph.nodes.len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC }
+                { self.modality_graph.nodes().len() >= MAX_NUMBER_OF_POSSIBLE_WORLDS_ON_MODAL_LOGIC }
             else { false };
 
         return proof_tree_is_too_large || modality_graph_is_too_large;

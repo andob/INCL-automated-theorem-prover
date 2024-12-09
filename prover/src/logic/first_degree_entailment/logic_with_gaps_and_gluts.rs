@@ -118,8 +118,6 @@ impl LogicRule for LogicWithGapsGlutsAndWorldsConditionalRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             Conditional(box p, box q, extras) if extras.sign == Plus =>

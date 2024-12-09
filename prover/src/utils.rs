@@ -39,6 +39,22 @@ pub fn get_config_value<R>(key : &str) -> Option<R> where R : FromStr, R : Defau
     return R::from_str(url_arg.as_str()).ok();
 }
 
+#[inline(always)]
+#[cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))]
+pub fn measure_total_number_of_allocated_bytes<F>(function : F) -> f64 where F : FnOnce() -> ()
+{
+    function();
+    return 0.0;
+}
+
+#[inline(always)]
+#[cfg(any(target_arch = "wasm32", target_arch = "wasm64"))]
+pub fn measure_total_number_of_allocated_bytes<F>(function : F) -> f64 where F : FnOnce() -> ()
+{
+    let allocation_info = allocation_counter::measure(function);
+    return allocation_info.bytes_total as f64;
+}
+
 pub fn setup_panicking_from_all_future_threads()
 {
     let original_hook = panic::take_hook();

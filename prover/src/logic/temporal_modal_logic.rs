@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::collections::BTreeSet;
 use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{InFuture, InPast, Necessary, Non, Possible};
@@ -104,8 +105,6 @@ impl LogicRule for TemporalModalLogicRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             Non(box Possible(box InPast(box p, _), _), extras) =>
@@ -193,15 +192,11 @@ impl Graph
 {
     fn invert_all_vertices(&mut self)
     {
-        let inverted_vertices = self.vertices.iter()
+        let inverted_vertices = self.vertices()
             .map(|vertex| GraphVertex::new(vertex.to, vertex.from))
-            .collect::<Vec<GraphVertex>>();
+            .collect::<BTreeSet<GraphVertex>>();
 
-        self.vertices.clear();
-        for inverted_vertex in inverted_vertices
-        {
-            self.vertices.insert(inverted_vertex);
-        }
+        self.set_vertices(inverted_vertices);
     }
 
     fn add_missing_temporal_convergence_vertices(&mut self)
@@ -209,9 +204,9 @@ impl Graph
         let mut forward_vertices_to_add : Vec<GraphVertex> = vec![];
         let mut backward_vertices_to_add : Vec<GraphVertex> = vec![];
 
-        for i_vertex in &self.vertices
+        for i_vertex in self.vertices()
         {
-            for j_vertex in &self.vertices
+            for j_vertex in self.vertices()
             {
                 if i_vertex != j_vertex && i_vertex.from == j_vertex.from
                 {
@@ -236,10 +231,10 @@ impl Graph
         }
 
         self.set_log_line_formatter(bx!(|v| format!("{}φ{}\n", v.from, v.to)));
-        self.add_and_log_vertices(forward_vertices_to_add);
+        self.add_vertices(forward_vertices_to_add);
 
         self.set_log_line_formatter(bx!(|v| format!("{}β{}\n", v.from, v.to)));
-        self.add_and_log_vertices(backward_vertices_to_add);
+        self.add_vertices(backward_vertices_to_add);
 
         self.set_log_line_formatter(default_log_line_formatter!());
     }

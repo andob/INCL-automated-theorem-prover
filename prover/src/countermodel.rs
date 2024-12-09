@@ -105,13 +105,13 @@ impl ProofTree
     {
         let formula_format_options = FormulaFormatOptions::default();
 
-        let original_vertices = self.modality_graph.vertices.iter()
+        let original_vertices = self.modality_graph.vertices()
             .filter(|vertex| vertex.from == possible_world || vertex.to == possible_world)
             .collect::<BTreeSet<&GraphVertex>>();
 
         for original_vertex in original_vertices
         {
-            let tags = self.modality_graph.vertices_tags.iter()
+            let tags = self.modality_graph.vertices_tags()
                 .filter(|(vertex, _tag)| vertex == original_vertex)
                 .map(|(_v, tag)| tag.to_string_with_options(&formula_format_options))
                 .collect::<Vec<String>>();

@@ -85,8 +85,6 @@ impl LogicRule for IntuitionisticLogicRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             And(box p, box q, extras) if extras.sign == Plus =>

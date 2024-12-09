@@ -126,8 +126,6 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
 {
     fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
     {
-        self.modality.initialize_graph_if_needed(factory);
-
         return match &node.formula
         {
             Imply(box p, box q, extras) if extras.sign == Plus =>
