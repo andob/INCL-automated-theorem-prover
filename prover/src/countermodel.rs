@@ -73,16 +73,19 @@ impl ProofTree
             .map(|node| node.formula.get_possible_world())
             .collect::<BTreeSet<PossibleWorld>>();
 
-        for possible_world in possible_worlds
+        for possible_world in &possible_worlds
         {
             graph_nodes.insert(CountermodelGraphNode
             {
-                possible_world: possible_world,
-                is_normal_world: self.check_if_possible_world_is_normal(possible_world, &path),
-                atomics: self.populate_atomics(&atomic_names, &path, possible_world),
+                possible_world: *possible_world,
+                is_normal_world: self.check_if_possible_world_is_normal(*possible_world, &path),
+                atomics: self.populate_atomics(&atomic_names, &path, *possible_world),
             });
+        }
 
-            self.populate_with_graph_vertices(possible_world, &mut graph_vertices);
+        for possible_world in possible_worlds
+        {
+            self.populate_with_graph_vertices(possible_world, &graph_nodes, &mut graph_vertices);
         }
 
         return Some(CountermodelGraph { nodes:graph_nodes, vertices:graph_vertices });
@@ -101,12 +104,15 @@ impl ProofTree
         return true;
     }
 
-    fn populate_with_graph_vertices(&self, possible_world : PossibleWorld, output_vertices : &mut BTreeSet<CountermodelGraphVertex>)
+    fn populate_with_graph_vertices(&self, possible_world : PossibleWorld,
+        output_nodes : &BTreeSet<CountermodelGraphNode>, output_vertices : &mut BTreeSet<CountermodelGraphVertex>)
     {
         let formula_format_options = FormulaFormatOptions::default();
 
         let original_vertices = self.modality_graph.vertices()
-            .filter(|vertex| vertex.from == possible_world || vertex.to == possible_world)
+            .filter(|vertex| (vertex.from == possible_world || vertex.to == possible_world) &&
+                output_nodes.iter().any(|node| node.possible_world == vertex.from) &&
+                output_nodes.iter().any(|node| node.possible_world == vertex.to))
             .collect::<BTreeSet<&GraphVertex>>();
 
         for original_vertex in original_vertices

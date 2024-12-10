@@ -167,6 +167,7 @@ function show_problem_catalog()
 
             div.appendChild(document.createTextNode(problem.id));
             div.onclick = () => prove_problem(problem);
+            div.onauxclick = () => window.open(create_shareable_url(problem), "_blank");
 
             book_chapter_li.appendChild(div);
             book_chapter_li.appendChild(document.createTextNode("  "))
@@ -415,7 +416,7 @@ function prove_problem(problem)
         show_execution_log_panel_contents(proof_tree.execution_log);
 
         //changing browser URL without reloading the page, in order for the URL to be shareable
-        window.history.pushState(null, null, '?' + create_shareable_url_args(problem).toString());
+        window.history.replaceState(null, null, create_shareable_url(problem));
     }
     catch (e)
     {
@@ -424,7 +425,7 @@ function prove_problem(problem)
     }
 }
 
-function create_shareable_url_args(problem)
+function create_shareable_url(problem)
 {
     let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
     let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
@@ -434,7 +435,7 @@ function create_shareable_url_args(problem)
     url_arguments.set(KEY_LOGIC, encodeURIComponent(problem.logic));
     url_arguments.set(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
     url_arguments.set(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
-    return url_arguments;
+    return '?' + url_arguments.toString();
 }
 
 function render_proof_tree(proof_tree)
