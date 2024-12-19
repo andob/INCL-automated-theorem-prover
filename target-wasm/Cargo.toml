@@ -32,9 +32,6 @@ prover = { path = "../prover" }
 wasm-bindgen = "0.2.84"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 
-# generic Result<> with any error
-anyhow = "1.0.79"
-
 # enum utils
 strum = "0.26.1"
 strum_macros = "0.26.1"

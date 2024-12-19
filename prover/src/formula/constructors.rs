@@ -27,6 +27,18 @@ impl AtomicFormulaExtras
             is_hidden: false,
         }
     }
+
+    pub fn from(extras : &FormulaExtras) -> AtomicFormulaExtras
+    {
+        return AtomicFormulaExtras
+        {
+            predicate_args: PredicateArguments::empty(),
+            possible_world: extras.possible_world,
+            sign: extras.sign,
+            fuzzy_tags: extras.fuzzy_tags.clone(),
+            is_hidden: extras.is_hidden,
+        }
+    }
 }
 
 impl FormulaExtras

@@ -42,9 +42,6 @@ substring = "1.4.5"
 
 # convenience instantiation macros
 box-macro = "0.2.0"
-str-macro = "1.0.0"
-maplit2 = "1.0.5"
-log = "0.4.22"
 
 # concurrency libraries
 crossbeam-channel = "0.5.13"
@@ -58,3 +55,6 @@ web-sys = { version = "0.3.76", features = ["Window", "Location", "UrlSearchPara
 
 # RAM allocation counter
 allocation-counter = "0.8.1"
+
+# LogicNG
+logicng = "0.1.0-alpha.3"

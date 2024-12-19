@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::{env, fs, io, thread};
 use std::any::Any;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::CString;
 use std::io::Write;
 use std::path::Path;
@@ -12,9 +12,12 @@ use anyhow::{anyhow, Context, Error, Result};
 use libc::c_char;
 use mustache::{MapBuilder, Template};
 use prover::{codeloc, logic, problem};
+use prover::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use prover::formula::notations::OperatorNotations;
+use prover::formula::{Formula, PossibleWorld};
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::{Logic, LogicFactory, LogicName};
+use prover::logic::normal_modal_logic::NormalModalLogic;
 use prover::logic::propositional_logic::PropositionalLogic;
 use prover::parser::algorithm::LogicalExpressionParser;
 use prover::problem::catalog::get_demo_problem_catalog;
@@ -30,6 +33,8 @@ const TEMPLATE : &str = include_str!("template.html");
 
 fn main() -> Result<()>
 {
+    // return Formula::demo_eliminate_modalities();
+
     setup_panicking_from_all_future_threads();
     fs::create_dir_all(OUTPUT_DIR_PATH).context(codeloc!())?;
 

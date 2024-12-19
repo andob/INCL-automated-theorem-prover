@@ -19,4 +19,3 @@ pub mod proof;
 pub mod semantics;
 pub mod graph;
 pub mod countermodel;
-pub mod countermodel_alt;
