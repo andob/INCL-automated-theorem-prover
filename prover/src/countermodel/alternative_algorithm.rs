@@ -13,6 +13,7 @@ use crate::countermodel::alternative_algorithm::sat_solver::SATSolver;
 use crate::countermodel::CountermodelGraph;
 use crate::formula::{Formula, FormulaExtras};
 use crate::formula::Formula::Non;
+use crate::formula::to_string::FormulaFormatOptions;
 use crate::logic::Logic;
 use crate::logic::normal_modal_logic::NormalModalLogic;
 use crate::logic::propositional_logic::PropositionalLogic;
@@ -57,16 +58,30 @@ impl ProofTree
             for graph in graph_generator.generate_graphs(number_of_graph_nodes)
             {
                 let logicng_formula_factory = LogicNGFormulaFactory::new();
+                let formula_format_options = FormulaFormatOptions::recommended_for(&logic);
 
-                let normalized_formulas = premises_and_non_conclusion.iter()
+                let formulas_without_modalities = premises_and_non_conclusion.iter()
                     .flat_map(|formula| formula.eliminate_modalities(&graph).ok())
+                    .collect::<Vec<Formula>>();
+
+                let formulas_without_modalities_as_string = formulas_without_modalities.iter()
+                    .map(|formula| formula.to_string_with_options(&formula_format_options)).join("\n");
+
+                let normalized_formulas = formulas_without_modalities.iter()
                     .flat_map(|formula| formula.to_conjunctive_normal_form(&logicng_formula_factory))
                     .collect::<Vec<LogicNGEncodedFormula>>();
+
+                let normalized_formulas_as_string = normalized_formulas.iter()
+                    .map(|formula| formula.to_string(&logicng_formula_factory)).join("\n");
+
                 if normalized_formulas.is_empty() { continue }
+                if normalized_formulas.len() != premises_and_non_conclusion.len() { continue }
 
                 let sat_solver = SATSolver::new(logicng_formula_factory, normalized_formulas);
-                if let Some(graph_with_atomic_values) = sat_solver.sat(&graph)
+                if let Some(mut graph_with_atomic_values) = sat_solver.sat(&graph)
                 {
+                    graph_with_atomic_values.comment = format!("Without modalities: {}\nCNF: {}",
+                        formulas_without_modalities_as_string, normalized_formulas_as_string);
                     return Some(graph_with_atomic_values);
                 }
             }

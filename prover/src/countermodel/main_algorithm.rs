@@ -52,7 +52,12 @@ impl ProofTree
             self.populate_with_graph_vertices(possible_world, &graph_nodes, &mut graph_vertices);
         }
 
-        return Some(CountermodelGraph { nodes:graph_nodes, vertices:graph_vertices });
+        return Some(CountermodelGraph
+        {
+            nodes: graph_nodes, vertices: graph_vertices,
+            was_built_from_modality_graph: true,
+            comment: String::new(),
+        });
     }
 
     fn check_if_possible_world_is_normal(&self, possible_world : PossibleWorld, path : &ProofTreePath) -> bool

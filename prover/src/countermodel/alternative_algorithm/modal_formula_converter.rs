@@ -1,15 +1,9 @@
-use std::collections::{BTreeMap, BTreeSet};
-use std::rc::Rc;
 use anyhow::{anyhow, Result};
 use box_macro::bx;
 use itertools::Itertools;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
-use crate::formula::to_string::FormulaFormatOptions;
-use crate::logic::Logic;
-use crate::logic::normal_modal_logic::NormalModalLogic;
-use crate::parser::algorithm::LogicalExpressionParser;
 
 impl Formula
 {
@@ -207,61 +201,5 @@ impl Formula
 
             _ => self.clone()
         }
-    }
-
-    //todo remove this
-    pub fn demo_eliminate_modalities() -> Result<()>
-    {
-        let logic : Rc<dyn Logic> = Rc::new(NormalModalLogic::K());
-        let formula_format_options = FormulaFormatOptions::recommended_for(&logic);
-
-        let p = LogicalExpressionParser::parse(&logic, &String::from("◇□p ≡ □◇p"))?;
-
-        let p_graph = CountermodelGraph
-        {
-            nodes: BTreeSet::from([
-                CountermodelGraphNode { possible_world: PossibleWorld::zero(), is_normal_world: false, atomics: BTreeMap::new() },
-                CountermodelGraphNode { possible_world: PossibleWorld { index:1 }, is_normal_world: false, atomics: BTreeMap::new() },
-            ]),
-            vertices: BTreeSet::from([
-                CountermodelGraphVertex { from: PossibleWorld::zero(), to: PossibleWorld::zero(), tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:1 }, to: PossibleWorld { index:1 }, tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:0 }, to: PossibleWorld { index:1 }, tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:1 }, to: PossibleWorld { index:0 }, tags: Vec::new() },
-            ]),
-        };
-
-        let p_prime = p.eliminate_modalities(&p_graph)?;
-
-        println!("{}", p.to_string_with_options(&formula_format_options));
-        println!("{}", p_prime.to_string_with_options(&formula_format_options));
-        println!("\n\n");
-
-        let q = LogicalExpressionParser::parse(&logic, &String::from("◇◇◇(p & q) & ◇◇w & ◇(p & ◇q)"))?;
-
-        let q_graph = CountermodelGraph
-        {
-            nodes: BTreeSet::from([
-                CountermodelGraphNode { possible_world: PossibleWorld::zero(), is_normal_world: false, atomics: BTreeMap::new() },
-                CountermodelGraphNode { possible_world: PossibleWorld { index:1 }, is_normal_world: false, atomics: BTreeMap::new() },
-                CountermodelGraphNode { possible_world: PossibleWorld { index:2 }, is_normal_world: false, atomics: BTreeMap::new() },
-                CountermodelGraphNode { possible_world: PossibleWorld { index:3 }, is_normal_world: false, atomics: BTreeMap::new() },
-            ]),
-            vertices: BTreeSet::from([
-                CountermodelGraphVertex { from: PossibleWorld { index:0 }, to: PossibleWorld { index:1 }, tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:1 }, to: PossibleWorld { index:2 }, tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:2 }, to: PossibleWorld { index:3 }, tags: Vec::new() },
-                CountermodelGraphVertex { from: PossibleWorld { index:0 }, to: PossibleWorld { index:3 }, tags: Vec::new() },
-            ]),
-        };
-
-        let q_prime = q.eliminate_modalities(&q_graph)?;
-        // let q_double_prime = q.eliminate_modalities(&CountermodelGraph::new())?;
-
-        println!("{}", q.to_string_with_options(&formula_format_options));
-        println!("{}", q_prime.to_string_with_options(&formula_format_options));
-        // println!("{}", q_double_prime.to_string_with_options(&formula_format_options));
-
-        return Ok(());
     }
 }

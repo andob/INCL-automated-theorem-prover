@@ -35,6 +35,8 @@ impl SATSolver
                 {
                     nodes: nodes_with_attached_atomic_values,
                     vertices: graph.vertices.clone(),
+                    was_built_from_modality_graph: false,
+                    comment: String::new(),
                 });
             }
         }

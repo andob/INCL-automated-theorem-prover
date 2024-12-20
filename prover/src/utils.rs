@@ -16,6 +16,7 @@ macro_rules! codeloc { () => { format!("{}:{}", file!(), line!()) } }
 
 pub const CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES : &str = "min_countermodel_graph_nodes";
 pub const CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES : &str = "max_countermodel_graph_nodes";
+pub const CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS : &str = "should_shuffle_countermodel_graphs";
 pub const CONFIG_KEY_BENCHMARK : &str = "benchmark";
 
 #[cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))]

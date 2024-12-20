@@ -10,6 +10,8 @@ pub struct CountermodelGraph
 {
     pub nodes : BTreeSet<CountermodelGraphNode>,
     pub vertices : BTreeSet<CountermodelGraphVertex>,
+    pub was_built_from_modality_graph : bool,
+    pub comment : String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Ord, PartialOrd, Eq, PartialEq)]
@@ -36,6 +38,8 @@ impl CountermodelGraph
         {
             nodes: BTreeSet::new(),
             vertices: BTreeSet::new(),
+            was_built_from_modality_graph: false,
+            comment: String::new(),
         };
     }
 }

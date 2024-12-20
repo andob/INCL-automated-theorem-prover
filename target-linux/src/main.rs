@@ -33,8 +33,6 @@ const TEMPLATE : &str = include_str!("template.html");
 
 fn main() -> Result<()>
 {
-    // return Formula::demo_eliminate_modalities();
-
     setup_panicking_from_all_future_threads();
     fs::create_dir_all(OUTPUT_DIR_PATH).context(codeloc!())?;
 

@@ -7,6 +7,11 @@ const KEY_PREMISES = 'premises';
 const KEY_CONCLUSION = 'conclusion';
 const KEY_ACTIVE_TAB_INDEX = 'activeTabIndex';
 
+const CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES = 'min_countermodel_graph_nodes';
+const CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES = 'max_countermodel_graph_nodes';
+const CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS = 'should_shuffle_countermodel_graphs';
+const CONFIG_KEY_BENCHMARK = 'benchmark';
+
 const ID_OPERATOR_NOTATIONS_SELECT = 'operator_notations_select';
 const ID_LOGICS_SELECT1 = 'logics_select1';
 const ID_LOGICS_SELECT2 = 'logics_select2';
@@ -627,11 +632,38 @@ function render_modality_graph(logic, modality_graph)
 
 function render_countermodel_graph(logic, countermodel)
 {
-    if (!countermodel)
+    window.containers.countermodel_graph_container.replaceChildren();
+    if (!countermodel) { return; }
+
+    let comment_element = document.createElement('pre');
+    comment_element.style.cssText = "position:fixed; margin:1em; z-index:100; color:white; white-space:pre-wrap;";
+    comment_element.append(document.createTextNode(countermodel.comment ?? ''));
+    window.containers.countermodel_graph_container.appendChild(comment_element);
+
+    if (!countermodel.was_built_from_modality_graph)
     {
-        cytoscape({ container: window.containers.countermodel_graph_container });
-        return;
+        let shuffle_button = document.createElement('button');
+        shuffle_button.appendChild(document.createTextNode('SHUFFLE!'));
+        shuffle_button.style.cssText = "position:fixed; right:0; bottom:0; margin:1em; z-index:100; font-size:0.85em;";
+        window.containers.countermodel_graph_container.appendChild(shuffle_button);
+
+        shuffle_button.onclick = () =>
+        {
+            let url_arguments = new URLSearchParams(window.location.search);
+            let next_number_of_nodes = parseInt(url_arguments.get(CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES)) === 3 ? 4 : 3;
+            url_arguments.set(CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES, next_number_of_nodes+'');
+            url_arguments.set(CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES, next_number_of_nodes+'');
+            url_arguments.set(CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS, true+'');
+            window.history.replaceState(null, null, '?' + url_arguments.toString());
+
+            document.getElementById(ID_PROVE_BUTTON).click();
+        };
     }
+
+    let cytoscape_graph_div = document.createElement('div');
+    cytoscape_graph_div.style.width = '100%';
+    cytoscape_graph_div.style.height = '100%';
+    window.containers.countermodel_graph_container.appendChild(cytoscape_graph_div);
 
     let should_show_possible_worlds = !incl.should_skip_rendering_modality_graph(logic);
     let nodes = countermodel.nodes.map((node) =>
@@ -656,7 +688,7 @@ function render_countermodel_graph(logic, countermodel)
     });
 
     cytoscape({
-        container: window.containers.countermodel_graph_container,
+        container: cytoscape_graph_div,
         elements: {
             nodes: nodes,
             edges: edges,
@@ -715,13 +747,18 @@ function show_execution_log_panel_contents(execution_log)
         index++;
     }
 
+    let url_args = new URLSearchParams(window.location.search);
+    let is_benchmark_enabled = url_args.get(CONFIG_KEY_BENCHMARK) === true+'';
+    let ram_usage_column_title = 'RAM usage' + (is_benchmark_enabled ? '' :
+        ' (Pass the ' + CONFIG_KEY_BENCHMARK + '=true URL argument to enable RAM measurement!)');
+
     window.containers.execution_log_component.innerHTML = `
     <table style="width:100%; border-collapse:separate; border-spacing:1em; color:white; font-size:0.9em;">
         <tr>
             <td><b>Tree execution</b></td>
             <td><b>Graph execution</b></td>
             <td><b>Contradictions</b></td>
-            <td><b>RAM usage</b></td>
+            <td><b>${ram_usage_column_title}</b></td>
         </tr>
         ${table_contents}
     </table>`;
@@ -752,5 +789,5 @@ function show_about_panel_contents()
             <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">here</a>
             <br/>Version: 1.0.0
         </b>
-    </p>`;
+    </span>`;
 }

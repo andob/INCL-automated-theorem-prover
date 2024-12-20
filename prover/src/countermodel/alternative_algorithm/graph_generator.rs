@@ -7,6 +7,7 @@ use rand::prelude::SliceRandom;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use crate::formula::PossibleWorld;
 use crate::logic::Logic;
+use crate::utils::{get_config_value, CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS};
 
 pub struct CountermodelGraphGenerator
 {
@@ -28,7 +29,11 @@ impl CountermodelGraphGenerator
             code = code.add(BigUint::one());
         }
 
-        codes.shuffle(&mut random);
+        if get_config_value::<bool>(CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS).unwrap_or_default()
+        {
+            codes.shuffle(&mut random);
+        }
+
         return codes;
     }
 
