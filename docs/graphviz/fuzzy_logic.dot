@@ -1,0 +1,107 @@
+digraph {
+    a [label="{α}, ¬¬P, ±"];
+    b [label="{α}, P, ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P ∧ Q, +"];
+    b [label="{α}, P, +"];
+    c [label="{α}, Q, +"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="{α}, P ∧ Q, -"];
+    b [label="{α}, P, -"];
+    c [label="{α}, Q, -"];
+    a -> b; a -> c;
+}
+
+digraph {
+    a [label="{α}, ¬(P ∧ Q), ±"];
+    b [label="{α}, ¬P ∨ ¬Q, ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P ∨ Q, +"];
+    b [label="{α}, P, +"];
+    c [label="{α}, Q, +"];
+    a -> b; a -> c;
+}
+
+digraph {
+    a [label="{α}, P ∨ Q, -"];
+    b [label="{α}, P, -"];
+    c [label="{α}, Q, -"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="{α}, ¬(P ∨ Q), ±"];
+    b [label="{α}, ¬P ∧ ¬Q, ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P ⊃ Q, +"];
+    b [label="{β}, P, -"];
+    c [label="{α + β}, Q, +"];
+    a -> b; a -> c;
+}
+
+digraph {
+    a [label="{α}, P ⊃ Q, -"];
+    b [label="{β}, P, +"];
+    c [label="{α + β}, Q, -"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="{α}, ¬(P ⊃ Q), ±"];
+    b [label="{α}, P ∧ ¬Q, ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P ≡ Q, ±"];
+    b [label="{α}, (P ⊃ Q) ∧ (Q ⊃ P), ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, ¬(P ≡ Q), ±"];
+    b [label="{α}, ¬((P ⊃ Q) ∧ (Q ⊃ P)), ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P, +"];
+    b [label="α ≥ μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, P, -"];
+    b [label="α < μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, ¬P, +"];
+    b [label="α ≥ 1 - μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="{α}, ¬P, -"];
+    b [label="α < 1 - μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="α ≥ β"];
+    b [label="α < β\n🗲"];
+    a -> b;
+}

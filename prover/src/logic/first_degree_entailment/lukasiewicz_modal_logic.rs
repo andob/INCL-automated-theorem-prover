@@ -1,19 +1,18 @@
-use std::any::Any;
-use std::rc::Rc;
-use box_macro::bx;
-use crate::formula::Formula::{BiImply, Imply, Non, Or, And};
-use crate::formula::FormulaExtras;
+use crate::formula::Formula::{Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
-use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
-use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
+use crate::logic::common_modal_logic::{ModalLogicRules, Modality, ModalityRef};
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
+use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::parser::token_types::TokenTypeID;
-use crate::semantics::Semantics;
 use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehaviour, ManyValuedLogicSemantics};
+use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
+use box_macro::bx;
+use std::any::Any;
+use std::rc::Rc;
 
 //check out book chapters 8 and 11a
 pub struct LukasiewiczModalLogic
@@ -169,21 +168,6 @@ impl LogicRule for LukasiewiczImplicationRules
                 let non_q_node = factory.new_node(non_q);
 
                 return Some(ProofSubtree::with_left_right_nodes(minus_p_node, non_q_node));
-            }
-
-            BiImply(box p, box q, extras) =>
-            {
-                let p_imply_q = Imply(bx!(p.clone()), bx!(q.clone()), extras.clone()).with_sign(Plus);
-                let q_imply_p = Imply(bx!(q.clone()), bx!(p.clone()), extras.clone()).with_sign(Plus);
-
-                let conjunction = And(bx!(p_imply_q), bx!(q_imply_p), FormulaExtras
-                {
-                    possible_world: extras.possible_world, sign: Plus,
-                    fuzzy_tags: extras.fuzzy_tags.clone(), is_hidden: true,
-                });
-
-                let conjunction_node = factory.new_node(conjunction);
-                return Some(ProofSubtree::with_middle_node(conjunction_node));
             }
 
             _ => None

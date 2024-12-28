@@ -1,0 +1,11 @@
+digraph {
+    a [label="P, wᵢ, +"];
+    b [label="P, wᵢ, -\n🗲"];
+    a -> b;
+}
+
+digraph {
+    a [label="P, wᵢ, -"];
+    b [label="¬P, wᵢ, -\n🗲"];
+    a -> b;
+}
