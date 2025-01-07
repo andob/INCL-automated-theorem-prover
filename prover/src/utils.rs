@@ -17,7 +17,6 @@ macro_rules! codeloc { () => { format!("{}:{}", file!(), line!()) } }
 pub const CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES : &str = "min_countermodel_graph_nodes";
 pub const CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES : &str = "max_countermodel_graph_nodes";
 pub const CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS : &str = "should_shuffle_countermodel_graphs";
-pub const CONFIG_KEY_BENCHMARK : &str = "benchmark";
 
 #[cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))]
 pub fn get_config_value<R>(key : &str) -> Option<R> where R : FromStr, R : Default, R : Display
@@ -42,18 +41,19 @@ pub fn get_config_value<R>(key : &str) -> Option<R> where R : FromStr, R : Defau
 }
 
 #[inline(always)]
+#[cfg(is_benchmark_mode_enabled)]
 pub fn measure_total_number_of_allocated_bytes<F>(function : F) -> f64 where F : FnOnce() -> ()
 {
-    if get_config_value::<bool>(CONFIG_KEY_BENCHMARK).unwrap_or_default()
-    {
-        let allocation_info = allocation_counter::measure(function);
-        return allocation_info.bytes_total as f64;
-    }
-    else
-    {
-        function();
-        return 0.0;
-    }
+    let allocation_info = allocation_counter::measure(function);
+    return allocation_info.bytes_total as f64;
+}
+
+#[inline(always)]
+#[cfg(any(not(is_benchmark_mode_enabled)))]
+pub fn measure_total_number_of_allocated_bytes<F>(function : F) -> f64 where F : FnOnce() -> ()
+{
+    function();
+    return 0.0;
 }
 
 pub fn setup_panicking_from_all_future_threads()

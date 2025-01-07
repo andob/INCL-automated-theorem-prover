@@ -10,7 +10,6 @@ const KEY_ACTIVE_TAB_INDEX = 'activeTabIndex';
 const CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES = 'min_countermodel_graph_nodes';
 const CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES = 'max_countermodel_graph_nodes';
 const CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAPHS = 'should_shuffle_countermodel_graphs';
-const CONFIG_KEY_BENCHMARK = 'benchmark';
 
 const ID_OPERATOR_NOTATIONS_SELECT = 'operator_notations_select';
 const ID_LOGICS_SELECT1 = 'logics_select1';
@@ -747,10 +746,9 @@ function show_execution_log_panel_contents(execution_log)
         index++;
     }
 
-    let url_args = new URLSearchParams(window.location.search);
-    let is_benchmark_enabled = url_args.get(CONFIG_KEY_BENCHMARK) === true+'';
-    let ram_usage_column_title = 'RAM usage' + (is_benchmark_enabled ? '' :
-        ' (Pass the ' + CONFIG_KEY_BENCHMARK + '=true URL argument to enable RAM measurement!)');
+    let is_benchmark_mode_enabled = window.location.toString().includes('/benchmark');
+    let ram_usage_column_title = 'RAM usage' + (is_benchmark_mode_enabled ? '' :
+        ' (Navigate to andob.io/incl/benchmark to enable RAM measurement!)');
 
     window.containers.execution_log_component.innerHTML = `
     <table style="width:100%; border-collapse:separate; border-spacing:1em; color:white; font-size:0.9em;">

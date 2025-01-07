@@ -6,4 +6,5 @@ Cargo.lock
 wasm-pack.log
 src/target_wasm.js
 src/target_wasm_bg.wasm
+src/benchmark
 archive.zip
