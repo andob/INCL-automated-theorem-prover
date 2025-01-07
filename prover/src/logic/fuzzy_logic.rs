@@ -159,13 +159,12 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
                 return Some(ProofSubtree::with_middle_node(plus_p_node));
             }
 
-            Non(box Imply(box p, box q, _), extras) =>
+            Non(box p_imply_q@Imply(..), extras) =>
             {
-                let non_q = Non(bx!(q.clone()), extras.clone());
-                let p_and_non_q = And(bx!(p.clone()), bx!(non_q), extras.clone());
-                let p_and_non_q_node = factory.new_node(p_and_non_q);
+                let p_imply_q_minus = p_imply_q.with_sign(Minus);
+                let p_imply_q_minus_node = factory.new_node(p_imply_q_minus);
 
-                return Some(ProofSubtree::with_middle_node(p_and_non_q_node));
+                return Some(ProofSubtree::with_middle_node(p_imply_q_minus_node));
             }
 
             BiImply(box p, box q, extras) =>

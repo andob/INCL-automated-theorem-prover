@@ -141,6 +141,13 @@
         "conclusion": "~IsSuffering[Buddha]"
       },
       {
+        "id": "Epicurus",
+        "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "\uD835\uDD08God", "∀x((AllGood[x] ∧ AllPowerful[x]) ⊃ ¬∃y(Evil[y]))", "∃y Evil[y]" ],
+        "conclusion": "¬(AllGood[God] ∧ AllPowerful[God])"
+      },
+      {
         "id": "12.13.2.a",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
         "expected": "proved",

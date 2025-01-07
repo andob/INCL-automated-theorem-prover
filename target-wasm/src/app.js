@@ -364,7 +364,7 @@ function update_problem_input_area(problem, proof_tree)
         proof_status_label.innerText = 'TIMEOUT!';
     else if (proof_tree.was_proved)
         proof_status_label.innerText = 'PROVED!';
-    else proof_status_label.innerText = 'NOT PROVED!';
+    else proof_status_label.innerText = 'DISPROVED!';
 
     operator_notations_select.options.selectedIndex = Math.max(0,
         incl.get_operator_notations().indexOf(window.operator_notations));

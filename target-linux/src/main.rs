@@ -39,7 +39,10 @@ fn main() -> Result<()>
     let args = env::args().collect::<Vec<String>>();
     if args.contains(&String::from("solve-book"))
     {
+        let instant_before_solving = Instant::now();
         prove_problems_from_the_book().context(codeloc!())?;
+        println!("Solving took {}s", instant_before_solving.elapsed().as_secs());
+
         create_proof_index_html_file().context(codeloc!())?;
 
         open_browser(INDEX_FILE_PATH).context(codeloc!())?;

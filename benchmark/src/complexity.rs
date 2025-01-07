@@ -74,16 +74,42 @@ impl Complexity
         }
     }
 
-    pub fn as_str(&self) -> &'static str
+    pub fn to_onotation_string(&self) -> String
     {
-        return match self
+        return String::from(match self
         {
             Complexity::Logarithmic(_) => { "O(log(n))" }
             Complexity::Linear(_) => { "O(n)" }
             Complexity::LogLinear(_) => { "O(n*log(n))" }
-            Complexity::Quadratic(_) => { "O(n^2)" }
-            Complexity::Exponential(_) => { "O(2^n)" }
+            Complexity::Quadratic(_) => { "O(n²)" }
+            Complexity::Exponential(_) => { "O(2ⁿ)" }
             Complexity::Factorial(_) => { "O(n!)" }
+        })
+    }
+
+    pub fn to_friendly_string(&self) -> String
+    {
+        return String::from(match self
+        {
+            Complexity::Logarithmic(_) => { "Logarithmic" }
+            Complexity::Linear(_) => { "Linear" }
+            Complexity::LogLinear(_) => { "LogLinear" }
+            Complexity::Quadratic(_) => { "Quadratic" }
+            Complexity::Exponential(_) => { "Exponential" }
+            Complexity::Factorial(_) => { "Factorial" }
+        })
+    }
+
+    pub fn to_scaled_function_string(&self) -> String
+    {
+        return match self
+        {
+            Complexity::Logarithmic(k) => { format!("f1(n) = log(n) * {:.4}", k) }
+            Complexity::Linear(k) => { format!("f2(n) = n * {:.4}", k) }
+            Complexity::LogLinear(k) => { format!("f3(n) = n*log(n) * {:.4}", k) }
+            Complexity::Quadratic(k) => { format!("f4(n) = n² * {:.4}", k) }
+            Complexity::Exponential(k) => { format!("f5(n) = 2ⁿ * {:.4}", k) }
+            Complexity::Factorial(k) => { format!("f6(n) = n! * {:.4}", k) }
         }
     }
 }
@@ -92,7 +118,7 @@ impl Display for Complexity
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
     {
-        return write!(f, "{}", self.as_str());
+        return write!(f, "{}", self.to_onotation_string());
     }
 }
 
@@ -139,10 +165,12 @@ pub fn calculate_complexity(csv_lines : &Vec<ParsedCSVLine>) -> Result<Complexit
         complexities[complexity_index].0 = r_squared;
     }
 
-    println!("\n\nR^2,Complexity");
+    println!("\n\nComplexity,,Scaled function,R²");
     for (r_squared, complexity) in &complexities
     {
-        println!("{},{}", r_squared, complexity.as_str());
+        println!("{},{},{},{:.4}",
+            complexity.to_friendly_string(), complexity.to_onotation_string(),
+            complexity.to_scaled_function_string(), r_squared);
     }
 
     let (_, complexity) = complexities.into_iter()
