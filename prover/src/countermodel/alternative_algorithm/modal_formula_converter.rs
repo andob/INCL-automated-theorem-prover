@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Result};
 use box_macro::bx;
 use itertools::Itertools;
+use smol_str::{format_smolstr, SmolStr, ToSmolStr};
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
@@ -32,7 +33,7 @@ impl Formula
 
             Atomic(p_name, extras) =>
             {
-                let new_p_name = format!("{}_{}", p_name, extras.possible_world.index);
+                let new_p_name = format_smolstr!("{}_{}", p_name, extras.possible_world.index);
                 return Atomic(new_p_name, extras.clone());
             }
 
@@ -152,7 +153,7 @@ impl Formula
 
     fn falsum() -> Formula
     {
-        return Atomic(String::from('⊥'), AtomicFormulaExtras::empty());
+        return Atomic(SmolStr::from("⊥"), AtomicFormulaExtras::empty());
     }
 
     fn without_falsum(&self) -> Result<Formula>

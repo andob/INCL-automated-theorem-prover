@@ -102,7 +102,7 @@ impl Formula
         {
             Atomic(p, args) =>
             {
-                if args.predicate_args.is_empty() { return p.clone() };
+                if args.predicate_args.is_empty() { return p.to_string() };
                 return format!("{}[{}]", p, args.predicate_args);
             }
 
@@ -201,7 +201,7 @@ impl Formula
 
             Comment(payload) =>
             {
-                return payload.clone();
+                return payload.to_string();
             }
         }
     }

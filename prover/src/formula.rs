@@ -8,11 +8,12 @@ mod random;
 
 use std::fmt::Display;
 use itertools::Itertools;
+use smol_str::SmolStr;
 
 #[derive(Eq, PartialEq, Hash, Clone)]
 pub enum Formula
 {
-    Atomic(String, AtomicFormulaExtras),
+    Atomic(SmolStr, AtomicFormulaExtras),
     Non(Box<Formula>, FormulaExtras),
     And(Box<Formula>, Box<Formula>, FormulaExtras),
     Or(Box<Formula>, Box<Formula>, FormulaExtras),
@@ -30,7 +31,7 @@ pub enum Formula
     InFuture(Box<Formula>, FormulaExtras),
     LessThan(FuzzyTags, FuzzyTags, FormulaExtras),
     GreaterOrEqualThan(FuzzyTags, FuzzyTags, FormulaExtras),
-    Comment(String),
+    Comment(SmolStr),
 }
 
 #[derive(Eq, PartialEq, Hash, Clone)]
@@ -73,8 +74,8 @@ pub struct PredicateArguments
 #[derive(Eq, Hash, Ord, PartialOrd, Clone)]
 pub struct PredicateArgument
 {
-    pub variable_name : String, //variable name eg: x,y,z
-    pub object_name : String, //object name eg: a,b,c
+    pub variable_name : SmolStr, //variable name eg: x,y,z
+    pub object_name : SmolStr, //object name eg: a,b,c
 }
 
 impl PredicateArgument
@@ -102,7 +103,7 @@ pub struct FuzzyTags
 #[derive(Eq, Hash, Ord, PartialOrd, Clone)]
 pub struct FuzzyTag
 {
-    pub object_name : String, //eg: α,β,γ
+    pub object_name : SmolStr, //eg: α,β,γ
     pub sign : Sign,
 }
 

@@ -5,6 +5,7 @@ use std::slice::{Iter as VecIter, Iter};
 use std::collections::btree_set::Iter as BTreeSetIter;
 use std::collections::BTreeSet;
 use std::fmt::{Debug, Display, Formatter};
+use smol_str::{SmolStr, ToSmolStr};
 use crate::formula::{Formula, PossibleWorld};
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 use crate::proof::execution_log::ExecutionLogHelperData;
@@ -126,9 +127,9 @@ impl Graph
         self.log_line_formatter = formatter;
     }
 
-    pub fn flush_log(&mut self) -> String
+    pub fn flush_log(&mut self) -> SmolStr
     {
-        let log = self.log.trim().to_string();
+        let log = self.log.trim().to_smolstr();
         self.log = String::new();
         return log;
     }

@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
+use smol_str::{format_smolstr, SmolStr, ToSmolStr};
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
@@ -69,13 +70,13 @@ impl ExistsQuantifierRule
         return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
 
-    pub fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> String>
+    pub fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> SmolStr>
     {
         let used_names = factory.tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
             .flat_map(|name| vec![name.object_name, name.variable_name])
-            .collect::<BTreeSet<String>>();
+            .collect::<BTreeSet<SmolStr>>();
 
         return Box::new(move ||
         {
@@ -83,8 +84,8 @@ impl ExistsQuantifierRule
             let mut aux = 0u64;
             loop
             {
-                let name = if aux==0 { char.to_string() }
-                else { format!("{}{}", char, aux) };
+                let name = if aux==0 { char.to_smolstr() }
+                else { format_smolstr!("{}{}", char, aux) };
 
                 if !used_names.contains(&name) { return name; }
 
@@ -97,14 +98,14 @@ impl ExistsQuantifierRule
 
 impl Formula
 {
-    pub fn binded(&self, x : &PredicateArgument, binding_name : String, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
+    pub fn binded(&self, x : &PredicateArgument, binding_name : SmolStr, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
     {
-        let object_name_factory : Box<dyn Fn() -> String> = Box::new(move || binding_name.clone());
+        let object_name_factory : Box<dyn Fn() -> SmolStr> = Box::new(move || binding_name.clone());
 
         return self.instantiated(x, &object_name_factory, extras);
     }
 
-    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
+    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> SmolStr>, extras : &FormulaExtras) -> (Formula, Option<PredicateArgument>)
     {
         let instantiated_p = self.instantiate_impl(x, object_name_factory).with_sign(extras.sign);
         let instantiated_x = instantiated_p.get_all_predicate_arguments().into_iter()
@@ -113,7 +114,7 @@ impl Formula
         return (instantiated_p, instantiated_x);
     }
 
-    fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>) -> Formula
+    fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> SmolStr>) -> Formula
     {
         let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory));
 
@@ -190,7 +191,7 @@ impl Formula
 
 impl PredicateArguments
 {
-    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> String>) -> PredicateArguments
+    pub fn instantiated(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> SmolStr>) -> PredicateArguments
     {
         let mut instantiated_args : Vec<PredicateArgument> = vec![];
         for arg in self.iter()

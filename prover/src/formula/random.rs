@@ -4,6 +4,7 @@ use box_macro::bx;
 use itertools::Itertools;
 use rand::distributions::Uniform;
 use rand::prelude::Distribution;
+use smol_str::{SmolStr, ToSmolStr};
 
 const UNIFORM_DISTRIBUTION_MAX : u32 = 1_000_000;
 const SMALL_LETTER_CHARSET : &str = "qwertyuiopasdfghjklzxcvbnm";
@@ -46,7 +47,7 @@ impl Formula
                 is_hidden: false,
             };
 
-            return Atomic(character.to_string(), extras);
+            return Atomic(character.to_smolstr(), extras);
         }
 
         let extras = FormulaExtras
@@ -64,7 +65,7 @@ impl Formula
             1 => Or(bx!(next()), bx!(next()), extras),
             2 => Imply(bx!(next()), bx!(next()), extras),
             3 => BiImply(bx!(next()), bx!(next()), extras),
-            _ => Comment(String::new()),
+            _ => Comment(SmolStr::from("")),
         }
     }
 }

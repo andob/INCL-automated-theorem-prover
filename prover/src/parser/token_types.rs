@@ -1,6 +1,7 @@
 use regex::Regex;
 use anyhow::{anyhow, Context, Result};
 use box_macro::bx;
+use smol_str::ToSmolStr;
 use strum_macros::{Display, EnumIter};
 use substring::Substring;
 use crate::codeloc;
@@ -98,7 +99,7 @@ impl TokenType
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name, args|
                 {
-                    let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_string();
+                    let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_smolstr();
                     let predicate_args = Self::parse_predicate_arguments(&name);
                     let formula_extras = AtomicFormulaExtras::new(predicate_args);
                     return Ok(Formula::Atomic(atomic_name, formula_extras));
@@ -115,7 +116,7 @@ impl TokenType
                 to_formula: |name,_|
                 {
                     let formula_extras = AtomicFormulaExtras::empty();
-                    return Ok(Formula::Atomic(name, formula_extras));
+                    return Ok(Formula::Atomic(name.to_smolstr(), formula_extras));
                 }
             },
 

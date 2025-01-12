@@ -31,4 +31,4 @@ allocation-counter = "0.8.1"
 sdl2 = "0.37.0"
 
 # iter extensions
-itertools = "0.13.0"
+itertools = "0.14.0"

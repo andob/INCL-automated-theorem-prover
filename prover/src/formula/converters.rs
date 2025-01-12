@@ -409,6 +409,7 @@ impl Formula
         self.get_all_atomic_names_recursively(&mut output);
         return output;
     }
+
     fn get_all_atomic_names_recursively(&self, output : &mut BTreeSet<String>)
     {
         let mut get_all_atomic_names_recursively_from_tuple = |(p, q) : (&Formula, &Formula)|
@@ -419,7 +420,7 @@ impl Formula
 
         match self
         {
-            Atomic(name, _) => { output.insert(name.clone()); }
+            Atomic(name, _) => { output.insert(name.to_string()); }
             Non(box p, _) => { p.get_all_atomic_names_recursively(output); }
             And(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
             Or(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }

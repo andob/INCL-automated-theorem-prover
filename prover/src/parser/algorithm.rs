@@ -1,6 +1,7 @@
 use std::any;
 use std::rc::Rc;
 use anyhow::{anyhow, Context, Result};
+use smol_str::ToSmolStr;
 use substring::Substring;
 use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras};
@@ -182,8 +183,8 @@ impl <'a> LogicalExpressionParserImpl<'a>
             let to_formula = self.token_type_at_index(index_before_eat).to_formula;
             let name = self.token_at_index(index_before_eat).value.clone();
             let index_of_equals = name.find('=').unwrap();
-            let left = Formula::Atomic(name.substring(0, index_of_equals).trim().to_string(), AtomicFormulaExtras::empty());
-            let right = Formula::Atomic(name.substring(index_of_equals+1, name.len()).trim().to_string(), AtomicFormulaExtras::empty());
+            let left = Formula::Atomic(name.substring(0, index_of_equals).trim().to_smolstr(), AtomicFormulaExtras::empty());
+            let right = Formula::Atomic(name.substring(index_of_equals+1, name.len()).trim().to_smolstr(), AtomicFormulaExtras::empty());
             return to_formula(name, vec![left, right]);
         }
 

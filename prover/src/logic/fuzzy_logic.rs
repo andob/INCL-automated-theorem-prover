@@ -1,6 +1,7 @@
 use std::any::Any;
 use std::collections::BTreeSet;
 use box_macro::bx;
+use smol_str::{format_smolstr, SmolStr, ToSmolStr};
 use crate::formula::Formula::{And, Atomic, BiImply, GreaterOrEqualThan, Imply, LessThan, Non, Or};
 use crate::formula::{FuzzyTag, FuzzyTags};
 use crate::formula::Sign::{Minus, Plus};
@@ -190,7 +191,7 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
 
             Atomic(p_name, extras) if extras.sign == Plus =>
             {
-                let mu_tag = FuzzyTag::new(format!("µ:{}", p_name));
+                let mu_tag = FuzzyTag::new(format_smolstr!("µ:{}", p_name));
                 let new_extras = extras.with_fuzzy_tags(extras.fuzzy_tags.plus(mu_tag.clone()));
 
                 let x = extras.fuzzy_tags.clone();
@@ -203,7 +204,7 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
 
             Atomic(p_name, extras) if extras.sign == Minus =>
             {
-                let mu_tag = FuzzyTag::new(format!("µ:{}", p_name));
+                let mu_tag = FuzzyTag::new(format_smolstr!("µ:{}", p_name));
                 let new_extras = extras.with_fuzzy_tags(extras.fuzzy_tags.plus(mu_tag.clone()));
 
                 let x = extras.fuzzy_tags.clone();
@@ -216,7 +217,7 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
 
             Non(box Atomic(p_name, _), extras) if extras.sign == Plus =>
             {
-                let minus_mu_tag = FuzzyTag { object_name:format!("µ:{}", p_name), sign:Minus };
+                let minus_mu_tag = FuzzyTag { object_name:format_smolstr!("µ:{}", p_name), sign:Minus };
                 let one_minus_mu_tags = vec![FuzzyTag::one(), minus_mu_tag];
                 let new_extras = extras.with_fuzzy_tags(extras.fuzzy_tags.plus_vec(&one_minus_mu_tags));
 
@@ -230,7 +231,7 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
 
             Non(box Atomic(p_name, _), extras) if extras.sign == Minus =>
             {
-                let minus_mu_tag = FuzzyTag { object_name:format!("µ:{}", p_name), sign:Minus };
+                let minus_mu_tag = FuzzyTag { object_name:format_smolstr!("µ:{}", p_name), sign:Minus };
                 let one_minus_mu_tags = vec![FuzzyTag::one(), minus_mu_tag];
                 let new_extras = extras.with_fuzzy_tags(extras.fuzzy_tags.plus_vec(&one_minus_mu_tags));
 
@@ -255,14 +256,14 @@ impl LukasiewiczFuzzyLogicRules
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .flat_map(|formula| formula.get_fuzzy_tags().into_iter())
             .map(|fuzzy_tag| fuzzy_tag.object_name)
-            .collect::<BTreeSet<String>>();
+            .collect::<BTreeSet<SmolStr>>();
 
         let mut char = 'α';
         let mut aux = 0u64;
         loop
         {
-            let name = if aux==0 { char.to_string() }
-            else { format!("{}{}", char, aux) };
+            let name = if aux==0 { char.to_smolstr() }
+            else { format_smolstr!("{}{}", char, aux) };
 
             if !used_names.contains(&name)
             {

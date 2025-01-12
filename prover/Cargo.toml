@@ -35,10 +35,13 @@ strum = "0.26.1"
 strum_macros = "0.26.1"
 
 # iter extensions
-itertools = "0.13.0"
+itertools = "0.14.0"
 
 # String.substring()
 substring = "1.4.5"
+
+# small stack-allocated strings
+smol_str = "0.3.2"
 
 # convenience instantiation macros
 box-macro = "0.2.0"

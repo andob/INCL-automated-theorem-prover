@@ -1,3 +1,4 @@
+use smol_str::{SmolStr, ToSmolStr};
 use substring::Substring;
 use crate::formula::{AtomicFormulaExtras, FormulaExtras, FuzzyTag, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Sign::Plus;
@@ -92,13 +93,13 @@ impl PredicateArgument
         {
             //this is an instantiated predicate argument
             let index_of_colon = name.find(':').unwrap();
-            let object_name = name.substring(0, index_of_colon).to_string();
-            let variable_name = name.substring(index_of_colon+1, name.len()).to_string();
+            let object_name = name.substring(0, index_of_colon).to_smolstr();
+            let variable_name = name.substring(index_of_colon+1, name.len()).to_smolstr();
             return PredicateArgument { variable_name, object_name };
         }
 
         //this is an uninstantiated predicate argument
-        return PredicateArgument { variable_name:name.to_string(), object_name:name }
+        return PredicateArgument { variable_name:name.to_smolstr(), object_name:name.to_smolstr() }
     }
 }
 
@@ -117,20 +118,20 @@ impl FuzzyTags
 
 impl FuzzyTag
 {
-    pub fn new(name : String) -> FuzzyTag
+    pub fn new(name : SmolStr) -> FuzzyTag
     {
         return FuzzyTag { object_name:name, sign:Plus };
     }
 
     pub fn zero() -> FuzzyTag
     {
-        let object_name = String::from('0');
+        let object_name = SmolStr::from("0");
         return FuzzyTag { object_name, sign:Plus };
     }
 
     pub fn one() -> FuzzyTag
     {
-        let object_name = String::from('1');
+        let object_name = SmolStr::from("1");
         return FuzzyTag { object_name, sign:Plus };
     }
 }
