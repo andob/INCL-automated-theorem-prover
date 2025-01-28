@@ -32,7 +32,7 @@ impl Formula
             }
 
             p@Atomic(..) if *p == Formula::falsum() => Formula::falsum(),
-            p@Atomic(..) if *p == Formula::truthful() => Formula::truthful(),
+            p@Atomic(..) if *p == Formula::truth() => Formula::truth(),
 
             Atomic(p_name, extras) if !extras.predicate_args.is_empty() =>
             {
@@ -44,10 +44,10 @@ impl Formula
                 return Atomic(new_p_name, new_extras);
             }
 
-            Equals(x, y, _) if x == y => Formula::truthful(),
+            Equals(x, y, _) if x == y => Formula::truth(),
             Equals(x, y, _) if x != y => Formula::falsum(),
             Non(box Equals(x, y, _), _) if x == y => Formula::falsum(),
-            Non(box Equals(x, y, _), _) if x != y => Formula::truthful(),
+            Non(box Equals(x, y, _), _) if x != y => Formula::truth(),
 
             Non(box p, extras) =>
             {
@@ -135,7 +135,7 @@ impl Formula
             {
                 if domain.is_empty()
                 {
-                    return Formula::truthful();
+                    return Formula::truth();
                 }
 
                 if domain.len() == 1

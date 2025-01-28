@@ -31,7 +31,7 @@ impl Formula
             }
 
             p@Atomic(..) if *p == Formula::falsum() => Formula::falsum(),
-            p@Atomic(..) if *p == Formula::truthful() => Formula::truthful(),
+            p@Atomic(..) if *p == Formula::truth() => Formula::truth(),
 
             Atomic(p_name, extras) =>
             {
@@ -131,7 +131,7 @@ impl Formula
 
                 if accessible_worlds.is_empty()
                 {
-                    return Formula::truthful();
+                    return Formula::truth();
                 }
 
                 if accessible_worlds.len() == 1

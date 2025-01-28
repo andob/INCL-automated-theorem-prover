@@ -6,7 +6,7 @@ mod sat_solver;
 mod availability;
 mod domain_generator;
 mod first_order_formula_converter;
-mod falsum_and_truthful;
+mod static_formulas;
 
 use std::collections::BTreeSet;
 use box_macro::bx;
@@ -47,8 +47,8 @@ impl ProofTree
             .collect::<BTreeSet<PredicateArgument>>();
 
         let graph_generator = CountermodelGraphGenerator { logic:logic.clone(), atomic_names };
-        let min_number_of_graph_nodes = get_config_value(CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES).unwrap_or(0);
-        let max_number_of_graph_nodes = get_config_value(CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES).unwrap_or(u8::MAX);
+        let min_number_of_graph_nodes = get_config_value(CONFIG_KEY_MIN_COUNTERMODEL_GRAPH_NODES).unwrap_or(1);
+        let max_number_of_graph_nodes = get_config_value(CONFIG_KEY_MAX_COUNTERMODEL_GRAPH_NODES).unwrap_or(10);
 
         let domain_generator = CountermodelDomainGenerator { logic:logic.clone(), predicate_arguments };
         let min_domain_size = get_config_value(CONFIG_KEY_MIN_COUNTERMODEL_DOMAIN_SIZE).unwrap_or(1);
