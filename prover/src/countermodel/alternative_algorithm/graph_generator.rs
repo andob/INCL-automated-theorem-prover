@@ -39,6 +39,9 @@ impl CountermodelGraphGenerator
 
     pub fn generate_graphs(&self, number_of_nodes : u8) -> Vec<CountermodelGraph>
     {
+        let atomics: BTreeMap<String, bool> = self.atomic_names.clone()
+            .into_iter().map(|name| (name, false)).collect();
+
         let mut generated_graphs : Vec<CountermodelGraph> = vec![];
 
         for code in self.generate_graph_codes(number_of_nodes)
@@ -50,7 +53,7 @@ impl CountermodelGraphGenerator
                 graph.nodes.insert(CountermodelGraphNode
                 {
                     possible_world: PossibleWorld { index: world_index },
-                    is_normal_world: true, atomics: BTreeMap::new(),
+                    is_normal_world: true, atomics: atomics.clone(),
                 });
             }
 

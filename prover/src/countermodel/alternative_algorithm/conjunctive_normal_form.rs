@@ -1,14 +1,13 @@
-use box_macro::bx;
-use anyhow::{anyhow, Result};
-use logicng::formulas::{EncodedFormula as LogicNGEncodedFormula, FormulaFactory as LogicNGFormulaFactory};
-use crate::formula::Formula;
-use crate::formula::Formula::{And, BiImply, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::notations::OperatorNotations;
 use crate::formula::to_string::FormulaFormatOptions;
+use crate::formula::Formula;
+use crate::formula::Formula::{And, BiImply, Conditional, Exists, ForAll, Imply, InFuture, InPast, Necessary, Non, Or, Possible, StrictImply};
+use box_macro::bx;
+use logicng::formulas::{EncodedFormula as LogicNGEncodedFormula, FormulaFactory as LogicNGFormulaFactory};
 
 impl Formula
 {
-    pub fn to_conjunctive_normal_form(&self, logicng_formula_factory : &LogicNGFormulaFactory) -> Result<LogicNGEncodedFormula>
+    pub fn to_conjunctive_normal_form(&self, logicng_formula_factory : &LogicNGFormulaFactory) -> LogicNGEncodedFormula
     {
         let mut formula_format_options = FormulaFormatOptions::default();
         formula_format_options.notations = OperatorNotations::LogicNGNotations;
@@ -16,10 +15,12 @@ impl Formula
         let logicng_input_formula = self.eliminate_equivalence().eliminate_implication();
         let logicng_input_string = logicng_input_formula.to_string_with_options(&formula_format_options);
 
-        let logicng_parsed_formula = logicng_formula_factory.parse(logicng_input_string.as_str())?;
-        let logicng_cnf = logicng_formula_factory.cnf_of(logicng_parsed_formula);
-        return if logicng_cnf.is_falsum() { Err(anyhow!("CNF formula is falsum!")) }
-        else { Ok(logicng_cnf) };
+        if let Ok(logicng_parsed_formula) = logicng_formula_factory.parse(logicng_input_string.as_str())
+        {
+            return logicng_formula_factory.cnf_of(logicng_parsed_formula);
+        }
+
+        return logicng_formula_factory.falsum();
     }
 
     fn eliminate_implication(&self) -> Formula

@@ -1,9 +1,11 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 use logicng::datastructures::Model as LogicNGSatModel;
 use logicng::solver::minisat::MiniSat as LogicNGMiniSat;
 use logicng::formulas::{EncodedFormula as LogicNGEncodedFormula, FormulaFactory as LogicNGFormulaFactory};
 use logicng::solver::minisat::sat::Tristate as LogicNGState;
+use substring::Substring;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode};
+use crate::formula::PossibleWorld;
 
 pub struct SATSolver
 {
@@ -28,7 +30,7 @@ impl SATSolver
             if let Some(sat_model) = sat_solver.model(Some(&*variables))
             {
                 let nodes_with_attached_atomic_values = graph.nodes.iter()
-                    .map(|node| self.populate_node_with_values(node, &sat_model))
+                    .map(|node| self.new_node_with_atomic_values(node, &sat_model))
                     .collect::<BTreeSet<CountermodelGraphNode>>();
 
                 return Some(CountermodelGraph
@@ -44,9 +46,10 @@ impl SATSolver
         return None;
     }
 
-    fn populate_node_with_values(&self, node : &CountermodelGraphNode, sat_model : &LogicNGSatModel) -> CountermodelGraphNode
+    fn new_node_with_atomic_values(&self, node : &CountermodelGraphNode, sat_model : &LogicNGSatModel) -> CountermodelGraphNode
     {
-        let mut atomic_values : BTreeMap<String, bool> = BTreeMap::new();
+        let mut node = node.clone();
+
         let suffix = format!("_{}", node.possible_world.index);
 
         for variable in sat_model.pos()
@@ -54,8 +57,8 @@ impl SATSolver
             let variable_name = variable.name(&self.formula_factory).to_string();
             if variable_name.ends_with(suffix.as_str())
             {
-                let atomic_name = variable_name.strip_suffix(suffix.as_str()).unwrap_or_default();
-                atomic_values.insert(atomic_name.to_string(), true);
+                let atomic_name = self.parse_atomic_name(&variable_name, node.possible_world);
+                node.atomics.insert(atomic_name, true);
             }
         }
 
@@ -64,16 +67,29 @@ impl SATSolver
             let variable_name = variable.name(&self.formula_factory).to_string();
             if variable_name.ends_with(suffix.as_str())
             {
-                let atomic_name = variable_name.strip_suffix(suffix.as_str()).unwrap_or_default();
-                atomic_values.insert(atomic_name.to_string(), false);
+                let atomic_name = self.parse_atomic_name(&variable_name, node.possible_world);
+                node.atomics.insert(atomic_name, false);
             }
         }
 
-        return CountermodelGraphNode
+        return node;
+    }
+
+    fn parse_atomic_name(&self, raw_name : &String, possible_world : PossibleWorld) -> String
+    {
+        let suffix = format!("_{}", possible_world.index);
+        let raw_name = raw_name.strip_suffix(suffix.as_str()).unwrap_or_default();
+
+        if raw_name.contains('_')
         {
-            possible_world: node.possible_world,
-            is_normal_world: node.is_normal_world,
-            atomics: atomic_values,
+            //first order logic: this is a predicate
+            let index = raw_name.find('_').unwrap_or_default();
+            let predicate_name = raw_name.substring(0, index);
+            let predicate_args = raw_name.substring(index+1, raw_name.len()).replace('_', ",");
+            return format!("{}[{}]", predicate_name, predicate_args);
         }
+
+        //propositional logic: this is a proposition
+        return raw_name.to_string();
     }
 }

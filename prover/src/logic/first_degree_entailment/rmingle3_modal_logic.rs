@@ -1,7 +1,7 @@
 use std::any::Any;
 use std::rc::Rc;
 use box_macro::bx;
-use crate::formula::Formula::{And, Imply, Non, Or};
+use crate::formula::Formula::{And, Imply, Non};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};

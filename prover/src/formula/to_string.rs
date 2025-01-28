@@ -17,6 +17,15 @@ impl Display for Formula
     }
 }
 
+impl Debug for Formula
+{
+    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
+    {
+        let options = FormulaFormatOptions::default();
+        return write!(f, "{}", self.to_string_with_options(&options));
+    }
+}
+
 pub struct FormulaFormatOptions
 {
     pub notations : OperatorNotations,
