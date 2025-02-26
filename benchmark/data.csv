@@ -1,0 +1,887 @@
+Problem ID,Logic,Input,Output
+((w ⊃ r) ⊃ t) ⊃ (u ∨ (x ⊃ r)),WithoutModality,6,128832
+((g ⊃ j) ⊃ e) ⊃ ((o ≡ f) ∨ p),WithoutModality,6,140950
+((b ⊃ r) ∧ v) ≡ (q ∨ (y ≡ s)),WithoutModality,6,670828
+(b ∨ y) ∨ ((w ∨ r) ⊃ (c ∧ i)),WithoutModality,6,145251
+(g ⊃ (d ∨ j)) ∨ (q ∧ (t ≡ l)),WithoutModality,6,132413
+((u ≡ s) ∧ u) ⊃ ((q ⊃ z) ∨ v),WithoutModality,6,131272
+((s ∨ e) ≡ e) ≡ ((h ≡ b) ⊃ w),WithoutModality,6,1703341
+((d ⊃ c) ⊃ p) ≡ ((d ≡ x) ≡ u),WithoutModality,6,1404589
+(z ⊃ w) ≡ ((c ≡ r) ∨ (e ∧ q)),WithoutModality,6,607060
+q ⊃ (w ∧ (((v ⊃ y) ⊃ f) ∨ x)),WithoutModality,6,180512
+g ≡ (((l ∧ e) ⊃ x) ∨ (d ≡ w)),WithoutModality,6,560918
+(w ∨ (o ∨ a)) ∨ ((m ∨ m) ≡ s),WithoutModality,6,226504
+((x ≡ (c ⊃ s)) ∨ i) ∧ (i ⊃ w),WithoutModality,6,183955
+h ≡ ((((e ⊃ k) ∧ g) ∧ n) ∧ j),WithoutModality,6,502253
+(y ⊃ (a ⊃ l)) ⊃ (r ∨ (g ⊃ q)),WithoutModality,6,125282
+(t ∨ q) ≡ (z ≡ ((w ∨ q) ≡ d)),WithoutModality,6,4628132
+(((p ∧ v) ⊃ n) ⊃ x) ⊃ (d ≡ n),WithoutModality,6,344220
+(g ∨ g) ≡ (((u ∧ z) ≡ r) ∧ d),WithoutModality,6,1364617
+(p ∧ (f ∧ (k ∨ x))) ∨ (l ∧ x),WithoutModality,6,293719
+d ⊃ (((z ⊃ o) ≡ h) ⊃ (n ≡ z)),WithoutModality,6,718304
+((o ≡ d) ∧ (x ≡ (c ∨ s))) ⊃ e,WithoutModality,6,298009
+(j ⊃ r) ∧ ((c ∧ v) ∧ (x ∨ q)),WithoutModality,6,102364
+(q ⊃ ((x ∨ e) ∧ (h ∧ c))) ≡ g,WithoutModality,6,483963
+f ∧ ((g ∧ s) ≡ ((e ≡ k) ∨ w)),WithoutModality,6,449527
+z ∧ (((y ∧ x) ∧ (q ∧ o)) ∧ h),WithoutModality,6,119478
+((p ∧ m) ∧ (d ≡ u)) ∧ (d ∨ a),WithoutModality,6,106529
+(((n ≡ q) ∧ l) ∨ x) ∧ (b ≡ e),WithoutModality,6,129338
+(g ≡ (m ⊃ (f ⊃ r))) ⊃ (c ∧ r),WithoutModality,6,926243
+((d ⊃ r) ∨ h) ∧ ((o ∧ s) ⊃ d),WithoutModality,6,106003
+(a ∨ (j ∨ (z ≡ e))) ∨ (d ∨ h),WithoutModality,6,136951
+((a ∨ o) ⊃ k) ∧ (w ∨ (l ∧ b)),WithoutModality,6,104418
+x ⊃ ((n ∨ l) ⊃ (r ≡ (k ≡ z))),WithoutModality,6,334389
+e ∨ (l ⊃ ((w ⊃ (b ∧ e)) ⊃ b)),WithoutModality,6,136011
+(u ∨ j) ∧ ((y ∨ (d ≡ y)) ∧ t),WithoutModality,6,109419
+(h ⊃ e) ∧ (((g ≡ z) ≡ e) ∨ l),WithoutModality,6,203619
+(z ∧ (k ∧ h)) ∨ ((i ≡ o) ∧ y),WithoutModality,6,311953
+(d ⊃ (y ∧ t)) ≡ (b ∨ (i ∧ m)),WithoutModality,6,474284
+((h ⊃ p) ⊃ (f ≡ w)) ≡ (t ⊃ f),WithoutModality,6,599398
+a ∧ (g ∧ (l ∨ ((c ≡ k) ∧ m))),WithoutModality,6,128410
+m ∨ ((f ∨ (q ∨ h)) ∨ (b ∨ h)),WithoutModality,6,137641
+((((e ≡ o) ≡ y) ∧ (o ≡ q)) ⊃ d) ∧ o,WithoutModality,7,1002357
+((q ⊃ d) ≡ (t ≡ n)) ≡ (w ≡ (q ⊃ t)),WithoutModality,7,9510082
+(f ≡ y) ∨ ((n ⊃ c) ∧ (y ⊃ (w ≡ y))),WithoutModality,7,262338
+((r ≡ (m ∨ r)) ∨ r) ≡ ((n ≡ r) ≡ g),WithoutModality,7,9113420
+((z ∨ o) ∧ ((a ∧ o) ⊃ b)) ∨ (d ∨ g),WithoutModality,7,206202
+(n ∧ (u ∨ t)) ∧ ((j ⊃ j) ∨ (p ≡ q)),WithoutModality,7,173586
+(((t ≡ j) ∧ m) ∧ j) ∨ ((s ⊃ m) ∧ g),WithoutModality,7,444258
+(a ⊃ (p ≡ f)) ≡ ((f ≡ i) ∨ (e ≡ c)),WithoutModality,7,1956278
+((f ⊃ p) ⊃ (s ⊃ g)) ∧ (t ≡ (h ∨ s)),WithoutModality,7,254741
+(v ⊃ (d ⊃ e)) ∨ ((u ∨ r) ≡ (v ∨ s)),WithoutModality,7,460506
+(((d ∨ (w ≡ c)) ≡ v) ≡ (l ⊃ r)) ∨ x,WithoutModality,7,3840303
+(((z ∧ (z ∨ r)) ≡ p) ∧ k) ∨ (f ≡ v),WithoutModality,7,1667639
+((d ∧ (d ⊃ s)) ∧ e) ⊃ (a ≡ (f ∧ t)),WithoutModality,7,365245
+(((h ≡ n) ≡ l) ⊃ (v ≡ e)) ⊃ (d ∨ i),WithoutModality,7,382104
+(x ∧ (e ∨ (w ⊃ n))) ⊃ (n ∨ (r ⊃ b)),WithoutModality,7,207593
+(m ⊃ (i ∧ g)) ≡ ((l ≡ (r ⊃ v)) ≡ s),WithoutModality,7,9595044
+((i ∧ (c ∧ c)) ∧ j) ∨ ((p ∧ r) ⊃ p),WithoutModality,7,206474
+((j ∧ (v ∧ (u ∨ h))) ⊃ c) ≡ (g ≡ r),WithoutModality,7,1823625
+(((n ⊃ (w ∧ o)) ⊃ c) ⊃ (k ∨ v)) ≡ n,WithoutModality,7,829256
+(f ∨ (w ≡ u)) ⊃ (((z ≡ m) ≡ v) ⊃ v),WithoutModality,7,1095222
+((e ≡ m) ∧ (i ⊃ r)) ∨ ((z ∨ h) ∨ p),WithoutModality,7,215616
+(y ≡ ((k ⊃ c) ⊃ p)) ∨ ((q ∧ g) ∨ j),WithoutModality,7,734892
+((b ≡ (j ≡ r)) ≡ (n ≡ f)) ∨ (c ⊃ f),WithoutModality,7,3678887
+((p ⊃ (i ≡ u)) ⊃ (q ∧ t)) ≡ (b ∨ a),WithoutModality,7,1783619
+(((g ∧ q) ⊃ v) ∧ a) ≡ (c ⊃ (q ∨ l)),WithoutModality,7,1184716
+((z ⊃ (w ⊃ j)) ∧ b) ∨ (y ∨ (w ∨ y)),WithoutModality,7,212646
+(g ∧ (g ∨ a)) ∧ ((z ≡ b) ≡ (o ∨ k)),WithoutModality,7,371293
+(c ∨ (i ∧ y)) ≡ ((t ∧ (j ⊃ t)) ∧ m),WithoutModality,7,1255337
+(((f ≡ i) ≡ t) ⊃ c) ≡ (y ⊃ (c ⊃ x)),WithoutModality,7,2548199
+(d ∨ m) ∧ ((p ≡ b) ∨ ((z ∧ g) ⊃ p)),WithoutModality,7,178730
+((r ∧ o) ⊃ w) ∨ (i ∧ (z ⊃ (s ∧ o))),WithoutModality,7,599381
+((p ≡ (v ⊃ r)) ∧ o) ∨ (h ∧ (l ≡ j)),WithoutModality,7,1677551
+f ∧ (((f ≡ r) ≡ s) ≡ ((q ∨ q) ≡ v)),WithoutModality,7,5680047
+(g ≡ m) ⊃ ((w ⊃ u) ⊃ (v ∧ (d ⊃ y))),WithoutModality,7,408786
+(n ⊃ (f ∨ o)) ⊃ ((b ⊃ k) ≡ (u ∧ d)),WithoutModality,7,809004
+((w ⊃ y) ⊃ (g ≡ s)) ≡ (n ∧ (e ⊃ h)),WithoutModality,7,1423131
+(y ∧ n) ≡ ((z ⊃ (d ⊃ u)) ≡ (z ⊃ w)),WithoutModality,7,3653054
+i ∧ (((p ≡ d) ∨ n) ≡ (y ∧ (a ⊃ r))),WithoutModality,7,1059674
+y ⊃ ((q ∧ (q ⊃ t)) ∧ (j ∧ (h ⊃ u))),WithoutModality,7,195915
+(i ∧ ((p ∨ g) ∧ s)) ⊃ ((w ≡ p) ∨ k),WithoutModality,7,234609
+(((g ∧ n) ∨ s) ≡ v) ∧ (w ⊃ ((o ∨ b) ≡ z)),WithoutModality,8,657301
+(((u ∨ y) ∨ (n ⊃ z)) ≡ s) ∨ ((e ∨ d) ∨ y),WithoutModality,8,876802
+((l ⊃ w) ⊃ h) ⊃ (((j ≡ k) ∧ l) ≡ (l ≡ o)),WithoutModality,8,3481609
+((f ⊃ r) ≡ (z ⊃ p)) ⊃ (d ≡ (h ⊃ (c ∧ i))),WithoutModality,8,3182756
+(j ≡ (n ∨ f)) ⊃ ((z ≡ s) ∧ (b ∨ (j ∨ a))),WithoutModality,8,1027709
+((i ∨ (d ⊃ h)) ∧ x) ∧ ((g ⊃ (b ⊃ f)) ∨ s),WithoutModality,8,263863
+((((m ≡ p) ⊃ n) ∧ f) ∧ w) ≡ ((g ∧ j) ∨ i),WithoutModality,8,2642087
+((c ∨ (t ∧ e)) ⊃ m) ⊃ ((v ⊃ (d ⊃ k)) ⊃ v),WithoutModality,8,546798
+z ∧ (((p ⊃ g) ⊃ t) ∨ ((e ≡ x) ∨ (j ∧ z))),WithoutModality,8,426282
+((a ≡ x) ⊃ s) ∧ ((a ⊃ (x ≡ a)) ≡ (q ≡ m)),WithoutModality,8,1115072
+(j ∨ g) ≡ ((z ∨ (((r ⊃ e) ≡ k) ⊃ z)) ⊃ z),WithoutModality,8,3606006
+((y ≡ (n ≡ c)) ∨ (j ∨ a)) ⊃ ((v ⊃ g) ⊃ k),WithoutModality,8,1194300
+((((f ∨ g) ∨ p) ⊃ a) ∧ (p ∧ j)) ∧ (j ≡ z),WithoutModality,8,282389
+(((k ⊃ a) ≡ (y ∨ w)) ∧ e) ≡ ((j ⊃ l) ∧ y),WithoutModality,8,7109477
+((j ∧ n) ∧ k) ⊃ ((d ⊃ e) ∨ (z ≡ (i ⊃ d))),WithoutModality,8,491319
+((b ⊃ r) ⊃ s) ∧ ((o ∧ (t ⊃ g)) ∨ (e ∧ j)),WithoutModality,8,360139
+(v ∨ p) ≡ ((k ∨ o) ∧ (k ≡ ((h ⊃ q) ⊃ b))),WithoutModality,8,5439150
+((a ∨ v) ≡ (r ≡ p)) ∧ (((w ≡ a) ∧ i) ⊃ e),WithoutModality,8,560992
+((a ∨ (((x ∧ q) ∨ u) ≡ r)) ≡ p) ∨ (a ≡ g),WithoutModality,8,9584386
+(o ∨ ((t ≡ z) ∨ (v ∧ (c ∧ h)))) ∨ (i ≡ a),WithoutModality,8,1003413
+(r ∧ (f ⊃ q)) ⊃ (((e ⊃ w) ≡ (m ⊃ t)) ∨ i),WithoutModality,8,756004
+((r ∨ (k ⊃ (t ∨ (d ≡ u)))) ≡ (c ∨ x)) ∧ t,WithoutModality,8,1470898
+((c ∧ l) ∨ p) ∨ (((l ∧ o) ⊃ r) ≡ (o ≡ k)),WithoutModality,8,2547177
+(((w ∨ g) ∧ q) ≡ p) ∧ (((j ⊃ s) ∨ p) ≡ l),WithoutModality,8,803318
+(e ⊃ n) ∧ ((d ≡ (n ⊃ k)) ∨ (o ⊃ (o ∨ g))),WithoutModality,8,413594
+(j ∨ (e ∧ (n ⊃ c))) ≡ (g ⊃ (h ∨ (s ⊃ i))),WithoutModality,8,1846701
+((b ⊃ ((h ⊃ c) ≡ h)) ∧ d) ∧ ((k ∧ u) ∨ z),WithoutModality,8,367951
+((p ⊃ q) ∧ q) ∨ ((i ∧ s) ∧ ((x ∨ r) ∧ w)),WithoutModality,8,668234
+(q ≡ (l ≡ v)) ≡ (o ⊃ ((j ⊃ (z ≡ a)) ⊃ f)),WithoutModality,8,7014703
+((h ∧ y) ⊃ (i ≡ ((c ∨ i) ≡ w))) ∨ (x ∧ a),WithoutModality,8,3893559
+(z ⊃ (y ∨ (d ∧ t))) ≡ ((m ≡ b) ∨ (i ∧ a)),WithoutModality,8,3292154
+(d ≡ (m ∧ t)) ⊃ (((t ∨ x) ⊃ (k ∧ q)) ∨ a),WithoutModality,8,661371
+((((u ⊃ p) ≡ i) ∧ e) ⊃ f) ∧ ((v ∨ r) ∧ n),WithoutModality,8,381400
+((j ∧ (m ∧ (r ∧ m))) ≡ (t ∨ v)) ≡ (a ≡ s),WithoutModality,8,18962632
+(e ∧ (h ⊃ (y ∨ b))) ≡ (f ∨ (b ∨ (p ≡ r))),WithoutModality,8,2385698
+((x ∨ c) ⊃ (n ⊃ x)) ∧ ((q ∨ (u ≡ f)) ∧ j),WithoutModality,8,251678
+(k ∨ (r ∨ (e ⊃ g))) ∧ (z ∨ ((f ∨ g) ≡ g)),WithoutModality,8,368699
+(e ≡ (v ⊃ l)) ∨ (r ∨ (d ∧ (e ∨ (q ≡ k)))),WithoutModality,8,1036038
+((l ≡ x) ∧ ((m ⊃ z) ≡ e)) ≡ (k ∨ (v ≡ h)),WithoutModality,8,9306890
+((i ⊃ (a ∨ b)) ≡ (u ∨ k)) ∧ (r ∧ (h ∨ j)),WithoutModality,8,639931
+s ≡ (((e ≡ k) ≡ ((e ≡ m) ⊃ a)) ⊃ ((i ⊃ f) ∨ f)),WithoutModality,9,7771262
+(b ⊃ ((((g ∧ b) ∨ (i ∨ (h ⊃ i))) ⊃ e) ⊃ z)) ∨ d,WithoutModality,9,580939
+((e ∧ i) ≡ ((e ∧ y) ∨ q)) ≡ (i ∨ (i ∨ (l ≡ h))),WithoutModality,9,13557703
+((f ≡ h) ∧ (w ≡ m)) ⊃ ((r ∧ (l ⊃ l)) ≡ (b ∨ d)),WithoutModality,9,7765335
+((z ∨ g) ∧ (m ∨ ((o ∧ k) ≡ c))) ⊃ ((j ⊃ t) ∨ y),WithoutModality,9,1401297
+((g ≡ (q ⊃ (a ∨ x))) ≡ (h ≡ i)) ≡ (f ∧ (j ⊃ i)),WithoutModality,9,119555328
+((m ∨ i) ∨ t) ∧ ((j ⊃ m) ≡ (((q ≡ u) ∨ l) ≡ r)),WithoutModality,9,3182359
+(h ∨ (d ⊃ (j ∨ k))) ≡ (((l ≡ u) ⊃ (a ⊃ h)) ⊃ v),WithoutModality,9,3597200
+(e ⊃ ((s ⊃ i) ≡ (r ∧ k))) ∧ (((y ∨ e) ⊃ m) ∧ c),WithoutModality,9,655648
+((i ∨ ((r ∧ w) ⊃ r)) ∨ ((w ∧ o) ∧ d)) ≡ (s ∧ s),WithoutModality,9,3549806
+((v ∧ g) ⊃ (x ∧ (m ∨ j))) ∧ (((m ⊃ v) ⊃ b) ⊃ l),WithoutModality,9,368318
+((p ⊃ (o ∨ m)) ∧ (a ∧ u)) ⊃ (b ⊃ (x ≡ (q ∨ a))),WithoutModality,9,1024787
+(s ∨ g) ≡ ((f ≡ y) ≡ ((q ∧ (o ≡ (g ∨ f))) ∨ a)),WithoutModality,9,54367421
+(((b ∧ h) ⊃ z) ⊃ (o ≡ s)) ≡ (x ≡ ((k ∨ e) ⊃ n)),WithoutModality,9,13312158
+(n ∨ (((c ⊃ d) ⊃ w) ⊃ i)) ∧ ((m ⊃ z) ⊃ (j ⊃ q)),WithoutModality,9,363934
+((a ≡ ((s ∨ k) ≡ m)) ∧ (p ∧ t)) ⊃ (c ⊃ (z ⊃ y)),WithoutModality,9,1596745
+(((u ≡ w) ∨ (k ∧ j)) ∧ i) ∧ ((c ⊃ k) ∨ (g ≡ s)),WithoutModality,9,403724
+((d ⊃ p) ∨ ((i ⊃ v) ∨ a)) ∨ ((c ∧ (m ∧ p)) ∨ u),WithoutModality,9,509724
+((q ⊃ b) ∧ ((n ≡ e) ∨ o)) ∧ (((m ∧ f) ∧ e) ∨ f),WithoutModality,9,365402
+((p ⊃ (p ≡ z)) ∨ (l ∨ n)) ⊃ ((e ∨ (d ⊃ c)) ∧ w),WithoutModality,9,998088
+(((i ∨ d) ∧ ((h ≡ c) ∧ w)) ≡ d) ∧ ((v ⊃ y) ⊃ k),WithoutModality,9,1161250
+(((m ⊃ l) ≡ p) ∧ (z ∨ k)) ∧ ((t ≡ d) ⊃ (n ∨ s)),WithoutModality,9,516738
+((u ⊃ (g ∨ v)) ⊃ ((y ∧ b) ∧ e)) ⊃ (n ∨ (m ∨ p)),WithoutModality,9,461062
+((d ≡ n) ≡ (l ≡ (f ∧ g))) ⊃ ((x ≡ u) ∨ (y ∨ n)),WithoutModality,9,7392706
+(e ∨ (b ⊃ (j ∧ f))) ∧ ((b ≡ e) ∨ (g ≡ (a ∨ f))),WithoutModality,9,644851
+(((k ⊃ (p ∧ c)) ∧ (f ∨ x)) ∨ y) ⊃ (s ≡ (o ≡ k)),WithoutModality,9,6327671
+((n ⊃ f) ≡ (t ⊃ e)) ∨ ((g ∧ ((t ∧ y) ≡ l)) ∧ g),WithoutModality,9,6891557
+(p ⊃ l) ⊃ (((j ⊃ e) ∧ t) ⊃ ((v ⊃ m) ∧ (h ∧ o))),WithoutModality,9,1062124
+((p ⊃ (k ∨ (u ≡ e))) ⊃ ((u ∨ l) ≡ t)) ≡ (c ≡ k),WithoutModality,9,16287540
+(l ⊃ y) ≡ ((b ∨ ((a ∨ w) ⊃ u)) ∧ ((t ⊃ j) ∧ d)),WithoutModality,9,2871294
+((k ∧ (c ∧ j)) ⊃ (w ⊃ x)) ⊃ ((o ≡ (g ∧ f)) ∧ o),WithoutModality,9,2852142
+(d ⊃ (y ∧ (n ≡ (b ∧ (x ∧ i))))) ∨ (g ∨ (l ≡ t)),WithoutModality,9,2962020
+(((j ∧ f) ∧ u) ≡ ((h ∧ o) ≡ y)) ≡ (g ∧ (z ≡ k)),WithoutModality,9,48896933
+(((z ∨ (r ∨ e)) ∧ j) ∨ s) ∧ (((t ∧ a) ≡ s) ∨ f),WithoutModality,9,524093
+(r ≡ (b ≡ b)) ∨ ((u ∧ l) ≡ ((y ∧ v) ∨ (m ≡ i))),WithoutModality,9,7857847
+((r ≡ p) ∧ (((w ≡ h) ≡ b) ⊃ (p ⊃ (a ∨ d)))) ∧ q,WithoutModality,9,732963
+((i ∧ n) ∧ (f ⊃ a)) ∨ ((z ≡ p) ≡ (g ≡ (x ∨ n))),WithoutModality,9,8221237
+(((l ⊃ l) ≡ v) ∧ z) ∨ ((p ⊃ (f ∨ t)) ⊃ (x ∧ g)),WithoutModality,9,5892044
+(((t ∨ t) ≡ (v ∨ (c ∨ g))) ⊃ o) ≡ (h ∧ (k ∧ g)),WithoutModality,9,14144421
+((e ∧ i) ≡ ((n ≡ (l ∨ q)) ∧ s)) ∨ (a ⊃ (q ⊃ m)),WithoutModality,9,3203089
+((q ⊃ ((f ∧ c) ⊃ (t ≡ d))) ∨ ((n ∨ q) ∧ d)) ⊃ (c ⊃ p),WithoutModality,10,616538
+((((z ≡ m) ≡ z) ∧ (m ∨ b)) ∨ ((e ⊃ m) ∨ u)) ≡ (l ≡ n),WithoutModality,10,18415105
+((w ∨ (j ∨ b)) ∧ ((s ≡ e) ⊃ q)) ∧ (g ∧ (k ⊃ (m ⊃ s))),WithoutModality,10,494860
+((n ≡ (b ≡ j)) ≡ (f ≡ ((z ≡ q) ≡ j))) ⊃ ((t ⊃ p) ≡ m),WithoutModality,10,492704334
+(j ∨ (((u ∧ g) ∧ y) ∨ u)) ∨ ((s ∨ ((o ≡ s) ∨ h)) ∧ w),WithoutModality,10,1229687
+z ∨ ((l ∧ (c ∨ f)) ∨ (((j ∧ r) ⊃ ((r ⊃ p) ⊃ d)) ∧ u)),WithoutModality,10,1048149
+((t ∧ (h ∧ s)) ≡ (n ∧ z)) ≡ (d ≡ ((l ∨ (s ∧ z)) ∨ o)),WithoutModality,10,60720376
+((u ∧ (y ∨ a)) ∧ (j ≡ o)) ∧ ((s ≡ k) ∧ ((u ∧ g) ∨ x)),WithoutModality,10,505085
+(i ∨ (((v ⊃ q) ∧ c) ∧ n)) ≡ (i ∧ ((p ∨ (o ∨ e)) ∧ r)),WithoutModality,10,6480979
+(((m ∨ u) ∧ j) ∧ (e ∨ h)) ≡ (l ∧ (a ∧ (e ∧ (r ∧ p)))),WithoutModality,10,6722779
+((j ⊃ n) ∨ c) ⊃ ((i ⊃ k) ≡ (d ⊃ (v ⊃ ((l ⊃ l) ≡ w)))),WithoutModality,10,19053551
+(p ≡ ((l ≡ z) ≡ g)) ∧ (((x ∧ (n ∨ x)) ≡ t) ∨ (n ⊃ a)),WithoutModality,10,2199255
+((((w ∨ z) ∨ i) ∨ (e ≡ y)) ∨ x) ⊃ (c ∨ ((f ⊃ d) ∧ a)),WithoutModality,10,1892409
+((f ≡ (i ∧ u)) ≡ ((y ∧ c) ∨ (g ∨ j))) ⊃ ((d ∧ s) ⊃ p),WithoutModality,10,6113039
+(((d ≡ r) ∧ v) ∧ a) ⊃ (((s ≡ c) ∧ l) ≡ (u ≡ (o ≡ u))),WithoutModality,10,18305849
+(((k ∨ r) ≡ (x ∧ l)) ∨ u) ∧ (h ∨ (((e ∨ n) ⊃ t) ∨ o)),WithoutModality,10,895263
+(n ≡ (l ∨ k)) ≡ (((v ⊃ (m ∨ f)) ⊃ c) ≡ ((m ∧ q) ⊃ l)),WithoutModality,10,41428444
+(t ≡ (((s ≡ k) ⊃ ((y ≡ q) ∧ r)) ≡ i)) ∨ (y ≡ (u ⊃ f)),WithoutModality,10,75738160
+((((d ⊃ t) ≡ s) ≡ l) ∨ h) ∧ ((o ∧ k) ≡ (z ⊃ (k ≡ q))),WithoutModality,10,2564126
+(l ∧ p) ≡ (((v ∧ (q ∨ p)) ∨ (h ≡ m)) ≡ ((a ≡ t) ≡ f)),WithoutModality,10,96283449
+(((v ∧ h) ≡ j) ∧ ((n ≡ e) ∨ k)) ∨ (((q ⊃ e) ≡ a) ∧ g),WithoutModality,10,6201844
+((x ≡ m) ∨ (((r ∧ b) ≡ y) ⊃ (b ∨ j))) ∨ ((h ∧ d) ∧ f),WithoutModality,10,5805569
+((h ≡ (n ∨ v)) ⊃ (o ∨ l)) ⊃ ((c ∧ (y ≡ p)) ≡ (q ⊃ r)),WithoutModality,10,18246660
+(z ≡ (((w ⊃ d) ⊃ f) ∧ z)) ∧ (((c ∧ h) ∧ i) ∧ (n ⊃ s)),WithoutModality,10,1008373
+((w ≡ d) ≡ h) ∨ ((d ⊃ ((i ≡ i) ∧ u)) ⊃ (s ≡ (f ≡ d))),WithoutModality,10,14601866
+(((c ∨ t) ≡ c) ∨ ((r ≡ p) ∧ (q ⊃ v))) ∧ ((i ∧ o) ∨ a),WithoutModality,10,1548033
+((l ∧ h) ∨ (u ∨ f)) ≡ ((r ≡ (e ⊃ w)) ∨ ((g ∧ c) ≡ v)),WithoutModality,10,20769885
+(g ≡ (r ≡ z)) ⊃ (((q ∧ (l ⊃ (a ⊃ f))) ∧ c) ≡ (y ⊃ b)),WithoutModality,10,32253858
+(((r ∨ k) ∧ m) ∧ (((r ∧ t) ∧ j) ∨ x)) ⊃ ((w ∧ p) ∨ a),WithoutModality,10,1213689
+b ∧ (((x ≡ s) ⊃ (((p ∨ m) ⊃ l) ∧ x)) ∨ ((f ∧ f) ∨ k)),WithoutModality,10,1764891
+((q ⊃ (u ⊃ p)) ≡ ((l ⊃ e) ∧ x)) ∧ ((a ≡ t) ⊃ (n ⊃ j)),WithoutModality,10,1575068
+((w ∧ (x ∨ (s ∨ u))) ∧ h) ∧ ((b ∨ x) ∨ ((l ∧ u) ≡ g)),WithoutModality,10,730552
+(n ⊃ (o ∨ ((w ∧ (s ≡ u)) ⊃ t))) ∨ (k ∧ (b ∧ (l ⊃ e))),WithoutModality,10,1266293
+(k ≡ ((v ∧ z) ∧ (s ∧ u))) ∧ (((i ∨ w) ∧ t) ∧ (v ∧ b)),WithoutModality,10,1029682
+((l ∧ q) ∨ (n ≡ h)) ∧ ((h ∧ (e ⊃ i)) ∧ (l ∨ (l ⊃ e))),WithoutModality,10,558378
+(w ∧ (f ≡ ((b ∨ (i ∨ y)) ∨ t))) ≡ (l ∧ ((v ≡ p) ∧ o)),WithoutModality,10,24816640
+((l ⊃ i) ≡ d) ≡ ((z ≡ ((j ∧ z) ⊃ o)) ≡ ((x ∧ t) ∧ p)),WithoutModality,10,161678847
+((g ∨ ((g ∧ t) ⊃ p)) ∧ (y ≡ x)) ⊃ ((j ⊃ (y ≡ n)) ∨ i),WithoutModality,10,3350306
+((e ∧ g) ∧ ((n ≡ e) ∨ r)) ≡ ((b ≡ o) ≡ ((k ≡ w) ⊃ w)),WithoutModality,10,27340768
+(((r ≡ x) ∧ (a ∧ (h ∨ e))) ∧ (u ∨ (h ∧ q))) ∨ (s ∧ l),WithoutModality,10,2118190
+((k ∧ m) ⊃ (((v ∨ q) ≡ (y ∨ d)) ∨ i)) ∨ (g ∨ ((k ⊃ y) ≡ i)),WithoutModality,11,4999291
+((i ≡ x) ≡ (c ∨ (y ≡ w))) ≡ ((y ∨ (p ∧ e)) ∧ (t ≡ (e ∧ e))),WithoutModality,11,74103698
+(a ≡ ((q ⊃ (a ∨ s)) ∧ l)) ⊃ (((o ∧ e) ∧ (q ∧ f)) ⊃ (r ∨ g)),WithoutModality,11,1911300
+(g ⊃ (m ∧ y)) ∧ (((x ∨ a) ≡ (u ≡ a)) ≡ (n ⊃ ((q ∨ x) ≡ k))),WithoutModality,11,18759794
+((c ∧ d) ⊃ (r ∧ a)) ≡ ((l ∨ (s ∨ (v ≡ ((k ∨ o) ∧ p)))) ≡ v),WithoutModality,11,81233443
+(((w ∨ m) ⊃ (u ⊃ (b ⊃ r))) ∨ n) ⊃ ((x ∧ n) ≡ ((d ⊃ t) ∨ f)),WithoutModality,11,14394835
+((x ⊃ c) ∨ (b ≡ (l ∧ o))) ⊃ ((v ∨ (m ∨ c)) ⊃ (p ≡ (r ≡ a))),WithoutModality,11,20484172
+(u ∨ w) ∧ ((t ∧ (m ≡ (o ⊃ (t ⊃ s)))) ∧ (e ∨ (e ⊃ (j ≡ h)))),WithoutModality,11,1266353
+((i ≡ (m ≡ (u ∨ x))) ≡ (j ∧ (b ⊃ q))) ≡ (e ≡ ((o ≡ q) ⊃ i)),WithoutModality,11,1990925395
+((f ≡ (d ≡ w)) ⊃ ((o ⊃ q) ∨ (w ⊃ h))) ∧ ((b ⊃ k) ∨ (y ∧ n)),WithoutModality,11,996172
+(t ∨ ((w ∨ k) ≡ (h ⊃ (w ∧ j)))) ⊃ (((p ∨ z) ⊃ y) ∧ (h ∨ n)),WithoutModality,11,10030542
+(i ∨ ((d ≡ e) ≡ i)) ∧ ((c ≡ c) ≡ ((v ∧ (t ∨ g)) ≡ (e ⊃ r))),WithoutModality,11,10814158
+(((p ∧ l) ⊃ (q ∧ b)) ∧ (t ≡ w)) ≡ ((b ∧ (y ∧ (t ∧ t))) ∨ i),WithoutModality,11,15357583
+((b ∧ e) ⊃ ((l ⊃ r) ∧ ((s ∨ n) ∨ b))) ∧ (r ≡ ((r ∨ s) ∧ l)),WithoutModality,11,1123600
+((p ∧ x) ≡ (q ≡ (o ∨ e))) ∨ (r ∧ ((l ⊃ h) ∧ (q ≡ (o ∧ j)))),WithoutModality,11,33967983
+((o ∧ t) ∧ j) ∧ ((z ≡ g) ∧ (r ∧ ((z ≡ (k ∨ x)) ⊃ (e ∨ d)))),WithoutModality,11,971926
+((i ≡ (h ∧ (b ⊃ j))) ⊃ ((l ∧ j) ∨ (l ≡ (q ⊃ b)))) ⊃ (d ≡ o),WithoutModality,11,6442030
+(j ∨ ((k ∨ (w ⊃ z)) ∨ o)) ∧ ((((k ∨ (z ≡ s)) ≡ w) ∨ k) ∨ u),WithoutModality,11,1213057
+((g ∧ (m ≡ o)) ∨ (d ⊃ ((u ⊃ m) ∨ v))) ⊃ ((x ∧ u) ≡ (i ⊃ t)),WithoutModality,11,9563422
+(j ∨ (g ∨ j)) ∧ ((j ⊃ (d ⊃ g)) ∨ ((o ⊃ l) ∧ ((p ∨ m) ∨ v))),WithoutModality,11,725775
+(((q ≡ w) ≡ r) ≡ ((d ∧ h) ⊃ k)) ∨ (((k ∧ w) ∨ (w ⊃ z)) ⊃ m),WithoutModality,11,22176279
+(((l ≡ n) ∧ (r ⊃ z)) ∧ (l ∨ j)) ⊃ ((g ⊃ z) ∧ ((n ≡ x) ⊃ b)),WithoutModality,11,1643234
+((y ∨ g) ∧ ((q ∨ y) ⊃ (z ∨ v))) ∨ (((r ⊃ i) ∧ (z ≡ o)) ⊃ i),WithoutModality,11,1194391
+((d ∧ (b ∨ a)) ∨ (t ⊃ m)) ≡ (((r ∧ r) ∨ (z ≡ p)) ∧ (x ∧ b)),WithoutModality,11,7386029
+((g ∧ ((g ∨ w) ⊃ x)) ∨ (x ≡ o)) ∧ (b ∨ (u ≡ (o ∨ (q ∨ l)))),WithoutModality,11,1889386
+(((v ∨ n) ∨ k) ∧ (((t ∨ (d ≡ e)) ⊃ t) ∨ k)) ⊃ (m ∨ (m ⊃ l)),WithoutModality,11,2265391
+((s ⊃ y) ⊃ (a ≡ (x ≡ r))) ≡ (j ∨ ((l ⊃ s) ∨ ((r ≡ u) ∨ d))),WithoutModality,11,42555018
+(((z ∨ l) ≡ h) ≡ g) ∧ (((x ∧ m) ∧ q) ∨ (w ∨ (g ∨ (i ≡ f)))),WithoutModality,11,2330029
+((z ∧ (u ⊃ (x ∧ y))) ≡ v) ∨ (((j ≡ (k ⊃ v)) ⊃ o) ⊃ (e ∨ s)),WithoutModality,11,10579950
+(g ∧ (t ∨ (y ⊃ (((q ∧ o) ≡ (p ∨ q)) ∨ n)))) ∨ (e ⊃ (s ∧ i)),WithoutModality,11,4331968
+((o ⊃ n) ∨ (((a ∧ v) ≡ l) ⊃ s)) ∧ (o ≡ ((e ∧ n) ∨ (t ∧ s))),WithoutModality,11,1725614
+((i ≡ (((k ≡ u) ⊃ t) ∧ c)) ∨ (((p ≡ z) ∧ q) ∨ y)) ∨ (o ∨ u),WithoutModality,11,6090219
+((u ∧ z) ≡ (z ≡ (k ∨ j))) ≡ (((n ∧ o) ∨ k) ⊃ ((f ∨ p) ≡ n)),WithoutModality,11,117002522
+(((h ≡ (g ∧ (u ∨ s))) ∨ n) ∧ (v ≡ (z ∧ x))) ⊃ (j ∨ (d ⊃ w)),WithoutModality,11,8503792
+((d ⊃ (a ≡ t)) ⊃ ((t ∨ l) ∧ v)) ∧ (((j ⊃ (f ∧ o)) ∨ k) ≡ x),WithoutModality,11,1747208
+(((((g ⊃ u) ⊃ q) ≡ (i ∧ m)) ∨ (e ⊃ e)) ∨ m) ⊃ (c ⊃ (u ≡ f)),WithoutModality,11,7082810
+((e ∨ q) ⊃ (p ∨ ((q ∧ b) ⊃ l))) ∨ (((a ∧ d) ⊃ b) ∧ (u ≡ d)),WithoutModality,11,1006986
+(((q ≡ (n ⊃ o)) ∧ z) ∧ (r ≡ a)) ≡ ((o ∧ (t ∨ (r ≡ t))) ∧ b),WithoutModality,11,35675890
+(((i ⊃ r) ≡ ((p ⊃ p) ∧ f)) ∨ (i ≡ d)) ≡ (h ∨ ((j ∧ b) ≡ h)),WithoutModality,11,85385263
+((h ∧ y) ⊃ (g ∧ ((g ⊃ (b ⊃ c)) ≡ y))) ⊃ (e ∨ (x ≡ (p ∧ e))),WithoutModality,11,6905246
+((q ≡ (a ≡ (b ⊃ u))) ⊃ (j ≡ p)) ≡ ((c ∨ r) ∧ (g ∧ (u ∨ (f ⊃ z)))),WithoutModality,12,218001154
+(l ≡ m) ∧ (((j ≡ (w ∨ f)) ∧ ((z ⊃ o) ≡ d)) ∧ ((j ≡ (g ⊃ c)) ∧ r)),WithoutModality,12,2051699
+((((i ∨ r) ⊃ e) ∧ x) ≡ ((t ∧ t) ∨ x)) ≡ (p ∨ (o ∨ ((b ⊃ d) ∨ c))),WithoutModality,12,72087059
+(((w ⊃ (e ≡ s)) ∨ h) ∧ (p ∨ (p ∨ e))) ∧ ((u ∧ (d ≡ p)) ⊃ (k ∧ y)),WithoutModality,12,918647
+((b ∧ t) ≡ (x ⊃ (v ∨ o))) ∨ ((l ∧ x) ∨ ((((n ∧ k) ≡ a) ∧ o) ∨ o)),WithoutModality,12,51163746
+((f ≡ p) ∨ (b ≡ (l ∧ (b ≡ y)))) ∧ (((u ⊃ o) ∧ (l ∨ l)) ⊃ (w ⊃ a)),WithoutModality,12,2366119
+((i ∧ i) ⊃ (n ∧ (t ≡ c))) ≡ ((b ∧ t) ≡ ((s ∧ (v ≡ (j ≡ k))) ∧ u)),WithoutModality,12,205595771
+((m ∨ g) ∧ (l ∨ m)) ∧ ((d ≡ (c ⊃ e)) ∧ (((r ∧ r) ∧ c) ∧ (e ∧ p))),WithoutModality,12,1049277
+((((l ∧ c) ≡ v) ∧ p) ∨ ((n ≡ t) ≡ l)) ⊃ ((((n ≡ b) ∧ h) ⊃ g) ⊃ d),WithoutModality,12,10052706
+((w ⊃ x) ≡ ((l ≡ g) ≡ (s ≡ v))) ≡ (l ≡ ((o ⊃ m) ∧ (o ∧ (a ≡ v)))),WithoutModality,12,1562122023
+(h ∨ ((r ∧ (a ∨ o)) ∨ (s ⊃ y))) ⊃ ((e ∨ (r ≡ (r ∧ x))) ≡ (e ≡ t)),WithoutModality,12,84167461
+((c ⊃ z) ⊃ ((w ∨ g) ≡ (v ⊃ g))) ∨ ((r ∨ f) ≡ ((u ∧ a) ⊃ (e ∨ h))),WithoutModality,12,20566857
+((((e ≡ v) ≡ i) ⊃ (c ∧ i)) ∨ (q ∧ (c ∨ x))) ∧ ((z ∧ m) ⊃ (y ∧ o)),WithoutModality,12,5363773
+(z ∧ ((g ≡ m) ⊃ (l ⊃ f))) ⊃ (((s ≡ t) ∨ ((q ∨ l) ≡ (b ⊃ e))) ≡ z),WithoutModality,12,56455836
+(((f ⊃ h) ≡ (i ⊃ s)) ⊃ (f ⊃ b)) ≡ ((p ⊃ l) ∨ (z ≡ ((b ∨ n) ∨ b))),WithoutModality,12,51692582
+(t ∨ ((e ∧ r) ∧ v)) ∨ ((x ≡ p) ∧ ((e ∧ g) ⊃ ((m ∧ o) ≡ (y ⊃ b)))),WithoutModality,12,6254533
+((((z ∨ (z ∧ g)) ∨ u) ∨ (k ∧ x)) ≡ (h ⊃ j)) ≡ (((y ∧ s) ∨ t) ∧ s),WithoutModality,12,86638005
+(((v ⊃ (w ∨ s)) ∧ (u ∨ n)) ∨ ((g ≡ c) ∨ f)) ⊃ (((a ∧ m) ∧ j) ⊃ n),WithoutModality,12,1552729
+(((s ∧ g) ∨ j) ⊃ (k ≡ x)) ∧ (((y ⊃ e) ∧ n) ∨ (q ∨ ((h ∨ c) ∧ e))),WithoutModality,12,1567454
+((b ∧ l) ∨ (q ∨ ((e ∧ q) ⊃ h))) ∨ ((g ≡ v) ⊃ (i ⊃ ((q ∧ p) ∨ b))),WithoutModality,12,1486219
+(((f ⊃ o) ∨ u) ⊃ x) ≡ ((t ≡ (e ∨ ((x ∨ t) ⊃ w))) ∨ (i ≡ (n ≡ s))),WithoutModality,12,121014575
+((p ∨ (q ∧ (p ⊃ u))) ⊃ (j ∨ (c ∧ (c ∨ s)))) ∨ ((x ≡ p) ∧ (f ∧ r)),WithoutModality,12,4825970
+(((t ⊃ w) ≡ (t ∨ g)) ⊃ r) ∧ (((l ≡ d) ≡ ((d ⊃ b) ⊃ w)) ≡ (k ∨ n)),WithoutModality,12,13000077
+(((m ∧ u) ≡ u) ∨ r) ⊃ (((b ⊃ ((h ≡ t) ∧ (s ≡ i))) ∧ g) ≡ (j ≡ v)),WithoutModality,12,115888211
+((v ∨ (h ∧ z)) ∨ (d ≡ i)) ∨ (((v ∧ (r ⊃ c)) ≡ p) ∨ (b ∧ (g ∨ k))),WithoutModality,12,16442071
+(((l ≡ m) ∧ l) ∧ ((d ≡ (s ⊃ g)) ∨ l)) ⊃ ((k ∨ w) ∨ (x ∧ (s ∧ i))),WithoutModality,12,15680228
+((z ⊃ (q ∧ i)) ∧ (((x ⊃ c) ∧ f) ∧ f)) ≡ ((x ⊃ r) ⊃ (s ∧ (b ≡ g))),WithoutModality,12,20252205
+((r ⊃ (t ⊃ c)) ≡ (m ∨ (i ∨ (e ∨ (z ≡ u))))) ∨ ((w ≡ k) ≡ (h ⊃ g)),WithoutModality,12,77887286
+(((z ≡ e) ≡ (a ∧ v)) ∧ p) ∨ ((((c ∨ s) ∨ x) ∧ (z ≡ r)) ∨ (t ∧ m)),WithoutModality,12,29051272
+((e ⊃ i) ∧ (q ⊃ (i ⊃ f))) ∨ (((h ⊃ o) ∧ i) ∧ (f ∨ ((b ≡ f) ∧ h))),WithoutModality,12,2877869
+((y ∨ j) ≡ ((a ⊃ b) ∨ (d ∧ g))) ∧ ((n ∧ z) ∨ ((o ∧ i) ∨ (h ∧ o))),WithoutModality,12,2365848
+(((m ⊃ ((z ∧ p) ∧ r)) ∨ e) ∨ b) ∨ ((m ≡ (i ∧ z)) ≡ (c ∨ (b ∨ x))),WithoutModality,12,20107387
+((o ≡ o) ∧ ((e ≡ (t ∨ u)) ≡ q)) ≡ (((z ⊃ s) ∨ i) ∨ ((q ⊃ p) ∨ i)),WithoutModality,12,96715207
+(z ∨ (l ≡ ((z ∨ h) ⊃ i))) ⊃ (((w ∨ e) ∨ (e ⊃ s)) ∨ ((a ∧ e) ⊃ n)),WithoutModality,12,2058665
+((v ≡ k) ∨ x) ⊃ ((j ⊃ j) ≡ ((((p ≡ v) ⊃ n) ∨ l) ⊃ (u ≡ (m ∧ r)))),WithoutModality,12,125501858
+(m ⊃ ((p ∧ (p ≡ k)) ⊃ x)) ⊃ (((k ≡ u) ⊃ (k ∨ h)) ⊃ ((s ∧ v) ∧ o)),WithoutModality,12,33786786
+((w ∧ q) ∨ ((a ∨ s) ⊃ (i ≡ m))) ∨ (((q ⊃ b) ∧ q) ≡ (t ∨ (m ≡ i))),WithoutModality,12,63285820
+((((t ⊃ u) ⊃ (j ⊃ u)) ⊃ z) ∨ z) ∨ (c ≡ (((l ∧ f) ∧ (y ⊃ w)) ∧ e)),WithoutModality,12,8732013
+(((d ∨ (l ∧ r)) ∧ e) ⊃ ((g ∨ e) ∧ (a ⊃ d))) ⊃ (a ≡ ((l ⊃ d) ⊃ x)),WithoutModality,12,9188972
+((v ≡ (k ⊃ j)) ≡ ((x ≡ (n ≡ n)) ≡ l)) ≡ ((m ∧ (r ⊃ r)) ∧ (e ≡ q)),WithoutModality,12,2727316949
+((h ∧ (j ⊃ q)) ∨ ((n ∨ s) ⊃ (k ⊃ d))) ∨ (t ⊃ ((l ≡ j) ≡ ((r ∨ x) ⊃ z))),WithoutModality,13,9939777
+((a ≡ (s ∨ k)) ⊃ (v ⊃ ((e ∧ l) ⊃ x))) ∧ ((u ⊃ ((l ⊃ p) ∨ x)) ∧ (o ∨ f)),WithoutModality,13,1441213
+(((u ∧ (a ∧ c)) ∨ (n ∨ g)) ∨ ((l ∨ v) ≡ p)) ⊃ ((i ⊃ ((m ∧ k) ∧ e)) ∨ y),WithoutModality,13,6045332
+(c ∨ (((b ⊃ (r ∧ d)) ∧ v) ⊃ (n ∧ z))) ≡ ((f ∨ ((n ∨ k) ∨ j)) ⊃ (l ∧ h)),WithoutModality,13,48272231
+((p ≡ (n ⊃ m)) ≡ o) ⊃ (((n ⊃ s) ∨ ((g ∧ l) ≡ i)) ⊃ ((v ⊃ s) ∧ (f ∧ h))),WithoutModality,13,122521674
+(((m ∨ e) ∨ m) ∧ ((z ≡ h) ≡ (z ⊃ p))) ∨ ((o ≡ ((m ∧ w) ⊃ (u ⊃ m))) ⊃ f),WithoutModality,13,19660276
+(((n ⊃ (u ≡ o)) ⊃ o) ∧ (((j ≡ z) ⊃ h) ∨ o)) ∨ ((x ≡ l) ∧ (i ∧ (q ∨ u))),WithoutModality,13,7464978
+((n ≡ q) ∧ (u ∨ (u ∨ h))) ⊃ ((s ⊃ (s ≡ (e ≡ h))) ⊃ (((t ⊃ r) ⊃ j) ∨ a)),WithoutModality,13,44180643
+((((b ∨ (o ≡ c)) ∧ t) ⊃ q) ≡ (n ∧ (s ∧ f))) ∨ ((l ⊃ (f ⊃ o)) ∨ (k ≡ c)),WithoutModality,13,26815017
+((((z ⊃ w) ⊃ l) ∨ (w ⊃ m)) ⊃ (i ≡ (o ⊃ o))) ⊃ ((d ∧ (w ∧ j)) ⊃ (y ∧ r)),WithoutModality,13,3223697
+(e ⊃ ((e ∨ j) ≡ (i ≡ x))) ⊃ (((b ∧ x) ⊃ f) ∨ ((g ∨ h) ≡ ((h ∨ s) ⊃ x))),WithoutModality,13,20246376
+(((x ⊃ c) ⊃ h) ⊃ (g ∨ (a ∧ (g ∧ (w ∧ l))))) ≡ (((g ≡ n) ≡ n) ∧ (w ∧ t)),WithoutModality,13,58296624
+((y ∨ ((c ∨ v) ≡ s)) ∧ ((w ∨ n) ⊃ y)) ∧ ((((r ∧ q) ∧ u) ⊃ y) ∨ (g ≡ y)),WithoutModality,13,1534554
+((((h ∧ z) ∨ l) ∨ t) ∧ e) ∧ (((a ≡ (r ∨ g)) ∨ u) ⊃ (l ≡ ((q ∨ y) ≡ t))),WithoutModality,13,13651122
+(((z ∨ (h ∨ j)) ≡ e) ≡ (q ⊃ (z ∨ c))) ∨ (((k ⊃ j) ≡ b) ∨ ((w ≡ d) ∨ v)),WithoutModality,13,232137027
+((u ⊃ ((l ⊃ (d ∨ j)) ≡ (b ∧ p))) ∨ (o ⊃ u)) ≡ (((d ∨ q) ∨ c) ∧ (x ∨ c)),WithoutModality,13,94591919
+((m ∧ (a ∨ h)) ∧ (c ∨ ((h ∧ s) ∧ d))) ∧ ((q ∧ e) ∧ ((h ≡ g) ⊃ (z ⊃ d))),WithoutModality,13,1074203
+(((q ∧ r) ∧ m) ≡ (s ≡ m)) ∧ (((g ≡ (v ≡ e)) ≡ o) ≡ ((g ∨ j) ∧ (u ⊃ x))),WithoutModality,13,52642720
+(((u ≡ m) ∧ y) ⊃ ((l ∧ n) ⊃ (((z ∧ p) ∨ f) ≡ (c ∨ h)))) ≡ ((m ⊃ r) ≡ k),WithoutModality,13,123411527
+(((h ∧ k) ≡ (t ⊃ y)) ⊃ (b ∨ (m ∨ i))) ∨ (o ⊃ (((v ⊃ f) ≡ (b ≡ j)) ∧ s)),WithoutModality,13,14120058
+((a ∨ (g ∨ c)) ⊃ (i ⊃ r)) ∨ (((d ∨ m) ⊃ (y ∧ j)) ∨ ((k ⊃ v) ∧ (u ∨ h))),WithoutModality,13,3138908
+(s ∧ t) ≡ (z ⊃ (((((d ≡ r) ∨ d) ⊃ t) ∨ (d ⊃ w)) ∧ (q ≡ ((n ≡ t) ⊃ l)))),WithoutModality,13,76969891
+(((a ≡ n) ∧ p) ⊃ (r ∧ (e ⊃ t))) ≡ (((w ⊃ (p ∧ t)) ∧ x) ⊃ ((s ∨ y) ≡ u)),WithoutModality,13,54782049
+((c ≡ m) ⊃ (f ⊃ c)) ∨ ((((h ∨ o) ∧ e) ⊃ (w ∧ (b ⊃ u))) ≡ ((d ∧ t) ∧ g)),WithoutModality,13,28493050
+((r ≡ (z ≡ (k ∨ b))) ⊃ (j ⊃ ((m ∨ ((b ≡ b) ∨ j)) ≡ v))) ∧ (g ⊃ (l ∧ f)),WithoutModality,13,32222594
+((q ∨ f) ≡ ((u ∧ o) ≡ (c ∧ g))) ≡ (((u ∧ d) ∨ j) ∨ (h ∧ ((s ≡ p) ≡ v))),WithoutModality,13,555129420
+((n ≡ (y ∨ j)) ⊃ (i ∧ e)) ⊃ ((i ∧ l) ≡ (j ⊃ (((s ∧ (f ∧ y)) ∨ k) ∧ p))),WithoutModality,13,50893304
+(((m ⊃ u) ∧ f) ∧ (((t ∨ b) ∧ g) ∨ n)) ∨ (((y ∨ z) ∧ f) ≡ (p ≡ (v ≡ e))),WithoutModality,13,48031260
+(i ∧ (((i ∨ e) ∨ (k ⊃ (b ⊃ i))) ≡ k)) ⊃ (w ∨ ((c ⊃ (q ∧ x)) ≡ (h ∧ l))),WithoutModality,13,40713591
+(((c ∧ b) ∧ y) ⊃ ((q ≡ (g ≡ (f ⊃ q))) ⊃ (t ≡ (a ⊃ c)))) ⊃ ((y ∨ t) ∨ l),WithoutModality,13,4056745
+((((s ∨ k) ∧ k) ⊃ c) ∨ ((h ∨ d) ∧ (e ∧ (v ∧ t)))) ∨ ((n ∨ (h ∧ k)) ≡ l),WithoutModality,13,17083494
+((((f ∨ r) ∧ b) ∧ k) ⊃ (((h ≡ (t ⊃ w)) ∨ j) ⊃ f)) ∨ (((v ⊃ t) ≡ m) ∧ w),WithoutModality,13,30337425
+(((p ⊃ t) ⊃ d) ∧ f) ∧ (((z ≡ o) ∨ (e ∨ j)) ≡ (((e ∨ e) ⊃ s) ⊃ (n ∧ v))),WithoutModality,13,6526580
+(((n ∨ (n ≡ o)) ∧ v) ∨ a) ≡ (((c ≡ g) ∨ (i ≡ d)) ⊃ ((s ⊃ j) ≡ (j ⊃ d))),WithoutModality,13,78851404
+(((p ⊃ y) ⊃ ((z ≡ f) ≡ (o ≡ q))) ∨ (l ≡ (u ≡ (u ∧ f)))) ∨ ((o ≡ h) ⊃ i),WithoutModality,13,334845789
+((d ⊃ (t ≡ d)) ⊃ (j ∨ (((o ⊃ c) ⊃ v) ⊃ (k ⊃ o)))) ∨ ((f ≡ l) ∨ (t ⊃ v)),WithoutModality,13,4948167
+((o ⊃ s) ∨ (d ⊃ f)) ⊃ ((x ⊃ ((u ≡ (y ∧ z)) ≡ b)) ∧ (y ∧ ((h ⊃ w) ∧ l))),WithoutModality,13,27353067
+(((i ∨ t) ≡ (r ≡ k)) ∨ l) ≡ ((n ≡ ((p ∨ e) ∧ (u ∨ y))) ∨ ((x ⊃ k) ∧ h)),WithoutModality,13,241888412
+((r ⊃ a) ∧ ((m ≡ o) ∨ l)) ≡ ((f ∧ ((x ≡ (i ≡ g)) ≡ s)) ≡ ((n ⊃ d) ⊃ v)),WithoutModality,13,2810568589
+((a ⊃ g) ≡ r) ≡ ((j ⊃ ((p ∨ o) ∧ d)) ∧ (((n ⊃ q) ≡ i) ⊃ (u ∨ (f ∨ e)))),WithoutModality,13,73759204
+((((p ⊃ u) ≡ r) ∧ z) ⊃ (j ∨ (z ≡ y))) ∧ ((z ⊃ (q ⊃ y)) ≡ (w ≡ ((r ∧ i) ∨ x))),WithoutModality,14,10815295
+(((k ≡ j) ⊃ v) ∧ (i ⊃ ((r ∧ v) ⊃ i))) ⊃ (((t ∧ n) ≡ (u ∧ x)) ≡ (r ≡ (e ≡ g))),WithoutModality,14,969373540
+((z ⊃ v) ⊃ ((g ⊃ (p ≡ t)) ∨ ((h ⊃ x) ⊃ (t ⊃ h)))) ∨ ((g ∧ (g ≡ h)) ⊃ (j ⊃ o)),WithoutModality,14,2710574
+((((n ∨ c) ⊃ s) ≡ (q ≡ v)) ∨ z) ≡ (((l ∨ b) ≡ (s ∨ i)) ∨ (l ∨ (j ∧ (m ⊃ w)))),WithoutModality,14,280093160
+((j ≡ w) ∨ ((x ≡ (p ∧ s)) ⊃ (g ∨ n))) ⊃ (((m ∨ z) ∨ ((f ≡ n) ∨ j)) ≡ (r ∧ w)),WithoutModality,14,121279712
+((u ≡ (u ∨ j)) ∨ ((u ∨ l) ∧ (v ⊃ t))) ≡ ((((a ∧ i) ⊃ d) ≡ b) ∧ (w ∧ (j ≡ u))),WithoutModality,14,145631868
+((((s ⊃ f) ≡ x) ∧ (l ∨ (h ∧ v))) ⊃ m) ⊃ (((t ∧ g) ∨ n) ∧ ((z ≡ (m ∨ m)) ≡ v)),WithoutModality,14,52548885
+((i ∧ (m ⊃ (i ≡ b))) ∨ (((p ⊃ w) ≡ p) ≡ b)) ∧ (((o ∧ m) ≡ (m ≡ (m ∧ s))) ∧ i),WithoutModality,14,14878021
+(((s ⊃ o) ⊃ ((l ∧ n) ⊃ s)) ∧ u) ⊃ ((k ∨ (p ∨ l)) ⊃ ((p ∨ (u ∧ f)) ∧ (g ≡ f))),WithoutModality,14,29760781
+((s ≡ (v ∧ w)) ⊃ ((y ⊃ u) ≡ e)) ∨ (((w ∨ n) ⊃ (j ∨ y)) ∧ (((u ≡ o) ∧ h) ∧ l)),WithoutModality,14,38372362
+((z ⊃ b) ≡ (((p ∧ l) ∨ (i ≡ d)) ≡ y)) ∨ (((l ∨ (c ∧ m)) ∧ (w ⊃ x)) ∧ (b ⊃ h)),WithoutModality,14,145247409
+(((t ∧ u) ∨ r) ≡ (((h ⊃ (l ⊃ q)) ≡ r) ≡ (z ∧ l))) ≡ (((w ≡ e) ≡ s) ∧ (q ∧ b)),WithoutModality,14,11721783212
+(((z ≡ (y ∧ d)) ≡ v) ⊃ (g ∧ l)) ∨ (((s ∧ l) ⊃ (q ≡ x)) ⊃ ((b ≡ e) ∨ (h ∨ y))),WithoutModality,14,380255669
+((u ⊃ (u ∧ (c ∧ a))) ⊃ ((j ⊃ f) ⊃ (s ∨ r))) ⊃ ((k ≡ g) ∧ ((o ∧ (y ≡ g)) ≡ s)),WithoutModality,14,23537855
+((o ≡ (e ⊃ j)) ≡ ((x ⊃ n) ∧ n)) ∧ (((d ⊃ (h ∧ t)) ≡ b) ∨ (p ∨ (v ∨ (l ∨ t)))),WithoutModality,14,6845837
+(((i ∨ n) ≡ k) ⊃ ((q ⊃ x) ∨ t)) ∨ (((n ≡ g) ⊃ p) ⊃ ((o ≡ ((p ∨ b) ⊃ n)) ∨ x)),WithoutModality,14,44019324
+((((d ⊃ v) ∧ h) ∨ d) ⊃ ((q ≡ (f ∨ j)) ∨ (m ⊃ (s ∧ g)))) ∨ ((j ∧ p) ≡ (h ∧ r)),WithoutModality,14,24029683
+(((n ∧ z) ⊃ o) ≡ (((y ≡ a) ∨ s) ∧ (h ∧ w))) ⊃ ((p ⊃ (b ⊃ v)) ∧ (j ⊃ (e ≡ s))),WithoutModality,14,32757181
+(((v ≡ h) ≡ (p ∨ (t ∧ t))) ∧ (d ∧ q)) ≡ ((u ∨ a) ⊃ ((q ∨ (o ∧ j)) ∧ (p ≡ d))),WithoutModality,14,255185732
+(((x ∧ (t ⊃ (f ∨ p))) ≡ s) ∧ ((p ≡ e) ≡ ((o ∧ r) ≡ n))) ⊃ (((t ∧ w) ∨ q) ∧ l),WithoutModality,14,725152296
+(o ≡ (((h ∨ r) ⊃ r) ≡ ((d ∧ a) ≡ i))) ≡ (((k ⊃ u) ≡ c) ⊃ ((c ≡ i) ∧ (i ⊃ c))),WithoutModality,14,4008860188
+(((u ∨ j) ≡ m) ∨ (e ∧ k)) ≡ ((r ≡ (a ∨ z)) ⊃ ((g ∧ ((l ⊃ n) ≡ j)) ∨ (e ⊃ r))),WithoutModality,14,248502076
+((n ⊃ (c ∧ c)) ≡ (i ≡ x)) ≡ (((f ≡ z) ⊃ (k ⊃ t)) ⊃ (a ∨ ((u ∨ i) ∨ (u ∨ d)))),WithoutModality,14,134702527
+((i ∧ (q ∨ f)) ∧ t) ⊃ ((((c ≡ a) ∧ u) ∨ ((y ∧ f) ∧ c)) ∧ (n ∧ (i ⊃ (q ∧ s)))),WithoutModality,14,6901201
+((y ∨ w) ∨ ((o ⊃ x) ⊃ s)) ∨ ((g ≡ ((h ≡ w) ⊃ (d ∨ d))) ∧ ((y ⊃ g) ∨ (m ∧ r))),WithoutModality,14,8986691
+(p ≡ (a ⊃ (w ≡ e))) ⊃ (((j ∨ (i ∨ k)) ∧ h) ∨ (((v ≡ u) ⊃ u) ≡ (t ∧ (v ∨ a)))),WithoutModality,14,161396814
+((j ≡ e) ∨ ((q ∧ t) ∧ b)) ∧ (((u ∨ z) ⊃ ((p ∧ h) ⊃ p)) ∨ (b ≡ ((s ≡ u) ≡ b))),WithoutModality,14,8971722
+((d ∨ n) ⊃ (o ∧ y)) ⊃ ((((k ⊃ z) ≡ q) ⊃ ((x ∧ m) ∧ h)) ∧ (w ≡ ((i ∨ h) ⊃ c))),WithoutModality,14,16489959
+(((g ⊃ u) ∨ e) ∨ (((l ∧ x) ⊃ h) ∨ h)) ≡ ((d ∨ g) ⊃ (w ⊃ (((h ∨ i) ∨ w) ⊃ o))),WithoutModality,14,33472375
+((y ∧ m) ∨ x) ∧ ((g ∧ ((b ⊃ n) ≡ s)) ∧ ((t ∧ h) ⊃ (((t ≡ w) ≡ f) ⊃ (t ⊃ d)))),WithoutModality,14,2552036
+(q ⊃ (b ∧ g)) ∨ ((((i ∧ f) ⊃ d) ⊃ (l ≡ k)) ∧ (((m ∨ (p ∨ (v ∨ d))) ≡ c) ∨ r)),WithoutModality,14,13323054
+(w ∧ (b ≡ (((q ∧ b) ∧ k) ∨ (n ∨ r)))) ∧ (((d ∨ p) ∧ (y ∨ j)) ∧ (n ≡ (q ∨ c))),WithoutModality,14,3194612
+((t ⊃ (o ∧ v)) ⊃ m) ⊃ ((g ⊃ (e ≡ ((b ⊃ f) ∧ d))) ∧ (((x ∨ (s ≡ g)) ∨ x) ≡ d)),WithoutModality,14,22426546
+(((w ≡ (x ≡ (j ≡ w))) ∧ g) ⊃ (m ⊃ j)) ≡ (((x ∧ l) ⊃ (x ⊃ x)) ≡ (v ∧ (u ∧ f))),WithoutModality,14,902005254
+(((g ∨ (q ∨ o)) ∧ b) ⊃ ((((z ∨ a) ⊃ c) ≡ x) ∧ y)) ∨ ((z ≡ o) ∧ (r ⊃ (y ∨ h))),WithoutModality,14,55820836
+((e ∨ r) ∨ ((l ≡ (l ∧ e)) ≡ ((m ∨ j) ∨ (h ≡ z)))) ∧ ((c ∧ (b ∧ (z ⊃ i))) ⊃ w),WithoutModality,14,7742129
+((l ∧ ((q ≡ (w ∧ p)) ⊃ (u ∧ u))) ≡ ((c ⊃ s) ∨ (t ∨ l))) ∧ ((y ≡ i) ⊃ (y ∨ n)),WithoutModality,14,32123700
+((((j ∧ x) ∨ d) ⊃ (m ⊃ (m ∨ o))) ∧ ((t ∨ (d ∧ i)) ⊃ (x ≡ u))) ≡ ((t ⊃ z) ∨ i),WithoutModality,14,35561762
+((t ≡ n) ≡ ((l ∧ p) ∧ (k ∨ f))) ≡ (((((g ≡ h) ∧ j) ∧ z) ∨ g) ≡ ((z ∨ k) ∧ v)),WithoutModality,14,1019939228
+(((p ⊃ c) ∧ (t ⊃ y)) ∧ ((n ∧ l) ∧ b)) ⊃ (((o ≡ m) ∧ d) ⊃ ((l ∧ k) ≡ (s ⊃ r))),WithoutModality,14,5104039
+(((d ∧ z) ⊃ (y ≡ m)) ⊃ (n ∧ q)) ∧ (((h ∧ t) ≡ ((f ≡ i) ≡ z)) ∨ (f ≡ (t ∨ (h ⊃ i)))),WithoutModality,15,32188418
+(((c ∨ (n ⊃ w)) ∨ u) ∧ ((w ∧ k) ∧ s)) ∧ ((k ≡ (p ∨ r)) ⊃ (((n ∧ (n ⊃ y)) ≡ v) ∧ h)),WithoutModality,15,8254230
+((f ⊃ p) ∨ (r ≡ (e ⊃ a))) ≡ (((n ∨ (k ∨ y)) ≡ ((w ∧ k) ≡ f)) ⊃ ((r ⊃ k) ≡ (v ∨ g))),WithoutModality,15,1503684131
+((((y ∧ (z ∧ d)) ∨ y) ∧ o) ⊃ s) ≡ ((((d ∨ h) ∧ g) ∨ (d ∧ l)) ⊃ ((d ≡ (r ∧ n)) ∧ g)),WithoutModality,15,121334945
+((i ∨ ((g ⊃ s) ⊃ z)) ∨ (w ∧ y)) ∧ ((m ⊃ (f ∧ (x ∨ v))) ⊃ (o ≡ (w ≡ (p ⊃ (y ≡ m))))),WithoutModality,15,21936568
+((h ∧ v) ≡ (((b ≡ s) ≡ l) ∨ d)) ≡ ((w ∨ (v ⊃ b)) ≡ (((e ∧ z) ⊃ i) ∧ (g ∨ (k ∨ l)))),WithoutModality,15,6699528668
+(((d ∨ i) ∧ h) ≡ ((i ∨ ((c ⊃ c) ∧ (b ⊃ t))) ∨ (p ⊃ (h ⊃ s)))) ⊃ ((x ≡ m) ∧ (h ≡ i)),WithoutModality,15,190553179
+(((r ⊃ f) ∧ o) ⊃ (j ∨ (d ∧ n))) ∨ ((z ⊃ ((q ∨ w) ∨ (x ∧ (m ∧ t)))) ≡ (e ∧ (j ∨ n))),WithoutModality,15,109152625
+(o ∨ (l ∧ h)) ⊃ ((((z ∧ a) ∧ m) ∧ ((j ∧ b) ⊃ (p ≡ (p ⊃ s)))) ⊃ ((a ⊃ i) ∧ (x ⊃ x))),WithoutModality,15,18240841
+((l ⊃ (s ≡ n)) ∧ ((h ∧ l) ∨ ((c ≡ y) ∧ (d ∧ p)))) ∧ (((r ∧ h) ≡ ((d ∨ h) ∧ h)) ∨ o),WithoutModality,15,3284937
+((((v ∨ w) ⊃ l) ⊃ (j ∨ (p ∧ q))) ∧ (((s ≡ x) ≡ r) ∨ m)) ⊃ (n ≡ (v ⊃ (g ≡ (q ≡ z)))),WithoutModality,15,511944180
+((b ≡ i) ≡ ((n ∧ (l ∨ r)) ⊃ i)) ≡ (((g ∧ (x ⊃ v)) ⊃ u) ⊃ ((l ≡ n) ∨ ((j ≡ w) ⊃ k))),WithoutModality,15,982867405
+(((j ∨ u) ∨ ((y ∧ q) ≡ o)) ≡ (((o ⊃ k) ≡ (m ≡ (a ∧ y))) ⊃ l)) ∨ (u ⊃ (w ⊃ (s ∧ a))),WithoutModality,15,648713734
+((l ≡ q) ∨ (((((w ≡ i) ∧ r) ∧ x) ⊃ i) ∨ c)) ⊃ ((q ∧ j) ∧ (o ∨ ((c ⊃ y) ⊃ (t ⊃ n)))),WithoutModality,15,16260402
+(((f ⊃ r) ∧ (t ∧ k)) ⊃ ((h ∨ k) ≡ (a ∧ (p ∧ j)))) ∧ ((n ∨ (n ≡ w)) ∧ (u ∨ (j ⊃ j))),WithoutModality,15,4003145
+((((h ∧ o) ≡ b) ⊃ i) ≡ (((y ∨ f) ∧ i) ∧ z)) ∧ ((n ∨ (l ∨ (g ⊃ v))) ⊃ ((h ∨ j) ≡ l)),WithoutModality,15,16228742
+(((g ∧ p) ∧ n) ∨ (w ∧ (a ∨ (w ∧ t)))) ∨ (m ≡ ((((x ⊃ o) ≡ e) ≡ o) ≡ ((d ∨ s) ⊃ j))),WithoutModality,15,9861692725
+(((c ∨ (l ∨ w)) ∧ (w ⊃ b)) ⊃ l) ∧ (((k ⊃ v) ⊃ ((m ≡ (i ≡ h)) ∨ (v ⊃ c))) ∧ (q ≡ i)),WithoutModality,15,4309729
+(((u ≡ m) ∧ q) ∧ (d ⊃ (g ∨ (r ⊃ d)))) ⊃ ((p ≡ a) ⊃ (p ⊃ (a ⊃ ((x ∧ k) ∨ (o ⊃ r))))),WithoutModality,15,18758327
+((((y ∧ l) ∨ l) ∨ ((n ∧ s) ⊃ a)) ∨ d) ∧ (i ≡ ((((f ≡ y) ≡ g) ≡ (u ∨ v)) ⊃ (n ∨ x))),WithoutModality,15,20769171
+((l ⊃ e) ∧ ((n ≡ (c ∧ u)) ∧ ((z ∨ q) ⊃ f))) ≡ ((s ⊃ (d ∨ (y ≡ z))) ∧ (g ∨ (k ∨ u))),WithoutModality,15,247553417
+(((b ∧ q) ∧ s) ∨ ((w ≡ a) ≡ (a ⊃ (i ≡ j)))) ∨ ((y ⊃ ((a ∨ (p ∨ m)) ∨ z)) ≡ (r ∨ m)),WithoutModality,15,752201816
+(((s ∨ (o ∧ b)) ∧ ((k ∨ r) ∨ k)) ∨ g) ⊃ (((b ⊃ s) ⊃ (v ∧ h)) ∧ (h ≡ ((p ⊃ c) ⊃ u))),WithoutModality,15,47441060
+((b ∧ (j ∧ m)) ≡ ((z ∨ (r ⊃ v)) ∧ (n ⊃ p))) ∨ ((w ∧ d) ⊃ ((d ∨ (l ∨ (p ⊃ j))) ≡ m)),WithoutModality,15,165812969
+(((s ⊃ (p ⊃ b)) ≡ u) ∧ ((x ∨ (d ∨ d)) ≡ g)) ∨ ((f ⊃ (c ∨ f)) ∨ (((m ∧ j) ⊃ x) ≡ u)),WithoutModality,15,31944734
+((v ∧ a) ∨ ((((z ⊃ x) ∨ a) ≡ (a ⊃ q)) ∧ (d ∧ (a ⊃ x)))) ∨ ((k ⊃ w) ∨ (z ∧ (o ∨ y))),WithoutModality,15,39416622
+((((s ≡ (g ∨ o)) ∨ o) ≡ (g ≡ j)) ∧ x) ∨ ((i ⊃ (((e ∨ w) ∧ h) ∨ o)) ∧ (g ∨ (y ≡ l))),WithoutModality,15,160703854
+(((i ≡ v) ∨ ((y ≡ (b ∧ z)) ∧ b)) ⊃ ((e ≡ h) ≡ p)) ≡ (((c ⊃ t) ⊃ x) ∧ ((c ⊃ y) ≡ a)),WithoutModality,15,1020042450
+(((s ∧ k) ∧ (i ⊃ x)) ∧ (g ∧ b)) ∧ (((k ≡ p) ∧ (b ⊃ (t ∨ v))) ∧ (h ⊃ ((o ⊃ o) ≡ d))),WithoutModality,15,1962767
+((i ≡ (((l ⊃ c) ⊃ d) ∧ (q ⊃ u))) ≡ ((g ⊃ o) ≡ v)) ⊃ (((j ≡ d) ∧ t) ≡ (p ∨ (p ∨ c))),WithoutModality,15,8943499957
+((t ⊃ (e ∨ (p ≡ t))) ∧ (u ≡ x)) ∨ (((((c ∨ (p ∨ y)) ≡ h) ∨ z) ∨ (t ⊃ x)) ≡ (i ∧ k)),WithoutModality,15,191506722
+(((a ⊃ (c ⊃ n)) ∨ (n ∨ l)) ∨ (c ⊃ (d ∨ (h ∧ c)))) ∨ (((c ∨ e) ∨ v) ≡ (e ≡ (w ∨ f))),WithoutModality,15,20722188
+(((v ∧ (j ∧ n)) ∧ ((u ∨ j) ∨ d)) ∧ ((r ∨ k) ⊃ (j ∧ (v ⊃ w)))) ⊃ ((j ≡ y) ∨ (v ∨ r)),WithoutModality,15,8412461
+(((z ∨ w) ≡ ((r ⊃ a) ⊃ i)) ⊃ ((d ≡ g) ∨ z)) ≡ ((t ∧ (d ∧ b)) ∧ (x ∨ ((o ≡ i) ∧ c))),WithoutModality,15,162178261
+(((q ⊃ ((q ⊃ g) ≡ y)) ⊃ (q ≡ f)) ≡ (a ∨ o)) ∨ ((f ∨ o) ∧ (w ⊃ ((e ≡ n) ⊃ (f ∧ i)))),WithoutModality,15,448760452
+((j ⊃ (x ⊃ (n ≡ w))) ∧ ((f ∨ (x ∧ h)) ∨ n)) ⊃ ((a ≡ (a ⊃ j)) ∨ (((e ⊃ e) ∧ u) ≡ o)),WithoutModality,15,410681523
+((((v ≡ (n ∧ r)) ⊃ r) ∧ (w ∧ s)) ∧ x) ∧ (((m ∧ (y ⊃ (v ∧ j))) ≡ w) ∨ ((x ⊃ d) ⊃ u)),WithoutModality,15,6093116
+((((k ≡ v) ⊃ a) ∨ (g ⊃ q)) ≡ (e ∨ (d ∧ l))) ∧ (((r ∧ i) ∧ ((c ⊃ u) ≡ p)) ∧ (a ≡ v)),WithoutModality,15,7008524
+((((i ∨ d) ≡ (z ≡ c)) ∨ c) ⊃ ((t ⊃ z) ∧ (j ≡ (c ≡ b)))) ∨ (((f ≡ u) ∨ y) ∧ (z ∧ i)),WithoutModality,15,332616264
+((n ⊃ (d ∨ (z ⊃ p))) ∨ (i ⊃ (x ≡ b))) ≡ (((c ∧ h) ≡ n) ⊃ ((a ⊃ b) ∧ ((v ∨ w) ∧ f))),WithoutModality,15,106930149
+(((s ≡ (t ∧ g)) ⊃ (o ≡ (g ≡ j))) ∨ ((t ≡ f) ⊃ g)) ≡ ((i ∧ (t ⊃ m)) ∧ (x ⊃ ((s ∧ s) ∨ a))),WithoutModality,16,842347894
+((j ⊃ m) ⊃ ((v ∨ m) ⊃ (c ≡ (k ≡ h)))) ⊃ ((((t ∨ z) ∨ d) ⊃ t) ≡ (a ⊃ (h ∧ ((r ∧ l) ∧ x)))),WithoutModality,16,182642156
+((j ≡ (n ∧ f)) ≡ ((y ∧ (n ⊃ t)) ∨ (w ∨ x))) ∨ ((c ∨ (v ≡ j)) ⊃ ((f ∨ y) ∧ ((w ≡ i) ∨ h))),WithoutModality,16,245966058
+((((s ≡ f) ⊃ ((w ⊃ ((o ∨ v) ∧ y)) ⊃ v)) ≡ z) ≡ (j ⊃ (w ≡ v))) ∨ ((a ∧ (e ≡ x)) ⊃ (b ⊃ n)),WithoutModality,16,727975303
+((f ≡ g) ⊃ (((t ≡ y) ⊃ h) ∧ (z ⊃ r))) ∧ ((t ∧ (n ⊃ b)) ∧ ((o ∧ ((x ∨ b) ⊃ (g ∨ z))) ∨ b)),WithoutModality,16,2668065
+(((b ⊃ k) ≡ ((n ∨ g) ∨ (f ∨ (o ∨ c)))) ∨ w) ∧ ((h ∧ (j ∧ ((p ≡ h) ≡ u))) ∨ ((i ⊃ q) ∨ s)),WithoutModality,16,5526893
+((o ∧ (u ∨ (i ∨ (e ⊃ a)))) ∨ ((d ∧ d) ≡ (q ≡ m))) ∨ ((p ∧ e) ≡ ((e ≡ ((a ⊃ e) ∧ m)) ∨ b)),WithoutModality,16,1295044968
+(((((m ∨ f) ≡ g) ∧ r) ∨ ((m ≡ (y ≡ (u ∨ l))) ⊃ i)) ∨ s) ∨ ((j ≡ l) ⊃ (((y ∨ t) ≡ y) ≡ n)),WithoutModality,16,2435826587
+((((m ∧ m) ∨ w) ∧ (i ∨ e)) ∨ (s ∨ e)) ⊃ ((w ⊃ ((h ⊃ j) ⊃ h)) ≡ ((o ∧ p) ∧ ((n ∨ r) ≡ b))),WithoutModality,16,361267310
+((s ⊃ c) ≡ (z ≡ y)) ∧ ((((v ∨ d) ⊃ o) ∧ (d ∨ r)) ∧ (((k ⊃ r) ∧ d) ∨ (d ⊃ ((l ∧ p) ∨ e)))),WithoutModality,16,3409771
+((t ∨ (k ∨ (c ∨ (x ∨ d)))) ∨ (j ∨ (w ∧ e))) ⊃ (((e ≡ k) ∨ (q ≡ w)) ≡ (e ⊃ ((y ≡ e) ≡ n))),WithoutModality,16,1354174440
+(((k ∨ y) ∨ (n ∧ m)) ⊃ (((q ∨ g) ∨ a) ∨ n)) ∨ (((v ∧ h) ⊃ a) ∧ ((v ∨ d) ∨ (p ∧ (u ≡ w)))),WithoutModality,16,5597248
+(((y ≡ e) ∧ ((a ⊃ y) ∨ h)) ∨ (i ⊃ (b ∨ y))) ≡ (((a ⊃ e) ≡ (b ∨ c)) ⊃ (g ⊃ (i ∧ (z ≡ l)))),WithoutModality,16,173448173
+(((o ⊃ r) ∧ j) ≡ (((d ⊃ e) ∨ x) ∨ ((r ⊃ d) ∧ ((g ⊃ w) ⊃ p)))) ∧ ((u ⊃ f) ≡ (y ∧ (l ≡ p))),WithoutModality,16,14373298
+((t ∧ q) ∧ ((a ∨ (v ⊃ (u ∧ z))) ⊃ (d ⊃ m))) ⊃ ((f ⊃ (n ≡ (o ≡ v))) ⊃ (v ∧ ((v ∧ w) ∧ d))),WithoutModality,16,72956115
+((b ∨ (((w ≡ s) ≡ p) ≡ (g ∨ r))) ∧ ((j ∧ (h ≡ d)) ∨ (x ≡ f))) ⊃ ((a ≡ o) ⊃ (z ∧ (o ∨ q))),WithoutModality,16,1710486715
+((((o ∧ o) ∨ c) ∧ n) ⊃ ((q ∧ (m ∨ t)) ≡ x)) ∨ ((l ≡ (i ≡ j)) ⊃ ((o ⊃ ((t ∨ o) ≡ g)) ∨ j)),WithoutModality,16,175222287
+(((h ∧ (s ≡ i)) ∨ ((y ∧ l) ∧ f)) ⊃ e) ≡ (((u ∧ g) ⊃ (d ≡ x)) ≡ (((x ∨ j) ∧ r) ∨ (r ∨ t))),WithoutModality,16,475534488
+(o ∨ (((k ∨ w) ≡ o) ≡ (i ≡ k))) ∨ ((((g ∨ i) ∧ (u ∧ (g ≡ p))) ∧ m) ∨ ((o ∨ (k ∨ y)) ≡ s)),WithoutModality,16,1313966653
+((k ∨ z) ⊃ (d ≡ (c ⊃ l))) ∨ ((i ≡ (d ∧ (j ⊃ n))) ≡ ((g ∧ v) ∧ ((e ⊃ (w ∧ g)) ≡ (w ∨ f)))),WithoutModality,16,3174763589
+(((s ∧ g) ∨ (r ⊃ ((o ≡ u) ≡ s))) ⊃ (((l ∧ l) ∨ j) ≡ (v ∨ (d ∨ p)))) ∨ (((w ⊃ v) ⊃ n) ∨ o),WithoutModality,16,238637540
+((i ⊃ (h ∨ ((d ∧ i) ≡ z))) ∨ (((z ≡ (t ≡ l)) ∧ d) ∨ i)) ≡ (((u ∧ g) ≡ (b ∨ d)) ⊃ (j ∨ k)),WithoutModality,16,442232981
+((a ≡ (b ∨ f)) ⊃ (x ∧ (u ≡ ((x ∨ t) ≡ h)))) ∧ ((n ≡ (n ≡ (e ∧ (i ⊃ f)))) ⊃ ((q ⊃ a) ∧ r)),WithoutModality,16,48230357
+(((a ∧ ((k ∧ y) ∨ k)) ⊃ (x ≡ v)) ⊃ u) ≡ ((((x ≡ (x ⊃ x)) ∨ m) ∨ (k ≡ l)) ∧ ((j ∧ z) ⊃ q)),WithoutModality,16,456200571
+(w ≡ ((t ∧ u) ⊃ (t ⊃ (g ∨ t)))) ∧ (((i ≡ k) ≡ (((s ∧ c) ∨ i) ≡ b)) ∧ (u ∨ ((x ⊃ m) ⊃ z))),WithoutModality,16,12294017
+((((r ∧ a) ∨ e) ⊃ b) ∨ ((c ⊃ c) ∧ (v ⊃ t))) ∨ (((p ∨ d) ∨ (k ⊃ z)) ⊃ (t ≡ (t ∧ (x ∨ u)))),WithoutModality,16,46736595
+(((d ≡ f) ∧ s) ∨ ((t ∧ q) ∧ (d ⊃ (f ∨ n)))) ∧ (((r ∧ y) ∨ ((w ∨ n) ⊃ (v ∧ l))) ∨ (j ∨ z)),WithoutModality,16,3364692
+((q ∨ e) ∨ (l ∧ (z ∧ ((e ∧ e) ∨ (a ⊃ b))))) ≡ (((e ∨ q) ∧ (c ∧ (s ∨ n))) ⊃ (w ⊃ (x ⊃ u))),WithoutModality,16,61696512
+(((c ⊃ h) ∨ (f ∧ p)) ∧ ((z ⊃ d) ≡ p)) ∧ (((f ⊃ m) ≡ ((z ≡ x) ≡ x)) ≡ ((k ⊃ y) ⊃ (i ∨ w))),WithoutModality,16,64737910
+(((j ≡ (s ≡ j)) ∨ ((j ⊃ g) ≡ (r ∧ c))) ⊃ (((d ⊃ e) ⊃ l) ∧ p)) ∨ (((z ⊃ x) ≡ (c ∧ n)) ∧ k),WithoutModality,16,373783092
+((((g ∧ v) ⊃ v) ∧ (l ∨ y)) ⊃ (a ∧ (e ≡ (y ∧ i)))) ⊃ (((c ∨ b) ∨ m) ≡ ((h ⊃ j) ∧ (t ∨ v))),WithoutModality,16,100777649
+((((a ≡ v) ≡ x) ⊃ f) ∨ ((z ≡ c) ≡ x)) ≡ ((h ≡ (k ∨ ((y ∧ z) ∧ u))) ≡ ((s ∨ (r ∧ n)) ≡ i)),WithoutModality,16,37230919237
+((((m ∨ a) ∨ p) ≡ p) ⊃ f) ≡ (((g ∨ (o ≡ l)) ≡ (c ∨ (n ⊃ p))) ≡ ((l ∨ c) ≡ ((t ∨ b) ∧ s))),WithoutModality,16,16414137059
+(l ⊃ (((y ∨ k) ≡ y) ∨ c)) ∨ ((((i ∧ c) ∨ j) ∨ ((e ∧ f) ⊃ o)) ⊃ (r ⊃ (i ⊃ (s ⊃ (x ∨ b))))),WithoutModality,16,9207687
+((e ∧ o) ⊃ ((e ∨ ((b ≡ u) ∨ (m ⊃ e))) ⊃ (i ≡ (u ⊃ s)))) ≡ (((y ∧ d) ≡ (o ∧ f)) ∧ (k ⊃ w)),WithoutModality,16,789584377
+((((c ∨ t) ≡ (p ≡ (l ⊃ l))) ⊃ l) ∨ (s ∨ ((f ⊃ (z ∨ i)) ∧ r))) ∧ ((t ∧ (e ≡ n)) ∧ (c ⊃ j)),WithoutModality,16,15898485
+((b ∨ (l ≡ w)) ≡ ((e ∧ s) ⊃ (f ∨ g))) ≡ (((i ≡ (e ∨ (x ≡ p))) ⊃ d) ∨ ((q ∨ (f ∨ b)) ⊃ w)),WithoutModality,16,1271998882
+((((((i ∨ h) ∨ n) ∨ b) ∨ y) ∧ w) ≡ k) ≡ ((((i ∨ s) ⊃ w) ∨ r) ≡ ((l ≡ d) ≡ (c ≡ (t ∨ b)))),WithoutModality,16,17043859973
+((i ∨ (a ≡ q)) ⊃ ((((q ∧ u) ∧ (y ∧ o)) ≡ b) ⊃ (x ⊃ j))) ∧ ((x ≡ g) ⊃ (g ⊃ (k ≡ (z ∧ m)))),WithoutModality,16,15315136
+(((q ∧ l) ∨ ((b ≡ k) ⊃ l)) ∨ (s ⊃ (s ∧ (r ∧ o)))) ∧ (m ⊃ (((a ≡ (z ∧ z)) ∧ q) ∧ (f ⊃ d))),WithoutModality,16,4474951
+((((w ⊃ d) ≡ (u ≡ p)) ⊃ ((l ∧ l) ⊃ j)) ≡ m) ≡ ((y ⊃ (x ∧ (y ∨ u))) ≡ (y ∧ ((e ∨ o) ⊃ (a ≡ j)))),WithoutModality,17,9085508162
+((((h ∧ (s ≡ v)) ⊃ (u ∨ n)) ⊃ e) ≡ (h ⊃ (x ∧ f))) ⊃ ((t ⊃ (m ∨ v)) ≡ ((g ∧ o) ∧ ((c ∧ q) ∧ d))),WithoutModality,17,961991778
+((i ⊃ (((u ∧ f) ∨ u) ∧ s)) ⊃ (((a ∧ c) ≡ x) ∨ x)) ∧ ((s ∨ (l ∨ n)) ⊃ ((i ∨ o) ∧ ((l ≡ z) ⊃ g))),WithoutModality,17,6747106
+((t ∧ (z ∧ s)) ⊃ (t ⊃ ((l ∧ (d ⊃ p)) ∨ e))) ∧ (((((x ∨ h) ∧ z) ≡ q) ≡ t) ≡ (d ≡ (o ⊃ (a ∧ e)))),WithoutModality,17,206875348
+(((s ⊃ (h ∨ f)) ∨ ((j ∧ c) ∧ (r ∧ e))) ∨ (((j ∨ f) ≡ b) ∧ ((v ∨ z) ≡ j))) ∨ (g ⊃ ((w ∨ s) ≡ v)),WithoutModality,17,107167850
+(((b ∧ m) ≡ g) ⊃ (u ≡ a)) ≡ ((((y ≡ u) ∨ j) ∨ (g ∨ o)) ∧ ((z ⊃ (c ∨ d)) ≡ (j ≡ (z ⊃ (r ⊃ x))))),WithoutModality,17,5026747725
+((m ∧ (q ∨ s)) ∨ (((n ⊃ c) ∧ a) ≡ (w ∨ q))) ∨ (((g ∨ q) ∧ (a ∨ j)) ≡ ((b ∨ o) ∨ ((n ⊃ l) ∧ z))),WithoutModality,17,570239742
+((x ∧ r) ∨ (o ∨ ((r ≡ r) ∧ a))) ⊃ (((s ∨ d) ≡ (k ∧ l)) ≡ (u ∨ ((n ⊃ h) ≡ (((v ≡ a) ≡ v) ≡ r)))),WithoutModality,17,30996931129
+(((s ∧ f) ≡ (n ∨ (w ∨ r))) ≡ ((c ∨ (j ∨ y)) ∨ (d ⊃ (i ⊃ f)))) ⊃ (((h ∧ w) ≡ w) ∧ ((j ∧ e) ⊃ f)),WithoutModality,17,425522923
+(((y ∨ ((k ≡ m) ≡ c)) ∧ q) ≡ (k ⊃ a)) ⊃ ((f ≡ (u ∨ (i ∨ z))) ∧ ((n ≡ (o ∨ w)) ∨ (h ≡ (s ∨ d)))),WithoutModality,17,1005247038
+((f ∨ y) ∧ ((w ⊃ (i ∨ v)) ∧ (b ∨ f))) ∨ (((m ≡ k) ⊃ (d ∨ r)) ∧ ((((u ∧ (f ≡ c)) ∧ z) ⊃ x) ∧ o)),WithoutModality,17,17906744
+(((t ∨ (u ≡ k)) ∨ o) ≡ (f ∧ ((c ∨ z) ⊃ g))) ∧ (((x ⊃ (d ∨ j)) ≡ ((i ⊃ t) ∧ (j ≡ a))) ∧ (l ≡ r)),WithoutModality,17,16275832
+((t ∨ b) ≡ (t ∧ g)) ≡ ((((c ⊃ h) ≡ y) ⊃ (a ∧ ((v ≡ (b ∨ i)) ∨ r))) ≡ ((l ∧ (s ⊃ j)) ∧ (h ∧ p))),WithoutModality,17,8025569072
+(((d ≡ t) ∧ (w ∨ (s ⊃ u))) ∧ (o ∨ x)) ∨ ((d ∧ (x ⊃ h)) ∧ (((r ⊃ (p ∨ g)) ≡ (h ∨ c)) ≡ (f ∧ e))),WithoutModality,17,256519003
+(((y ⊃ i) ≡ (b ⊃ e)) ∨ (((q ⊃ m) ∨ i) ∧ (w ∨ (v ≡ a)))) ∧ (((k ∨ h) ∨ n) ∧ ((k ∨ i) ∧ (a ⊃ k))),WithoutModality,17,6905612
+(((z ⊃ q) ⊃ p) ⊃ ((l ≡ h) ∧ d)) ≡ ((((m ∨ s) ∨ j) ≡ (w ⊃ z)) ∨ (j ∧ (((q ≡ (b ≡ n)) ≡ k) ∨ x))),WithoutModality,17,2244565457
+((s ∧ (s ⊃ t)) ≡ ((f ∨ (k ∧ q)) ∧ (p ≡ b))) ⊃ ((z ⊃ (z ⊃ ((r ∨ c) ≡ i))) ∨ (((m ⊃ j) ∨ t) ⊃ v)),WithoutModality,17,165995814
+(((((t ∧ a) ≡ l) ≡ (x ∨ d)) ≡ (g ⊃ a)) ∧ (g ∧ r)) ∧ ((((d ≡ n) ∨ z) ∨ (m ∧ o)) ∨ (b ∧ (t ∨ t))),WithoutModality,17,45809968
+(((v ⊃ z) ∨ ((s ⊃ l) ≡ h)) ∨ ((j ≡ q) ≡ d)) ≡ (((g ⊃ ((v ∧ l) ∧ t)) ∧ j) ≡ (z ∨ ((u ∧ s) ∨ g))),WithoutModality,17,2445281730
+(((x ⊃ r) ≡ u) ∨ t) ∨ (((v ≡ (s ∨ (k ∨ t))) ≡ ((l ⊃ d) ≡ a)) ⊃ ((k ⊃ ((n ∨ a) ≡ (i ∧ j))) ≡ h)),WithoutModality,17,11889854162
+(((o ∧ w) ⊃ (f ≡ (n ∨ g))) ⊃ s) ∨ (((n ⊃ m) ∧ (v ≡ l)) ∨ (p ∧ ((l ∧ (z ∧ p)) ∨ ((z ∧ y) ∨ w)))),WithoutModality,17,198785424
+(((f ∨ p) ∨ s) ∧ ((d ∧ w) ∨ u)) ≡ ((((h ⊃ p) ∧ y) ∨ (w ≡ (z ⊃ p))) ⊃ ((v ⊃ y) ≡ ((c ∧ h) ∧ f))),WithoutModality,17,648255635
+(((j ∧ r) ∧ ((z ∨ (x ∧ s)) ∨ e)) ⊃ (m ∨ (((d ⊃ p) ∧ c) ⊃ a))) ⊃ ((c ∧ (r ⊃ m)) ⊃ (i ∨ (s ∧ e))),WithoutModality,17,32098288
+((c ∨ (((u ⊃ (h ∧ s)) ⊃ z) ∨ (s ⊃ ((n ⊃ p) ∨ p)))) ∧ ((f ≡ y) ⊃ b)) ∨ (k ⊃ ((k ⊃ h) ⊃ (a ⊃ b))),WithoutModality,17,5248761
+((q ⊃ (z ≡ p)) ∧ ((p ∨ (r ∧ n)) ⊃ k)) ⊃ (((u ∧ p) ∧ t) ⊃ ((f ∧ ((a ∧ l) ∧ g)) ≡ ((a ⊃ r) ∧ p))),WithoutModality,17,142579272
+((a ∧ (t ⊃ d)) ∧ (p ≡ e)) ∨ (((k ⊃ (o ∨ o)) ∧ (((n ≡ u) ∨ (g ∧ q)) ≡ b)) ∧ ((i ≡ t) ≡ (k ∨ l))),WithoutModality,17,79126231
+((e ⊃ y) ∨ (m ∨ (u ∨ r))) ⊃ ((d ⊃ ((c ⊃ s) ≡ ((n ∧ a) ∨ (v ∨ t)))) ∧ ((x ⊃ k) ⊃ (u ∧ (n ≡ k)))),WithoutModality,17,51063838
+((((w ⊃ l) ⊃ m) ⊃ (g ⊃ y)) ⊃ ((y ⊃ (r ⊃ (k ∧ n))) ≡ ((r ⊃ s) ∨ w))) ⊃ (((u ∧ (f ≡ e)) ∨ v) ⊃ y),WithoutModality,17,55385262
+(((l ≡ c) ⊃ o) ∧ (e ⊃ (h ∧ n))) ∨ ((u ∨ (((u ∨ u) ∨ (m ⊃ p)) ≡ (r ≡ (y ∧ g)))) ∧ ((n ∨ w) ⊃ h)),WithoutModality,17,117574897
+((r ∨ (y ≡ (a ⊃ i))) ≡ (k ∧ i)) ⊃ ((((l ∨ p) ≡ ((l ∨ g) ∧ s)) ∧ (g ⊃ (o ∨ v))) ∨ (k ∧ (y ≡ u))),WithoutModality,17,1455008440
+(((q ∨ a) ≡ ((m ∨ d) ⊃ ((l ≡ k) ≡ g))) ≡ (u ∧ (d ≡ n))) ∨ ((f ∨ o) ≡ ((y ∧ (o ∧ x)) ≡ (i ∧ o))),WithoutModality,17,61484016238
+(((w ∧ k) ≡ ((p ≡ b) ⊃ w)) ⊃ (p ∨ u)) ∧ (((r ∨ (v ⊃ h)) ⊃ (h ∨ r)) ∧ ((e ≡ f) ⊃ (i ≡ (t ∧ q)))),WithoutModality,17,5384876
+((y ≡ ((r ∧ (j ∨ q)) ≡ u)) ∧ (w ≡ (((a ≡ v) ⊃ b) ≡ t))) ⊃ ((b ≡ (((a ∨ f) ≡ c) ∨ v)) ∧ (l ⊃ j)),WithoutModality,17,12122380943
+((((k ≡ z) ⊃ (o ⊃ n)) ⊃ j) ∧ (u ∧ e)) ⊃ ((((z ∨ (l ∧ o)) ≡ (g ∧ b)) ∧ w) ∧ ((a ∨ (p ∨ o)) ≡ i)),WithoutModality,17,55376258
+(((q ≡ x) ∨ ((b ∨ s) ∨ (u ≡ x))) ≡ (j ∨ ((y ≡ i) ∧ o))) ∧ ((d ≡ (b ∧ u)) ⊃ ((a ∧ w) ⊃ (n ≡ l))),WithoutModality,17,19762093
+(((z ∧ (e ∨ k)) ≡ o) ⊃ (((o ∨ r) ∧ j) ∧ (((k ⊃ v) ≡ x) ≡ ((a ≡ i) ⊃ n)))) ∨ (((i ∧ v) ≡ g) ∧ o),WithoutModality,17,2024423122
+(f ∨ ((v ⊃ c) ∨ ((d ∨ a) ≡ t))) ∨ ((((o ∨ u) ⊃ (n ⊃ m)) ≡ (f ⊃ (y ≡ (i ∨ v)))) ∨ ((r ⊃ l) ⊃ r)),WithoutModality,17,339135589
+((l ≡ (y ∧ i)) ⊃ (((b ∧ a) ≡ (w ≡ m)) ∧ ((u ⊃ o) ∨ w))) ≡ (((p ∨ u) ≡ (m ≡ p)) ∨ (s ⊃ (j ⊃ e))),WithoutModality,17,896998780
+(((g ≡ j) ≡ a) ∧ (((n ∧ r) ∧ (w ∧ f)) ∧ (r ∨ (v ≡ a)))) ≡ ((f ∨ (l ⊃ p)) ≡ (v ∨ ((g ∧ z) ∨ o))),WithoutModality,17,1066970487
+(((h ≡ (i ∧ e)) ≡ (h ∨ l)) ∨ ((x ≡ (k ∨ b)) ∨ ((j ⊃ d) ≡ l))) ≡ ((h ⊃ j) ≡ ((r ∧ y) ∨ (l ∨ y))),WithoutModality,17,8570700450
+(((b ∨ c) ∧ (n ⊃ (w ≡ (b ∨ m)))) ∨ (k ∧ s)) ⊃ (((i ⊃ (r ⊃ f)) ∨ (u ∨ k)) ∨ ((t ⊃ i) ∧ (w ≡ (l ≡ l)))),WithoutModality,18,70778545
+((x ⊃ ((y ⊃ v) ≡ v)) ∨ ((i ⊃ k) ∨ x)) ∧ ((x ≡ (g ≡ (k ∨ (z ∨ e)))) ∧ (f ≡ (((q ∨ (c ∧ m)) ⊃ l) ∨ j))),WithoutModality,18,12160800
+((m ≡ (x ⊃ j)) ⊃ ((((w ∨ d) ∧ o) ∧ ((d ∧ f) ∨ b)) ⊃ (z ⊃ ((o ∧ j) ⊃ o)))) ⊃ ((o ≡ (a ∧ y)) ⊃ (d ∨ r)),WithoutModality,18,33714439
+(((c ≡ u) ∨ (l ∧ (z ≡ g))) ∧ (((i ≡ g) ∨ ((y ∨ j) ∧ f)) ∨ m)) ∨ ((b ⊃ (m ⊃ h)) ≡ (w ∧ ((q ⊃ e) ⊃ u))),WithoutModality,18,103375797
+(((k ∧ (e ⊃ p)) ⊃ ((m ∧ w) ≡ w)) ∧ ((i ∨ c) ∧ (c ⊃ k))) ∧ (((k ≡ (z ∨ p)) ≡ h) ≡ (j ∨ ((j ∧ x) ∧ a))),WithoutModality,18,35042756
+(((l ⊃ r) ≡ (m ⊃ i)) ⊃ (w ∧ (((r ⊃ (f ⊃ v)) ∧ w) ∨ h))) ⊃ (((k ⊃ c) ∧ (t ≡ m)) ≡ (v ∧ ((e ⊃ o) ∨ p))),WithoutModality,18,518589516
+((f ⊃ ((g ∧ x) ∨ v)) ∧ ((t ∧ c) ∨ j)) ∨ (((h ∧ (w ≡ o)) ⊃ (z ∨ (s ∨ q))) ≡ ((k ≡ (b ∨ w)) ≡ (w ⊃ r))),WithoutModality,18,2130819589
+(((r ∨ r) ≡ a) ∨ ((m ∧ (d ⊃ (y ∨ n))) ≡ f)) ∧ (((b ∨ w) ∨ (k ∨ g)) ⊃ (((z ∧ p) ∨ (j ∧ z)) ≡ (b ∧ d))),WithoutModality,18,30362472
+(((y ∧ (d ⊃ z)) ⊃ (b ∧ l)) ∨ ((s ∧ (j ≡ d)) ⊃ a)) ⊃ ((h ≡ a) ∨ ((u ⊃ (n ≡ (z ≡ b))) ∨ (t ≡ (q ∧ z)))),WithoutModality,18,801769985
+(((n ⊃ d) ⊃ (k ∧ e)) ≡ ((v ∨ (k ∧ e)) ∧ ((i ∧ q) ⊃ q))) ≡ ((n ∨ (h ∧ (u ∨ e))) ∨ ((t ⊃ (x ⊃ i)) ∨ e)),WithoutModality,18,733065620
+(((w ⊃ ((z ∨ d) ≡ t)) ⊃ (n ⊃ ((x ∧ d) ∧ p))) ⊃ ((b ≡ m) ⊃ (w ≡ u))) ≡ (((b ⊃ g) ∨ m) ∨ (i ≡ (d ⊃ a))),WithoutModality,18,895866817
+((a ⊃ (x ∨ (g ≡ w))) ∨ (((e ⊃ (u ∨ n)) ⊃ p) ∧ x)) ⊃ (k ≡ (((l ≡ ((t ∨ i) ∨ o)) ∨ b) ∨ (a ⊃ (c ∧ y)))),WithoutModality,18,306525241
+((((y ≡ w) ∨ w) ⊃ j) ∧ (e ∧ ((q ∧ i) ⊃ (w ⊃ r)))) ∨ (((d ≡ (v ∨ (o ∧ (q ⊃ h)))) ∧ (h ≡ k)) ≡ (q ∧ g)),WithoutModality,18,934951812
+(((c ∨ (e ∧ (m ∨ a))) ⊃ (v ∧ ((z ⊃ y) ∨ w))) ∨ (u ∧ (t ∧ k))) ∧ (d ⊃ (x ∨ (j ∧ ((p ∨ o) ⊃ (r ∧ u))))),WithoutModality,18,11444290
+(((o ≡ (h ∧ v)) ≡ ((f ⊃ (g ∧ f)) ∧ c)) ∨ ((h ⊃ r) ≡ (r ≡ q))) ∨ (b ∧ ((k ∨ (t ≡ b)) ⊃ (u ∨ (w ⊃ y)))),WithoutModality,18,3260418651
+((((w ∨ c) ≡ w) ∧ (x ⊃ j)) ∧ (((c ⊃ z) ≡ (x ∧ n)) ∧ m)) ∧ ((((h ∨ o) ≡ r) ≡ (y ∧ t)) ≡ (c ⊃ (j ⊃ x))),WithoutModality,18,60386956
+(((r ∧ z) ≡ (l ≡ j)) ≡ (((h ⊃ i) ≡ (l ∨ g)) ∨ d)) ≡ ((((k ∨ d) ≡ d) ∧ t) ≡ (x ∧ ((f ∧ r) ∧ (x ≡ h)))),WithoutModality,18,61563340554
+((((l ∧ s) ∨ d) ≡ f) ≡ ((y ≡ g) ≡ ((k ⊃ r) ⊃ ((v ∨ r) ∧ q)))) ∨ ((q ≡ ((q ⊃ y) ∨ w)) ≡ ((u ≡ x) ∧ i)),WithoutModality,18,68637133427
+((x ∨ b) ≡ ((r ≡ (d ⊃ h)) ≡ o)) ∧ (((z ≡ (e ⊃ u)) ∨ ((r ≡ o) ≡ (n ∧ t))) ≡ ((u ∧ (h ≡ (w ∨ d))) ⊃ x)),WithoutModality,18,473102182
+(((l ≡ f) ≡ (n ⊃ y)) ⊃ ((f ∨ s) ≡ ((p ∨ p) ∧ ((n ∨ p) ⊃ (j ≡ l))))) ∨ (((o ⊃ w) ∨ i) ⊃ ((h ∧ x) ⊃ g)),WithoutModality,18,530280490
+(((c ≡ c) ∨ ((n ∧ s) ∨ c)) ∧ (l ⊃ t)) ≡ (((((g ≡ u) ∨ n) ∨ w) ∨ k) ∧ ((u ≡ j) ∨ (((q ≡ y) ∧ z) ⊃ s))),WithoutModality,18,839466411
+((j ≡ ((j ≡ m) ≡ e)) ⊃ (v ≡ s)) ∧ (((((f ∨ z) ⊃ b) ∧ (d ⊃ s)) ⊃ (j ⊃ f)) ≡ (y ∧ ((g ≡ h) ≡ (g ∧ d)))),WithoutModality,18,97328130
+(((e ∧ u) ⊃ g) ⊃ (f ∨ m)) ≡ ((((l ∨ j) ⊃ ((q ∨ w) ∨ (c ≡ m))) ∧ (z ∧ b)) ⊃ ((m ⊃ (w ≡ w)) ⊃ (a ⊃ f))),WithoutModality,18,150178437
+((((m ≡ w) ⊃ j) ∨ (i ∨ p)) ≡ ((o ⊃ q) ∨ (p ∨ z))) ⊃ ((s ∧ (i ∨ q)) ∧ (g ≡ ((y ⊃ (l ≡ i)) ∧ (t ≡ u)))),WithoutModality,18,911439549
+(((v ⊃ n) ≡ ((a ⊃ i) ∨ i)) ≡ ((j ⊃ n) ≡ (o ≡ (h ⊃ y)))) ∧ ((q ∨ (i ∧ (g ≡ t))) ≡ ((t ∨ (v ∧ u)) ∨ k)),WithoutModality,18,179225343
+((((j ∧ (l ∧ d)) ∨ z) ∨ (i ⊃ n)) ≡ (((h ≡ s) ∧ e) ∧ (b ≡ q))) ∧ ((h ∧ (h ∨ b)) ≡ ((x ≡ k) ∨ (r ⊃ x))),WithoutModality,18,42877192
+((((p ∨ (d ∨ r)) ∧ h) ⊃ b) ≡ ((e ∧ o) ∨ (k ≡ m))) ⊃ ((t ⊃ (o ∨ v)) ∨ ((t ∨ ((u ∨ x) ∨ a)) ∧ (o ≡ t))),WithoutModality,18,158439622
+((c ∨ ((x ⊃ r) ∧ b)) ⊃ ((p ⊃ g) ∨ z)) ⊃ ((k ∨ e) ⊃ (((o ⊃ d) ∨ (q ⊃ x)) ⊃ (o ≡ ((x ⊃ (l ⊃ i)) ≡ y)))),WithoutModality,18,2556236014
+((q ∨ ((b ≡ a) ∧ (m ∨ u))) ∧ ((b ≡ j) ≡ (v ∨ e))) ⊃ ((q ∨ (e ∨ s)) ∧ (((o ∧ j) ∨ ((e ∨ h) ≡ i)) ∧ s)),WithoutModality,18,923563415
+(((c ∨ (g ∧ f)) ⊃ (l ≡ (i ∧ p))) ∨ (a ≡ i)) ≡ ((h ⊃ ((e ∨ w) ∧ h)) ≡ (((z ∧ v) ∧ ((i ≡ c) ∨ d)) ⊃ k)),WithoutModality,18,3939956334
+(((m ∨ (j ≡ p)) ≡ a) ≡ ((y ⊃ f) ∧ (f ≡ c))) ≡ (((g ≡ f) ⊃ (((u ∧ n) ∧ l) ∧ g)) ∧ ((x ⊃ (q ≡ w)) ∧ n)),WithoutModality,18,9448802585
+(((h ⊃ x) ∨ m) ∧ (u ≡ (k ∨ a))) ∨ (((j ∨ h) ∧ ((y ⊃ l) ∧ s)) ⊃ ((o ⊃ (h ≡ (w ∧ o))) ∧ ((b ≡ j) ≡ m))),WithoutModality,18,383474556
+((((d ≡ u) ∨ r) ⊃ ((j ⊃ o) ≡ b)) ∨ t) ∧ (((c ∨ (s ∧ (f ⊃ u))) ∧ f) ∧ ((p ≡ (n ∨ (c ∨ a))) ≡ (a ∨ l))),WithoutModality,18,17057144
+(((o ∧ (r ⊃ f)) ∧ ((k ≡ v) ∧ ((s ∨ w) ∨ u))) ⊃ ((z ∧ w) ∧ (m ≡ a))) ∧ ((k ⊃ k) ⊃ (n ⊃ ((i ⊃ d) ∧ j))),WithoutModality,18,9825864
+((z ⊃ n) ∧ ((y ∨ (u ∧ (d ∨ b))) ≡ f)) ⊃ ((w ∧ ((h ∨ j) ⊃ w)) ∨ (((m ∧ o) ∧ (l ⊃ u)) ⊃ ((y ≡ z) ≡ k))),WithoutModality,18,1027257531
+(((s ⊃ o) ≡ ((e ≡ (g ≡ k)) ∨ u)) ∨ c) ≡ ((l ∨ (((m ⊃ c) ∧ k) ≡ (o ∨ y))) ⊃ (((v ∨ (p ≡ k)) ∧ v) ⊃ x)),WithoutModality,18,5720267093
+(((f ≡ n) ⊃ ((p ∧ v) ∧ f)) ⊃ ((c ∨ v) ⊃ e)) ∧ (((b ≡ z) ∧ n) ∧ ((n ⊃ n) ∨ (((c ∧ q) ∨ r) ≡ (j ⊃ n)))),WithoutModality,18,5468243
+((x ⊃ (((n ∨ b) ≡ (w ≡ i)) ∧ v)) ≡ ((s ⊃ f) ∨ u)) ⊃ (((r ≡ c) ⊃ ((e ∧ s) ∨ (l ⊃ r))) ∨ (u ∨ (p ∧ b))),WithoutModality,18,2049617224
+(((p ≡ d) ∨ ((p ∧ (c ≡ b)) ∧ e)) ⊃ (a ≡ w)) ∧ ((s ⊃ (s ⊃ ((h ∧ g) ≡ m))) ⊃ ((q ≡ g) ∧ (i ≡ (t ⊃ v)))),WithoutModality,18,28286793
+((h ∧ ((e ⊃ (o ∨ g)) ∨ y)) ∧ (g ≡ (((z ∧ o) ≡ k) ⊃ y))) ∧ ((d ∧ (g ⊃ (t ≡ w))) ≡ (i ⊃ ((a ∨ o) ∧ k))),WithoutModality,18,14159431
+((((t ≡ (t ∨ u)) ≡ (f ≡ a)) ∧ k) ∧ (((g ∨ l) ∨ c) ∧ (b ∧ (f ≡ m)))) ⊃ ((s ≡ ((n ∨ k) ≡ e)) ⊃ (z ≡ (e ≡ g))),WithoutModality,19,102378215225
+((i ≡ ((((g ∧ m) ≡ k) ⊃ o) ⊃ d)) ∧ t) ∨ ((m ⊃ ((x ∨ g) ∧ x)) ⊃ ((j ∧ v) ∨ ((w ∨ (q ∨ g)) ∨ (d ⊃ (p ∧ o))))),WithoutModality,19,780839720
+((((x ≡ s) ⊃ (t ⊃ w)) ⊃ (b ∨ c)) ∨ (((c ∧ (g ≡ n)) ⊃ (p ⊃ u)) ⊃ ((j ≡ a) ≡ q))) ∧ ((x ∨ (g ∨ w)) ⊃ (a ⊃ x)),WithoutModality,19,74174244
+((y ≡ (m ⊃ (m ⊃ z))) ∨ ((t ∧ u) ∧ u)) ∧ (((u ∨ ((o ⊃ a) ⊃ (h ≡ (q ∧ q)))) ⊃ a) ∨ ((w ⊃ (x ∨ u)) ⊃ (w ⊃ p))),WithoutModality,19,22954520
+((((c ∨ p) ∧ o) ∧ (k ∨ q)) ∧ ((v ≡ c) ∨ (((c ∨ h) ≡ w) ≡ (t ≡ u)))) ⊃ ((c ≡ l) ∨ (c ∨ (((s ∧ f) ∨ z) ≡ e))),WithoutModality,19,11347599031
+(((w ⊃ (i ≡ u)) ∧ (j ∧ i)) ∨ (k ≡ ((((o ≡ r) ∨ p) ∨ (z ∨ (p ⊃ z))) ∨ (y ∨ (t ⊃ u))))) ∧ (p ∧ ((m ∧ k) ∧ q)),WithoutModality,19,66652888
+((((n ∨ (o ≡ u)) ≡ b) ≡ ((y ⊃ j) ⊃ ((h ≡ j) ∧ v))) ≡ ((a ∨ m) ∨ t)) ≡ ((f ∧ (g ⊃ (a ∨ p))) ≡ (f ∨ (z ∨ o))),WithoutModality,19,343422196375
+(((w ∨ (l ∨ m)) ≡ (m ≡ (m ∨ r))) ≡ (d ⊃ (d ∧ (j ≡ w)))) ∨ ((a ≡ (a ∧ ((f ∧ w) ≡ (l ≡ p)))) ≡ (q ∧ (c ≡ m))),WithoutModality,19,342566742440
+(((g ∧ p) ⊃ g) ∨ (((c ∧ g) ≡ u) ⊃ ((b ∨ f) ⊃ a))) ≡ ((((f ∨ q) ⊃ t) ∧ b) ≡ ((o ∨ ((g ≡ x) ≡ h)) ≡ (p ∧ c))),WithoutModality,19,27884042250
+((j ∨ v) ∨ (((h ≡ h) ≡ (r ≡ u)) ∨ ((p ⊃ (j ⊃ t)) ∨ b))) ≡ (((v ⊃ (y ∨ c)) ≡ z) ≡ ((j ⊃ (u ∧ b)) ⊃ (u ⊃ l))),WithoutModality,19,6709444692
+((((f ∧ q) ≡ r) ∨ (n ∧ s)) ≡ (b ∨ ((e ∨ d) ∧ (e ⊃ k)))) ⊃ ((s ∨ (x ≡ r)) ≡ ((o ∨ (a ∨ (w ∧ x))) ∧ (g ≡ g))),WithoutModality,19,21301053067
+((w ∨ (f ∧ t)) ∨ ((u ⊃ e) ≡ j)) ≡ (((g ∨ (d ∨ (i ∨ h))) ∨ (h ≡ ((p ∨ p) ≡ z))) ≡ (g ∧ ((z ∧ r) ≡ (z ∧ h)))),WithoutModality,19,31927374136
+((p ≡ (b ∨ h)) ∨ ((h ∧ a) ∨ ((w ⊃ f) ≡ j))) ≡ ((((y ⊃ k) ≡ s) ⊃ ((t ∨ a) ≡ (k ≡ v))) ∧ (g ∧ (a ⊃ (j ∧ n)))),WithoutModality,19,3872756476
+(((u ≡ c) ≡ (h ∨ e)) ≡ ((w ⊃ (k ⊃ l)) ⊃ p)) ≡ ((((q ∨ u) ∧ f) ≡ (s ∧ j)) ≡ (((y ⊃ r) ⊃ f) ∨ (m ≡ (j ∧ n)))),WithoutModality,19,94096497285
+((g ⊃ (d ⊃ (p ∧ y))) ≡ ((b ≡ ((z ∧ b) ∨ c)) ≡ l)) ≡ (((p ⊃ w) ∨ (m ⊃ (i ≡ k))) ≡ ((s ⊃ (q ⊃ h)) ≡ (f ∧ x))),WithoutModality,19,478717224514
+((x ⊃ ((n ∨ (o ⊃ u)) ∧ (w ≡ h))) ≡ ((k ∨ (a ⊃ t)) ∧ (n ≡ (x ∧ s)))) ∧ ((((x ⊃ (u ∧ u)) ∧ a) ∨ (l ⊃ t)) ⊃ z),WithoutModality,19,63880939
+((i ⊃ l) ∧ (((y ∧ (y ∨ w)) ∨ (m ⊃ e)) ⊃ (c ≡ w))) ∧ ((((e ⊃ t) ⊃ x) ⊃ q) ≡ (((b ∨ j) ∧ b) ∧ (t ≡ (n ∨ c)))),WithoutModality,19,25022713
+(((u ∨ (d ⊃ q)) ⊃ b) ⊃ (((p ≡ g) ∧ a) ≡ (e ⊃ ((((l ∧ a) ∧ y) ∨ m) ∧ f)))) ∧ ((j ∨ (i ⊃ o)) ⊃ (s ∨ (c ≡ l))),WithoutModality,19,52555415
+((a ≡ (((j ⊃ t) ∨ b) ∨ i)) ≡ (((l ∨ r) ⊃ (s ∧ a)) ∧ n)) ≡ ((((f ≡ g) ∧ (e ∧ y)) ∨ (x ≡ y)) ∨ ((g ∧ e) ≡ a)),WithoutModality,19,31815384017
+(((j ≡ g) ⊃ (w ⊃ (v ⊃ x))) ∧ ((o ≡ d) ⊃ (n ≡ e))) ≡ (((w ≡ (i ⊃ (n ⊃ c))) ≡ i) ∨ (n ∨ (q ≡ (i ∨ (j ∨ z))))),WithoutModality,19,10780055594
+((((z ∧ p) ∨ d) ∧ (c ⊃ x)) ≡ ((o ≡ r) ≡ (k ≡ n))) ≡ ((b ⊃ t) ∧ (((w ∧ e) ⊃ ((e ∧ (b ⊃ n)) ≡ (v ⊃ k))) ∨ q)),WithoutModality,19,78773702515
+(((((p ≡ v) ≡ q) ∨ g) ∧ p) ∨ ((v ∧ s) ≡ ((s ⊃ u) ∨ w))) ∨ ((w ∨ k) ∧ ((w ∧ q) ∧ ((s ⊃ v) ≡ ((k ∨ g) ∨ o)))),WithoutModality,19,2057295662
+(((((u ⊃ (d ∨ s)) ∧ y) ∨ (y ∧ u)) ∨ y) ∨ (n ⊃ l)) ∨ (((((c ∨ g) ∧ h) ∨ i) ∨ s) ⊃ ((m ⊃ (n ≡ t)) ⊃ (e ∨ d))),WithoutModality,19,95956494
+(((k ∧ d) ∧ s) ∧ (v ∨ (k ≡ m))) ∨ ((((l ∨ u) ∧ (m ∨ c)) ≡ u) ∧ ((i ⊃ (t ≡ (p ∧ d))) ∧ ((w ⊃ d) ⊃ (x ≡ r)))),WithoutModality,19,72618227
+(((g ∧ (m ⊃ s)) ⊃ ((e ∨ r) ⊃ r)) ∧ (((l ⊃ p) ≡ r) ∨ (n ∧ a))) ∨ ((((u ∨ b) ≡ (h ∧ t)) ⊃ n) ∨ ((s ≡ b) ∨ m)),WithoutModality,19,112131719
+(((k ∨ (z ∧ q)) ⊃ q) ≡ l) ∧ (((g ∨ w) ≡ ((e ⊃ h) ∨ ((t ⊃ m) ⊃ o))) ∧ (((q ⊃ l) ⊃ ((r ⊃ l) ⊃ d)) ⊃ (f ⊃ t))),WithoutModality,19,8935867
+((((p ∨ p) ≡ v) ∧ ((v ⊃ (h ≡ (v ∨ e))) ≡ b)) ∧ ((l ∨ t) ≡ z)) ≡ ((u ∧ (((y ⊃ f) ⊃ v) ≡ (r ∨ g))) ∧ (n ∧ o)),WithoutModality,19,16441208981
+(((u ∧ j) ≡ b) ∨ ((r ⊃ v) ≡ (n ∨ ((f ≡ t) ∧ r)))) ∧ ((s ∨ (q ∧ (o ≡ n))) ≡ ((c ∨ l) ⊃ ((k ∧ p) ⊃ (a ∧ h)))),WithoutModality,19,42846639
+((h ∨ k) ⊃ ((v ⊃ (y ≡ (f ⊃ g))) ⊃ e)) ∧ (((k ∧ y) ∧ ((z ≡ p) ⊃ z)) ≡ ((z ⊃ (o ∧ h)) ∧ ((t ∨ q) ∨ (z ≡ p)))),WithoutModality,19,34763436
+(((((f ∧ z) ∧ ((q ≡ c) ∨ g)) ∧ u) ≡ u) ≡ ((f ∧ w) ∨ k)) ⊃ (((o ≡ (q ≡ t)) ≡ ((d ∨ n) ⊃ (r ∧ o))) ≡ (z ∧ j)),WithoutModality,19,219291133600
+((((z ⊃ h) ≡ l) ∨ f) ∨ (((j ∨ g) ≡ s) ∨ (m ∧ u))) ∨ ((((w ⊃ (d ∨ g)) ∧ t) ∧ r) ≡ ((w ≡ (v ≡ (c ∨ o))) ≡ j)),WithoutModality,19,129862314324
+(((x ⊃ b) ∧ (s ∧ (f ≡ e))) ≡ ((e ∧ e) ≡ (b ∨ x))) ∨ (((x ∨ (e ⊃ g)) ⊃ (a ⊃ ((d ∧ f) ∨ q))) ∧ (r ≡ (o ∨ o))),WithoutModality,19,1423202017
+((x ∧ (e ∧ (e ∨ (m ∧ (z ≡ u))))) ≡ ((((w ∧ r) ⊃ (f ⊃ p)) ∧ (v ≡ k)) ≡ m)) ∧ (((g ∨ d) ≡ k) ⊃ ((i ≡ d) ∨ s)),WithoutModality,19,228479260
+((((((a ⊃ q) ∨ j) ∧ n) ⊃ (f ≡ q)) ⊃ (g ∧ p)) ∧ g) ≡ (((n ⊃ (i ∧ ((z ∧ z) ≡ g))) ∨ ((y ∧ (q ⊃ u)) ∧ o)) ∨ e),WithoutModality,19,1000244442
+(((q ∨ i) ∧ (l ∧ y)) ∨ ((b ∧ (r ⊃ j)) ∧ (s ⊃ (j ∧ w)))) ≡ (((g ≡ u) ∧ ((r ⊃ p) ⊃ f)) ⊃ (((e ∨ j) ∨ h) ⊃ o)),WithoutModality,19,267361197
+(((e ≡ ((c ⊃ t) ∨ r)) ∨ (k ∨ q)) ∧ (((g ≡ l) ⊃ y) ∧ (q ∨ (y ∧ v)))) ∨ ((s ∧ ((m ∧ z) ∧ m)) ≡ ((w ⊃ g) ⊃ d)),WithoutModality,19,201182331
+((((g ⊃ t) ∨ a) ≡ (x ∨ z)) ≡ l) ∧ ((((n ≡ u) ∨ t) ∧ (v ∧ q)) ∧ (((z ∨ s) ⊃ (i ∧ m)) ∨ ((z ≡ y) ⊃ (h ∨ n)))),WithoutModality,19,13698414
+(((g ≡ r) ∧ ((w ⊃ u) ∨ x)) ≡ ((r ≡ g) ∧ (q ∨ ((i ≡ a) ≡ x)))) ∨ (((x ≡ m) ∧ h) ∧ (((j ∧ j) ≡ (y ∧ n)) ∧ b)),WithoutModality,19,5813973537
+((h ⊃ i) ≡ (((c ∨ s) ∧ h) ≡ (h ⊃ i))) ∧ (((w ≡ (u ∨ p)) ∧ (x ∨ g)) ⊃ (((d ∨ c) ∧ (i ∧ (f ∨ h))) ∧ (h ∧ l))),WithoutModality,19,61497250
+(j ≡ ((y ⊃ l) ∨ ((z ∧ p) ⊃ (d ⊃ i)))) ∧ ((((c ⊃ (r ⊃ w)) ∨ (s ∧ t)) ⊃ ((r ∧ p) ⊃ v)) ∨ ((s ≡ (m ∧ k)) ∨ d)),WithoutModality,19,13699934
+((((i ⊃ x) ∨ (t ∨ z)) ∧ ((o ⊃ (a ≡ x)) ∨ s)) ∨ (((o ∧ r) ⊃ (k ∨ o)) ≡ t)) ≡ (((d ∧ b) ≡ c) ≡ ((k ⊃ s) ≡ (n ∧ s))),WithoutModality,20,10735730926
+(((f ≡ i) ≡ w) ⊃ (((k ∧ j) ≡ i) ∨ (z ∧ (b ⊃ j)))) ≡ ((((i ⊃ (s ∨ d)) ∨ d) ≡ ((l ∧ z) ≡ (h ⊃ (o ∨ h)))) ≡ (z ⊃ f)),WithoutModality,20,243441540672
+(((a ∧ (u ≡ a)) ≡ k) ∨ (((k ∨ f) ≡ (l ∧ (r ⊃ c))) ⊃ v)) ≡ (((v ≡ (l ≡ d)) ∨ r) ⊃ ((((z ∨ a) ∧ w) ∧ s) ≡ (h ⊃ n))),WithoutModality,20,16449683066
+((((g ∧ i) ⊃ z) ⊃ (v ⊃ ((f ∨ j) ≡ d))) ⊃ (o ⊃ h)) ∧ ((((m ∨ k) ∨ (g ∧ (q ⊃ p))) ⊃ (t ⊃ y)) ∧ (((n ⊃ k) ∨ j) ≡ n)),WithoutModality,20,6148289
+((p ≡ ((y ⊃ x) ∧ n)) ⊃ ((n ≡ (p ∨ w)) ∨ (o ≡ b))) ⊃ ((y ∧ (i ∧ (n ⊃ (c ⊃ v)))) ≡ ((l ∧ c) ∧ ((r ≡ i) ⊃ (u ∨ p)))),WithoutModality,20,1491105050
+((((i ∧ j) ⊃ r) ⊃ (g ∧ h)) ∨ ((z ⊃ (k ∧ z)) ∧ e)) ≡ ((((w ∧ m) ≡ s) ≡ ((v ⊃ l) ∨ g)) ≡ (((l ∨ o) ∧ b) ∨ (h ≡ v))),WithoutModality,20,166974500555
+(((x ≡ (a ≡ f)) ∨ z) ∨ (m ⊃ ((i ∨ j) ∨ f))) ⊃ ((z ∨ (t ⊃ ((t ∨ v) ⊃ s))) ⊃ (((a ≡ s) ≡ (k ⊃ r)) ≡ (k ∨ (w ∨ x)))),WithoutModality,20,12247749085
+(((((k ∧ x) ∧ g) ∨ k) ≡ (n ∧ (p ∧ c))) ⊃ (((v ≡ c) ≡ (c ∨ v)) ∧ (i ∧ h))) ⊃ (((f ∨ (u ∧ c)) ⊃ (y ≡ p)) ∧ (r ∨ s)),WithoutModality,20,294500008
+((s ∧ (g ∨ z)) ⊃ ((l ∧ ((z ∧ z) ∨ f)) ∧ l)) ≡ (((l ⊃ (l ⊃ (m ⊃ t))) ⊃ (d ∨ i)) ⊃ ((b ≡ h) ⊃ ((r ≡ s) ⊃ (d ∧ o)))),WithoutModality,20,736235581
+(((p ⊃ (u ⊃ g)) ∧ v) ∧ ((e ≡ (s ≡ i)) ≡ m)) ∧ (((n ≡ (y ≡ d)) ⊃ ((o ⊃ t) ≡ g)) ≡ (((u ∨ a) ≡ n) ≡ ((p ≡ l) ∧ x))),WithoutModality,20,1005150957
+((w ∧ c) ∧ (((d ⊃ x) ∧ (d ∧ (h ⊃ e))) ⊃ (g ⊃ f))) ⊃ (((j ⊃ (j ≡ i)) ∨ a) ∧ (((b ≡ b) ∨ j) ∨ ((q ⊃ (s ∧ w)) ∧ d))),WithoutModality,20,59648675
+(((l ∨ (v ∧ (k ⊃ l))) ∨ ((k ≡ k) ⊃ o)) ∨ (((j ≡ h) ∧ q) ⊃ l)) ∨ ((((h ∨ (w ≡ g)) ≡ (m ≡ ((e ∧ x) ∧ s))) ⊃ e) ⊃ g),WithoutModality,20,1532976201
+(((((p ∧ (g ⊃ o)) ∧ x) ≡ (m ⊃ r)) ⊃ c) ∨ ((e ⊃ w) ≡ v)) ≡ ((((c ≡ y) ∨ (w ≡ u)) ∧ (d ⊃ (p ⊃ l))) ∨ ((j ⊃ y) ∨ r)),WithoutModality,20,3672034511
+(((((s ∨ f) ⊃ g) ≡ ((m ≡ a) ∨ c)) ∨ l) ≡ (m ≡ r)) ⊃ ((((q ⊃ ((w ⊃ e) ∧ m)) ∧ c) ⊃ q) ∧ ((g ∨ (n ∧ o)) ⊃ (l ⊃ u))),WithoutModality,20,1695262580
+(((p ⊃ r) ∧ ((h ∨ a) ⊃ w)) ∨ ((z ≡ j) ≡ (y ⊃ ((t ≡ g) ∨ n)))) ≡ (((((k ≡ u) ≡ p) ≡ (g ⊃ c)) ∨ (g ≡ r)) ⊃ (s ∧ r)),WithoutModality,20,55286957617
+((z ⊃ p) ⊃ (((n ∨ o) ∧ (o ⊃ (z ≡ y))) ⊃ (x ∨ h))) ⊃ (((y ∧ (t ∧ s)) ∨ (s ∧ (a ⊃ (d ∧ s)))) ≡ (((r ≡ g) ∧ e) ∨ w)),WithoutModality,20,1720836103
+((s ≡ (((g ⊃ h) ∨ (b ∨ e)) ∧ s)) ∨ ((t ≡ ((s ≡ m) ∧ h)) ≡ (x ∧ (t ∨ y)))) ∧ ((((x ∧ t) ∨ w) ⊃ (n ≡ s)) ≡ (n ⊃ q)),WithoutModality,20,406559714
+(((((z ∨ (t ≡ q)) ⊃ q) ∧ (o ∨ h)) ≡ (x ≡ (t ∨ (g ∨ w)))) ∧ ((((l ⊃ v) ⊃ f) ⊃ r) ≡ (p ∨ h))) ∧ (l ⊃ (a ∧ (w ∧ f))),WithoutModality,20,64130431
+(((v ≡ o) ∧ ((q ∧ t) ∨ b)) ≡ (((f ∧ m) ⊃ e) ∧ (q ∨ (q ∨ z)))) ⊃ (((k ∧ y) ⊃ ((h ∨ v) ≡ (s ∧ (a ≡ i)))) ⊃ (x ∨ x)),WithoutModality,20,3247918692
+(((k ≡ o) ∧ (a ∧ q)) ⊃ (o ≡ (h ∨ (g ≡ g)))) ∧ ((((q ∨ (q ∨ u)) ∨ (y ⊃ i)) ∨ (f ∧ f)) ∨ (((q ∧ l) ⊃ e) ∧ (e ∨ k))),WithoutModality,20,8252316
+((((x ≡ c) ≡ (h ⊃ d)) ∨ (h ∨ v)) ⊃ (d ∨ ((k ∨ d) ⊃ e))) ∨ (((f ∨ (f ∨ (d ∨ t))) ∨ z) ∧ (((l ≡ e) ∨ (i ∧ o)) ≡ q)),WithoutModality,20,303133119
+(((f ⊃ (p ≡ (x ∧ r))) ∧ e) ⊃ (a ∨ (t ∨ t))) ⊃ ((l ∧ (f ∧ ((m ∧ o) ∧ d))) ⊃ (((y ⊃ g) ⊃ (i ∨ c)) ⊃ (b ≡ (m ⊃ d)))),WithoutModality,20,135596274
+((i ⊃ g) ∨ ((h ≡ (y ⊃ (v ∧ (u ⊃ o)))) ∨ e)) ≡ ((y ∧ (r ⊃ d)) ⊃ ((n ⊃ (e ∨ k)) ≡ (((o ∨ j) ⊃ (l ≡ (q ≡ x))) ≡ p))),WithoutModality,20,36235313038
+(((t ∨ (b ≡ w)) ⊃ z) ⊃ ((((x ⊃ k) ⊃ i) ∨ s) ∧ w)) ⊃ ((m ∧ (d ≡ e)) ≡ (((o ∧ d) ∨ (y ⊃ (j ⊃ (z ≡ h)))) ∨ (i ∧ p))),WithoutModality,20,1441159276
+((((t ≡ o) ≡ f) ⊃ u) ⊃ (d ⊃ (e ∧ (j ∨ e)))) ∨ ((((j ≡ t) ≡ ((h ⊃ a) ⊃ g)) ∧ (r ∨ ((h ≡ e) ⊃ w))) ≡ (v ⊃ (m ∧ a))),WithoutModality,20,12105403956
+((((u ≡ c) ≡ x) ∨ ((y ≡ g) ≡ ((c ∨ r) ≡ i))) ∧ ((t ∨ p) ∨ (x ∧ n))) ∧ (((c ⊃ q) ≡ (j ⊃ p)) ⊃ ((v ∨ v) ⊃ (x ∨ w))),WithoutModality,20,35971346
+((h ∨ (s ∨ e)) ∨ (l ≡ (((r ∧ q) ⊃ u) ≡ (n ⊃ g)))) ∨ ((((f ∧ a) ∧ ((o ∧ s) ⊃ q)) ∨ (o ⊃ v)) ≡ ((a ⊃ s) ⊃ (f ⊃ t))),WithoutModality,20,1699509818
+(((x ∧ r) ∧ a) ⊃ (t ⊃ ((g ∧ g) ⊃ (r ∧ w)))) ≡ ((((x ≡ g) ≡ t) ≡ (((p ⊃ b) ≡ c) ∨ b)) ∧ ((c ≡ l) ⊃ ((x ≡ m) ∧ s))),WithoutModality,20,5869722711
+((u ∨ ((b ∧ ((n ∧ h) ∧ m)) ∧ g)) ≡ (p ∨ (u ≡ (c ⊃ k)))) ≡ (((t ≡ (j ⊃ s)) ∨ (k ∨ y)) ⊃ (l ≡ (i ⊃ ((n ⊃ s) ≡ l)))),WithoutModality,20,33595030766
+((((y ∧ d) ⊃ f) ∨ (i ∧ m)) ∨ ((m ≡ r) ≡ a)) ∨ (((((w ≡ f) ∨ (i ⊃ s)) ⊃ q) ∧ (g ∨ f)) ∧ (((a ∧ j) ≡ i) ∧ (j ∧ m))),WithoutModality,20,226631933
+(((o ∨ (o ≡ i)) ⊃ (k ∧ d)) ≡ (h ⊃ (e ⊃ z))) ≡ ((l ⊃ ((t ⊃ (l ⊃ g)) ∨ y)) ≡ ((((n ∨ p) ∧ t) ∧ v) ∨ (k ⊃ (o ∧ t)))),WithoutModality,20,26112064024
+(((e ≡ (d ≡ j)) ⊃ (k ≡ j)) ⊃ (g ⊃ ((z ≡ h) ∧ c))) ∧ (((u ≡ y) ∧ (((u ∧ z) ∨ p) ∧ k)) ≡ (((n ∧ f) ≡ j) ⊃ (n ∨ q))),WithoutModality,20,64573520
+(((n ≡ ((i ≡ (m ∨ o)) ∧ m)) ⊃ (a ∧ x)) ∨ ((h ∨ p) ⊃ (j ∨ (n ≡ s)))) ≡ ((s ≡ ((y ⊃ i) ∧ a)) ≡ ((x ≡ w) ∨ (j ≡ f))),WithoutModality,20,238956221327
+(((d ∨ a) ∧ ((w ≡ q) ⊃ (t ⊃ q))) ∧ ((((g ≡ q) ⊃ u) ∧ ((s ⊃ a) ∨ c)) ∧ m)) ≡ (((o ⊃ t) ⊃ e) ⊃ (h ≡ (y ∧ (e ∧ v)))),WithoutModality,20,4364411117
+(((i ∧ (w ≡ p)) ≡ (l ∧ i)) ∨ ((n ⊃ l) ≡ (m ≡ v))) ∧ (((((s ⊃ o) ⊃ n) ⊃ n) ⊃ (r ⊃ (g ∧ l))) ≡ (((t ∧ o) ⊃ r) ⊃ y)),WithoutModality,20,72038506
+((s ∨ (z ∧ (c ∨ b))) ≡ ((y ∧ l) ∧ ((t ∧ (c ∨ m)) ∧ c))) ∨ ((v ≡ ((g ∧ o) ⊃ t)) ⊃ ((f ≡ (z ∨ (r ∨ z))) ∧ (m ⊃ o))),WithoutModality,20,3640261971
+(((v ∨ w) ⊃ (e ≡ n)) ≡ (((a ∨ ((w ∧ z) ∨ v)) ⊃ p) ≡ (h ∨ z))) ∧ (((s ∧ (p ∨ b)) ∨ y) ∧ (((h ≡ l) ∨ (c ⊃ p)) ⊃ b)),WithoutModality,20,172799425
+(((y ∧ ((e ≡ x) ≡ x)) ≡ d) ∨ (t ≡ (k ⊃ w))) ∧ (((((y ∧ (j ∧ l)) ⊃ v) ⊃ t) ∨ c) ≡ (((q ∨ m) ⊃ (h ≡ l)) ⊃ (g ∧ v))),WithoutModality,20,124993574
+(((m ⊃ (a ∨ (e ≡ s))) ∧ (n ≡ s)) ∧ (((k ∨ n) ∨ a) ∧ (g ≡ p))) ⊃ (((q ∧ z) ⊃ (j ≡ p)) ∨ ((r ∧ (k ⊃ r)) ≡ (x ∨ d))),WithoutModality,20,7829130462
+((g ⊃ ((w ∧ e) ∧ (w ∧ k))) ⊃ (((b ∨ u) ≡ z) ∧ (v ⊃ p))) ∧ ((b ∨ ((i ∧ l) ≡ (g ∧ (g ⊃ l)))) ⊃ ((m ∨ y) ∨ (s ∧ m))),WithoutModality,20,20876351
+(((t ∧ (o ≡ g)) ≡ o) ⊃ ((q ≡ u) ≡ (z ∨ v))) ≡ ((x ≡ ((g ⊃ (i ∨ (e ∨ c))) ∨ (w ∧ j))) ⊃ ((m ∨ o) ⊃ ((b ≡ (i ∧ l)) ⊃ d))),WithoutModality,21,23489655085
+(((e ∧ i) ∧ q) ∧ ((s ⊃ (b ∧ t)) ⊃ (f ∧ (o ∧ j)))) ⊃ ((d ∨ ((s ∨ l) ∨ g)) ⊃ ((p ∧ ((w ≡ d) ∨ u)) ⊃ (((k ≡ h) ⊃ a) ∨ z))),WithoutModality,21,83602441
+((x ∧ ((f ∨ z) ≡ (c ≡ ((y ∨ t) ⊃ o)))) ⊃ ((j ⊃ i) ⊃ (k ⊃ m))) ∧ ((((g ∨ u) ∧ q) ∨ z) ∨ ((p ⊃ (l ≡ (h ∧ x))) ∧ (m ∨ o))),WithoutModality,21,50050207
+(((i ∧ (b ∨ e)) ⊃ (((d ⊃ k) ∨ (y ≡ x)) ⊃ i)) ≡ ((m ∨ t) ≡ ((i ∨ r) ∧ f))) ⊃ ((d ≡ (p ∧ u)) ≡ ((q ∧ ((g ≡ y) ∧ a)) ⊃ k)),WithoutModality,21,66580578923
+(((e ⊃ (t ∨ q)) ⊃ (z ≡ v)) ∨ (a ⊃ ((((j ⊃ h) ≡ q) ∨ o) ∧ m))) ∨ (((((n ≡ j) ≡ g) ≡ (q ≡ v)) ≡ j) ∨ ((g ⊃ (i ∧ s)) ⊃ q)),WithoutModality,21,94843104856
+(((r ≡ (r ∨ ((b ∧ q) ⊃ l))) ∧ (j ≡ o)) ⊃ (y ≡ (o ∨ (q ≡ k)))) ⊃ ((((l ≡ p) ∨ (p ∨ d)) ⊃ m) ∧ (u ∧ ((a ≡ v) ⊃ (n ∨ h)))),WithoutModality,21,289049981
+(((t ∧ (c ∨ s)) ⊃ (f ∧ (z ∨ (a ⊃ q)))) ≡ ((t ⊃ (t ∧ ((f ∧ k) ∨ y))) ∧ b)) ⊃ (((s ∨ j) ⊃ ((a ⊃ p) ⊃ m)) ≡ ((h ⊃ j) ≡ v)),WithoutModality,21,18812314332
+((g ∨ (f ≡ p)) ∧ (((l ⊃ p) ≡ (z ∨ f)) ∨ r)) ≡ ((((x ⊃ b) ≡ (y ∨ r)) ∧ (o ∧ i)) ⊃ (n ⊃ ((f ∧ (e ∧ (v ⊃ i))) ∧ (k ⊃ t)))),WithoutModality,21,4705195717
+(((c ∧ (q ∨ j)) ⊃ q) ∨ (((o ∧ j) ∧ s) ∧ (x ≡ t))) ⊃ ((s ∧ (s ≡ (v ⊃ (k ⊃ (k ∧ g))))) ∨ (t ≡ (m ⊃ (a ∨ ((h ⊃ m) ∨ w))))),WithoutModality,21,1375937401
+((c ≡ (f ≡ (n ⊃ l))) ∨ (e ⊃ (j ⊃ t))) ∧ ((u ∧ (n ∨ c)) ∨ ((i ≡ (u ∧ f)) ≡ (((h ⊃ w) ≡ i) ⊃ ((z ∨ z) ∧ (a ∨ (r ∧ k)))))),WithoutModality,21,261223582
+(((i ∨ y) ∨ e) ∧ ((j ∧ (u ∨ d)) ⊃ f)) ∧ ((y ≡ (q ∧ d)) ⊃ (((c ∧ (a ⊃ w)) ≡ (s ⊃ ((e ∨ j) ⊃ b))) ∧ ((v ∧ (z ≡ n)) ∨ l))),WithoutModality,21,58940204
+(((w ⊃ (o ⊃ h)) ≡ (p ∧ o)) ∧ ((s ∨ z) ≡ (((u ≡ g) ∧ (m ⊃ p)) ≡ d))) ∧ (((i ⊃ n) ⊃ (g ∧ m)) ∨ ((t ⊃ ((w ∨ z) ∨ b)) ≡ w)),WithoutModality,21,48312328
+(((b ≡ a) ⊃ (m ∨ r)) ∨ (l ∧ (x ∨ r))) ⊃ ((((t ≡ i) ∨ ((t ⊃ t) ∧ m)) ⊃ (u ≡ ((c ≡ m) ⊃ h))) ∨ (s ≡ (w ≡ (x ∧ (p ≡ a))))),WithoutModality,21,28168228102
+(((v ⊃ k) ∨ (d ⊃ u)) ⊃ (m ⊃ ((y ∨ a) ∨ (q ≡ y)))) ∧ (((k ≡ u) ⊃ (o ⊃ x)) ∧ (((b ∧ r) ∧ ((p ∧ (o ∧ s)) ∨ f)) ≡ (h ⊃ o))),WithoutModality,21,16580018
+((y ⊃ b) ∧ (((((e ≡ z) ≡ (a ⊃ d)) ∧ (q ∧ f)) ∧ ((a ⊃ d) ∧ f)) ∨ (x ∨ h))) ∨ ((z ∨ z) ⊃ ((z ≡ (l ∨ f)) ⊃ (h ∨ (h ≡ l)))),WithoutModality,21,759287763
+(((s ⊃ k) ∧ q) ⊃ (((o ⊃ j) ∧ (x ⊃ m)) ∨ (g ∨ (b ⊃ v)))) ∨ ((r ⊃ ((q ≡ (p ≡ j)) ≡ p)) ∧ ((u ∧ q) ≡ (t ≡ ((e ∧ c) ∨ n)))),WithoutModality,21,375450852
+((((b ≡ a) ≡ h) ≡ ((i ∨ h) ∧ p)) ∧ ((((v ∧ d) ≡ (k ∧ r)) ≡ (a ≡ m)) ∨ r)) ⊃ (((i ∧ (y ∧ h)) ∨ a) ∧ ((r ≡ n) ∧ (o ∧ f))),WithoutModality,21,108009830344
+(((((i ∧ c) ∨ r) ∧ p) ⊃ (g ∨ (u ∨ c))) ≡ ((l ∨ j) ≡ ((o ∧ s) ≡ z))) ⊃ (((v ≡ q) ∨ x) ∧ ((z ∧ (m ≡ h)) ≡ ((a ⊃ j) ∧ o))),WithoutModality,21,15284341982
+((((s ∧ r) ∧ (x ∧ (i ≡ k))) ∨ ((e ∨ z) ∨ (u ≡ l))) ⊃ ((d ∨ y) ⊃ y)) ≡ ((((r ∧ a) ⊃ o) ⊃ (i ∧ (j ≡ p))) ≡ (u ⊃ (a ∧ b))),WithoutModality,21,6161137302
+(((h ∨ e) ⊃ (u ∨ ((y ∧ o) ∧ j))) ≡ (((x ≡ f) ⊃ m) ∧ (y ⊃ (x ∧ (j ∧ h))))) ∧ (((h ∨ q) ∧ e) ≡ ((h ≡ q) ≡ ((r ≡ w) ≡ p))),WithoutModality,21,202032420
+(((t ∧ (u ≡ m)) ∨ ((f ⊃ g) ∨ (i ∨ v))) ⊃ ((v ⊃ t) ⊃ h)) ⊃ (((z ∧ d) ∧ n) ∧ ((o ∨ (w ∧ a)) ∧ (m ⊃ (p ∨ (f ≡ (a ≡ u)))))),WithoutModality,21,59184932
+(((u ≡ (r ⊃ (i ∧ z))) ≡ (l ∧ z)) ≡ (f ∧ ((d ≡ k) ≡ ((u ∨ f) ⊃ s)))) ∧ ((x ∧ (((g ≡ u) ≡ z) ∧ g)) ≡ ((q ≡ p) ∨ (x ≡ p))),WithoutModality,21,1589040343
+((((u ∨ l) ≡ (y ≡ (y ∧ a))) ⊃ u) ∧ (((l ∧ d) ≡ a) ∧ b)) ≡ (((u ∧ ((d ⊃ x) ∨ r)) ∨ ((u ∨ w) ≡ h)) ⊃ ((c ≡ (s ≡ b)) ∨ v)),WithoutModality,21,24129994441
+(((t ≡ (e ∨ m)) ≡ ((w ∧ p) ≡ b)) ∧ ((k ∨ g) ⊃ (c ∨ r))) ∨ ((((l ∧ v) ≡ q) ∨ (g ≡ (v ⊃ p))) ∧ ((h ∧ (w ⊃ u)) ≡ (e ∧ e))),WithoutModality,21,3134825155
+(((y ⊃ p) ⊃ q) ⊃ ((r ≡ ((u ≡ c) ⊃ s)) ≡ (m ∨ a))) ∧ ((v ∨ ((n ≡ q) ⊃ (r ⊃ r))) ⊃ ((a ∧ (g ≡ u)) ∧ (((u ∧ p) ∨ s) ∨ b))),WithoutModality,21,72718488
+(((z ⊃ p) ∧ (w ⊃ r)) ∨ (((e ≡ (k ≡ m)) ∨ o) ⊃ ((t ∧ (t ≡ (m ∧ f))) ∨ (d ≡ (u ≡ k))))) ≡ (((x ∧ z) ∨ y) ⊃ (w ∧ (h ≡ g))),WithoutModality,21,19105926678
+(((((d ∧ c) ≡ (k ∧ m)) ∧ o) ∨ ((l ∨ u) ≡ x)) ≡ ((j ∨ m) ≡ w)) ≡ (((q ≡ r) ≡ (i ≡ (h ≡ d))) ∨ ((o ∧ h) ⊃ (v ∨ (v ∧ i)))),WithoutModality,21,360918582974
+(((r ∧ (x ∨ v)) ⊃ a) ⊃ ((((i ≡ m) ≡ (g ∨ c)) ∧ r) ∨ (p ⊃ n))) ≡ ((((u ⊃ h) ∧ p) ∨ ((y ∨ r) ∧ c)) ∨ (a ∨ (c ∧ (h ⊃ y)))),WithoutModality,21,1503478475
+(((w ⊃ t) ∧ ((h ⊃ m) ⊃ j)) ∨ ((n ∧ (v ⊃ y)) ≡ (x ⊃ p))) ∨ ((((g ≡ (z ⊃ i)) ∧ q) ≡ (c ⊃ (v ≡ q))) ⊃ (b ≡ ((i ≡ w) ∨ t))),WithoutModality,21,60843342347
+((((n ∧ (z ∧ y)) ∨ (r ⊃ f)) ∧ ((f ∧ r) ≡ v)) ⊃ (((l ≡ (y ∧ d)) ∨ o) ∧ (g ∧ d))) ≡ ((s ⊃ l) ≡ (s ≡ (l ⊃ (k ≡ (y ≡ p))))),WithoutModality,21,79967256549
+(((z ≡ (a ∧ (k ∧ b))) ∨ ((e ∧ g) ∧ w)) ∨ (z ∨ (p ≡ v))) ≡ ((r ⊃ (s ∨ (y ∨ q))) ∨ (((k ⊃ r) ∧ (p ∨ (p ∨ o))) ∧ (e ∨ l))),WithoutModality,21,2748524770
+(((n ⊃ (d ∧ m)) ⊃ (s ⊃ (h ∧ x))) ⊃ (r ∨ ((l ≡ (y ∧ n)) ⊃ (r ∨ u)))) ∧ ((c ∧ ((h ∧ x) ⊃ (q ∨ x))) ∧ ((o ∧ j) ∨ (j ≡ g))),WithoutModality,21,10662145
+(((w ∨ o) ∨ ((j ≡ (z ⊃ n)) ≡ o)) ∨ (a ⊃ (((f ∨ b) ∧ u) ≡ (l ∨ m)))) ∧ ((k ∨ (n ≡ u)) ∧ ((s ⊃ ((u ∧ v) ∨ i)) ∧ (d ∨ m))),WithoutModality,21,86086816
+((s ∨ t) ∨ ((j ∧ w) ≡ (((j ∧ c) ∨ v) ∧ (e ⊃ q)))) ∧ ((h ∨ (u ∨ (c ≡ o))) ≡ (((n ⊃ k) ≡ ((q ∨ k) ⊃ x)) ∧ (u ≡ (p ⊃ o)))),WithoutModality,21,151409237
+((r ≡ (c ∧ j)) ⊃ (((a ≡ d) ∨ (s ≡ d)) ∨ ((r ∧ (g ∧ f)) ∧ l))) ∨ ((u ≡ (v ∨ t)) ∨ (((s ⊃ a) ∧ (q ∨ d)) ⊃ (x ∨ (d ≡ k)))),WithoutModality,21,25279871873
+((b ∧ (h ∨ c)) ⊃ (((o ≡ f) ⊃ z) ∧ (q ≡ i))) ∨ ((a ≡ ((((b ∨ w) ∨ p) ≡ w) ⊃ ((s ∧ z) ∨ n))) ∧ ((g ∨ (o ⊃ u)) ⊃ (e ∧ c))),WithoutModality,21,1061006913
+((t ⊃ ((k ∨ n) ∧ g)) ≡ ((d ≡ (m ⊃ p)) ∨ (l ∨ q))) ∧ ((((n ∨ b) ≡ s) ∨ q) ∨ (((s ⊃ h) ∧ n) ≡ (q ∨ (z ∧ ((u ⊃ b) ≡ e))))),WithoutModality,21,158695149
+(((d ∨ m) ⊃ u) ⊃ ((i ⊃ q) ≡ (h ≡ t))) ≡ ((z ∧ ((o ≡ y) ∧ (d ⊃ p))) ∨ (((q ⊃ o) ⊃ (t ⊃ r)) ∧ (v ⊃ ((j ≡ c) ∨ (w ∧ s))))),WithoutModality,21,2688570716
+(((t ∨ o) ≡ ((m ≡ n) ∧ z)) ⊃ (((g ⊃ f) ∧ w) ∧ r)) ≡ ((((x ⊃ k) ∨ b) ∨ (c ⊃ ((m ⊃ k) ≡ m))) ≡ (((a ∨ j) ∨ w) ≡ (m ⊃ j))),WithoutModality,21,97477079464
+((((c ∨ q) ∨ f) ∧ ((z ≡ (w ∨ y)) ≡ (q ∧ s))) ∨ (h ∧ d)) ⊃ (((k ≡ f) ≡ ((d ≡ x) ⊃ (e ∧ (t ∧ i)))) ≡ (((d ∨ f) ∨ t) ⊃ v)),WithoutModality,21,114324379127
+((((j ∧ m) ≡ (p ≡ o)) ≡ ((c ⊃ y) ≡ (q ∨ n))) ≡ (h ∧ p)) ≡ (((b ∨ (d ⊃ f)) ∨ n) ≡ ((y ∧ k) ⊃ (((s ≡ l) ≡ (e ∧ (i ∧ y))) ⊃ y))),WithoutModality,22,3304202531958
+((((o ⊃ z) ⊃ (a ⊃ z)) ∧ q) ∨ (((g ∨ p) ∧ (e ∨ (k ⊃ c))) ⊃ (((o ≡ x) ∨ c) ∧ (x ∨ r)))) ∧ (((g ≡ (u ∧ c)) ∧ (s ∨ u)) ≡ (z ∧ h)),WithoutModality,22,70053269
+(((s ⊃ v) ⊃ (j ∨ v)) ∧ ((m ⊃ y) ∨ (g ≡ (p ∨ t)))) ≡ (((u ∧ q) ≡ (p ⊃ x)) ≡ (((q ⊃ a) ≡ x) ≡ (((r ∨ r) ∨ (d ∨ x)) ∧ (v ≡ w)))),WithoutModality,22,285690459860
+((((r ≡ a) ⊃ (n ≡ a)) ∧ (c ∨ j)) ≡ ((d ∧ w) ≡ ((t ∨ g) ⊃ i))) ∧ ((((f ∧ ((b ∧ r) ≡ r)) ⊃ o) ∨ (k ∨ (z ∧ e))) ⊃ ((x ∧ j) ⊃ u)),WithoutModality,22,91821775
+(((a ≡ (g ∨ p)) ⊃ ((m ≡ h) ⊃ s)) ⊃ ((b ≡ (i ⊃ e)) ≡ ((f ≡ y) ∧ j))) ∨ ((a ≡ (o ≡ ((s ≡ t) ∨ m))) ∧ (h ∨ (s ⊃ (y ⊃ (z ∨ h))))),WithoutModality,22,27776681478
+(((z ⊃ y) ∧ ((w ∨ (a ⊃ h)) ⊃ (g ∨ j))) ∨ (((s ⊃ f) ≡ w) ∨ ((a ∧ i) ≡ (l ⊃ (s ⊃ p))))) ∧ ((v ∨ (p ∨ y)) ≡ (((d ∨ x) ∧ z) ∧ a)),WithoutModality,22,99736899
+((((p ⊃ (h ⊃ x)) ∨ (j ∧ j)) ≡ r) ≡ (((b ∧ (p ∨ e)) ∧ z) ⊃ (l ∨ j))) ≡ ((((v ∨ (x ∨ r)) ∨ h) ≡ b) ∨ ((q ∧ k) ∨ ((t ∨ d) ⊃ r))),WithoutModality,22,49152566477
+((((f ∧ t) ⊃ p) ⊃ p) ≡ ((x ∨ (s ∨ e)) ⊃ (m ∨ c))) ∨ ((((j ∧ (v ∧ (l ∧ n))) ⊃ a) ∧ ((y ⊃ w) ≡ i)) ⊃ ((((h ∧ b) ⊃ u) ⊃ s) ≡ e)),WithoutModality,22,26099221189
+(((z ⊃ (u ∧ y)) ∧ (f ∧ (f ⊃ n))) ⊃ (((k ⊃ i) ∧ e) ∧ ((c ∨ n) ∨ v))) ⊃ (((f ≡ o) ≡ (e ∨ a)) ⊃ ((t ∧ u) ⊃ ((r ∨ d) ⊃ (o ∧ w)))),WithoutModality,22,782993160
+(((v ∨ n) ∨ (k ⊃ c)) ∨ (((g ∧ d) ∨ f) ≡ (v ⊃ (p ∧ (k ≡ i))))) ∧ (((n ≡ u) ≡ h) ∨ (((t ∧ (l ⊃ d)) ∧ ((t ≡ h) ≡ o)) ≡ (u ∧ p))),WithoutModality,22,173227823
+((((n ⊃ (w ⊃ j)) ∧ f) ∨ (q ⊃ ((i ∨ d) ⊃ s))) ⊃ (((l ∨ d) ⊃ v) ⊃ (k ∧ (t ∧ k)))) ∨ (((c ⊃ (e ≡ (i ∨ t))) ∧ t) ⊃ ((q ∨ z) ∧ f)),WithoutModality,22,2252586358
+(((x ∨ g) ∨ ((v ≡ v) ≡ (o ≡ (o ∧ i)))) ∧ (p ∧ ((((m ≡ x) ∧ (v ∧ j)) ≡ k) ∧ g))) ∨ ((e ⊃ (n ≡ (n ⊃ d))) ⊃ ((t ⊃ f) ∧ (a ∨ d))),WithoutModality,22,975289774
+((m ∧ o) ≡ ((m ∧ ((p ∧ (a ∨ j)) ∧ m)) ⊃ (h ∧ (p ≡ i)))) ∧ (((((j ⊃ h) ∨ ((z ≡ f) ∨ y)) ∨ z) ⊃ m) ⊃ (((n ≡ e) ∧ q) ⊃ (u ∨ y))),WithoutModality,22,22663281
+((((p ≡ v) ∨ (b ⊃ m)) ⊃ (k ∧ p)) ⊃ ((c ⊃ m) ≡ (z ≡ z))) ⊃ ((f ∧ (((t ≡ (i ⊃ v)) ≡ u) ∨ r)) ⊃ ((o ∧ (l ≡ k)) ∧ ((v ∨ q) ∨ l))),WithoutModality,22,8128354397
+((y ∨ (c ∨ (n ≡ f))) ∧ ((j ∨ (v ∨ ((q ∨ q) ∨ (j ∨ j)))) ⊃ f)) ≡ ((((h ≡ j) ∧ l) ⊃ (j ∨ g)) ≡ ((m ∨ w) ⊃ (w ≡ ((s ∨ j) ⊃ c)))),WithoutModality,22,16948064582
+(((((c ∧ g) ⊃ u) ∨ (d ≡ a)) ⊃ (s ⊃ l)) ≡ ((s ∨ c) ≡ ((f ⊃ (n ≡ y)) ∨ r))) ∨ (((b ≡ (w ∨ s)) ≡ ((r ≡ l) ∨ u)) ∨ (d ⊃ (q ∧ c))),WithoutModality,22,115862323384
+((j ≡ (k ≡ c)) ≡ (((n ≡ k) ≡ (k ∨ m)) ∧ u)) ≡ (((q ⊃ j) ≡ (c ≡ (d ≡ (u ≡ y)))) ∨ ((j ∨ (k ⊃ a)) ≡ (q ∨ (s ≡ ((t ⊃ r) ∧ g))))),WithoutModality,22,19105496636976
+((z ⊃ (s ≡ h)) ∧ (((p ∨ m) ∨ w) ∨ (f ⊃ (m ⊃ x)))) ≡ (((k ∨ ((w ∨ b) ⊃ i)) ⊃ (i ≡ (w ∨ c))) ∧ ((l ⊃ ((n ∨ g) ⊃ b)) ∨ (u ∨ v))),WithoutModality,22,1791731882
+((((j ⊃ x) ∧ (i ∧ (t ≡ f))) ≡ (r ∨ f)) ⊃ (((g ∨ r) ∨ (i ∧ (d ≡ v))) ⊃ (x ⊃ w))) ∨ ((i ≡ v) ⊃ (((g ∧ p) ⊃ (b ≡ i)) ≡ (h ∧ u))),WithoutModality,22,13246371205
+((((v ∧ b) ≡ w) ∨ ((u ≡ a) ≡ (f ⊃ a))) ≡ ((c ∨ h) ∧ ((z ≡ f) ⊃ a))) ∨ (((u ∨ z) ⊃ (c ≡ (o ≡ s))) ≡ ((c ∧ k) ∨ (x ≡ (b ∧ c)))),WithoutModality,22,802532085887
+(((e ∨ v) ≡ (t ∨ p)) ∨ ((u ⊃ (b ⊃ u)) ⊃ (y ≡ q))) ∧ (((a ≡ x) ≡ ((o ∧ i) ⊃ l)) ∧ (e ≡ (p ≡ ((v ∧ g) ∧ ((p ∧ w) ⊃ (r ∧ q)))))),WithoutModality,22,55785025
+((((e ⊃ b) ∨ (f ∨ k)) ∧ c) ≡ ((i ⊃ l) ∨ (a ∨ (u ≡ d)))) ∧ (((j ∧ q) ⊃ (x ≡ n)) ∨ (((x ≡ s) ≡ (k ≡ (j ∨ e))) ∧ (u ⊃ (p ∨ x)))),WithoutModality,22,54887552
+((((n ∧ (r ∧ n)) ∧ h) ∧ (o ∨ z)) ⊃ ((k ⊃ ((t ⊃ n) ⊃ (v ∨ t))) ∨ o)) ⊃ (((b ≡ r) ∧ ((z ⊃ s) ≡ n)) ∧ ((j ⊃ (s ∨ r)) ∨ (y ∨ z))),WithoutModality,22,104705164
+(((m ⊃ (a ⊃ (b ∧ y))) ≡ (l ∧ q)) ≡ ((r ∨ (((w ∧ q) ⊃ q) ≡ y)) ∧ u)) ≡ ((((w ∧ p) ∨ (f ⊃ w)) ∧ (n ≡ z)) ⊃ ((d ∧ y) ⊃ (d ∧ f))),WithoutModality,22,112178356702
+((h ∧ ((a ⊃ (k ∨ i)) ∧ (h ≡ c))) ⊃ ((w ⊃ (t ∧ t)) ∨ ((p ≡ a) ⊃ w))) ≡ ((((m ≡ z) ⊃ (u ∨ o)) ∨ (i ∨ (t ∧ c))) ∧ (t ≡ (x ∨ n))),WithoutModality,22,6583161068
+((s ∧ ((n ≡ k) ∧ (s ∧ f))) ⊃ ((z ≡ (n ∨ j)) ∨ c)) ≡ (((g ∨ a) ∨ (c ∧ f)) ∧ (((d ∧ s) ∧ (q ⊃ x)) ∨ ((((d ≡ p) ≡ g) ∧ v) ∨ b))),WithoutModality,22,2342241208
+(((v ≡ (g ∧ ((b ∧ e) ⊃ w))) ∧ s) ≡ (j ∨ (l ≡ (e ∨ c)))) ∧ ((((o ⊃ w) ∨ d) ∧ (a ⊃ u)) ⊃ (((o ⊃ t) ∨ (a ≡ v)) ≡ (e ≡ (i ∨ m)))),WithoutModality,22,464129419
+(((w ⊃ w) ∨ ((x ⊃ u) ∨ (y ∧ d))) ≡ ((d ≡ v) ≡ (h ∨ b))) ∨ ((((o ⊃ x) ∨ v) ⊃ n) ≡ (((v ∧ a) ≡ (d ∧ x)) ∨ (b ⊃ (p ∧ (c ⊃ e))))),WithoutModality,22,48759479993
+((((c ∨ g) ∨ q) ∨ (((w ∨ v) ≡ (s ∧ m)) ≡ (p ≡ l))) ⊃ (((m ≡ (p ⊃ m)) ∧ (w ∧ (j ∨ b))) ⊃ m)) ∨ (((f ⊃ s) ∨ (n ⊃ h)) ∨ (h ∧ q)),WithoutModality,22,4491613739
+(((l ∨ ((x ∧ w) ∧ (n ⊃ f))) ≡ ((m ∧ n) ≡ v)) ≡ ((((e ∨ h) ≡ o) ≡ f) ⊃ s)) ∧ (((m ∧ o) ∨ (z ⊃ (v ≡ k))) ∧ (s ⊃ ((i ∨ p) ≡ r))),WithoutModality,22,1285217995
+(((c ∧ (v ∨ r)) ∨ (o ∧ m)) ∨ ((x ∧ (d ≡ (t ⊃ b))) ∧ y)) ∨ (((k ≡ w) ≡ (n ∨ w)) ⊃ (((n ∨ z) ⊃ o) ∨ (g ⊃ ((f ∨ y) ∧ (v ∧ f))))),WithoutModality,22,24112742513
+(((((z ∨ (i ∧ a)) ⊃ u) ⊃ r) ∧ f) ∧ ((g ⊃ ((n ≡ i) ∧ y)) ∨ u)) ∧ ((((j ∧ (s ∧ r)) ⊃ r) ∨ ((y ∧ i) ∨ e)) ∨ (h ≡ (w ∨ (u ≡ f)))),WithoutModality,22,11192746
+((((m ∧ k) ⊃ u) ∨ (d ∧ a)) ∨ ((g ⊃ f) ⊃ c)) ∨ ((((f ≡ (t ≡ m)) ⊃ (k ≡ e)) ∧ (o ≡ ((s ≡ s) ≡ f))) ≡ ((x ∧ (n ≡ p)) ∨ (z ∧ y))),WithoutModality,22,65905484228
+((((f ∧ z) ∧ h) ≡ (g ∧ b)) ∨ ((c ∧ n) ∧ (r ⊃ ((u ∨ (y ≡ o)) ∧ (p ∨ n))))) ≡ (((x ⊃ r) ⊃ z) ∨ ((((l ≡ c) ⊃ a) ∨ j) ∧ (t ⊃ j))),WithoutModality,22,2601043482
+((l ∨ i) ≡ ((i ⊃ w) ≡ (h ≡ (n ≡ d)))) ≡ (((o ∧ a) ⊃ (v ⊃ (d ∨ o))) ∧ ((((n ∨ (n ∨ q)) ≡ (t ∧ r)) ∨ (u ⊃ s)) ∨ ((a ∨ d) ∨ f))),WithoutModality,22,103164507831
+(((z ∧ r) ∧ q) ⊃ (b ∨ ((f ≡ ((c ∨ q) ⊃ m)) ⊃ (p ∧ n)))) ⊃ ((((h ∧ t) ∧ (s ≡ t)) ∧ (r ⊃ (h ≡ (g ≡ (v ∨ i))))) ∨ ((z ∧ b) ∨ a)),WithoutModality,22,1659187271
+((f ∨ m) ⊃ ((f ∧ (u ⊃ e)) ⊃ ((m ∧ u) ∧ (a ∨ (k ⊃ v))))) ≡ (((d ≡ x) ⊃ (u ⊃ ((w ∧ w) ∧ z))) ∨ ((g ⊃ k) ⊃ (n ⊃ (g ⊃ (s ⊃ b))))),WithoutModality,22,1447363685
+(((x ∧ l) ≡ (q ≡ u)) ∧ ((r ∨ h) ⊃ (((p ⊃ f) ≡ u) ∧ f))) ∨ (((g ≡ (r ∨ (p ≡ x))) ⊃ (f ≡ ((f ∨ s) ⊃ p))) ∧ (((c ∧ d) ≡ a) ⊃ n)),WithoutModality,22,2849836062
+((((m ⊃ ((e ≡ x) ∧ n)) ∨ c) ≡ (z ∧ (h ≡ (f ∧ t)))) ≡ ((a ∧ m) ∧ (g ∧ (k ∨ m)))) ⊃ (((z ⊃ z) ⊃ (z ∧ a)) ≡ (((y ≡ t) ⊃ s) ⊃ a)),WithoutModality,22,338077207213
+((((m ≡ h) ≡ (o ∧ n)) ∧ (y ≡ e)) ∧ ((u ∨ (w ≡ (l ∧ n))) ≡ l)) ∨ ((((s ⊃ v) ∧ a) ∨ ((r ∨ c) ∨ h)) ≡ ((j ≡ (h ≡ x)) ≡ (m ≡ w))),WithoutModality,22,78643447524
+((v ⊃ (((x ≡ h) ∨ f) ≡ ((m ⊃ h) ⊃ p))) ⊃ (u ∨ ((e ∨ u) ∧ (g ∧ (s ⊃ g))))) ∨ (((r ⊃ l) ≡ ((r ∧ f) ⊃ x)) ≡ ((t ∧ r) ≡ (d ⊃ (q ⊃ f)))),WithoutModality,23,85929521886
+(((o ⊃ c) ∨ v) ∧ (((k ≡ q) ∧ (f ≡ s)) ∧ (s ≡ (l ∧ e)))) ∧ (((((m ∨ q) ∧ (i ≡ a)) ∧ i) ≡ (n ∨ t)) ∨ ((o ⊃ ((r ⊃ b) ⊃ c)) ≡ (d ∨ g))),WithoutModality,23,290415745
+(((q ⊃ f) ∨ (l ∨ m)) ≡ ((g ∨ (((y ∧ g) ∨ z) ⊃ r)) ∧ (t ⊃ (i ≡ r)))) ∨ ((a ∨ b) ∧ ((p ≡ g) ∨ (o ≡ (((h ∨ l) ∨ (c ⊃ z)) ⊃ (h ⊃ d))))),WithoutModality,23,4495430490
+((s ∨ a) ⊃ (((m ∨ a) ≡ j) ≡ ((f ≡ p) ≡ m))) ≡ (((j ≡ ((a ∨ h) ∧ k)) ∧ (((l ∨ q) ⊃ e) ∨ l)) ⊃ ((((g ⊃ (g ≡ b)) ∧ p) ∨ (g ⊃ x)) ∧ f)),WithoutModality,23,78156961202
+(((o ∨ o) ⊃ (r ∧ v)) ∨ (((d ∨ v) ∧ u) ≡ j)) ⊃ ((((q ∨ v) ≡ ((r ∧ m) ≡ p)) ∨ (((o ⊃ h) ∨ (d ∨ u)) ∧ ((n ∨ l) ∧ q))) ∧ (f ≡ (a ⊃ b))),WithoutModality,23,1081859308
+((p ∧ (o ⊃ f)) ≡ ((((k ⊃ w) ∧ (n ≡ y)) ∧ (p ⊃ h)) ≡ j)) ≡ (((o ≡ a) ∧ j) ∧ ((((y ∨ (q ∨ p)) ≡ p) ≡ (v ⊃ d)) ∨ (a ≡ ((b ∧ u) ∨ m)))),WithoutModality,23,746700439534
+(((x ⊃ (z ∨ (c ≡ k))) ∨ y) ≡ (h ≡ (p ⊃ (r ⊃ z)))) ∨ ((k ∨ ((v ≡ i) ∧ f)) ≡ ((k ∨ (c ≡ t)) ∧ (((r ⊃ c) ≡ (a ∧ (b ⊃ h))) ∧ (z ⊃ d)))),WithoutModality,23,465865074509
+((e ∨ (o ≡ p)) ≡ (((o ∨ g) ∨ (s ≡ a)) ⊃ (s ∨ t))) ∧ (((((r ∨ m) ∧ h) ⊃ ((m ⊃ c) ⊃ z)) ≡ x) ⊃ ((t ∨ ((m ∨ b) ∧ u)) ∨ (e ∨ (h ∧ o)))),WithoutModality,23,87341869
+((((g ∨ (g ∨ f)) ∧ a) ∨ ((c ≡ b) ≡ ((n ⊃ y) ∨ j))) ≡ (i ∧ ((p ∨ m) ⊃ h))) ∧ (((o ∧ (c ≡ (k ⊃ l))) ≡ ((i ∧ g) ∨ t)) ≡ (n ∧ (i ⊃ r))),WithoutModality,23,541412251
+((d ⊃ t) ≡ ((k ⊃ j) ∧ u)) ∧ (((q ∨ (f ⊃ i)) ≡ (((k ∧ v) ≡ c) ≡ (j ⊃ g))) ≡ (((((e ∨ k) ∧ b) ≡ (k ∧ v)) ≡ n) ∧ (p ∨ ((y ⊃ w) ∧ e)))),WithoutModality,23,73727044032
+(((a ≡ a) ∨ j) ≡ (((y ∨ k) ⊃ (y ≡ s)) ≡ ((a ∧ b) ≡ (m ∨ u)))) ∧ ((b ⊃ (z ∨ (e ⊃ a))) ∧ (o ≡ ((d ⊃ (q ≡ m)) ∧ (((p ⊃ r) ∨ b) ∨ d)))),WithoutModality,23,374405162
+(((v ∨ s) ∧ ((i ∧ x) ∧ ((t ∨ l) ⊃ y))) ≡ (m ⊃ (j ≡ c))) ≡ (((g ⊃ ((s ∨ o) ∨ e)) ∧ v) ≡ (((r ∧ ((z ∧ f) ⊃ v)) ∧ d) ⊃ ((l ∨ e) ≡ t))),WithoutModality,23,143260612241
+((((h ∨ n) ≡ ((((b ⊃ f) ∨ h) ⊃ z) ∨ h)) ⊃ (o ≡ r)) ≡ (m ∨ s)) ∧ ((((e ∨ w) ⊃ l) ∨ (u ≡ o)) ⊃ (((k ⊃ (h ≡ x)) ⊃ i) ∨ (p ∨ (e ∨ h)))),WithoutModality,23,193429738
+(((j ⊃ f) ∨ (((x ≡ v) ∨ (g ≡ (u ∨ (y ∨ i)))) ≡ (v ∨ h))) ≡ ((g ≡ g) ⊃ (m ≡ r))) ≡ (((f ∨ o) ∨ (j ⊃ x)) ⊃ ((d ∨ w) ∧ (b ≡ (a ⊃ i)))),WithoutModality,23,1059293838843
+((r ∨ y) ⊃ ((o ⊃ b) ⊃ ((t ≡ n) ∧ (l ∨ d)))) ∨ ((((w ⊃ q) ∨ (v ∧ f)) ⊃ (((q ≡ l) ∨ d) ≡ m)) ∧ (((o ∨ (e ∨ w)) ∨ o) ⊃ (y ≡ (e ∧ w)))),WithoutModality,23,2421138747
+(((r ⊃ j) ≡ (a ∧ (b ∨ m))) ⊃ (((g ∧ q) ∨ a) ∨ ((n ∧ r) ≡ v))) ∧ ((j ∧ (n ⊃ ((e ⊃ r) ⊃ f))) ∧ (((e ⊃ l) ⊃ a) ∨ ((h ≡ (m ≡ q)) ≡ h))),WithoutModality,23,50877967
+((v ∨ (s ∨ ((m ∨ u) ∨ (f ∧ q)))) ∧ ((g ∧ (w ≡ k)) ∧ (i ∨ (n ∧ t)))) ∨ ((((q ⊃ k) ∧ c) ∨ (i ≡ (f ∨ z))) ⊃ ((t ∨ ((i ⊃ q) ⊃ r)) ⊃ n)),WithoutModality,23,301018678
+(((((k ∧ y) ⊃ (h ⊃ u)) ⊃ o) ∧ (l ≡ (f ∨ (w ⊃ c)))) ∨ ((k ∧ a) ∨ ((c ≡ o) ≡ i))) ∨ (((b ∧ x) ≡ ((t ∨ (k ∨ v)) ≡ x)) ⊃ (i ⊃ (y ⊃ o))),WithoutModality,23,14689806000
+((((i ≡ v) ≡ i) ∨ (f ≡ ((t ⊃ x) ∧ (i ⊃ d)))) ∧ (((e ∨ k) ∨ (t ⊃ (e ∧ z))) ∨ p)) ≡ (((j ∧ (x ∧ a)) ∨ ((j ∨ e) ∧ n)) ∨ (j ∨ (y ∧ b))),WithoutModality,23,17378296837
+((((f ∧ g) ∨ (k ∨ n)) ∧ (s ∧ e)) ∨ ((u ∨ a) ∨ m)) ⊃ (((i ∨ ((s ∨ ((w ∧ y) ∧ z)) ∧ i)) ∨ (d ≡ e)) ≡ ((y ⊃ z) ∧ (j ∧ ((z ∧ n) ≡ j)))),WithoutModality,23,6655980300
+((q ≡ a) ∨ ((k ≡ f) ∧ (((a ⊃ t) ∧ t) ∨ k))) ∨ ((((d ⊃ y) ∧ r) ≡ ((n ≡ (k ⊃ (v ≡ q))) ∧ (p ∧ y))) ∧ ((((h ∧ g) ∨ y) ∧ t) ≡ (g ∧ g))),WithoutModality,23,3191219578
+((g ≡ ((w ∨ q) ⊃ m)) ∨ (((r ≡ (h ∧ s)) ⊃ n) ∨ ((n ∨ n) ∧ (s ⊃ q)))) ∨ ((((k ∧ i) ∨ f) ∧ ((n ∧ l) ≡ x)) ∧ (i ≡ (x ≡ ((q ∨ l) ∧ e)))),WithoutModality,23,6937878175
+((x ∧ (s ⊃ v)) ≡ (((i ⊃ b) ∧ ((a ∨ s) ∨ (i ∨ (k ∧ r)))) ∧ (k ∨ b))) ≡ ((b ⊃ (((e ≡ q) ∨ i) ∧ (l ⊃ o))) ∨ (((r ∨ o) ∨ l) ∨ (t ≡ p))),WithoutModality,23,18187684540
+(((l ∧ (l ⊃ z)) ∧ (e ⊃ (r ∧ e))) ≡ ((j ∧ (r ⊃ n)) ∧ ((e ⊃ o) ⊃ c))) ⊃ (((y ≡ (n ⊃ r)) ≡ (b ∨ m)) ⊃ ((u ≡ (g ≡ d)) ≡ ((e ∧ v) ⊃ h))),WithoutModality,23,282374257029
+(((z ⊃ (m ≡ l)) ⊃ (z ≡ (o ∧ (x ⊃ a)))) ∧ (((g ∧ z) ≡ (g ≡ c)) ∧ t)) ∧ (((i ⊃ x) ⊃ (m ⊃ l)) ∨ ((o ∨ (u ∨ i)) ∨ (a ∨ ((e ∧ i) ∧ s)))),WithoutModality,23,16661787
+(((x ⊃ u) ∧ (t ⊃ (m ⊃ g))) ⊃ ((f ≡ (y ∨ (f ∧ o))) ∧ ((z ⊃ s) ≡ (x ∧ n)))) ⊃ ((w ⊃ t) ≡ (((v ∧ v) ≡ (q ⊃ c)) ∨ ((y ⊃ o) ∧ (m ≡ d)))),WithoutModality,23,10176644658
+(((i ⊃ n) ∨ p) ∨ ((q ∧ (o ∧ z)) ≡ (((g ∨ e) ⊃ a) ⊃ k))) ∨ (((f ≡ (d ≡ (o ⊃ z))) ∨ ((w ⊃ h) ≡ m)) ≡ (v ∨ ((g ≡ (j ⊃ p)) ∨ (s ⊃ t)))),WithoutModality,23,74094742010
+(((((o ∧ (n ∧ k)) ∧ q) ⊃ (m ∨ l)) ∧ ((n ∨ z) ≡ p)) ⊃ ((y ∧ ((i ⊃ a) ≡ s)) ≡ f)) ≡ ((h ⊃ (i ∨ t)) ∨ ((x ∧ o) ⊃ ((u ∧ n) ⊃ (d ∨ t)))),WithoutModality,23,27384540866
+((((y ∧ v) ∧ ((z ∨ y) ∧ y)) ⊃ ((e ⊃ ((z ≡ k) ≡ (p ∧ n))) ⊃ (e ∨ z))) ∧ (r ∧ (b ∨ (r ≡ n)))) ⊃ (((v ∨ e) ∧ c) ≡ ((s ⊃ e) ⊃ (g ∧ o))),WithoutModality,23,7530046052
+((((((o ∧ y) ∧ b) ∧ w) ⊃ o) ≡ (s ∨ (g ∨ d))) ∨ ((y ≡ (m ≡ j)) ∧ (t ≡ h))) ⊃ ((e ≡ (d ⊃ x)) ∨ (((o ⊃ o) ⊃ (i ∨ (b ∧ g))) ≡ (s ⊃ a))),WithoutModality,23,17410616048
+((((e ≡ e) ∨ (f ∨ (t ∨ c))) ∧ (d ∨ (u ∧ r))) ∧ ((i ∧ i) ⊃ (m ∧ (s ≡ d)))) ∧ ((w ∧ h) ∧ ((z ⊃ (e ∨ e)) ∨ ((j ≡ (b ∧ s)) ⊃ (x ∧ p)))),WithoutModality,23,9724373
+(((((v ∨ y) ∨ q) ∧ (d ∧ i)) ⊃ (c ⊃ g)) ∨ (((a ∨ i) ∨ r) ≡ g)) ∨ ((((d ⊃ y) ∨ k) ∨ ((e ≡ q) ∨ (i ⊃ (j ∨ a)))) ⊃ (n ∨ ((f ≡ z) ∨ y))),WithoutModality,23,723870061
+(((g ⊃ (s ∧ x)) ⊃ ((y ⊃ a) ∧ (d ≡ m))) ≡ (((d ⊃ z) ≡ (h ∧ g)) ∨ (v ⊃ w))) ∨ ((((o ≡ h) ⊃ (k ∨ (e ∧ u))) ⊃ ((s ∧ i) ⊃ w)) ∨ (m ∧ t)),WithoutModality,23,6646431010
+((((y ≡ (h ≡ h)) ⊃ p) ⊃ (z ⊃ n)) ∧ (i ⊃ ((e ⊃ (e ≡ r)) ∨ h))) ≡ (((c ∨ (m ∨ h)) ∧ (n ≡ y)) ⊃ ((t ⊃ (q ≡ t)) ≡ ((g ≡ s) ≡ (u ∧ d)))),WithoutModality,23,581619825332
+(((((l ∨ t) ∧ l) ≡ ((e ∧ u) ∧ l)) ∧ n) ⊃ (((k ∧ g) ∨ v) ⊃ q)) ∨ (((p ⊃ k) ≡ (o ∨ ((c ∧ x) ⊃ n))) ∨ ((i ⊃ (c ≡ (f ∨ m))) ⊃ (q ∧ x))),WithoutModality,23,14777315729
+((c ∧ ((j ≡ z) ≡ (p ∨ u))) ≡ (((q ∨ t) ∧ (w ⊃ a)) ∨ ((p ∨ j) ∨ ((i ⊃ m) ∧ y)))) ⊃ ((z ≡ ((q ∨ q) ∧ (m ∧ o))) ≡ (j ⊃ ((u ⊃ x) ≡ f))),WithoutModality,23,116027529161
+(((u ≡ (h ⊃ r)) ∨ ((q ≡ p) ≡ (r ∨ s))) ⊃ ((i ⊃ (m ≡ h)) ∧ (m ∨ q))) ≡ ((((e ∧ n) ∧ (b ≡ t)) ∨ ((m ≡ b) ≡ x)) ∧ ((h ∨ (v ⊃ p)) ≡ z)),WithoutModality,23,20564906433
+(((j ≡ e) ≡ (u ≡ (j ∧ c))) ⊃ (h ≡ (a ∨ f))) ∨ ((((k ⊃ r) ∨ z) ⊃ ((c ∨ (h ∧ w)) ≡ ((c ⊃ n) ≡ s))) ≡ ((x ∧ s) ∧ ((y ≡ d) ⊃ (g ≡ c)))),WithoutModality,23,1610357886897
+((n ∨ s) ∧ ((q ∨ (j ∨ n)) ∨ ((k ≡ d) ⊃ (w ∨ d)))) ∨ ((((l ∧ i) ∧ o) ∧ ((v ⊃ z) ∨ (j ∨ m))) ∧ ((s ≡ x) ∨ ((u ≡ ((j ∨ j) ⊃ x)) ∨ c))),WithoutModality,23,89010559
+((((u ∧ v) ⊃ (o ∧ m)) ∨ ((a ≡ z) ⊃ p)) ⊃ (p ∧ ((p ≡ s) ≡ (f ∨ g)))) ∨ ((h ≡ (y ∧ ((g ⊃ t) ≡ r))) ⊃ ((((n ⊃ n) ≡ e) ≡ (h ⊃ r)) ⊃ q)),WithoutModality,23,71003299085
+(((d ∨ (z ⊃ (h ∧ p))) ⊃ d) ∧ (((s ∧ v) ≡ u) ∨ (d ∨ ((p ∨ a) ∨ (w ∨ z))))) ≡ (((o ≡ (w ∨ q)) ⊃ (t ∧ c)) ∨ ((f ∨ o) ⊃ ((d ∧ (t ⊃ p)) ∧ h))),WithoutModality,24,25241704714
+(((w ∨ (m ∨ i)) ∨ k) ∨ (((s ∧ n) ⊃ (f ⊃ f)) ⊃ j)) ∨ (((i ⊃ (m ≡ ((k ≡ i) ∧ b))) ⊃ ((i ∧ l) ≡ b)) ⊃ (((d ⊃ c) ∧ f) ⊃ (o ∨ (h ⊃ (j ≡ q))))),WithoutModality,24,600667659
+((((e ∧ (a ⊃ h)) ≡ y) ∧ ((j ∧ z) ∨ v)) ⊃ (((g ∧ c) ⊃ r) ∨ (g ≡ m))) ∨ ((((l ∨ m) ∧ (r ⊃ g)) ⊃ (q ≡ (((f ∨ b) ⊃ e) ∨ (w ∧ h)))) ≡ (i ∨ k)),WithoutModality,24,53711090544
+((((v ∧ (p ≡ l)) ∨ u) ≡ (l ⊃ f)) ≡ (((w ∧ (j ⊃ p)) ∧ f) ∨ (c ∧ (u ⊃ (q ∨ v))))) ∧ ((((r ≡ t) ⊃ w) ⊃ g) ∨ ((n ∧ (o ≡ t)) ≡ (b ≡ (f ∧ a)))),WithoutModality,24,512147189
+((((y ∧ e) ⊃ ((r ⊃ v) ∧ a)) ∧ (r ∨ (j ∧ j))) ∨ (((x ≡ t) ∧ a) ∧ j)) ⊃ (((g ∧ (y ∨ v)) ≡ ((l ∧ (o ≡ a)) ∨ (c ∨ f))) ∧ ((w ∨ (a ∨ m)) ∨ k)),WithoutModality,24,366942415
+((((x ∧ p) ∨ (t ∧ d)) ≡ (((m ∨ j) ∧ u) ≡ r)) ⊃ ((l ∧ s) ⊃ l)) ∨ (((((i ⊃ i) ∧ i) ⊃ h) ⊃ ((y ∧ e) ∨ c)) ∨ (((l ∨ s) ∧ (t ≡ b)) ∨ (w ∧ q))),WithoutModality,24,32444310119
+((((a ⊃ e) ∧ (t ⊃ i)) ≡ (u ∧ (w ∧ t))) ⊃ (f ∨ (((l ≡ p) ∨ e) ≡ (j ∧ (k ∧ (l ∨ e)))))) ≡ ((f ∨ (g ∨ e)) ⊃ (((i ⊃ p) ∧ x) ∨ ((c ⊃ h) ≡ v))),WithoutModality,24,47782767824
+((((x ⊃ t) ≡ a) ∧ x) ∨ ((f ≡ (h ⊃ x)) ≡ ((g ∧ z) ∧ d))) ≡ (((s ⊃ (c ⊃ t)) ≡ (y ∧ (r ⊃ k))) ∨ ((((b ∨ g) ∨ r) ⊃ (v ∨ w)) ⊃ ((a ⊃ j) ⊃ l))),WithoutModality,24,33453737728
+(((x ∧ f) ∧ ((e ≡ (d ≡ q)) ∧ (b ≡ (s ∧ (y ⊃ n))))) ⊃ (((r ∧ g) ∧ v) ∧ (h ≡ g))) ≡ (((w ∧ y) ∨ (i ∨ u)) ∧ (((v ∨ g) ≡ h) ∨ (b ⊃ (i ∨ h)))),WithoutModality,24,22550008997
+((((k ⊃ m) ∨ e) ≡ (c ∧ k)) ≡ ((f ∨ z) ⊃ (t ⊃ w))) ≡ (((y ∨ a) ∨ (y ∧ (((m ∧ (m ⊃ s)) ∨ n) ∨ a))) ≡ ((v ≡ ((t ≡ q) ∧ (o ≡ c))) ∨ (w ≡ i))),WithoutModality,24,1292335971969
+(((j ≡ b) ⊃ ((h ∨ s) ∨ (c ≡ u))) ∨ ((x ≡ s) ∧ ((g ∧ (w ∧ w)) ⊃ n))) ≡ (((x ∨ ((g ⊃ j) ≡ y)) ∨ (((n ⊃ t) ∨ w) ∨ (j ∨ k))) ∧ (z ⊃ (y ≡ q))),WithoutModality,24,6445309791
+(((((y ∧ x) ≡ v) ∨ c) ∨ (g ≡ r)) ≡ ((t ≡ v) ∧ (h ⊃ d))) ⊃ (((n ∨ (((h ⊃ (h ∧ y)) ∨ p) ⊃ l)) ∨ m) ≡ (z ⊃ (((m ⊃ r) ∧ b) ⊃ ((w ⊃ s) ∧ p)))),WithoutModality,24,139443655360
+((u ≡ (((v ⊃ n) ∨ n) ∨ (r ⊃ (r ≡ b)))) ∨ (((r ⊃ y) ∨ n) ∨ (g ∨ (m ∧ (p ≡ d))))) ∧ (((l ≡ r) ∨ i) ∨ (((l ⊃ f) ∧ (b ≡ n)) ∧ (j ⊃ (e ⊃ k)))),WithoutModality,24,41072737
+((((f ≡ o) ⊃ ((e ∨ y) ∧ (x ∧ t))) ⊃ (x ∧ i)) ∨ (((y ∧ z) ⊃ (u ∧ o)) ∧ (l ∨ y))) ∨ ((((w ⊃ o) ∧ s) ≡ (v ∧ (s ⊃ y))) ∨ (c ⊃ ((u ⊃ f) ∧ v))),WithoutModality,24,1463660561
+(((y ∨ (v ∧ z)) ∧ ((m ⊃ e) ∧ ((a ∨ w) ∨ d))) ⊃ ((y ∨ o) ∧ (x ≡ i))) ≡ ((((j ∧ b) ≡ r) ≡ (b ∨ n)) ∧ ((t ⊃ (x ⊃ f)) ≡ (((h ∧ c) ∧ t) ≡ k))),WithoutModality,24,482970713827
+(((o ∧ l) ≡ (v ⊃ q)) ∨ ((b ⊃ u) ∨ ((v ≡ (b ∧ r)) ≡ i))) ∨ (((((b ∨ q) ≡ k) ⊃ v) ∨ (w ⊃ w)) ∨ (((w ∧ h) ∨ (d ∨ c)) ∧ (l ⊃ (o ∧ (e ≡ s))))),WithoutModality,24,6103271275
+((((e ⊃ d) ∨ q) ⊃ (w ≡ p)) ∧ (i ⊃ ((y ≡ l) ∧ x))) ≡ (((g ∨ k) ≡ ((w ≡ z) ⊃ ((m ≡ x) ⊃ f))) ≡ ((((n ∧ k) ∨ (n ⊃ a)) ∨ y) ≡ (k ≡ (k ∧ h)))),WithoutModality,24,2361993619383
+(((t ∨ (l ∨ j)) ≡ (c ∨ (i ∧ x))) ∨ ((m ≡ m) ∨ (o ∨ (k ∧ y)))) ∨ ((((e ≡ n) ⊃ n) ∧ ((l ≡ x) ⊃ ((d ∨ y) ∨ a))) ⊃ ((s ⊃ z) ⊃ ((w ∧ n) ⊃ g))),WithoutModality,24,12793885783
+((((b ∨ h) ∨ (w ∧ (a ∧ s))) ∧ n) ⊃ (y ∨ ((z ∨ n) ⊃ z))) ⊃ ((((j ⊃ a) ∨ (k ∨ f)) ∧ (j ∨ w)) ∨ ((m ∨ j) ∧ ((l ⊃ (x ∨ k)) ∧ (q ∧ (q ≡ y))))),WithoutModality,24,277037234
+(((c ∨ z) ≡ (g ≡ (o ⊃ v))) ∨ ((i ∧ (g ≡ (r ∧ n))) ∧ ((f ⊃ e) ⊃ ((o ≡ i) ≡ y)))) ∧ ((c ⊃ (k ⊃ (o ≡ (o ∨ y)))) ∨ ((k ∨ w) ≡ (j ∨ (t ∧ n)))),WithoutModality,24,277387799
+((((b ≡ l) ≡ i) ⊃ ((p ∧ h) ∧ g)) ≡ (u ∨ ((d ≡ (l ∧ p)) ∧ (t ≡ h)))) ⊃ (((((m ≡ z) ∧ s) ∧ (j ≡ l)) ∨ (((e ∨ u) ≡ x) ∨ r)) ∨ ((n ≡ h) ∧ u)),WithoutModality,24,397920926040
+((((z ∧ b) ∧ w) ⊃ (z ⊃ ((o ⊃ e) ≡ x))) ∨ ((z ≡ (b ⊃ u)) ∧ (((z ⊃ v) ≡ (y ⊃ o)) ∨ (u ∨ r)))) ≡ (((((i ∧ j) ∧ a) ≡ n) ⊃ (e ∨ a)) ∨ (v ∨ j)),WithoutModality,24,2831431724
+(((q ∨ f) ≡ s) ∧ (((((c ⊃ t) ∧ v) ⊃ i) ≡ ((k ∧ z) ∨ (v ∧ m))) ∧ g)) ≡ (((h ∧ ((l ≡ p) ⊃ q)) ∧ (d ≡ i)) ∨ ((l ⊃ k) ≡ ((q ≡ (c ≡ t)) ∨ j))),WithoutModality,24,357179721410
+((o ∧ s) ∧ ((((s ∧ h) ∨ (n ∧ g)) ∨ (n ∨ j)) ∧ ((g ≡ m) ∧ n))) ⊃ (((p ⊃ (o ⊃ j)) ∨ (u ∨ (k ≡ ((t ≡ u) ⊃ (x ≡ q))))) ∧ ((y ∨ (s ∧ s)) ∧ p)),WithoutModality,24,334359374
+((((d ≡ (q ∧ o)) ≡ (z ∨ r)) ∨ (h ∧ (d ∧ q))) ∨ ((((r ∨ l) ⊃ p) ⊃ r) ≡ ((h ≡ c) ⊃ (d ∨ o)))) ∨ ((((w ∧ m) ∧ f) ∧ (t ⊃ a)) ∨ ((b ≡ o) ∨ f)),WithoutModality,24,191911496816
+((t ∧ (u ≡ (c ⊃ x))) ⊃ (((i ∨ (f ∨ h)) ≡ (((d ⊃ c) ⊃ s) ≡ t)) ∧ (n ≡ t))) ∧ (((p ∧ (v ∧ q)) ≡ (m ⊃ u)) ⊃ ((q ≡ m) ∧ ((s ∨ (s ∨ m)) ⊃ h))),WithoutModality,24,190741639
+(((t ∨ v) ≡ (t ⊃ o)) ∧ ((d ∧ o) ⊃ (i ⊃ (a ∨ v)))) ∧ ((((j ∨ z) ⊃ (w ∨ (j ∨ t))) ⊃ (f ∧ f)) ∧ ((e ∧ ((w ∨ e) ∧ i)) ⊃ ((i ⊃ h) ⊃ (c ∧ z)))),WithoutModality,24,12654606
+((((g ∨ (u ∧ (q ≡ y))) ∨ j) ∨ ((f ∧ k) ≡ u)) ∨ (((e ⊃ m) ≡ p) ⊃ (c ∨ m))) ∧ ((o ∧ ((t ∨ (z ∧ o)) ∨ (e ∨ k))) ∨ (((b ∨ k) ∧ u) ≡ (p ⊃ o))),WithoutModality,24,45131728
+(((l ≡ (j ∨ (c ⊃ r))) ⊃ (((v ∨ y) ⊃ v) ⊃ m)) ⊃ ((v ∨ c) ∨ ((x ∧ (v ≡ x)) ∨ d))) ∧ (((((k ∧ w) ⊃ l) ∨ l) ⊃ (w ∨ (v ∨ (x ≡ f)))) ⊃ (g ∧ g)),WithoutModality,24,36223453
+((((a ≡ u) ≡ z) ⊃ (g ≡ x)) ∧ ((i ≡ j) ⊃ d)) ∧ (((z ≡ ((p ∧ t) ∨ s)) ⊃ (v ∧ g)) ∧ (((g ∨ s) ⊃ (n ∧ w)) ⊃ ((z ⊃ f) ⊃ ((y ≡ x) ⊃ (t ∨ n))))),WithoutModality,24,24517262
+((((d ∧ (k ∨ (f ⊃ i))) ⊃ z) ∧ (o ≡ ((j ≡ f) ∨ t))) ∧ ((q ∨ (c ⊃ b)) ⊃ j)) ∨ ((((l ⊃ w) ⊃ (t ∧ m)) ∧ d) ⊃ (((f ∨ (w ≡ o)) ∧ (m ⊃ s)) ⊃ i)),WithoutModality,24,836991130
+(((((c ∨ c) ⊃ (r ∨ f)) ⊃ b) ∨ ((a ⊃ j) ∧ d)) ∨ ((j ≡ (f ≡ m)) ∧ k)) ∨ (((e ∨ s) ∧ (j ∨ c)) ∨ ((q ≡ (c ∧ q)) ∨ ((v ∨ (b ≡ p)) ≡ (n ≡ s)))),WithoutModality,24,33485223787
+(((q ⊃ x) ∨ (k ⊃ (m ∧ z))) ∨ ((h ∨ (x ⊃ (x ≡ m))) ≡ t)) ∨ (((f ∧ l) ⊃ (((j ≡ (a ∨ q)) ∨ l) ≡ b)) ⊃ (((t ∧ f) ∨ o) ⊃ (c ≡ ((y ∧ n) ≡ x)))),WithoutModality,24,83517311190
+((u ⊃ ((l ∨ g) ≡ y)) ⊃ (t ⊃ (t ⊃ (a ∨ w)))) ≡ ((b ∧ q) ∧ (((j ∧ j) ∧ ((k ∧ o) ∨ (e ∨ (t ⊃ i)))) ∨ (((f ≡ v) ⊃ e) ∧ ((s ∨ t) ∧ (w ≡ z))))),WithoutModality,24,1202797614
+(((w ⊃ e) ∧ ((n ∨ (z ∧ p)) ∨ l)) ≡ ((k ∧ c) ∨ ((b ∧ (l ≡ i)) ∧ j))) ⊃ (((p ∧ ((l ∧ r) ∧ p)) ∨ w) ∨ ((j ∧ ((o ∨ l) ≡ (q ∧ q))) ∨ (x ∧ i))),WithoutModality,24,57622905918
+(((s ∨ (((h ∨ k) ≡ z) ⊃ (m ∧ u))) ⊃ (r ≡ (t ≡ q))) ∧ (((v ≡ n) ∧ (e ∧ s)) ∧ (x ≡ t))) ∨ (((u ∨ s) ≡ (w ≡ o)) ∧ (((j ∨ p) ≡ (y ⊃ c)) ≡ t)),WithoutModality,24,6421544613
+((p ≡ ((k ∨ (a ⊃ e)) ∧ (i ∧ ((r ∧ b) ∨ l)))) ∨ ((t ≡ (i ∨ i)) ∧ (f ∨ e))) ∧ (((e ≡ i) ∨ (c ∨ (i ≡ (f ∨ c)))) ∨ ((d ≡ x) ∧ ((s ⊃ o) ≡ s))),WithoutModality,24,166087457
+(((q ≡ (e ∧ (m ∧ b))) ⊃ ((a ≡ j) ⊃ j)) ∨ ((p ≡ f) ⊃ (y ⊃ (v ∧ f)))) ∨ (((t ⊃ (e ∧ o)) ∧ ((f ∧ w) ∧ (b ≡ (g ∨ m)))) ≡ (y ∨ ((v ⊃ q) ≡ v))),WithoutModality,24,86495706892
+((w ⊃ (((h ≡ h) ∧ s) ∨ (b ⊃ t))) ≡ ((((a ≡ p) ∧ t) ⊃ d) ≡ ((z ⊃ j) ∧ a))) ≡ (((f ⊃ (u ⊃ m)) ∨ (n ≡ c)) ∨ (t ≡ ((s ∨ d) ⊃ ((x ⊃ z) ∨ i)))),WithoutModality,24,143966039709
+(((d ≡ (q ∨ v)) ⊃ (z ∨ k)) ≡ (((d ⊃ p) ⊃ c) ∨ ((i ≡ (g ⊃ u)) ∨ (j ⊃ (t ∨ (c ∨ a)))))) ∨ ((s ⊃ (r ≡ (p ∧ l))) ⊃ (((b ≡ d) ⊃ v) ⊃ (m ∨ q))),WithoutModality,24,17448262932
+((((t ⊃ y) ⊃ (l ∧ x)) ∧ (z ⊃ ((c ∧ w) ≡ o))) ∧ ((m ∨ (u ∧ j)) ⊃ k)) ∧ ((((y ∨ (a ≡ i)) ⊃ (y ∨ o)) ∧ ((k ∧ (e ∨ l)) ∨ f)) ∨ ((r ≡ s) ∨ (k ∨ z))),WithoutModality,25,14910181
+((f ≡ ((((j ⊃ v) ≡ o) ⊃ ((f ≡ y) ∧ p)) ≡ (j ∧ (p ∨ a)))) ⊃ (q ⊃ (t ∨ r))) ∨ ((e ≡ (o ∧ (n ∨ (c ⊃ n)))) ∧ (((u ⊃ (w ∧ s)) ⊃ (h ∧ l)) ∨ (b ≡ s))),WithoutModality,25,31738262693
+(((o ∧ ((c ∨ p) ≡ x)) ≡ t) ≡ (((u ∨ s) ∧ o) ≡ (v ∧ a))) ∧ (((((e ∨ k) ∧ f) ∨ v) ⊃ (k ⊃ (t ≡ m))) ⊃ ((w ∨ ((r ∧ l) ∨ h)) ⊃ (y ≡ ((s ∨ p) ∧ y)))),WithoutModality,25,814418689
+(((((((m ≡ i) ⊃ a) ⊃ d) ∨ h) ⊃ (q ∨ o)) ∧ (((z ⊃ l) ≡ h) ⊃ x)) ≡ (((s ∨ v) ≡ a) ≡ (d ∨ u))) ∧ ((s ∨ ((v ∨ v) ∨ (s ≡ n))) ∧ (p ⊃ (j ⊃ (y ∨ b)))),WithoutModality,25,1489799203
+(((u ≡ ((m ∧ m) ⊃ n)) ≡ w) ⊃ ((((j ≡ t) ≡ m) ⊃ ((a ⊃ c) ⊃ e)) ∧ ((w ⊃ z) ≡ t))) ∨ ((f ⊃ ((g ≡ q) ≡ (o ≡ (v ∨ l)))) ≡ ((x ≡ (h ≡ z)) ∨ (b ⊃ r))),WithoutModality,25,2448800904193
+(((w ∨ (w ≡ q)) ⊃ (v ∧ u)) ∨ (((y ⊃ w) ∨ n) ∧ (i ⊃ g))) ≡ ((((e ≡ l) ≡ (j ∧ (x ≡ (j ∧ o)))) ⊃ (b ≡ (q ∨ (((e ≡ d) ∨ o) ⊃ w)))) ∨ ((i ∧ c) ≡ k)),WithoutModality,25,452878784295
+(((((y ∧ (j ∨ j)) ⊃ (a ∧ v)) ∧ f) ⊃ (g ⊃ (w ≡ e))) ⊃ (v ∧ (((a ⊃ d) ⊃ r) ⊃ w))) ≡ (((g ∧ (x ∨ c)) ⊃ (((s ⊃ r) ∧ w) ∨ o)) ∨ ((q ∧ w) ∧ (v ⊃ u))),WithoutModality,25,2907507921
+((((v ⊃ b) ≡ f) ⊃ (j ≡ e)) ∨ ((((l ≡ (p ≡ a)) ∧ f) ⊃ y) ≡ ((o ≡ h) ∨ m))) ∧ (((e ∨ v) ≡ ((v ≡ f) ∧ q)) ⊃ (((q ∨ (o ≡ o)) ∨ o) ≡ (k ≡ (v ∧ t)))),WithoutModality,25,1661141587
+(((f ≡ w) ∧ (f ∨ k)) ∨ (m ∧ (((d ∨ w) ⊃ h) ≡ (r ≡ (t ≡ d))))) ⊃ ((x ≡ (d ∧ w)) ∧ (((t ≡ (n ∨ l)) ∨ ((d ∨ k) ≡ (x ≡ y))) ∧ (o ≡ ((p ≡ b) ∧ i)))),WithoutModality,25,3191741541
+(((q ⊃ (i ∨ f)) ⊃ ((((q ⊃ h) ∧ p) ∨ i) ≡ o)) ∧ ((a ⊃ s) ≡ ((g ⊃ r) ≡ o))) ∨ (((z ≡ (e ⊃ i)) ∨ (p ⊃ (h ∨ s))) ⊃ ((w ≡ y) ≡ (f ≡ (n ≡ (s ∨ y))))),WithoutModality,25,302752424611
+((((t ⊃ z) ⊃ s) ∨ ((v ≡ q) ∧ (((e ≡ (o ∨ u)) ∧ c) ⊃ j))) ≡ ((v ≡ ((w ∨ v) ≡ ((v ∧ m) ⊃ u))) ≡ y)) ⊃ (((p ∧ k) ≡ s) ∧ (((b ≡ u) ∧ h) ≡ (e ∨ w))),WithoutModality,25,2043851508898
+((((((f ∨ c) ≡ (f ≡ u)) ∨ p) ∨ (q ∨ d)) ⊃ (w ≡ (f ≡ d))) ∧ ((y ⊃ (p ∧ s)) ⊃ (f ∧ v))) ≡ (((y ∨ r) ⊃ ((a ∧ x) ∨ (e ∨ v))) ∨ (i ⊃ (v ⊃ (q ≡ f)))),WithoutModality,25,13635424533
+((((z ∧ y) ∧ j) ∨ (i ∧ m)) ≡ (t ⊃ (h ∨ r))) ∧ ((((u ∨ s) ≡ w) ∨ (h ∧ a)) ∧ ((l ≡ ((y ∨ j) ⊃ (y ≡ l))) ∨ ((r ≡ p) ∧ (((i ∨ j) ∧ y) ∨ (o ⊃ i))))),WithoutModality,25,65015005
+(((k ⊃ (k ⊃ p)) ≡ ((m ⊃ d) ∨ p)) ⊃ ((d ∨ d) ∧ (q ∧ (s ≡ (e ∨ m))))) ≡ ((((u ≡ b) ∧ ((r ∨ j) ∧ f)) ∧ (t ∧ (v ∨ w))) ∧ (w ∧ ((e ∧ (q ⊃ l)) ⊃ e))),WithoutModality,25,46295917751
+((((r ∧ g) ∨ (h ≡ (u ∧ a))) ∧ (b ∨ p)) ⊃ ((s ∧ (x ≡ (z ∧ e))) ⊃ (((s ⊃ m) ⊃ f) ∧ k))) ∨ (((c ∧ (j ∧ u)) ⊃ b) ∨ ((j ∨ ((p ∨ x) ∨ j)) ∨ (i ∨ v))),WithoutModality,25,333604949
+((f ∧ (u ∨ (q ∧ ((n ≡ z) ∧ j)))) ∧ ((a ⊃ (e ≡ j)) ∧ ((u ≡ v) ⊃ w))) ≡ (((((o ∧ (g ≡ r)) ≡ (q ∧ a)) ⊃ p) ⊃ (a ∨ t)) ⊃ ((o ≡ u) ∧ (b ∨ (q ∧ c)))),WithoutModality,25,45990373777
+(((g ∧ (q ∧ p)) ≡ p) ∧ (((a ⊃ u) ≡ (d ≡ q)) ∧ (z ≡ (o ∨ i)))) ≡ ((((f ∧ x) ≡ t) ≡ ((c ∨ k) ≡ (m ⊃ s))) ≡ (((q ≡ (f ∨ u)) ≡ e) ∨ (t ∧ (e ∧ i)))),WithoutModality,25,44060141069587
+(((l ≡ (v ≡ c)) ∨ d) ⊃ (((c ⊃ (d ∧ i)) ∧ ((v ⊃ l) ∧ k)) ⊃ (((m ⊃ (z ∧ c)) ∨ w) ∨ j))) ⊃ ((y ∧ (z ∨ c)) ∨ ((o ⊃ ((k ∧ z) ∧ g)) ∨ (m ≡ (y ≡ u)))),WithoutModality,25,4041828090
+((((c ⊃ z) ∨ (j ≡ k)) ∧ ((r ∧ (a ≡ n)) ⊃ n)) ∨ (((i ⊃ (i ∨ r)) ⊃ d) ∨ ((t ∧ (p ∧ a)) ⊃ (w ≡ p)))) ∧ ((l ≡ ((l ∨ h) ⊃ g)) ⊃ ((k ≡ (s ≡ l)) ⊃ n)),WithoutModality,25,42806615
+((((v ≡ t) ∨ (d ∨ u)) ∨ (r ∨ p)) ∨ (j ∨ (((v ∧ d) ∧ u) ≡ w))) ∧ (((((i ⊃ m) ⊃ g) ≡ (k ≡ (j ∧ (f ≡ x)))) ⊃ c) ∨ (((m ∨ (c ≡ (i ⊃ m))) ⊃ c) ⊃ b)),WithoutModality,25,262129001
+(((d ∨ ((t ≡ o) ∨ f)) ≡ (z ⊃ (m ∨ (p ∧ t)))) ∧ (w ≡ ((m ∧ p) ⊃ d))) ∧ (((a ≡ j) ⊃ (a ∧ ((b ∧ n) ⊃ l))) ⊃ ((((s ≡ c) ≡ x) ∧ g) ∧ ((o ⊃ w) ∧ o))),WithoutModality,25,65603561
+((y ≡ ((a ⊃ o) ≡ q)) ⊃ (a ∨ m)) ≡ (((((j ⊃ x) ∧ e) ∧ z) ∨ (((g ≡ u) ≡ b) ∨ (c ∧ (v ⊃ f)))) ⊃ ((((w ∨ z) ∨ p) ⊃ (n ≡ r)) ⊃ ((r ∧ h) ∨ (w ⊃ o)))),WithoutModality,25,12617065257
+((v ⊃ ((o ≡ f) ⊃ (l ⊃ q))) ≡ ((((g ≡ (n ∨ a)) ≡ v) ∨ w) ⊃ (d ∨ (j ∨ (c ∧ o))))) ∨ ((r ⊃ ((e ∨ s) ∨ s)) ∧ ((x ∧ k) ∧ ((a ∧ (p ≡ d)) ⊃ (l ∧ z)))),WithoutModality,25,27166371541
+((((m ∨ (a ∧ e)) ≡ i) ∨ (v ⊃ (i ∨ o))) ∧ ((j ∨ n) ≡ (h ≡ q))) ∧ (((b ∨ ((c ∨ y) ⊃ ((y ≡ p) ⊃ d))) ∨ (g ∧ s)) ≡ (n ⊃ (((i ≡ j) ∨ x) ∧ (n ⊃ h)))),WithoutModality,25,184517004
+(((c ∨ r) ⊃ q) ≡ (f ∨ (w ∨ (g ≡ l)))) ⊃ (((q ≡ r) ∧ ((n ∨ a) ∧ f)) ⊃ ((((o ∨ ((z ≡ s) ∧ c)) ∨ e) ⊃ (n ≡ m)) ⊃ ((p ∨ (j ≡ i)) ⊃ (s ≡ (u ∧ h))))),WithoutModality,25,111703325085
+((((a ≡ k) ⊃ b) ≡ (a ∧ i)) ≡ ((((q ⊃ x) ≡ z) ∧ g) ∧ (h ⊃ (d ⊃ i)))) ∧ (((h ≡ (h ≡ c)) ∧ (((s ∧ o) ≡ p) ≡ (q ⊃ (e ∧ r)))) ⊃ (k ∨ ((k ∨ w) ⊃ j))),WithoutModality,25,752634288
+((((v ≡ l) ⊃ (h ∧ (w ∧ z))) ≡ (d ≡ (g ∨ h))) ∨ ((y ≡ (a ⊃ g)) ⊃ d)) ∧ ((((m ≡ g) ⊃ (q ≡ v)) ⊃ (x ∨ h)) ∨ ((b ∨ s) ≡ ((j ∧ z) ⊃ (e ∨ (o ⊃ x))))),WithoutModality,25,186426215
+((((o ≡ j) ∧ ((i ≡ (z ≡ a)) ≡ s)) ∨ (s ⊃ g)) ⊃ (((v ⊃ f) ⊃ v) ⊃ (y ∨ (j ≡ q)))) ≡ ((y ∧ ((c ∧ (e ∧ b)) ⊃ r)) ∨ ((q ⊃ n) ≡ (x ∨ ((n ∨ a) ∨ u)))),WithoutModality,25,42157742001
+((((x ∨ x) ⊃ p) ∨ (r ∧ w)) ∨ (((g ∧ j) ≡ a) ≡ (((y ⊃ c) ∧ y) ⊃ (t ≡ l)))) ≡ (((((j ⊃ (h ∧ c)) ⊃ c) ∨ (x ∧ l)) ≡ (w ⊃ k)) ⊃ ((q ≡ g) ∧ (f ⊃ x))),WithoutModality,25,216069580007
+((((f ∨ i) ∧ (l ∨ b)) ∨ (s ∧ k)) ∨ ((m ∨ p) ⊃ (f ∨ ((i ∨ b) ⊃ (d ≡ z))))) ≡ (((((r ⊃ x) ∨ d) ≡ t) ∨ (u ∨ (j ∨ h))) ≡ (((x ∨ f) ≡ a) ∨ (i ∧ j))),WithoutModality,25,300047193458
+(((k ∨ (m ∨ x)) ∧ ((o ∧ m) ⊃ (y ∧ j))) ⊃ ((l ≡ ((e ∧ f) ≡ o)) ≡ (j ⊃ (h ∨ t)))) ⊃ (((q ∧ (g ∧ t)) ∧ ((t ∧ (g ∨ u)) ∨ d)) ∧ (x ∨ (o ∨ (q ∨ k)))),WithoutModality,25,1500634859
+((((m ∨ c) ⊃ (r ∨ (q ∨ g))) ≡ ((i ∨ i) ≡ (h ∧ i))) ⊃ ((((n ∧ b) ≡ j) ≡ ((x ∧ y) ≡ c)) ≡ y)) ≡ ((c ∧ (r ∧ j)) ∨ ((i ∨ ((f ⊃ t) ∧ q)) ≡ (b ≡ e))),WithoutModality,25,2486830516298
+((o ∨ (u ≡ (m ∨ (q ∧ v)))) ∨ (((a ≡ x) ∨ (o ≡ (g ≡ k))) ≡ ((r ∧ (o ∧ m)) ∧ d))) ∧ ((p ≡ (j ≡ (q ∨ g))) ≡ (((y ∨ o) ∨ (d ∨ m)) ⊃ (w ∨ (c ∨ i)))),WithoutModality,25,752364529
+(((g ≡ ((m ≡ c) ∧ f)) ∧ (d ≡ (w ∧ h))) ∨ (((g ⊃ v) ∧ p) ∨ (i ∨ (l ≡ (v ∨ a))))) ∧ (((((v ≡ z) ∨ u) ∧ x) ≡ (l ∨ d)) ∧ (((u ⊃ e) ∨ g) ∨ (v ∨ c))),WithoutModality,25,130655775
+(((n ∧ (((f ≡ s) ⊃ (j ⊃ u)) ≡ g)) ∧ e) ∧ (d ≡ g)) ⊃ (((c ≡ h) ⊃ (x ∨ ((c ∨ r) ⊃ j))) ⊃ (((c ∨ o) ≡ j) ∧ ((n ≡ (((q ≡ l) ⊃ l) ≡ (v ≡ e))) ⊃ u))),WithoutModality,25,77489230205
+((((h ∧ k) ≡ a) ≡ (w ≡ (w ∨ z))) ∧ ((f ⊃ a) ∨ (n ∨ (s ∨ j)))) ≡ ((((v ∧ (s ≡ s)) ≡ (j ∨ r)) ∧ z) ∨ (((r ∧ b) ⊃ (t ⊃ g)) ∨ ((k ∧ c) ∧ (t ⊃ q)))),WithoutModality,25,94173091843
+(((k ∨ b) ∧ (p ⊃ (v ⊃ r))) ⊃ ((e ≡ x) ⊃ v)) ∧ (((r ≡ (z ∨ m)) ∨ ((z ⊃ u) ∨ (v ≡ f))) ≡ ((e ∧ (h ∨ k)) ∨ (z ∨ (j ⊃ (i ≡ ((p ⊃ (v ∧ u)) ∨ k)))))),WithoutModality,25,878866973
+((u ≡ (x ≡ (l ∨ x))) ≡ (((o ≡ y) ≡ a) ≡ (((w ⊃ r) ∧ i) ∧ (n ≡ i)))) ≡ (((s ∨ m) ⊃ (a ≡ e)) ≡ (((z ∧ e) ⊃ z) ∧ ((y ∧ (o ≡ (y ⊃ (v ∨ w)))) ∨ y))),WithoutModality,25,76970412593231
+(((((v ∧ f) ≡ (j ⊃ o)) ⊃ w) ∨ ((m ≡ u) ⊃ y)) ∧ (k ≡ ((v ∨ u) ≡ z))) ≡ (((f ⊃ (j ⊃ i)) ⊃ (a ⊃ (p ⊃ h))) ∨ ((e ∨ (y ⊃ ((r ∧ y) ∨ w))) ≡ (t ∨ g))),WithoutModality,25,106705286348
+((((((z ≡ q) ∧ h) ≡ i) ∨ w) ∧ ((q ∧ q) ∨ d)) ∧ (l ⊃ (z ⊃ (((m ∧ d) ∧ k) ⊃ l)))) ⊃ (((((b ≡ m) ≡ m) ≡ j) ≡ ((h ⊃ v) ∧ k)) ⊃ (((r ∨ i) ⊃ g) ∧ s)),WithoutModality,25,1616612352366
+(((s ∨ w) ∧ (h ∧ (p ∨ v))) ≡ ((c ∧ (i ⊃ p)) ⊃ ((w ∧ v) ∧ z))) ⊃ ((((z ∧ (w ⊃ x)) ≡ (i ∨ b)) ≡ ((p ∧ (o ∧ r)) ⊃ (g ⊃ z))) ⊃ (g ⊃ (((z ∧ d) ∨ o) ∧ j))),WithoutModality,26,234601591239
+((((z ≡ j) ⊃ g) ≡ (a ∧ (o ∧ (k ≡ m)))) ≡ ((h ≡ f) ⊃ ((q ∨ ((q ⊃ a) ⊃ l)) ⊃ e))) ⊃ ((h ∨ ((x ∨ k) ≡ d)) ∧ (((a ≡ k) ⊃ (t ⊃ (h ⊃ g))) ⊃ (j ⊃ (c ⊃ o)))),WithoutModality,26,50274015838
+(((q ∨ q) ∧ f) ∨ (((l ∨ l) ∧ u) ⊃ (k ⊃ (m ≡ s)))) ∨ ((q ∨ (y ∨ (c ∨ l))) ≡ ((r ≡ (b ⊃ (q ∧ f))) ∧ ((((c ∧ d) ≡ (s ≡ o)) ≡ c) ⊃ ((q ∧ (o ≡ a)) ∨ s)))),WithoutModality,26,119392850800
+((y ≡ ((a ≡ c) ∨ o)) ≡ (((j ⊃ j) ⊃ ((r ∨ q) ≡ (q ⊃ g))) ∨ (((o ⊃ f) ⊃ i) ≡ (p ⊃ (e ≡ z))))) ≡ (((g ∧ w) ⊃ (q ≡ g)) ∧ ((k ⊃ (i ≡ (f ∨ x))) ∧ (p ∧ r))),WithoutModality,26,1607329865249
+((((i ≡ (u ∨ m)) ∧ d) ∧ x) ∧ (((t ∨ f) ≡ u) ∨ (x ⊃ r))) ⊃ ((((((w ∨ u) ∨ r) ≡ (a ⊃ (v ⊃ u))) ≡ (d ⊃ d)) ≡ ((n ≡ b) ∧ r)) ∧ ((e ∨ m) ≡ (o ∨ (q ≡ u)))),WithoutModality,26,279339254374
+(((y ⊃ (a ⊃ c)) ⊃ (l ∨ y)) ∧ ((y ≡ (c ∧ o)) ≡ (j ⊃ (g ∧ i)))) ⊃ (((v ∨ ((q ∨ b) ⊃ r)) ∧ ((h ∧ (g ∨ l)) ∧ (t ∨ (r ∧ x)))) ≡ ((((d ∧ w) ⊃ x) ≡ p) ≡ q)),WithoutModality,26,1316730525849
+((((g ⊃ k) ∧ (i ⊃ (u ≡ m))) ∧ ((a ≡ o) ≡ o)) ⊃ ((y ∨ w) ∨ ((c ∨ s) ∨ (v ∧ (o ⊃ f))))) ∧ (((u ≡ (a ⊃ f)) ∧ a) ≡ (((c ∧ r) ∨ ((z ⊃ (g ⊃ h)) ≡ d)) ⊃ a)),WithoutModality,26,319230122
+((((o ⊃ a) ≡ ((k ≡ c) ⊃ l)) ∨ (m ≡ (l ∧ (s ∧ s)))) ∧ ((((b ∧ f) ⊃ i) ∨ m) ⊃ (x ⊃ (((x ≡ p) ⊃ w) ⊃ m)))) ⊃ (((k ≡ t) ≡ (u ⊃ (d ∧ y))) ∧ (o ∨ (x ∧ v))),WithoutModality,26,9142330058
+(((r ≡ d) ∧ (w ≡ (d ∨ c))) ≡ (((l ≡ x) ∧ (((a ∨ r) ≡ i) ≡ ((u ≡ y) ∨ h))) ∨ (b ≡ t))) ≡ (((n ∧ h) ≡ ((z ∧ m) ∨ (v ⊃ g))) ∧ ((((r ≡ n) ∧ g) ⊃ x) ∧ c)),WithoutModality,26,8707947808783
+(((((j ⊃ y) ≡ a) ∨ (c ∧ c)) ⊃ ((m ⊃ v) ∨ p)) ≡ ((f ≡ a) ∧ (g ≡ j))) ≡ (((z ∨ (m ∧ j)) ∨ (b ≡ ((t ⊃ f) ∨ j))) ≡ (((a ∨ k) ⊃ ((s ∨ p) ≡ v)) ⊃ (x ∧ p))),WithoutModality,26,3609980951695
+(((l ⊃ v) ∨ ((x ≡ w) ∨ (e ⊃ (y ∧ j)))) ⊃ (((t ≡ e) ∧ (y ∧ (u ∨ v))) ≡ (r ≡ q))) ≡ (((w ∨ b) ∨ (v ∧ (q ∧ l))) ∧ ((((z ≡ g) ∧ h) ∨ ((o ∧ t) ⊃ f)) ∨ o)),WithoutModality,26,117449533073
+((((i ∨ f) ∧ m) ≡ (((u ∨ x) ∨ k) ⊃ u)) ⊃ ((m ⊃ (x ≡ f)) ⊃ (d ⊃ (z ⊃ e)))) ⊃ (((d ⊃ w) ∨ (u ≡ ((l ∨ g) ∨ n))) ≡ ((l ⊃ ((b ∧ (w ∧ b)) ≡ h)) ∨ (b ⊃ v))),WithoutModality,26,19768116378
+((((t ⊃ r) ≡ (h ≡ ((w ⊃ f) ⊃ l))) ⊃ ((y ∧ q) ∨ p)) ≡ ((u ∨ m) ∨ ((y ∧ x) ∨ t))) ≡ ((((k ∨ (o ≡ s)) ∨ p) ≡ e) ≡ (a ∧ (((z ∨ ((h ∨ d) ⊃ l)) ∧ p) ⊃ d))),WithoutModality,26,6444762537837
+((((z ⊃ ((v ≡ d) ∧ p)) ∧ (z ⊃ n)) ≡ (s ∧ z)) ⊃ ((b ∧ w) ∧ k)) ⊃ (((n ≡ y) ⊃ (((r ⊃ z) ∧ g) ≡ (n ≡ ((p ⊃ v) ∨ k)))) ≡ ((f ≡ (o ∨ j)) ⊃ (j ∧ (m ∧ d)))),WithoutModality,26,988372776503
+((((u ⊃ a) ⊃ ((l ≡ v) ∧ (y ⊃ o))) ∧ ((z ∧ b) ∨ ((h ∧ z) ⊃ v))) ≡ (((n ⊃ m) ∧ t) ∧ t)) ∧ (((t ⊃ z) ⊃ ((q ∧ v) ∨ ((v ≡ l) ∨ j))) ∨ (((r ∧ c) ≡ v) ⊃ x)),WithoutModality,26,180347978
+((((t ∨ g) ≡ (g ⊃ p)) ≡ ((e ⊃ e) ∧ (f ⊃ r))) ≡ (((e ∧ t) ⊃ p) ⊃ (c ⊃ m))) ∧ (((g ⊃ v) ≡ ((k ⊃ c) ∧ (c ∨ e))) ⊃ ((d ≡ v) ∧ (((h ∧ d) ∨ (a ⊃ p)) ≡ y))),WithoutModality,26,1025269131
+(((u ⊃ (k ∧ (t ≡ r))) ⊃ (i ∨ (p ≡ w))) ∧ (((q ≡ b) ≡ f) ∧ ((h ⊃ (g ∨ l)) ≡ p))) ∨ ((((t ⊃ (u ≡ a)) ∧ r) ∨ (t ∧ i)) ∧ ((f ∧ (i ∨ v)) ∨ ((m ⊃ r) ⊃ k))),WithoutModality,26,919982481
+((b ∨ (z ∨ f)) ∧ (((b ∨ b) ≡ a) ∨ t)) ∧ ((((t ≡ (h ∨ ((s ≡ j) ⊃ e))) ∧ (g ≡ l)) ≡ (u ⊃ (e ≡ a))) ⊃ (((d ⊃ g) ≡ e) ∨ (((n ⊃ k) ∨ (j ⊃ k)) ∨ (x ≡ i)))),WithoutModality,26,5869486370
+((((r ≡ l) ∨ (t ≡ g)) ⊃ ((v ∧ (a ∧ w)) ∨ (c ≡ y))) ∧ ((f ≡ ((j ∧ k) ∨ (w ∨ f))) ≡ ((n ⊃ i) ∨ (v ∨ f)))) ∧ ((((z ⊃ o) ⊃ d) ∧ d) ∧ (((m ∧ c) ∧ e) ≡ i)),WithoutModality,26,90998833
+((((z ∧ o) ≡ (s ⊃ c)) ∧ m) ∧ ((((r ∧ f) ∧ (z ∨ p)) ∨ (w ≡ v)) ∨ (m ∧ i))) ⊃ (((o ⊃ ((g ⊃ (m ≡ i)) ∨ (s ∧ w))) ⊃ ((f ∨ d) ∨ (m ∧ e))) ≡ (n ≡ (n ∨ g))),WithoutModality,26,33110595839
+(((((g ∨ p) ⊃ g) ∧ e) ≡ (((d ∨ a) ⊃ t) ∧ s)) ⊃ ((s ≡ (f ≡ g)) ⊃ ((h ∧ u) ⊃ s))) ⊃ ((((h ⊃ s) ∧ (x ∧ l)) ⊃ q) ≡ ((l ∨ o) ⊃ ((b ∨ n) ⊃ ((y ≡ p) ∧ t)))),WithoutModality,26,37268701147
+((((p ⊃ h) ∧ e) ≡ (p ∨ (((v ∧ t) ∧ v) ⊃ c))) ⊃ (((c ∧ (q ∧ u)) ⊃ (f ∧ w)) ∨ ((b ≡ t) ≡ n))) ∧ (((r ∧ (k ∨ h)) ≡ (p ∨ ((s ≡ r) ⊃ d))) ⊃ (o ∨ (r ∨ n))),WithoutModality,26,355064828
+(((e ⊃ (n ≡ l)) ≡ (b ⊃ (l ∨ h))) ∧ ((i ∨ s) ∧ ((l ∨ (j ∧ m)) ∧ i))) ⊃ (((((r ∧ q) ⊃ (k ⊃ (l ⊃ a))) ⊃ e) ≡ (v ⊃ j)) ∨ (((s ∨ a) ∨ (e ≡ a)) ⊃ (f ∧ v))),WithoutModality,26,277157516854
+((k ⊃ (g ⊃ k)) ⊃ (((s ∧ l) ⊃ (d ∨ k)) ∧ (y ≡ (n ⊃ (t ≡ (t ∨ a)))))) ≡ (((e ∨ (x ∧ (p ∨ h))) ∨ (e ≡ (j ∧ y))) ∧ (((t ⊃ ((w ≡ r) ∨ o)) ∧ s) ∨ (a ⊃ v))),WithoutModality,26,66077693045
+((g ∨ (u ∨ (f ≡ f))) ∨ ((b ⊃ (y ⊃ j)) ≡ (g ≡ q))) ∨ (((((l ∧ n) ∧ ((a ∧ g) ∧ x)) ⊃ (e ∨ e)) ∨ (t ∧ ((j ≡ o) ∨ l))) ∨ ((((j ≡ i) ∨ t) ∧ b) ∨ (e ⊃ p))),WithoutModality,26,473658540
+((((k ∨ r) ⊃ (d ∨ i)) ≡ (r ∧ (t ≡ y))) ∧ ((((o ∨ z) ≡ p) ∨ s) ∧ (m ∨ (x ∧ q)))) ∨ ((((g ≡ h) ⊃ ((g ∧ w) ∨ m)) ⊃ o) ∨ ((f ⊃ l) ∨ (q ∧ ((t ∨ o) ≡ f)))),WithoutModality,26,2264988355
+((u ≡ (((d ∨ j) ∧ v) ∧ ((n ∧ y) ∧ s))) ∧ ((o ∨ p) ⊃ (y ∨ (z ⊃ r)))) ∧ (((x ≡ k) ∧ ((u ∨ z) ⊃ (w ≡ (d ∨ s)))) ∧ (((k ⊃ d) ∨ ((x ≡ w) ⊃ (w ⊃ s))) ≡ q)),WithoutModality,26,23238726
+((((n ⊃ (m ∧ l)) ⊃ (m ⊃ (c ∨ a))) ⊃ d) ≡ (k ∧ (y ∨ t))) ∧ ((((d ≡ i) ∨ e) ∨ ((p ∧ w) ≡ ((h ⊃ e) ∨ b))) ≡ (((p ∨ b) ∧ (b ≡ (q ≡ z))) ∧ ((q ∧ p) ∧ w))),WithoutModality,26,705564054
+((((d ≡ o) ∧ (t ≡ (f ⊃ s))) ∨ ((r ∨ j) ∨ r)) ∧ (((p ≡ l) ∧ (x ∨ z)) ∨ n)) ⊃ ((w ∧ ((i ≡ i) ∨ (f ≡ z))) ∨ ((p ≡ ((s ∨ k) ⊃ m)) ≡ ((a ≡ x) ∧ (c ⊃ m)))),WithoutModality,26,922339789127
+((((j ⊃ z) ⊃ n) ⊃ (r ≡ (t ⊃ ((g ∨ j) ∨ l)))) ∨ (((q ∨ s) ⊃ j) ⊃ ((v ⊃ a) ∨ (((f ∧ g) ⊃ n) ∨ (s ≡ k))))) ≡ (((m ∧ (o ≡ d)) ≡ ((c ⊃ z) ∧ x)) ∧ (g ⊃ x)),WithoutModality,26,44897160512
+((((h ∧ f) ∧ (n ∧ o)) ≡ (u ≡ (p ∧ (r ⊃ w)))) ∨ ((h ⊃ c) ⊃ j)) ≡ (((w ⊃ (n ⊃ (x ⊃ p))) ≡ (q ∨ (h ∧ e))) ∨ (((b ≡ w) ⊃ (x ∧ o)) ∧ (n ⊃ (r ∨ (p ∧ d))))),WithoutModality,26,113167574877
+((w ≡ ((k ∧ r) ∨ (d ∧ b))) ≡ (((s ⊃ ((t ≡ i) ∧ z)) ≡ m) ≡ ((x ⊃ v) ⊃ (q ⊃ (n ≡ f))))) ∨ ((((k ⊃ g) ∧ k) ∧ q) ⊃ ((((n ⊃ e) ∧ m) ∧ (g ∧ v)) ∨ (x ∧ v))),WithoutModality,26,4275468529832
+(((((g ≡ g) ∨ (a ∨ a)) ≡ b) ∨ (r ∨ (((e ∧ t) ∧ m) ∧ e))) ∧ (v ≡ (t ⊃ k))) ≡ ((((p ∧ (m ∨ z)) ≡ q) ≡ m) ≡ ((d ∧ g) ⊃ (((w ⊃ i) ⊃ (w ∨ a)) ∨ (v ≡ m)))),WithoutModality,26,658288950035
+((((o ∧ x) ∧ (g ≡ y)) ≡ (n ≡ (b ∨ (c ∨ h)))) ∧ (a ∧ (z ≡ c))) ≡ ((((w ≡ l) ∨ w) ≡ (m ⊃ ((d ≡ f) ⊃ (s ≡ i)))) ∨ (((g ∧ e) ⊃ ((o ∨ b) ⊃ b)) ∧ (g ∨ s))),WithoutModality,26,500747661716
+(((v ≡ (a ≡ x)) ∨ ((s ∨ (u ∨ s)) ∨ (h ∧ ((y ∧ u) ∨ a)))) ∨ (((z ≡ s) ∨ (c ⊃ f)) ∧ v)) ≡ ((((s ∧ c) ∨ i) ∧ (y ∧ (m ∧ (f ⊃ x)))) ∧ ((w ∨ s) ⊃ (v ∧ w))),WithoutModality,26,5607637603
+(((o ∨ g) ∧ (t ∨ ((q ⊃ i) ∧ ((o ∨ v) ∨ j)))) ∧ (z ≡ ((o ⊃ i) ≡ o))) ∧ ((((m ∧ (g ⊃ e)) ∧ (k ⊃ (f ⊃ n))) ≡ (h ⊃ k)) ∧ (((z ∧ (m ∨ j)) ≡ x) ≡ (m ∧ q))),WithoutModality,26,50840261
+((((h ≡ (n ≡ m)) ⊃ e) ∧ (((c ≡ l) ≡ z) ∨ r)) ⊃ ((v ∧ (j ∨ v)) ⊃ ((t ∧ e) ∧ (r ≡ a)))) ⊃ ((((t ∨ z) ⊃ w) ∧ (n ≡ (z ≡ n))) ∧ ((y ≡ (a ⊃ y)) ∨ (k ∧ m))),WithoutModality,26,797488650
+((u ∨ ((o ≡ f) ≡ (x ≡ u))) ⊃ ((r ≡ (j ⊃ (k ⊃ o))) ∧ ((c ∧ z) ≡ q))) ∧ (((y ∨ (g ≡ p)) ≡ ((x ⊃ v) ≡ p)) ∨ ((b ⊃ ((d ∧ q) ∧ u)) ≡ (((b ∨ d) ⊃ p) ⊃ q))),WithoutModality,26,939895039
+(((((n ∨ g) ∨ (p ∧ y)) ∨ l) ≡ (((f ⊃ w) ∨ l) ≡ (o ∨ t))) ⊃ ((n ∧ p) ≡ (v ∧ (j ⊃ o)))) ≡ ((((p ∧ x) ≡ t) ∧ (((d ∧ d) ∧ g) ∨ (n ∨ w))) ∧ ((o ∨ f) ⊃ h)),WithoutModality,26,695145981076
+((u ≡ (((m ⊃ (c ≡ (f ≡ y))) ⊃ v) ≡ l)) ∨ ((((o ∧ d) ⊃ t) ∧ a) ∧ ((n ≡ l) ⊃ (b ⊃ q)))) ⊃ (((h ∨ z) ∨ (l ⊃ (w ⊃ (b ∧ j)))) ∧ ((s ∧ w) ⊃ ((i ⊃ m) ⊃ a))),WithoutModality,26,748700819
+(((j ≡ (j ⊃ e)) ⊃ y) ∨ (((o ∨ (z ∨ r)) ∨ (w ∧ r)) ∨ (((m ∧ t) ∨ c) ≡ (l ≡ p)))) ≡ ((((i ≡ ((n ∨ g) ⊃ l)) ∨ c) ∨ ((f ∧ (h ⊃ q)) ⊃ s)) ⊃ ((x ⊃ w) ≡ (j ∧ b))),WithoutModality,27,64728442182
+(((h ∧ ((u ∨ (j ⊃ r)) ≡ j)) ∧ ((s ≡ ((t ∧ w) ∧ j)) ⊃ (f ≡ w))) ∧ (((c ∨ r) ∨ q) ∨ ((n ∧ j) ∧ (z ≡ ((j ⊃ z) ≡ i))))) ≡ ((((b ≡ c) ≡ h) ∧ (t ∧ u)) ≡ (v ≡ z)),WithoutModality,27,745343089667
+(((k ∧ (g ∧ r)) ≡ (((q ∨ (q ∨ z)) ⊃ p) ⊃ r)) ⊃ (i ⊃ ((h ∧ w) ≡ q))) ⊃ (((v ∧ u) ⊃ ((r ∧ (q ≡ z)) ∧ g)) ∨ ((u ⊃ g) ∧ (((k ∨ (a ⊃ h)) ≡ f) ∨ (b ≡ (w ≡ z))))),WithoutModality,27,31107695265
+((((k ∨ ((f ∧ q) ∨ l)) ≡ ((g ∨ (c ⊃ b)) ∨ o)) ≡ ((w ∧ r) ∨ r)) ⊃ ((n ∨ o) ≡ w)) ∧ ((t ∨ ((o ∨ p) ∧ (u ∧ (v ∧ (a ≡ b))))) ≡ ((((a ∨ b) ⊃ g) ∨ (b ∨ w)) ∨ b)),WithoutModality,27,1487250958
+(((o ∧ l) ∨ (v ⊃ (l ⊃ v))) ∧ ((((m ∨ s) ⊃ j) ⊃ q) ⊃ (v ∧ (g ⊃ (m ⊃ y))))) ∨ ((((o ⊃ j) ≡ m) ∧ (((s ⊃ r) ∨ b) ≡ (j ∧ ((m ∧ o) ≡ m)))) ⊃ (x ∧ (p ∧ (q ∨ o)))),WithoutModality,27,26188793389
+((((m ∨ e) ∧ q) ∨ (n ≡ (q ⊃ z))) ∨ ((n ∨ p) ∨ ((u ≡ (q ≡ b)) ≡ (l ∨ (d ⊃ d))))) ∨ (((e ≡ ((t ∧ (v ≡ d)) ≡ k)) ∧ (w ≡ (i ∧ k))) ⊃ (((z ⊃ i) ⊃ (m ≡ c)) ⊃ a)),WithoutModality,27,1713898144490
+((((d ⊃ q) ∨ (p ⊃ s)) ⊃ (f ∧ ((l ∨ j) ≡ g))) ∧ ((h ∨ g) ∨ ((r ∨ n) ⊃ p))) ∧ (((a ∨ (h ≡ a)) ∧ ((i ⊃ (w ≡ (a ∧ n))) ∧ (k ∧ d))) ∧ ((y ⊃ i) ∨ ((d ⊃ a) ⊃ o))),WithoutModality,27,19428049
+((((k ∧ (p ∧ h)) ∨ (((h ≡ l) ∧ (u ≡ o)) ⊃ j)) ⊃ (a ∧ (c ≡ f))) ⊃ (((a ≡ (i ∨ j)) ∧ z) ∨ z)) ∨ ((v ⊃ w) ∨ (((q ∨ ((e ≡ (f ∨ b)) ∧ u)) ∨ o) ∧ (g ∨ (f ⊃ c)))),WithoutModality,27,3493022578
+(((((d ⊃ t) ≡ j) ∧ s) ≡ (((d ⊃ i) ∧ v) ∨ c)) ≡ ((n ∨ e) ⊃ (((e ∧ h) ∨ c) ∧ z))) ≡ (((((p ≡ x) ∨ e) ⊃ y) ∧ ((s ⊃ k) ∧ (y ∨ (f ∨ l)))) ∨ ((x ⊃ u) ⊃ (i ⊃ q))),WithoutModality,27,1315617978418
+((((n ∨ ((f ≡ y) ∨ y)) ∨ f) ∨ (d ⊃ r)) ∧ ((m ∧ p) ∧ ((s ≡ r) ≡ (w ≡ a)))) ⊃ (((e ≡ o) ⊃ ((m ≡ b) ⊃ f)) ∨ (((s ≡ t) ∧ (g ⊃ (a ∧ b))) ∧ (((i ∨ n) ≡ h) ≡ r))),WithoutModality,27,237381901062
+((s ⊃ ((b ⊃ (d ⊃ r)) ∧ ((s ⊃ u) ⊃ p))) ≡ (x ⊃ t)) ∧ ((((u ∨ (l ∨ s)) ⊃ j) ≡ (((k ⊃ m) ∧ (r ≡ v)) ⊃ (i ⊃ c))) ⊃ ((r ≡ ((n ≡ j) ≡ k)) ⊃ (x ∨ ((n ∨ a) ≡ w)))),WithoutModality,27,6655624036
+((((j ∧ (o ≡ u)) ∧ y) ∨ ((g ∧ l) ∨ (q ∧ e))) ∨ (d ⊃ ((k ∨ (y ⊃ n)) ≡ t))) ∨ (((k ∨ w) ∧ j) ∨ (((c ∨ h) ∨ (i ⊃ (y ∨ n))) ∨ (e ∧ ((u ≡ ((y ∨ m) ⊃ d)) ≡ a)))),WithoutModality,27,101384918911
+((((t ≡ q) ⊃ s) ∨ (q ≡ ((e ∨ g) ∧ g))) ≡ (b ⊃ (p ≡ ((z ≡ p) ≡ t)))) ∧ (((f ⊃ (c ⊃ (i ∧ a))) ≡ ((w ≡ (x ⊃ q)) ∨ (z ∨ y))) ∨ (r ⊃ ((r ≡ (p ∧ n)) ∧ (h ∧ f)))),WithoutModality,27,1579699833
+(((v ∧ m) ∧ (a ⊃ d)) ≡ (((((c ∧ r) ≡ (a ∨ j)) ∨ b) ⊃ f) ⊃ ((h ∨ b) ∧ (y ≡ ((q ≡ b) ∧ w))))) ∧ (((v ⊃ (t ∧ p)) ⊃ (u ⊃ u)) ∧ (((j ⊃ u) ∨ x) ≡ (r ∨ (f ≡ i)))),WithoutModality,27,493649081
+((((d ∧ u) ∧ (h ≡ q)) ≡ ((i ∧ (e ∨ x)) ∨ e)) ∧ (((k ⊃ x) ⊃ m) ∧ (d ∧ (q ⊃ k)))) ⊃ ((l ∧ r) ∧ ((((t ≡ c) ∨ (w ≡ v)) ≡ e) ∨ ((r ∨ (l ∧ (d ⊃ c))) ≡ (q ⊃ z)))),WithoutModality,27,206238294856
+(((b ⊃ (b ∧ e)) ≡ ((w ⊃ (b ∧ x)) ≡ x)) ⊃ (((r ≡ e) ⊃ t) ∨ (c ∧ ((p ≡ i) ∧ (c ∧ z))))) ∨ ((((u ∨ f) ∧ (u ∧ s)) ∧ (p ≡ (h ⊃ o))) ∨ ((l ⊃ c) ∨ ((x ⊃ l) ∨ z))),WithoutModality,27,25072933268
+(((h ≡ a) ∨ (p ⊃ v)) ≡ ((j ⊃ (u ∧ v)) ∧ (a ∧ (a ∨ w)))) ≡ (((w ≡ u) ⊃ (d ≡ (f ⊃ u))) ∧ (((((l ∨ e) ≡ w) ∨ ((r ⊃ (i ≡ j)) ∧ w)) ⊃ f) ∧ (j ∨ ((b ∧ k) ∨ l)))),WithoutModality,27,330242645913
+((g ∨ ((i ∨ h) ∧ o)) ≡ (((h ⊃ w) ≡ (((g ≡ w) ∧ (a ∨ v)) ∨ (q ⊃ u))) ∨ (y ∨ h))) ∨ ((((n ⊃ ((p ≡ g) ≡ r)) ≡ v) ≡ y) ∧ (((t ≡ d) ≡ (s ≡ p)) ∧ (a ∨ (z ∧ p)))),WithoutModality,27,127040562898
+(((m ≡ (((q ⊃ (m ∨ x)) ≡ n) ∨ m)) ⊃ (r ∨ (v ∨ j))) ≡ ((((v ∨ (i ⊃ e)) ∧ (w ≡ z)) ⊃ h) ⊃ w)) ≡ (((x ∨ k) ∨ ((z ⊃ d) ∨ (n ∨ (q ∧ l)))) ≡ ((o ≡ w) ∧ (v ∨ k))),WithoutModality,27,3537461712522
+((((e ≡ (h ≡ n)) ⊃ t) ≡ (i ∧ m)) ≡ ((p ⊃ (m ⊃ v)) ∨ ((b ∨ c) ⊃ ((s ≡ d) ∧ v)))) ≡ ((((w ≡ (n ∧ n)) ≡ y) ∧ (((m ∨ g) ∧ z) ∧ f)) ⊃ ((l ⊃ ((c ∧ r) ⊃ p)) ≡ w)),WithoutModality,27,5207323206652
+(((((x ∨ e) ≡ (g ⊃ f)) ∨ (q ≡ z)) ∨ (x ⊃ e)) ⊃ ((z ∨ j) ⊃ (n ∨ (f ∧ b)))) ⊃ (((d ⊃ (s ∨ ((f ≡ b) ∧ i))) ⊃ (o ∧ (j ⊃ q))) ≡ ((o ∨ ((m ≡ r) ∨ (z ∧ f))) ⊃ u)),WithoutModality,27,14883247775
+(((i ∨ (e ∨ l)) ∨ ((s ∨ y) ≡ (o ∨ (v ∨ o)))) ⊃ ((((n ⊃ c) ≡ v) ∨ (f ⊃ l)) ⊃ ((w ∨ h) ∧ (b ∨ j)))) ∨ ((((x ≡ s) ≡ x) ⊃ ((l ∨ h) ∨ ((d ∨ z) ≡ t))) ∨ (d ≡ q)),WithoutModality,27,101707005431
+(((((x ∨ j) ≡ u) ⊃ ((n ⊃ o) ∨ e)) ∧ ((b ⊃ c) ⊃ s)) ≡ (j ≡ ((z ∨ p) ∧ (a ⊃ a)))) ≡ (((y ⊃ g) ⊃ (((g ⊃ s) ∧ e) ⊃ j)) ⊃ (((r ≡ e) ∧ q) ≡ ((q ≡ t) ∨ (k ⊃ x)))),WithoutModality,27,2114377421896
+((((z ∧ r) ≡ (n ∨ f)) ≡ (q ⊃ w)) ⊃ ((c ∨ (b ∧ g)) ⊃ ((f ∨ (w ∧ t)) ≡ (w ⊃ q)))) ∧ (((w ≡ (m ∨ w)) ∧ s) ≡ (((t ∧ t) ∨ (j ≡ (x ⊃ o))) ⊃ ((s ⊃ (w ≡ o)) ∨ f))),WithoutModality,27,954547477
+((((v ⊃ x) ∨ a) ∧ (x ≡ x)) ≡ ((x ∨ c) ≡ ((y ⊃ h) ≡ ((g ∧ c) ⊃ o)))) ⊃ (((((i ∨ s) ≡ e) ∨ (o ∧ (w ∨ h))) ∨ ((d ≡ k) ≡ p)) ∨ (((l ∧ c) ≡ b) ⊃ (a ≡ (b ∨ i)))),WithoutModality,27,48821295022441
+(((e ≡ (k ∨ g)) ≡ (b ≡ d)) ⊃ (((x ≡ q) ∧ y) ⊃ ((j ∧ y) ∨ (e ∧ v)))) ≡ (((l ≡ u) ≡ (q ∧ k)) ∧ ((u ⊃ (x ⊃ o)) ≡ (((e ⊃ d) ∨ ((h ∧ h) ∨ t)) ∧ (a ⊃ (w ∧ z))))),WithoutModality,27,8756256431534
+((((n ≡ i) ⊃ (y ∨ k)) ∨ ((q ∧ z) ≡ m)) ⊃ ((p ∧ (d ∧ k)) ∨ n)) ⊃ (((c ∧ (r ∧ (g ∨ (e ∧ q)))) ≡ (k ≡ (x ∧ q))) ≡ (((((k ∧ l) ≡ d) ≡ x) ∨ h) ≡ (v ∧ (h ≡ u)))),WithoutModality,27,5296503422703
+((((f ∧ (p ∧ f)) ⊃ u) ≡ p) ∧ ((v ∨ (((z ≡ q) ∨ (o ⊃ a)) ∧ z)) ≡ ((m ≡ h) ∨ (s ∨ v)))) ∧ ((((d ∨ o) ≡ (b ≡ (e ∧ j))) ≡ ((w ∧ c) ∨ s)) ⊃ ((f ∨ (w ⊃ z)) ≡ s)),WithoutModality,27,951422914
+(((v ⊃ (a ⊃ (f ≡ w))) ∨ (q ∧ y)) ∨ (((x ∨ a) ≡ p) ⊃ (s ⊃ (e ≡ (j ∧ c))))) ∨ ((((l ≡ (l ∨ w)) ⊃ x) ≡ (k ≡ g)) ∧ ((m ∧ (g ≡ (z ∨ b))) ∨ (((w ∧ g) ∧ z) ∨ a))),WithoutModality,27,51099355242
+((m ⊃ ((n ∧ v) ⊃ (p ⊃ (p ⊃ p)))) ∨ ((f ∨ (o ∧ w)) ∨ (p ⊃ ((k ∨ t) ≡ h)))) ≡ (((w ∨ d) ⊃ ((g ∧ v) ≡ (z ∧ h))) ∧ ((v ∨ ((l ⊃ y) ∧ f)) ≡ ((o ∨ f) ∨ (b ⊃ e)))),WithoutModality,27,13734194458
+(((e ∨ (s ⊃ d)) ≡ ((p ≡ d) ∨ l)) ∨ ((((h ∧ (v ∨ w)) ∧ c) ⊃ (m ≡ o)) ∨ (e ∧ y))) ∧ (((((v ⊃ (h ≡ j)) ∨ s) ⊃ q) ∨ (y ≡ (i ≡ z))) ∨ (((r ⊃ z) ≡ l) ≡ (a ≡ p))),WithoutModality,27,1352966712
+((((x ∨ (y ∨ z)) ≡ (q ∨ c)) ⊃ h) ≡ ((y ∧ (f ∧ f)) ∨ ((k ⊃ ((y ∧ y) ⊃ b)) ∧ (v ∨ c)))) ≡ ((((t ∧ h) ∧ (k ∨ g)) ⊃ (r ⊃ (w ∨ z))) ⊃ ((m ⊃ (m ∧ s)) ≡ (i ≡ u))),WithoutModality,27,914754125566
+(((m ∨ i) ∨ (m ∧ g)) ∨ (((z ∨ l) ⊃ x) ∨ (((e ∨ g) ≡ p) ⊃ ((m ∨ o) ∨ u)))) ∨ (((w ∧ e) ∨ b) ⊃ (((r ≡ (r ∨ b)) ∨ (v ∧ h)) ≡ (((c ∨ u) ∨ (c ∧ (e ∧ e))) ⊃ n))),WithoutModality,27,32610986058
+(((((b ⊃ d) ∨ v) ∧ a) ∨ (s ⊃ (h ≡ d))) ⊃ ((v ∨ (p ≡ (w ≡ o))) ∨ ((b ≡ d) ∨ (y ∧ (r ⊃ p))))) ∨ ((((p ∨ r) ∧ (y ⊃ s)) ∧ r) ∧ (e ∨ (((z ≡ (y ≡ f)) ∧ s) ∧ t))),WithoutModality,27,34674506691
+((((w ∨ f) ∨ h) ∧ (h ∧ g)) ≡ (((o ∧ o) ∨ y) ⊃ ((s ∧ (s ≡ n)) ∧ (((j ≡ k) ∨ i) ⊃ y)))) ∨ (((d ≡ (t ⊃ k)) ∧ (c ≡ q)) ⊃ (((o ≡ i) ∧ ((i ∧ p) ∨ c)) ∨ (i ≡ x))),WithoutModality,27,180601008204
+(((i ≡ w) ⊃ (k ∧ ((a ∧ p) ∨ z))) ∨ (t ∧ (g ∧ p))) ∧ ((((m ⊃ u) ⊃ (m ∨ (p ≡ d))) ∧ (i ⊃ (f ≡ ((k ∨ q) ⊃ s)))) ≡ (((h ∧ n) ≡ ((c ∨ t) ∨ j)) ≡ ((q ∧ w) ⊃ k))),WithoutModality,27,9078082212
+(((i ∧ (m ≡ ((n ∨ y) ∧ g))) ⊃ (h ⊃ j)) ≡ ((m ≡ (q ≡ (r ≡ a))) ≡ ((o ⊃ k) ∨ w))) ⊃ ((u ⊃ ((g ⊃ n) ∧ ((m ∧ b) ∧ a))) ∧ (((v ∨ p) ∨ (i ∨ ((y ∨ z) ⊃ y))) ∨ h)),WithoutModality,27,251608211914
+(((c ⊃ (q ≡ (i ∨ y))) ≡ (h ≡ g)) ∧ (((r ∧ r) ⊃ e) ≡ ((k ≡ q) ⊃ (e ∧ r)))) ∧ ((((r ⊃ (n ∨ q)) ⊃ h) ⊃ (((u ⊃ k) ≡ (h ∨ u)) ⊃ (j ≡ t))) ≡ ((y ∧ j) ∨ (k ∧ u))),WithoutModality,27,448063696
+((((b ∧ (k ∨ k)) ⊃ ((m ∧ i) ⊃ e)) ∧ (t ⊃ u)) ∧ ((n ∨ j) ∨ (s ≡ p))) ≡ ((((((k ∧ (k ∧ v)) ≡ v) ∨ t) ≡ t) ≡ ((y ≡ i) ∧ h)) ∨ (((k ∨ s) ≡ b) ∧ ((y ≡ e) ≡ x))),WithoutModality,27,14598542995664
+(((g ∨ ((x ∨ (n ∧ a)) ⊃ h)) ∧ (c ⊃ t)) ∨ (((g ∨ p) ≡ (s ∧ g)) ∨ (a ⊃ (v ∨ f)))) ≡ (((p ⊃ o) ≡ (t ∧ (q ∧ a))) ⊃ (((g ⊃ ((c ∨ o) ∧ h)) ⊃ u) ∧ (v ⊃ (y ∧ q)))),WithoutModality,27,9795220072
+((((a ∧ (u ⊃ n)) ∧ (i ∨ o)) ∧ (e ≡ (c ∧ q))) ∧ (s ≡ ((j ⊃ ((t ∨ w) ∧ x)) ∧ ((c ∧ w) ∨ (h ∨ s))))) ≡ ((((m ⊃ a) ∨ q) ≡ ((t ≡ b) ∨ s)) ≡ ((l ⊃ h) ⊃ (o ∨ (b ∧ z)))),WithoutModality,28,3156316528956
+(((g ⊃ ((y ∨ k) ∨ k)) ⊃ (((n ∧ q) ∨ c) ⊃ h)) ∧ (((i ∨ g) ∨ s) ⊃ ((u ≡ u) ≡ (q ∧ w)))) ≡ (((t ∨ v) ∨ (f ⊃ ((z ∧ p) ∨ (x ⊃ b)))) ∧ ((((v ∧ w) ⊃ b) ≡ a) ⊃ (u ∧ l))),WithoutModality,28,32761472068
+(((m ∨ (t ≡ m)) ∧ (u ⊃ (e ∨ b))) ≡ ((((r ∨ n) ≡ g) ∧ (m ⊃ (x ∧ x))) ⊃ (((p ≡ h) ≡ o) ≡ y))) ≡ (((x ≡ (v ≡ g)) ≡ (s ∨ k)) ⊃ (((k ⊃ e) ≡ (u ∨ l)) ⊃ (w ≡ (q ∧ k)))),WithoutModality,28,119104206603467
+((((y ⊃ t) ≡ r) ≡ p) ≡ ((x ≡ (a ⊃ (o ∨ r))) ∨ ((d ≡ (w ⊃ a)) ⊃ (r ≡ v)))) ∨ ((((b ∧ e) ≡ (n ⊃ w)) ≡ (((y ∧ j) ∨ d) ∨ b)) ⊃ (((s ∧ u) ∨ j) ⊃ (((s ∨ n) ≡ p) ≡ m))),WithoutModality,28,35510102767145
+(((a ⊃ (r ⊃ (p ∧ t))) ⊃ ((v ∨ p) ∧ (y ∧ y))) ∨ ((f ⊃ ((i ∨ h) ≡ f)) ∧ (l ⊃ ((f ∨ k) ∧ z)))) ∨ ((((u ∧ l) ∧ (e ∨ e)) ≡ (((d ∧ k) ⊃ i) ⊃ (h ≡ j))) ∧ ((i ∧ t) ⊃ x)),WithoutModality,28,22429540096
+(((c ⊃ (z ≡ d)) ≡ (u ∧ ((h ∨ g) ∧ d))) ∨ ((((j ≡ w) ∨ y) ∨ c) ⊃ ((c ≡ t) ∧ ((h ∧ i) ≡ v)))) ⊃ ((((i ∨ f) ⊃ (i ∨ a)) ⊃ ((u ∨ q) ≡ v)) ≡ ((d ≡ (u ⊃ (a ≡ v))) ∨ d)),WithoutModality,28,70885557528
