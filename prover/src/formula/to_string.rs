@@ -90,7 +90,7 @@ impl Formula
 
         if options.should_show_fuzzy_tags && !is_comment && !is_inequality
         {
-            formula_string = format!("{{ {} }} {}", self.get_fuzzy_tags(), formula_string);
+            formula_string = format!("{}, {}", self.get_fuzzy_tags(), formula_string);
         }
 
         if self.is_hidden()

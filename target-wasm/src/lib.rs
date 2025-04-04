@@ -80,16 +80,13 @@ pub fn get_default_logic_category() -> String
 #[wasm_bindgen]
 pub fn get_operator_symbols(logic_name : String) -> Vec<String>
 {
-    return FormulaFormatOptions::DEFAULT_NOTATIONS.with(|operator_notations|
+    if let Some(logic) = LogicFactory::get_logic_theories().into_iter()
+        .find(|logic| logic.get_name().to_string() == logic_name)
     {
-        if let Some(logic) = LogicFactory::get_logic_theories().into_iter()
-            .find(|logic| logic.get_name().to_string() == logic_name)
-        {
-            return get_operator_symbols_impl(logic.get_parser_syntax());
-        }
+        return get_operator_symbols_impl(logic.get_parser_syntax());
+    }
 
-        return get_operator_symbols_impl(TokenTypeID::iter().collect());
-    })
+    return get_operator_symbols_impl(TokenTypeID::iter().collect());
 }
 
 fn get_operator_symbols_impl(token_type_ids : Vec<TokenTypeID>) -> Vec<String>
@@ -106,12 +103,9 @@ fn get_operator_symbols_impl(token_type_ids : Vec<TokenTypeID>) -> Vec<String>
 #[wasm_bindgen]
 pub fn get_problem_catalog() -> String
 {
-    return FormulaFormatOptions::DEFAULT_NOTATIONS.with(|operator_notations|
-    {
-        let book_chapters = get_demo_problem_catalog().unwrap();
-        let book_chapters_json = serde_json::to_string(&book_chapters).unwrap();
-        return book_chapters_json;
-    })
+    let book_chapters = get_demo_problem_catalog().unwrap();
+    let book_chapters_json = serde_json::to_string(&book_chapters).unwrap();
+    return book_chapters_json;
 }
 
 macro_rules! format_error
@@ -122,22 +116,19 @@ macro_rules! format_error
 #[wasm_bindgen]
 pub fn solve_problem(problem_raw_json : String) -> Result<String, JsError>
 {
-    return FormulaFormatOptions::DEFAULT_NOTATIONS.with(|operator_notations|
-    {
-        let problem_parsed_json = serde_json::from_str::<ProblemJSON>(problem_raw_json.as_str())
-            .map_err(|err| JsError::new(format_error!(err)))?;
+    let problem_parsed_json = serde_json::from_str::<ProblemJSON>(problem_raw_json.as_str())
+        .map_err(|err| JsError::new(format_error!(err)))?;
 
-        let problem = problem_parsed_json.to_problem()
-            .map_err(|err| JsError::new(format_error!(err)))?;
+    let problem = problem_parsed_json.to_problem()
+        .map_err(|err| JsError::new(format_error!(err)))?;
 
-        let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
+    let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
 
-        let proof_tree = problem.prove();
-        let proof_tree_json = proof_tree.to_json(&formula_format_options)
-            .map_err(|err| JsError::new(format_error!(err)))?;
+    let proof_tree = problem.prove();
+    let proof_tree_json = proof_tree.to_json(&formula_format_options)
+        .map_err(|err| JsError::new(format_error!(err)))?;
 
-        return Ok(proof_tree_json);
-    })
+    return Ok(proof_tree_json);
 }
 
 #[wasm_bindgen]
