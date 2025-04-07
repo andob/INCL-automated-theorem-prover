@@ -162,7 +162,7 @@ impl LogicRule for LukasiewiczFuzzyLogicRules
 
             Non(box p_imply_q@Imply(..), extras) =>
             {
-                let p_imply_q_minus = p_imply_q.with_sign(Minus);
+                let p_imply_q_minus = p_imply_q.with_sign(extras.sign * Minus);
                 let p_imply_q_minus_node = factory.new_node(p_imply_q_minus);
 
                 return Some(ProofSubtree::with_middle_node(p_imply_q_minus_node));
