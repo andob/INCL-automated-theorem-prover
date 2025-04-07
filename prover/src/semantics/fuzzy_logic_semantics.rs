@@ -75,7 +75,7 @@ impl Semantics for FuzzyLogicSemantics
 
         if let Ok(solution) = linear_program.solve()
         {
-            //linear program has at least one insignificant solution => contradiction!
+            //linear program has at least one significant solution => contradiction!
             return variables.iter().map(|(_, variable)| solution[*variable])
                 .any(|value| 1.0 - EPSILON <= value && value < 1.0);
         }
