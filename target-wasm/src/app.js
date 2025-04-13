@@ -286,12 +286,15 @@ function initialize_problem_input_container_after_delay()
 
     update_problem_input_area(initial_problem);
 
-    prove_button.onclick = () => prove_problem(create_problem_from_user_input());
-
     if (initial_problem.conclusion !== '')
     {
-        prove_button.click();
+        prove_problem(initial_problem);
     }
+
+    prove_button.onclick = () =>
+    {
+        prove_problem(create_problem_from_user_input());
+    };
 }
 
 class LogicSelectGroupController
