@@ -288,7 +288,7 @@ function initialize_problem_input_container_after_delay()
 
     prove_button.onclick = () => prove_problem(create_problem_from_user_input());
 
-    if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
+    if (initial_problem.conclusion !== '')
     {
         prove_button.click();
     }
