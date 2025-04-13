@@ -3,6 +3,7 @@ import init, * as incl from './target_wasm.js';
 
 const KEY_OPERATOR_NOTATIONS = 'operator_notations';
 const KEY_LOGIC = 'logic';
+const KEY_PROBLEM_ID = 'problem';
 const KEY_PREMISES = 'premises';
 const KEY_CONCLUSION = 'conclusion';
 const KEY_ACTIVE_TAB_INDEX = 'activeTabIndex';
@@ -19,6 +20,7 @@ const ID_CONCLUSION_TEXTAREA = 'conclusion_textarea';
 const ID_ON_SCREEN_KEYBOARD_CONTAINER = 'on_screen_keyboard_container';
 const ID_PROVE_BUTTON = 'prove_button';
 const ID_PROOF_STATUS_LABEL = 'proof_status_label';
+const ID_USER_INPUT = 'user_input';
 
 (async () =>
 {
@@ -253,19 +255,29 @@ function initialize_problem_input_container_after_delay()
         window.location = window.location.href.split("?")[0];
     };
 
-    new LogicSelectGroupController(logics_select1, logics_select2)
-        .set_on_logic_chosen(logic => update_on_screen_keyboard(logic));
+    let logic_select_group_controller = new LogicSelectGroupController(logics_select1, logics_select2);
+    logic_select_group_controller.set_on_logic_chosen(logic => update_on_screen_keyboard(logic));
 
-    let initial_problem = {
-        id: 'Initial',
-        expected: '',
-        logic: incl.get_logics()[0],
-        premises: [],
-        conclusion: '',
-    };
+    function create_problem_from_user_input()
+    {
+        let logic = logic_select_group_controller.get_logic();
+        let premises = premises_textarea.value.split(/\r?\n/).filter(line => line.trim().length>0);
+        return { id:ID_USER_INPUT, expected:'', logic:logic, premises:premises, conclusion:conclusion_textarea.value };
+    }
+
+    let initial_problem = create_problem_from_user_input();
 
     let url_args = new URLSearchParams(window.location.search);
-    if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
+    if (url_args.has(KEY_PROBLEM_ID) && decodeURIComponent(url_args.get(KEY_PROBLEM_ID)) !== ID_USER_INPUT)
+    {
+        let problem_id = decodeURIComponent(url_args.get(KEY_PROBLEM_ID));
+        let problem = JSON.parse(incl.get_problem_catalog())
+            .flatMap(book_chapter => book_chapter.problems)
+            .find(problem => problem.id === problem_id);
+
+        initial_problem = problem ?? initial_problem;
+    }
+    else if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
     {
         initial_problem.logic = decodeURIComponent(url_args.get(KEY_LOGIC));
         initial_problem.premises = decodeURIComponent(url_args.get(KEY_PREMISES)).split('\n');
@@ -274,16 +286,7 @@ function initialize_problem_input_container_after_delay()
 
     update_problem_input_area(initial_problem);
 
-    prove_button.onclick = () =>
-    {
-        prove_problem({
-            id: 'UserInput',
-            expected: '',
-            logic: new LogicSelectGroupController(logics_select1, logics_select2).get_logic(),
-            premises: premises_textarea.value.split(/\r?\n/).filter(line => line.trim().length>0),
-            conclusion: conclusion_textarea.value,
-        });
-    };
+    prove_button.onclick = () => prove_problem(create_problem_from_user_input());
 
     if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
     {
@@ -431,14 +434,16 @@ function prove_problem(problem)
 
 function create_shareable_url(problem)
 {
-    let operator_notations_select = document.getElementById(ID_OPERATOR_NOTATIONS_SELECT);
-    let operator_notations = operator_notations_select.options[operator_notations_select.selectedIndex].text;
-
     let url_arguments = new URLSearchParams(window.location.search);
-    url_arguments.set(KEY_OPERATOR_NOTATIONS, operator_notations);
-    url_arguments.set(KEY_LOGIC, encodeURIComponent(problem.logic));
-    url_arguments.set(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
-    url_arguments.set(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
+    url_arguments.set(KEY_PROBLEM_ID, problem.id);
+
+    if (problem.id === ID_USER_INPUT)
+    {
+        url_arguments.set(KEY_LOGIC, encodeURIComponent(problem.logic));
+        url_arguments.set(KEY_PREMISES, encodeURIComponent(problem.premises.join("\n")));
+        url_arguments.set(KEY_CONCLUSION, encodeURIComponent(problem.conclusion));
+    }
+
     return '?' + url_arguments.toString();
 }
 
