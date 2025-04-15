@@ -1,7 +1,7 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
-use smol_str::{format_smolstr, SmolStr, ToSmolStr};
+use smol_str::{format_smolstr, SmolStr, StrExt, ToSmolStr};
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
@@ -72,11 +72,7 @@ impl ExistsQuantifierRule
 
     pub fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> SmolStr>
     {
-        let used_names = factory.tree.get_paths_that_goes_through_node(node).into_iter()
-            .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
-            .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
-            .flat_map(|name| vec![name.object_name, name.variable_name])
-            .collect::<BTreeSet<SmolStr>>();
+        let used_names = self.get_already_used_names(factory, node);
 
         return Box::new(move ||
         {
@@ -93,6 +89,31 @@ impl ExistsQuantifierRule
                 else { char = 'a'; aux += 1; }
             }
         });
+    }
+
+    fn get_already_used_names(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> BTreeSet<SmolStr>
+    {
+        let formulas_in_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
+            .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
+            .collect::<Vec<Formula>>();
+
+        let mut already_used_names = BTreeSet::<SmolStr>::new();
+        for formula in formulas_in_path
+        {
+            for atomic_name in formula.get_all_atomic_names()
+            {
+                already_used_names.insert(atomic_name.clone());
+                already_used_names.insert(atomic_name.to_lowercase_smolstr());
+            }
+
+            for predicate_argument in formula.get_all_predicate_arguments()
+            {
+                already_used_names.insert(predicate_argument.variable_name.clone());
+                already_used_names.insert(predicate_argument.object_name.clone());
+            }
+        }
+
+        return already_used_names;
     }
 }
 

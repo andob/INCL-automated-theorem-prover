@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
 use crate::formula::PossibleWorld;
 
 mod main_algorithm;

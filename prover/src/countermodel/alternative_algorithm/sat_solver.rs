@@ -3,6 +3,7 @@ use logicng::datastructures::Model as LogicNGSatModel;
 use logicng::solver::minisat::MiniSat as LogicNGMiniSat;
 use logicng::formulas::{EncodedFormula as LogicNGEncodedFormula, FormulaFactory as LogicNGFormulaFactory};
 use logicng::solver::minisat::sat::Tristate as LogicNGState;
+use smol_str::ToSmolStr;
 use substring::Substring;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode};
 use crate::formula::PossibleWorld;

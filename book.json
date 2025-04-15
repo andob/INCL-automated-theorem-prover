@@ -368,7 +368,7 @@
         "id": "12.13.6.d",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
         "expected": "timeout",
-        "premises": [ "∃x(∀z S[x,z] ∧ ∀y(∀z S[y,z] ⊃ x = y))" ],
+        "premises": [ "∃x(∀t S[x,t] ∧ ∀y(∀t S[y,t] ⊃ x = y))" ],
         "conclusion": "∃x∃y(¬S[x,y] ∧ ¬S[y,x])"
       },
       {
@@ -1960,7 +1960,7 @@
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+ConditionalExtModalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "∀x∀y∀z(((x = y) ∧ (y = z)) ᐅ (x = z))"
+        "conclusion": "∀x∀y∀t(((x = y) ∧ (y = t)) ᐅ (x = t))"
       },
       {
         "id": "19.9.7.d",
@@ -2002,7 +2002,7 @@
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+NecessaryIdentity+ConditionalExtModalLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "∀x∀y∀z(((x = y) ∧ (y = z)) ᐅ (x = z))"
+        "conclusion": "∀x∀y∀t(((x = y) ∧ (y = t)) ᐅ (x = t))"
       },
       {
         "id": "19.9.8.d",
@@ -2231,7 +2231,7 @@
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+IntuitionisticLogic",
         "expected": "proved",
         "premises": [],
-        "conclusion": "∀x∀y∀z(((x = y) ∧ (y = z)) ⊃ (x = z))"
+        "conclusion": "∀x∀y∀t(((x = y) ∧ (y = t)) ⊃ (x = t))"
       },
       {
         "id": "20.13.6.d",
@@ -4130,7 +4130,7 @@
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+NecessaryIdentity+ConditionalModalLogic",
         "expected": "disproved",
         "premises": [],
-        "conclusion": "∀x ∀y ∀z((x = y) ᐅ ((y = z) ᐅ (x = z)))"
+        "conclusion": "∀x ∀y ∀t((x = y) ᐅ ((y = t) ᐅ (x = t)))"
       },
       {
         "id": "19.4.7",

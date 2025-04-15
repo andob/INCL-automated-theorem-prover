@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
+use smol_str::SmolStr;
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, FuzzyTags, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 
@@ -403,14 +404,14 @@ impl Formula
         }
     }
 
-    pub fn get_all_atomic_names(&self) -> BTreeSet<String>
+    pub fn get_all_atomic_names(&self) -> BTreeSet<SmolStr>
     {
-        let mut output : BTreeSet<String> = BTreeSet::new();
+        let mut output : BTreeSet<SmolStr> = BTreeSet::new();
         self.get_all_atomic_names_recursively(&mut output);
         return output;
     }
 
-    fn get_all_atomic_names_recursively(&self, output : &mut BTreeSet<String>)
+    fn get_all_atomic_names_recursively(&self, output : &mut BTreeSet<SmolStr>)
     {
         let mut get_all_atomic_names_recursively_from_tuple = |(p, q) : (&Formula, &Formula)|
         {
@@ -420,7 +421,7 @@ impl Formula
 
         match self
         {
-            Atomic(name, _) => { output.insert(name.to_string()); }
+            Atomic(name, _) => { output.insert(name.clone()); }
             Non(box p, _) => { p.get_all_atomic_names_recursively(output); }
             And(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }
             Or(box p, box q, _) => { get_all_atomic_names_recursively_from_tuple((p, q)); }

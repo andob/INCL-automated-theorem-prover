@@ -93,8 +93,11 @@ fn prove_problems_from_the_book() -> Result<()>
         let (problem_id, logic) = (problem.id.clone(), problem.logic.clone());
         println!("Solving {}…", problem_id);
 
-        let proof_file_path = format!("{}/{}.html", OUTPUT_DIR_PATH, problem_json.id);
-        let mut proof_file = File::create(proof_file_path).context(codeloc!())?;
+        let proof_html_file_path = format!("{}/{}.html", OUTPUT_DIR_PATH, problem_json.id);
+        let mut proof_html_file = File::create(proof_html_file_path).context(codeloc!())?;
+
+        let proof_json_file_path = format!("{}/{}.json", OUTPUT_DIR_PATH, problem_json.id);
+        let mut proof_json_file = File::create(proof_json_file_path).context(codeloc!())?;
 
         let formula_format_options = FormulaFormatOptions::recommended_for(&logic);
 
@@ -103,7 +106,9 @@ fn prove_problems_from_the_book() -> Result<()>
 
         let template = mustache::compile_str(TEMPLATE).context(codeloc!())?;
         let template_data = MapBuilder::new().insert_str("json", proof_tree_json.as_str()).build();
-        template.render_data(&mut proof_file, &template_data).context(codeloc!())?;
+        template.render_data(&mut proof_html_file, &template_data).context(codeloc!())?;
+
+        proof_json_file.write_all(proof_tree_json.as_bytes())?;
 
         return Ok(());
     });

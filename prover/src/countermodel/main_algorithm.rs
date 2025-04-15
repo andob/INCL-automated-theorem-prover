@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
+use smol_str::SmolStr;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use crate::formula::Formula::{Atomic, Necessary, StrictImply};
 use crate::formula::PossibleWorld;
@@ -25,7 +26,7 @@ impl ProofTree
         let atomic_names = self.problem.premises.iter()
             .chain(Some(&self.problem.conclusion).into_iter())
             .flat_map(|formula| formula.get_all_atomic_names())
-            .collect::<BTreeSet<String>>();
+            .collect::<BTreeSet<SmolStr>>();
 
         let path = self.get_all_paths().into_iter()
             .find(|path| !path.is_contradictory(&logic))?;
@@ -99,7 +100,7 @@ impl ProofTree
         }
     }
 
-    fn populate_atomics(&self, atomic_names : &BTreeSet<String>, path : &ProofTreePath, possible_world : PossibleWorld) -> BTreeMap<String, bool>
+    fn populate_atomics(&self, atomic_names : &BTreeSet<SmolStr>, path : &ProofTreePath, possible_world : PossibleWorld) -> BTreeMap<String, bool>
     {
         let mut values : BTreeMap<String, bool> = BTreeMap::new();
 
@@ -110,7 +111,7 @@ impl ProofTree
                 .filter_map(|node| if let Atomic(p, _) = &node.formula { Some(p) } else { None })
                 .any(|q| p == q);
 
-            values.insert(p.clone(), p_value);
+            values.insert(p.to_string(), p_value);
         }
 
         return values;

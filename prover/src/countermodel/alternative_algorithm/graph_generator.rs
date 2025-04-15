@@ -4,6 +4,7 @@ use std::rc::Rc;
 use num_bigint::BigUint;
 use num_traits::One;
 use rand::prelude::SliceRandom;
+use smol_str::SmolStr;
 use crate::countermodel::{CountermodelGraph, CountermodelGraphNode, CountermodelGraphVertex};
 use crate::formula::PossibleWorld;
 use crate::logic::Logic;
@@ -12,7 +13,7 @@ use crate::utils::{get_config_value, CONFIG_KEY_SHOULD_SHUFFLE_COUNTERMODEL_GRAP
 pub struct CountermodelGraphGenerator
 {
     pub logic : Rc<dyn Logic>,
-    pub atomic_names : BTreeSet<String>,
+    pub atomic_names : BTreeSet<SmolStr>,
 }
 
 impl CountermodelGraphGenerator
@@ -40,7 +41,7 @@ impl CountermodelGraphGenerator
     pub fn generate_graphs(&self, number_of_nodes : u8) -> Vec<CountermodelGraph>
     {
         let atomics: BTreeMap<String, bool> = self.atomic_names.clone()
-            .into_iter().map(|name| (name, false)).collect();
+            .into_iter().map(|name| (name.to_string(), false)).collect();
 
         let mut generated_graphs : Vec<CountermodelGraph> = vec![];
 

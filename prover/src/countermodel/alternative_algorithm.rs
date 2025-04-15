@@ -12,6 +12,7 @@ use std::collections::BTreeSet;
 use box_macro::bx;
 use itertools::Itertools;
 use logicng::formulas::{EncodedFormula as LogicNGEncodedFormula, FormulaFactory as LogicNGFormulaFactory};
+use smol_str::SmolStr;
 use crate::countermodel::alternative_algorithm::availability::AlternativeCountermodelFinderAvailability;
 use crate::countermodel::alternative_algorithm::domain_generator::CountermodelDomainGenerator;
 use crate::countermodel::alternative_algorithm::graph_generator::CountermodelGraphGenerator;
@@ -40,7 +41,7 @@ impl ProofTree
 
         let atomic_names = premises_and_non_conclusion.iter()
             .flat_map(|formula| formula.get_all_atomic_names())
-            .collect::<BTreeSet<String>>();
+            .collect::<BTreeSet<SmolStr>>();
 
         let predicate_arguments = premises_and_non_conclusion.iter()
             .flat_map(|formula| formula.get_all_predicate_arguments())
