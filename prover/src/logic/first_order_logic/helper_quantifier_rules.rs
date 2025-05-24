@@ -3,10 +3,10 @@ use crate::formula::Formula::{DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, VariableDomainFlags};
-use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::{Logic, LogicRule};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;
 use crate::logic::first_order_logic::FirstOrderLogicIdentityType::NecessaryIdentity;
+use crate::logic::first_order_logic::forall_quantifier_rule::get_args_that_definitely_exists;
 use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_owned_formulas_filtering_lambda;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -45,7 +45,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.get_name().is_modal_logic() && logic.identity_type == NecessaryIdentity
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit !(x=y) to all possible worlds by stating □!(x=y)
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));
@@ -72,7 +72,7 @@ impl LogicRule for HelperQuantifierRules
                     subtree.append(&self.create_subtree_with_x_equals_to_x_node(factory, node, x, extras));
                 }
 
-                if logic.get_name().is_modal_logic() && logic.identity_type == NecessaryIdentity
+                if logic.get_name().is_modal_logic() && (logic.identity_type == NecessaryIdentity || logic.get_name().is_intuitionistic_logic())
                 {
                     //inherit (x=y)- to all possible worlds by stating □(x=y)-
                     subtree.append(&node.inherit_on_all_adjacent_possible_worlds(logic, factory));

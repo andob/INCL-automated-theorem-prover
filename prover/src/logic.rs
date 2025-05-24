@@ -5,7 +5,6 @@ use anyhow::{Context, Result};
 use box_macro::bx;
 use strum::IntoEnumIterator;
 use FirstOrderLogicIdentityType::{ContingentIdentity, NecessaryIdentity};
-use crate::formula::PredicateArguments;
 use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::conditional_modal_logic::ConditionalModalLogic;
 use crate::logic::first_degree_entailment::kleene_modal_logic::KleeneModalLogic;

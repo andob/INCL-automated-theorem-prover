@@ -1,5 +1,5 @@
 use std::rc::Rc;
-use crate::formula::{Formula, PredicateArguments};
+use crate::formula::Formula;
 use crate::graph::Graph;
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 use crate::logic::Logic;

@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{Equals, Non};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
-use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
+use crate::logic::first_order_logic::forall_quantifier_rule::get_args_that_definitely_exists;
 use crate::tree::path::ProofTreePath;
 
 impl Formula

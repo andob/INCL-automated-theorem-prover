@@ -280,7 +280,8 @@ function initialize_problem_input_container_after_delay()
     else if (url_args.has(KEY_LOGIC) && url_args.has(KEY_PREMISES) && url_args.has(KEY_CONCLUSION))
     {
         initial_problem.logic = decodeURIComponent(url_args.get(KEY_LOGIC));
-        initial_problem.premises = decodeURIComponent(url_args.get(KEY_PREMISES)).split('\n');
+        initial_problem.premises = url_args.get(KEY_PREMISES) === '' ? [] :
+            decodeURIComponent(url_args.get(KEY_PREMISES)).split('\n');
         initial_problem.conclusion = decodeURIComponent(url_args.get(KEY_CONCLUSION));
     }
 

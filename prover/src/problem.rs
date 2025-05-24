@@ -3,7 +3,7 @@ pub mod json;
 
 use std::collections::BTreeSet;
 use std::rc::Rc;
-use crate::formula::{Formula, PredicateArgument, PredicateArguments};
+use crate::formula::{Formula, PredicateArgument};
 use crate::logic::Logic;
 use crate::proof::ProofAlgorithm;
 use crate::tree::ProofTree;

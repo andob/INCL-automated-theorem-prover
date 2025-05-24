@@ -1,5 +1,5 @@
 use std::collections::BTreeSet;
-use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument, PredicateArguments};
+use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument};
 use crate::logic::{LogicRule, LogicRuleCollection};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;

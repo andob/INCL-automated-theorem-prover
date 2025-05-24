@@ -1,7 +1,6 @@
 mod exists_quantifier_rule;
 mod forall_quantifier_rule;
 mod helper_quantifier_rules;
-mod variable_domain_semantics;
 mod predicate_args_with_equivalences;
 mod intuitionistic_quantifier_rules;
 mod naming_and_necessity;
@@ -12,7 +11,6 @@ use std::rc::Rc;
 use box_macro::bx;
 use strum_macros::Display;
 use FirstOrderLogicDomainType::{ConstantDomain, VariableDomain};
-use crate::formula::PredicateArguments;
 use crate::logic::{Logic, LogicName, LogicRuleCollection};
 use crate::logic::common_modal_logic::ModalityRef;
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
@@ -20,7 +18,6 @@ use crate::logic::first_order_logic::forall_quantifier_rule::ForAllQuantifierRul
 use crate::logic::first_order_logic::helper_quantifier_rules::HelperQuantifierRules;
 use crate::logic::first_order_logic::intuitionistic_quantifier_rules::IntuitionisticQuantifierRules;
 use crate::logic::first_order_logic::naming_and_necessity::NonRigidDesignatorRules;
-use crate::logic::first_order_logic::variable_domain_semantics::VariableDomainSemantics;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 
@@ -95,14 +92,7 @@ impl Logic for FirstOrderLogic
 
     fn get_semantics(&self) -> Box<dyn Semantics>
     {
-        let base_semantics = self.base_logic.get_semantics();
-
-        if matches!(self.domain_type, VariableDomain(..))
-        {
-            return Box::new(VariableDomainSemantics::new(base_semantics));
-        }
-
-        return base_semantics;
+        return self.base_logic.get_semantics();
     }
 
     fn get_parser_syntax(&self) -> Vec<TokenTypeID>

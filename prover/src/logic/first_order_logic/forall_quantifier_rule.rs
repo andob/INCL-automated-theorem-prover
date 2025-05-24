@@ -1,15 +1,13 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
-use itertools::Itertools;
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{DefinitelyExists, Exists, ForAll, Non};
-use crate::formula::{Formula, FormulaExtras, PredicateArgument};
+use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
 use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_formulas_filtering_lambda;
-use crate::logic::first_order_logic::variable_domain_semantics::get_args_that_definitely_exists;
 use crate::logic::LogicRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
@@ -213,4 +211,22 @@ impl ForAllQuantifierRule
             }
         }
     }
+}
+
+pub fn get_args_that_definitely_exists(all_formulas_on_path : &Vec<Formula>, possible_world : PossibleWorld) -> BTreeSet<&PredicateArgument>
+{
+    let mut args_that_definitely_exists = all_formulas_on_path.iter()
+        .filter(|formula| formula.get_possible_world() == possible_world && formula.get_sign() == Plus)
+        .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
+        .collect::<BTreeSet<&PredicateArgument>>();
+
+    let mut equivalences_of_args_that_definitely_exists = all_formulas_on_path.iter()
+        .filter(|formula| formula.get_possible_world() == possible_world)
+        .filter_map(create_equality_formulas_filtering_lambda())
+        .filter(|(x, y)| args_that_definitely_exists.iter().any(|d| x==d || y==d))
+        .flat_map(|(x, y)| vec![x, y])
+        .collect::<BTreeSet<&PredicateArgument>>();
+
+    args_that_definitely_exists.append(&mut equivalences_of_args_that_definitely_exists);
+    return args_that_definitely_exists;
 }
