@@ -12,7 +12,8 @@ impl ProofAlgorithm
     pub fn initialize(problem : Problem) -> ProofAlgorithm
     {
         let logic = problem.logic.clone();
-        let problem_flags = problem.flags.clone();
+        let mut problem_flags = problem.flags.clone();
+        problem_flags.non_rigid_designators = problem.find_all_non_rigid_designators();
 
         let mut node_factory = ProofTreeNodeFactory::new(&logic);
 

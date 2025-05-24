@@ -20,13 +20,7 @@ impl Semantics for BinaryLogicSemantics
         return match (p, q)
         {
             (Atomic(p_name, _), Non(box Atomic(q_name, _), _)) |
-            (Non(box Atomic(p_name, _), _), Atomic(q_name, _)) |
-
-            (Possible(box Atomic(p_name, _), _), Non(box Possible(box Atomic(q_name, _), _), _)) |
-            (Non(box Possible(box Atomic(p_name, _), _), _), Possible(box Atomic(q_name, _), _)) |
-
-            (Necessary(box Atomic(p_name, _), _), Non(box Necessary(box Atomic(q_name, _), _), _)) |
-            (Non(box Necessary(box Atomic(p_name, _), _), _), Necessary(box Atomic(q_name, _), _))
+            (Non(box Atomic(p_name, _), _), Atomic(q_name, _))
             =>
             {
                 p_name == q_name &&

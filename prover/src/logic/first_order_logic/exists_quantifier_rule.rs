@@ -72,7 +72,12 @@ impl ExistsQuantifierRule
 
     pub fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> SmolStr>
     {
-        let used_names = self.get_already_used_names(factory, node);
+        return self.get_object_name_factory2(factory, node, &Vec::new());
+    }
+
+    pub fn get_object_name_factory2(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, pending_nodes : &Vec<ProofTreeNode>) -> Box<dyn Fn() -> SmolStr>
+    {
+        let used_names = self.get_already_used_names(factory, node, pending_nodes);
 
         return Box::new(move ||
         {
@@ -91,13 +96,19 @@ impl ExistsQuantifierRule
         });
     }
 
-    fn get_already_used_names(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> BTreeSet<SmolStr>
+    fn get_already_used_names(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, pending_nodes : &Vec<ProofTreeNode>) -> BTreeSet<SmolStr>
     {
-        let formulas_in_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
+        let mut already_used_names = BTreeSet::<SmolStr>::new();
+        
+        let mut formulas_in_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
             .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
             .collect::<Vec<Formula>>();
 
-        let mut already_used_names = BTreeSet::<SmolStr>::new();
+        for pending_node in pending_nodes
+        {
+            formulas_in_path.push(pending_node.formula.clone());
+        }
+
         for formula in formulas_in_path
         {
             for atomic_name in formula.get_all_atomic_names()

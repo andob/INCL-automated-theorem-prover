@@ -146,6 +146,7 @@ impl ForAllQuantifierRule
             .collect::<BTreeSet<PredicateArgument>>();
 
         let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
+        let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==a);
 
         let free_args = all_args_on_path.iter()
             .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
@@ -153,9 +154,8 @@ impl ForAllQuantifierRule
             .collect::<BTreeSet<&PredicateArgument>>();
 
         let instantiated_xs = all_args_on_path.iter()
-            .filter(|a| a.is_instantiated() && a.variable_name == x.variable_name)
-            .filter(|a| logic.domain_type == ConstantDomain ||
-                args_that_definitely_exists.iter().any(|d| d==a))
+            .filter(|a| a.is_instantiated() && a.variable_name == x.variable_name && a.is_rigid_designator)
+            .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
             .collect::<BTreeSet<&PredicateArgument>>();
         for instantiated_x in instantiated_xs
         {
@@ -180,10 +180,9 @@ impl ForAllQuantifierRule
             for y in ys_with_no_equivalent
             {
                 let instantiated_ys = all_args_on_path.iter()
-                    .filter(|a| a.variable_name == y.variable_name)
+                    .filter(|a| a.variable_name == y.variable_name && a.is_rigid_designator)
                     .filter(|a| free_args.contains(a) || a.is_instantiated())
-                    .filter(|a| logic.domain_type == ConstantDomain ||
-                        args_that_definitely_exists.iter().any(|d| d==a))
+                    .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
                     .collect::<BTreeSet<&PredicateArgument>>();
                 for instantiated_y in instantiated_ys
                 {
@@ -202,10 +201,9 @@ impl ForAllQuantifierRule
             for y in equivalent_ys
             {
                 let instantiated_ys = all_args_on_path.iter()
-                    .filter(|a| a.variable_name == y.variable_name)
+                    .filter(|a| a.variable_name == y.variable_name && a.is_rigid_designator)
                     .filter(|a| free_args.contains(a) || a.is_instantiated())
-                    .filter(|a| logic.domain_type == ConstantDomain ||
-                        args_that_definitely_exists.iter().any(|d| d==a))
+                    .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
                     .collect::<BTreeSet<&PredicateArgument>>();
                 for instantiated_y in instantiated_ys
                 {

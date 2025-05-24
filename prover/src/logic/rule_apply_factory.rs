@@ -1,8 +1,9 @@
 use std::rc::Rc;
-use crate::formula::Formula;
+use crate::formula::{Formula, PredicateArguments};
 use crate::graph::Graph;
 use crate::logic::common_modal_logic::NecessityReapplicationData;
 use crate::logic::Logic;
+use crate::problem::ProblemFlags;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
 use crate::tree::ProofTree;
@@ -12,6 +13,7 @@ pub struct RuleApplyFactory<'a>
     pub tree : &'a ProofTree,
     pub tree_node_factory : &'a mut ProofTreeNodeFactory,
     pub modality_graph : &'a mut Graph,
+    pub problem_flags : &'a ProblemFlags,
 }
 
 impl <'a> RuleApplyFactory<'a>

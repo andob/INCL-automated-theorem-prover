@@ -196,15 +196,12 @@ impl ProofTreeNode
 {
     fn inherit_on_all_adjacent_possible_worlds(&self, logic : &FirstOrderLogic, factory : &mut RuleApplyFactory) -> ProofSubtree
     {
-        if let Some(modality) = logic.get_modality_ref()
+        if let Some(modality) = logic.get_modality_ref() &&
+            !modality.was_necessity_already_applied(factory, &self.formula) &&
+            self.formula.get_all_predicate_arguments().iter().all(|arg| arg.is_rigid_designator) &&
+            let Some(subtree) = modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras())
         {
-            if !modality.was_necessity_already_applied(factory, &self.formula)
-            {
-                if let Some(subtree) = modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras())
-                {
-                    return subtree;
-                }
-            }
+            return subtree;
         }
 
         return ProofSubtree::empty();

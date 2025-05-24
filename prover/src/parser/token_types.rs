@@ -94,7 +94,7 @@ impl TokenType
             {
                 //matches atomic formulas with args: P(x,y), ...
                 id: TokenTypeID::AtomicWithArgs,
-                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-z0-9_,:]+\]").context(codeloc!())?,
+                regex: Regex::new(r"[A-Za-z_]+\[[A-Za-zαβγ0-9_,:]+\]").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
                 to_formula: |name, args|
@@ -306,11 +306,8 @@ impl TokenType
     {
         if let Some(index_of_open_bracket) = input.find('[')
         {
-            if let Some(index_of_closed_bracket) = input.find(']')
-            {
-                let new_input = input.substring(index_of_open_bracket+1, index_of_closed_bracket).to_string();
-                return Self::parse_predicate_arguments(&new_input);
-            }
+            let new_input = input.substring(index_of_open_bracket+1, input.len());
+            return Self::parse_predicate_arguments(&new_input.replace("]", ""));
         }
 
         if let Some(index_of_exists) = input.find('∃')

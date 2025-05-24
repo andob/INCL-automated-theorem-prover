@@ -82,6 +82,7 @@ impl ProofAlgorithm
             tree: &self.proof_tree,
             tree_node_factory: &mut self.node_factory,
             modality_graph: &mut self.modality_graph,
+            problem_flags: &self.problem_flags,
         };
 
         if let Some(node) = self.decomposition_queue.pop()

@@ -48,31 +48,31 @@ fn test_proof_status() -> Result<()>
 
         if problem_json.expected == EXPECTED_TIMEOUT && !proof_tree.has_timeout
         {
-            eprintln!("Expected problem {} to timeout but it did not!", problem_id);
+            eprintln!("\nExpected problem {} to timeout but it did not!", problem_id);
             assert!(proof_tree.has_timeout);
         }
 
         if problem_json.expected == EXPECTED_PROVED && proof_tree.has_timeout
         {
-            eprintln!("Expected problem {} to be proved but it timed out!", problem_id);
+            eprintln!("\nExpected problem {} to be proved but it timed out!", problem_id);
             assert!(!proof_tree.has_timeout);
         }
 
         if problem_json.expected == EXPECTED_DISPROVED && proof_tree.has_timeout
         {
-            eprintln!("Expected problem {} to be disproved but it timed out!", problem_id);
+            eprintln!("\nExpected problem {} to be disproved but it timed out!", problem_id);
             assert!(!proof_tree.has_timeout);
         }
 
         if problem_json.expected == EXPECTED_PROVED && !proof_tree.is_proof_correct
         {
-            eprintln!("Expected problem {} to be proved but it was disproved!", problem_id);
+            eprintln!("\nExpected problem {} to be proved but it was disproved!", problem_id);
             assert!(proof_tree.is_proof_correct);
         }
 
         if problem_json.expected == EXPECTED_DISPROVED && proof_tree.is_proof_correct
         {
-            eprintln!("Expected problem {} to be disproved but it was proved!", problem_id);
+            eprintln!("\nExpected problem {} to be disproved but it was proved!", problem_id);
             assert!(!proof_tree.is_proof_correct);
         }
 

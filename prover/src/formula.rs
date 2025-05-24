@@ -76,10 +76,22 @@ pub struct PredicateArgument
 {
     pub variable_name : SmolStr, //variable name eg: x,y,z
     pub object_name : SmolStr, //object name eg: a,b,c
+    pub is_rigid_designator : bool,
 }
 
 impl PredicateArgument
 {
+    pub fn new_variable(name : SmolStr) -> PredicateArgument
+    {
+        let is_rigid_designator = !(name == "α" || name == "β" || name == "γ");
+        return PredicateArgument { variable_name:name.clone(), object_name:name, is_rigid_designator };
+    }
+
+    pub fn new_instantiated_object(object_name : SmolStr, variable_name : SmolStr) -> PredicateArgument
+    {
+        return PredicateArgument { variable_name, object_name, is_rigid_designator:true };
+    }
+
     pub fn is_instantiated(&self) -> bool
     {
         return self.object_name != self.variable_name;
