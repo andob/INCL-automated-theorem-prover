@@ -1010,6 +1010,20 @@
         "conclusion": "∀x ◇ \uD835\uDD08x"
       },
       {
+        "id": "15.12.7.a",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+TModalLogic",
+        "expected": "proved",
+        "premises": [],
+        "conclusion": "□ ∃x P[x] ⊃ □ ∃x \uD835\uDD08x"
+      },
+      {
+        "id": "15.12.7.b",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+TModalLogic",
+        "expected": "disproved",
+        "premises": [],
+        "conclusion": "□ ∃x P[x] ⊃ ∃x □ \uD835\uDD08x"
+      },
+      {
         "id": "15.12.8.a",
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+NecessaryIdentity+KModalLogic",
         "expected": "proved",
@@ -3084,13 +3098,6 @@
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+I4LogicOfConstructibleNegation",
         "expected": "proved",
         "premises": [ "\uD835\uDD08a", "a = b", "b = c" ],
-        "conclusion": "a = c"
-      },
-      {
-        "id": "23.15.13.c'",
-        "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+I4LogicOfConstructibleNegation",
-        "expected": "proved",
-        "premises": [ "a = b", "b = c" ],
         "conclusion": "a = c"
       },
       {
