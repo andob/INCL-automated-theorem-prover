@@ -23,7 +23,7 @@ impl ProofTree
         else if self.is_proof_correct { output_string.push_str("PROVED!\n"); }
         else { output_string.push_str("NOT PROVED!\n"); }
 
-        self.root_node.print_as_subtree_to_string(options, &mut output_string, 0);
+        self.root_node.print_to_string(options, &mut output_string, 0);
 
         return output_string;
     }
@@ -46,9 +46,9 @@ impl ProofSubtree
 
         let mut output_string = String::from("Subtree\n");
 
-        if let Some(left) = &self.left { left.print_as_subtree_to_string(&options, &mut output_string, 1) }
-        if let Some(middle) = &self.middle { middle.print_as_subtree_to_string(&options, &mut output_string, 1) }
-        if let Some(right) = &self.right { right.print_as_subtree_to_string(&options, &mut output_string, 1) }
+        if let Some(left) = &self.left { left.print_to_string(&options, &mut output_string, 1) }
+        if let Some(middle) = &self.middle { middle.print_to_string(&options, &mut output_string, 1) }
+        if let Some(right) = &self.right { right.print_to_string(&options, &mut output_string, 1) }
 
         return output_string;
     }
@@ -56,7 +56,7 @@ impl ProofSubtree
 
 impl ProofTreeNode
 {
-    fn print_as_subtree_to_string(&self, options : &FormulaFormatOptions, out_string : &mut String, indent : usize)
+    fn print_to_string(&self, options : &FormulaFormatOptions, out_string : &mut String, indent : usize)
     {
         if indent>0
         {
@@ -87,17 +87,17 @@ impl ProofTreeNode
 
         if let Some(left) = &self.left
         {
-            left.print_as_subtree_to_string(options, out_string, indent+1);
+            left.print_to_string(options, out_string, indent+1);
         }
 
         if let Some(middle) = &self.middle
         {
-            middle.print_as_subtree_to_string(options, out_string, indent+1);
+            middle.print_to_string(options, out_string, indent+1);
         }
 
         if let Some(right) = &self.right
         {
-            right.print_as_subtree_to_string(options, out_string, indent+1);
+            right.print_to_string(options, out_string, indent+1);
         }
     }
 }
