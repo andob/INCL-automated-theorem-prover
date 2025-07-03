@@ -1,12 +1,9 @@
-use std::rc::Rc;
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
 use crate::formula::Formula;
-use crate::formula::notations::OperatorNotations;
 use crate::formula::to_string::FormulaFormatOptions;
-use crate::logic::{Logic, LogicFactory};
-use crate::logic::propositional_logic::PropositionalLogic;
+use crate::logic::LogicFactory;
 use crate::parser::algorithm::LogicalExpressionParser;
 use crate::problem::{Problem, ProblemFlags};
 

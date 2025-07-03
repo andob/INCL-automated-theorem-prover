@@ -1,7 +1,6 @@
 use std::collections::BTreeSet;
 use std::rc::Rc;
 use box_macro::bx;
-use itertools::Itertools;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Imply, Necessary, Non, Possible, StrictImply};
 use crate::graph::{Graph, GraphVertex};

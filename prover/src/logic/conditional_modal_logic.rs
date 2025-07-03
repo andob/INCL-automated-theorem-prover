@@ -227,7 +227,7 @@ impl Formula
             Non(box p, p_extras) =>
             {
                 if let Non(box q, q_extras) = another
-                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+                { p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
             }
             And(box p, box q, pq_extras) =>
             {
@@ -282,22 +282,22 @@ impl Formula
             Possible(box p, p_extras) =>
             {
                 if let Possible(box q, q_extras) = another
-                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+                { p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
             }
             Necessary(box p, p_extras) =>
             {
                 if let Necessary(box q, q_extras) = another
-                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+                { p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
             }
             InPast(box p, p_extras) =>
             {
                 if let InPast(box q, q_extras) = another
-                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+                { p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
             }
             InFuture(box p, p_extras) =>
             {
                 if let InFuture(box q, q_extras) = another
-                { p.is_replaceable_with(p, paths) && p_extras == q_extras } else { false }
+                { p.is_replaceable_with(q, paths) && p_extras == q_extras } else { false }
             }
             LessThan(x, y, p_extras) =>
             {

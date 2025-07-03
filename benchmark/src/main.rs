@@ -9,9 +9,7 @@ mod complexity;
 
 use anyhow::Result;
 use itertools::Itertools;
-use prover::logic::{Logic, LogicFactory};
 use std::env;
-use std::hint::black_box;
 use std::str::FromStr;
 use anyhow::Context;
 use prover::codeloc;
@@ -53,7 +51,7 @@ mod tests
     use prover::logic::LogicFactory;
 
     #[bench]
-    fn generate_csv(bencher : &mut Bencher)
+    fn generate_csv(_bencher : &mut Bencher)
     {
         let logic = env::args().collect_vec().into_iter()
             .filter_map(|arg| LogicFactory::get_logic_by_name(&arg).ok())

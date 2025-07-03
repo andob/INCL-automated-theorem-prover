@@ -1,4 +1,5 @@
 ﻿use std::{env, fs};
+use std::collections::BTreeSet;
 use std::fs::{File, OpenOptions};
 use std::path::Path;
 use std::io::{BufRead, BufReader, Write};
@@ -11,7 +12,6 @@ use prover::formula::Formula;
 use prover::formula::to_string::FormulaFormatOptions;
 use prover::logic::Logic;
 use prover::parser::algorithm::LogicalExpressionParser;
-use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::{Problem, ProblemFlags};
 
 const RANDOM_FORMULAS_FILE_NAME : &str = "random_formulas.txt";
@@ -75,7 +75,11 @@ pub fn read_random_problems(logic : &Rc<dyn Logic>) -> Result<Vec<Problem>>
             {
                 id: formula_as_string, logic: logic.clone(),
                 premises: Vec::new(), conclusion: formula,
-                flags: ProblemFlags { should_skip_contradiction_check: true },
+                flags: ProblemFlags
+                {
+                    should_skip_contradiction_check: true,
+                    non_rigid_designators: BTreeSet::new(),
+                }
             });
         }
     }

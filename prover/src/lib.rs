@@ -4,11 +4,6 @@
 #![feature(box_patterns)]
 #![feature(let_chains)]
 
-use std::fmt::Display;
-use anyhow::{Context};
-use itertools::Itertools;
-use substring::Substring;
-
 pub mod parser;
 pub mod formula;
 pub mod logic;

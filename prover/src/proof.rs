@@ -1,7 +1,6 @@
-use itertools::Itertools;
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{LogicName, LogicRuleCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::problem::ProblemFlags;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;

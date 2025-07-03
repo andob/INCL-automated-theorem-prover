@@ -258,7 +258,7 @@ impl Formula
 
     pub fn get_predicate_arguments_of_atomic(&self) -> Option<PredicateArguments>
     {
-        let mut get_predicate_arguments_of_atomic_from_tuple = |(p, q) : (&Formula, &Formula)|
+        let get_predicate_arguments_of_atomic_from_tuple = |(p, q) : (&Formula, &Formula)|
             p.get_predicate_arguments_of_atomic().or_else(|| q.get_predicate_arguments_of_atomic());
 
         return match self

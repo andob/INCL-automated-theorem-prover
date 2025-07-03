@@ -77,9 +77,7 @@ impl CountermodelGraph
     pub fn is_transitive(&self) -> bool
     {
         return !self.vertices.iter().cartesian_product(self.vertices.iter())
-            .filter(|(v1, v2)| v1.from != v1.to)
-            .filter(|(v1, v2)| v2.from != v2.to)
-            .filter(|(v1, v2)| v2.from == v1.to)
+            .filter(|(v1, v2)| v1.from != v1.to && v2.from != v2.to && v2.from == v1.to)
             .all(|(v1, v2)| self.vertices.iter()
                 .any(|v3| v3.from == v1.from && v3.to == v2.to))
     }

@@ -2,9 +2,7 @@ use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use crate::codeloc;
 use crate::countermodel::CountermodelGraph;
-use crate::formula::notations::OperatorNotations;
 use crate::formula::to_string::FormulaFormatOptions;
-use crate::graph::Graph;
 use crate::graph::to_json::GraphJSON;
 use crate::problem::json::ProblemJSON;
 use crate::proof::execution_log::ExecutionLog;
@@ -58,7 +56,7 @@ impl ProofTree
 
 impl ProofTreeNode
 {
-    pub fn to_json(&self, options : &FormulaFormatOptions) -> ProofTreeNodeJSON
+    fn to_json(&self, options : &FormulaFormatOptions) -> ProofTreeNodeJSON
     {
         return ProofTreeNodeJSON
         {

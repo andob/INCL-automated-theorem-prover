@@ -1,5 +1,3 @@
-use std::thread;
-use std::time::{Duration, Instant};
 use anyhow::{anyhow, Context, Result};
 use itertools::Itertools;
 use sdl2::event::Event;

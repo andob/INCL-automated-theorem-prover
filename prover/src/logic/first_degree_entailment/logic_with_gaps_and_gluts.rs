@@ -80,7 +80,7 @@ impl LogicWithGapsGlutsAndWorlds
         {
             is_possibility_applicable: is_modality_applicable,
             is_necessity_applicable: is_modality_applicable,
-            add_missing_graph_vertices: |logic, graph|
+            add_missing_graph_vertices: |_logic, graph|
             {
                 graph.add_missing_reflexive_vertices();
                 graph.add_missing_symmetric_vertices();

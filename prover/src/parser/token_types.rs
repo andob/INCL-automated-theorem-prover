@@ -82,7 +82,7 @@ impl TokenType
                 regex: Regex::new(r"𝔈[A-Za-z_]+").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Higher,
-                to_formula: |name, args|
+                to_formula: |name, _args|
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
@@ -97,7 +97,7 @@ impl TokenType
                 regex: Regex::new(r"[A-Za-z_]+\[[A-Za-zαβγ0-9_,:]+\]").context(codeloc!())?,
                 category: TokenCategory::Atomic,
                 precedence: OperatorPrecedence::Lowest,
-                to_formula: |name, args|
+                to_formula: |name, _args|
                 {
                     let atomic_name = name.substring(0, name.find('[').unwrap_or(1)).to_smolstr();
                     let predicate_args = Self::parse_predicate_arguments(&name);
@@ -281,7 +281,7 @@ impl TokenType
                 regex: Regex::new(r"\(").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Higher,
-                to_formula: |_,args|
+                to_formula: |_, _|
                 {
                     panic!("Cannot convert ( to formula!");
                 }
@@ -294,7 +294,7 @@ impl TokenType
                 regex: Regex::new(r"\)").context(codeloc!())?,
                 category: TokenCategory::Grouping,
                 precedence: OperatorPrecedence::Higher,
-                to_formula: |_,args|
+                to_formula: |_, _args|
                 {
                     panic!("Cannot convert ) to formula!");
                 }

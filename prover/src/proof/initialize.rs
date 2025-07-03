@@ -41,7 +41,7 @@ impl ProofAlgorithm
 
         let other_premises_nodes = problem.premises.iter().enumerate()
             .filter(|(index, _premise)| *index>0)
-            .map(|(index, premise)| node_factory.new_node(premise.clone()))
+            .map(|(_index, premise)| node_factory.new_node(premise.clone()))
             .collect::<Vec<ProofTreeNode>>();
 
         let mut other_premise_subtree = ProofSubtree::with_middle_vertical_nodes(other_premises_nodes);

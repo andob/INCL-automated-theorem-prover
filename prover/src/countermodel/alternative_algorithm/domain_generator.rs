@@ -33,7 +33,7 @@ impl CountermodelDomainGenerator
             .flat_map(|arg| vec![arg.object_name, arg.variable_name])
             .collect::<BTreeSet<SmolStr>>();
 
-        for i in 0..max(1, number_of_elements)
+        for _ in 0..max(1, number_of_elements)
         {
             let name = self.generate_next_unique_name(&used_names);
             used_names.insert(name.clone());

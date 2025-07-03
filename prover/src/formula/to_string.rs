@@ -107,7 +107,7 @@ impl Formula
         if index==0 { format!("{} {} {}", x.to_string_impl(options, index+1), operator, y.to_string_impl(options, index+1)) }
         else { format!("({} {} {})", x.to_string_impl(options, index+1), operator, y.to_string_impl(options, index+1)) };
 
-        return match self
+        match self
         {
             Atomic(p, args) =>
             {

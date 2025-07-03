@@ -3,7 +3,6 @@ use std::rc::Rc;
 use crate::formula::Formula;
 use crate::logic::first_order_logic::FirstOrderLogicDomainType;
 use crate::logic::Logic;
-use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
 

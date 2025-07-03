@@ -64,7 +64,7 @@ impl Logic for LukasiewiczModalLogic
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
-            Box::new(LukasiewiczImplicationRules::new(modality)),
+            Box::new(LukasiewiczImplicationRules {}),
             Box::new(GenericBiImplyAsConjunctionRule {}),
         ])
     }
@@ -93,18 +93,7 @@ impl LukasiewiczModalLogic
     }
 }
 
-struct LukasiewiczImplicationRules
-{
-    modality : Rc<Modality<LukasiewiczModalLogic>>
-}
-
-impl LukasiewiczImplicationRules
-{
-    fn new(modality : Rc<Modality<LukasiewiczModalLogic>>) -> LukasiewiczImplicationRules
-    {
-        return LukasiewiczImplicationRules { modality };
-    }
-}
+struct LukasiewiczImplicationRules {}
 
 impl LogicRule for LukasiewiczImplicationRules
 {

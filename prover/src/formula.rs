@@ -6,8 +6,6 @@ pub mod notations;
 mod operators;
 mod random;
 
-use std::fmt::Display;
-use itertools::Itertools;
 use smol_str::SmolStr;
 
 #[derive(Eq, PartialEq, Hash, Clone)]

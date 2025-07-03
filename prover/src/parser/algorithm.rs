@@ -1,11 +1,8 @@
-use std::any;
 use std::rc::Rc;
 use anyhow::{anyhow, Context, Result};
-use itertools::Itertools;
 use smol_str::ToSmolStr;
-use substring::Substring;
 use crate::codeloc;
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras};
+use crate::formula::{AtomicFormulaExtras, Formula};
 use crate::logic::Logic;
 use crate::parser::models::{OperatorPrecedence, Token, TokenCategory, TokenType};
 use crate::parser::token_types::TokenTypeID;

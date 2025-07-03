@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use rand::prelude::IteratorRandom;
 use crate::graph::Graph;
 use crate::problem::Problem;

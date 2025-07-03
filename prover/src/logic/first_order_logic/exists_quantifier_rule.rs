@@ -1,6 +1,5 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
-use itertools::Itertools;
 use smol_str::{format_smolstr, SmolStr, StrExt, ToSmolStr};
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
@@ -148,7 +147,7 @@ impl Formula
 
     fn instantiate_impl(&self, x : &PredicateArgument, object_name_factory : &Box<dyn Fn() -> SmolStr>) -> Formula
     {
-        let mut instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory));
+        let instantiated_box = |p : &Box<Formula>| Box::new(p.instantiate_impl(x, &object_name_factory));
 
         return match self
         {

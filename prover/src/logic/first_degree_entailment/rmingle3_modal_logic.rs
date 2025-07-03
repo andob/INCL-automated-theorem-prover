@@ -64,7 +64,7 @@ impl Logic for RMingle3ModalLogic
         [
             Box::new(FirstDegreeEntailmentLogicRules {}),
             Box::new(ModalLogicRules::new(modality.clone())),
-            Box::new(RMingle3ImplicationRules::new(modality)),
+            Box::new(RMingle3ImplicationRules {}),
             Box::new(GenericBiImplyAsConjunctionRule {}),
         ])
     }
@@ -93,18 +93,7 @@ impl RMingle3ModalLogic
     }
 }
 
-struct RMingle3ImplicationRules
-{
-    modality : Rc<Modality<RMingle3ModalLogic>>
-}
-
-impl RMingle3ImplicationRules
-{
-    fn new(modality : Rc<Modality<RMingle3ModalLogic>>) -> RMingle3ImplicationRules
-    {
-        return RMingle3ImplicationRules { modality };
-    }
-}
+struct RMingle3ImplicationRules {}
 
 impl LogicRule for RMingle3ImplicationRules
 {
