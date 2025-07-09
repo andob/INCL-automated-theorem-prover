@@ -1,6 +1,6 @@
 ## INCL Automated Theorem Prover
 
-An automated theorem prover on first order modal logic, fuzzy logic and other non-classical logics, written in Rust. Implements the algorithm theorized by renowned philosopher and logician Graham Priest in his 2008 book ["An Introduction to Non-Classical Logic. From If to Is (second edition)"](https://www.cambridge.org/core/books/an-introduction-to-nonclassical-logic/61AD69C1D1B88006588B26C37F3A788E).
+An automated theorem prover on first order modal logic, fuzzy logic and other non-classical logics, written in Rust. Implements the formal proof systems theorized / presented by renowned philosopher and logician Graham Priest in his 2008 book ["An Introduction to Non-Classical Logic. From If to Is (second edition)"](https://www.cambridge.org/core/books/an-introduction-to-nonclassical-logic/61AD69C1D1B88006588B26C37F3A788E).
 
 ### [Check out running project here](https://andob.io/incl)
 
