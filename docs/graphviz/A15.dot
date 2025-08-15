@@ -1,0 +1,38 @@
+digraph {
+    a [label="P ᐅ Q, wᵢ, +"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="P, wⱼ, -"];
+    d [label="Q, wⱼ, +"];
+    a -> b; b -> c; b -> d;
+}
+
+digraph {
+    a [label="P ᐅ Q, wᵢ, -"];
+    b [label="wᵢ ☆ wⱼ"];
+    c [label="P, wⱼ, +"];
+    d [label="Q, wⱼ, -"];
+    a -> b; b -> c; c -> d;
+}
+
+digraph {
+    a [label="¬(P ᐅ Q), wᵢ, +"];
+    b [label="wᵢ ☆ wⱼ"];
+    c [label="P, wⱼ, +"];
+    d [label="¬Q, wⱼ, +"];
+    a -> b; b -> c; c -> d;
+}
+
+digraph {
+    a [label="¬(P ᐅ Q), wᵢ, -"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="P, wⱼ, -"];
+    d [label="¬Q, wⱼ, -"];
+    a -> b; b -> c; b -> d;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="P, wᵢ, +"];
+    b [label="P, wᵢ, -\n🗲"];
+    a -> b;
+}

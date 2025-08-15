@@ -1,0 +1,23 @@
+digraph {
+    a [label="Rule 10:\nα, ¬¬P, ±"];
+    b [label="α, P, ±"];
+    a -> b;
+ }
+
+digraph {
+    a [label="Rule 11:\nα, ¬(P ∧ Q), ±"];
+    b [label="α, ¬P ∨ ¬Q, ±"];
+    a -> b;
+ }
+
+digraph {
+    a [label="Rule 12:\nα, ¬(P ∨ Q), ±"];
+    b [label="α, ¬P ∧ ¬Q, ±"];
+    a -> b;
+ }
+
+digraph {
+    a [label="Rule 13:\nα, ¬(P ⊃ Q), ±"];
+    b [label="α, P ⊃ Q, ∓"];
+    a -> b;
+ }

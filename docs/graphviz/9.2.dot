@@ -1,0 +1,12 @@
+digraph {
+    a [label="¬(P ≡ Q)"];
+    b [label="P"];
+    c [label="¬¬Q"];
+    d [label="P"];
+    e [label="¬Q"];
+    f [label="¬P\n🗲"];
+    g [label="Q"];
+    h [label="Q\n🗲"];
+    i [label="Q"];
+    a -> b; b -> c; c -> d; d -> e; c -> f; f -> g; e -> h; g -> i;
+}

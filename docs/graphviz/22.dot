@@ -1,0 +1,13 @@
+digraph {
+    a [label="a:x = b:y, wᵢ, ±"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="a:x = b:y, wⱼ, ±"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="¬(a:x = b:y), wᵢ, ±"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="¬(a:x = b:y), wⱼ, ±"];
+    a -> b; b -> c;
+}

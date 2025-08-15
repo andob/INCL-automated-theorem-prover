@@ -1,0 +1,13 @@
+digraph {
+    a [label="𝔈a:x, wᵢ, ±"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="𝔈a:x, wⱼ, ±"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="¬𝔈a:x, wᵢ, ±"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="¬𝔈a:x, wⱼ, ±"];
+    a -> b; b -> c;
+}

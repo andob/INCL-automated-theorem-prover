@@ -1,0 +1,5 @@
+ digraph {
+    a [label="Rule 9: (falsum)\nα, ⊥, ±"];
+    b [label="α ≤ μ⊥"];
+    a -> b;
+ }

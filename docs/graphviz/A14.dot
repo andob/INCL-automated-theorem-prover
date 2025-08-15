@@ -1,0 +1,20 @@
+digraph {
+    edge [arrowhead=none];
+    a [label="(on both logics)\nP, wᵢ, +"];
+    b [label="P, wᵢ, -\n🗲"];
+    a -> b;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="(on K3 logic)\nP, wᵢ, +"];
+    b [label="¬P, wᵢ, +\n🗲"];
+    a -> b;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="(on LP logic)\nP, wᵢ, -"];
+    b [label="¬P, wᵢ, -\n🗲"];
+    a -> b;
+}

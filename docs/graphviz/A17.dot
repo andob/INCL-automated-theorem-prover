@@ -1,0 +1,26 @@
+digraph {
+    a [label="(on W logic)\n¬(P ⊃ Q), wᵢ, ±"];
+    b [label="P ⊃ ¬Q, wᵢ, ±"];
+    a -> b;
+}
+
+digraph {
+    a [label="P, wᵢ, +"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="P, wⱼ, +"];
+    a -> b; b -> c;
+}
+
+digraph {
+    a [label="¬P, wᵢ, +"];
+    b [label="wᵢ ⇉ wⱼ"];
+    c [label="¬P, wⱼ, +"];
+    a -> b; b -> c;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="(on I3 logic)\nP, wᵢ, +"];
+    b [label="¬P, wᵢ, +\n🗲"];
+    a -> b;
+}

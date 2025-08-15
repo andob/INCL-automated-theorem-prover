@@ -1,7 +1,7 @@
 [package]
 name = "target-wasm"
 version = "0.1.0"
-edition = "2018"
+edition = "2024"
 
 description = "An automated theorem prover based on Graham Priest's Introduction to Non-Classical Logic"
 repository = "https://github.com/andob/INCL-automated-theorem-prover"

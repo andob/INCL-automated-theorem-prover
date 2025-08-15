@@ -1,8 +1,5 @@
-/* todo this project uses "box patterns" and "let chains" features available in nightly versions of rust
-    migrate "box patterns" to "deref patterns" feature when it will become available in stable rust
-    migrate to a stable version of rust after "let chain" and "deref patterns" both become stable */
+//todo this project uses "box patterns" nightly rust feature; migrate to "deref patterns" feature when it will become available in stable rust
 #![feature(box_patterns)]
-#![feature(let_chains)]
 
 pub mod parser;
 pub mod formula;

@@ -1,0 +1,13 @@
+digraph {
+    a [label="¬(P ᐅ Q), wᵢ"];
+    b [label="wᵢ ☆ wⱼ\ntag wᵢ → wⱼ vertex with P"];
+    c [label="¬Q, wⱼ"];
+    a -> b; b b -> c;
+}
+
+digraph {
+    a [label="P ᐅ Q, wᵢ"];
+    b [label="wᵢ ⇉ wⱼ\nonly wᵢ → wⱼ vertices tagged with P"];
+    c [label="Q, wⱼ"];
+    a -> b; b b -> c;
+}

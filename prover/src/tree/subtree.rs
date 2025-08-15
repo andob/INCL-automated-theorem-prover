@@ -106,15 +106,15 @@ impl ProofSubtree
     {
         if !another_subtree.is_empty()
         {
-            if let Some(ref mut left) = &mut self.left
+            if let Some(left) = &mut self.left
                 { left.append_subtree(&another_subtree); }
             else { self.left = another_subtree.left.clone(); }
 
-            if let Some(ref mut middle) = &mut self.middle
+            if let Some(middle) = &mut self.middle
                 { middle.append_subtree(&another_subtree); }
             else { self.middle = another_subtree.middle.clone(); }
 
-            if let Some(ref mut right) = &mut self.right
+            if let Some(right) = &mut self.right
                 { right.append_subtree(&another_subtree); }
             else { self.right = another_subtree.right.clone(); }
         }

@@ -1,0 +1,8 @@
+ digraph {
+    a [label="◇◇(P ∧ Q), w0, +"];
+    b [label="◇(P ∧ Q), w1, +"];
+    c [label="P ∧ Q, w2, +"];
+    d [label="P, w2, +"];
+    e [label="Q, w2, +"];
+    a -> b; b -> c; c -> d; d -> e;
+ }

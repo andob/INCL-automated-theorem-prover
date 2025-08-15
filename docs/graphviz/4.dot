@@ -1,0 +1,12 @@
+digraph {
+    rankdir = "LR";
+    nodesep = 0.3;
+    ranksep = 2;
+    node[shape=circle];
+    edge[arrowsize=1];
+    A -> B
+    B -> A;
+    A -> A;
+    B -> C;
+    C -> A;
+}

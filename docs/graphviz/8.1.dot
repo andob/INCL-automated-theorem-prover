@@ -1,0 +1,6 @@
+digraph {
+    a [label="¬(P ≡ Q)"];
+    b [label="P"];
+    c [label="¬¬Q"];
+    a -> b; b -> c;
+}

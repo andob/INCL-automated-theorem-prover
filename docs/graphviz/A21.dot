@@ -1,0 +1,17 @@
+digraph {
+    a [label="α, ¬P, +"];
+    b [label="α ≥ 1 - μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="α, ¬P, -"];
+    b [label="α < 1 - μP"];
+    a -> b;
+}
+
+digraph {
+    a [label="α ≥ β"];
+    b [label="α < β\n🗲"];
+    a -> b;
+}

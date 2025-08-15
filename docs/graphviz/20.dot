@@ -1,0 +1,32 @@
+digraph {
+    edge [arrowhead=none];
+    a [label="P[a:x], wᵢ"];
+    b [label="¬P[a:x], wᵢ\n🗲"];
+    a -> b;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="a:x = b:y, wᵢ"];
+    b [label="P[a:x], wᵢ"];
+    c [label="¬P[b:y], wᵢ\n🗲"];
+    a -> b; b -> c;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="a:x = b:y, wᵢ"];
+    b [label="b:y = c:z, wᵢ"];
+    c [label="P[a:x], wᵢ"];
+    d [label="¬P[c:z], wᵢ\n🗲"];
+    a -> b; b -> c; c -> d;
+}
+
+digraph {
+    edge [arrowhead=none];
+    a [label="a:x = b:y, wᵢ"];
+    b [label="b:y = c:z, wᵢ"];
+    c [label="c:z = d:t, wᵢ"];
+    d [label="¬(a:x = d:t), wᵢ\n🗲"];
+    a -> b; b -> c; c -> d;
+}

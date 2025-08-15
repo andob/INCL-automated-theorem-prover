@@ -1,0 +1,7 @@
+digraph {
+    rankdir = "LR";
+    z -> "c:z";
+    y -> "b:y";
+    x -> "a:x";
+    "Binding variables" -> "Instantiated objects";
+}

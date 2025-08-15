@@ -1,0 +1,7 @@
+digraph {
+    a [label="∃x(∃y(∃z(P[x,y,z]))), wᵢ, +"];
+    b [label="∃y(∃z(P[a:x,y,z])), wᵢ, +"];
+    c [label="∃z(P[a:x,b:y,z]), wᵢ, +"];
+    d [label="P[a:x,b:y,c:z], wᵢ, +"];
+    a -> b; b -> c; c -> d;
+}

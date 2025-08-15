@@ -1,0 +1,27 @@
+digraph {
+    a [label="Rule 1:\nα, P ∧ Q, +"];
+    b [label="α, P, +"];
+    c [label="α, Q, +"];
+    a -> b; b -> c;
+ }
+
+digraph {
+    a [label="Rule 2:\nα, P ∧ Q, -"];
+    b [label="α, P, -"];
+    c [label="α, Q, -"];
+    a -> b; a -> c;
+ }
+
+digraph {
+    a [label="Rule 3:\nα, P ∨ Q, +"];
+    b [label="α, P, +"];
+    c [label="α, Q, +"];
+    a -> b; a -> c;
+ }
+
+digraph {
+    a [label="Rule 4:\nα, P ∨ Q, -"];
+    b [label="α, P, -"];
+    c [label="α, Q, -"];
+    a -> b; b -> c;
+ }

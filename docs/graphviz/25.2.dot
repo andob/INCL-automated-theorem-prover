@@ -1,0 +1,11 @@
+digraph {
+    a [label="Rule 14: (where P is an atom)\nα, ¬P, +"];
+    b [label="α ≥ 1 - μP"];
+    a -> b;
+ }
+
+digraph {
+    a [label="Rule 15: (where P is an atom)\nα, ¬P, -"];
+    b [label="α < 1 - μP"];
+    a -> b;
+ }

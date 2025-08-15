@@ -1,0 +1,7 @@
+digraph {
+    a [label="P ∧ Q, w0, +"];
+    b [label="P, w0, -"];
+    c [label="P, w0, +\n🗲"];
+    d [label="Q, w0, +"];
+    a -> b; b -> c; c -> d;
+}

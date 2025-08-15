@@ -1,0 +1,18 @@
+digraph {
+    a [label="(constant domain)\n∀x P[x], wᵢ, +"];
+    b [label="P[a:x], wᵢ, +"];
+    a -> b;
+}
+
+digraph {
+    a [label="(variable domain)\n∀x P[x], wᵢ, +"];
+    b [label="¬𝔈a:x, wᵢ, +"];
+    c [label="P[a:x], wᵢ, +"];
+    a -> b; a -> c;
+}
+
+digraph {
+    a [label="¬∀x P[x], wᵢ, ±"];
+    b [label="∃x ¬P[x], wᵢ, ±"];
+    a -> b;
+}

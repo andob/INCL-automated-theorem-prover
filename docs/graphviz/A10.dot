@@ -1,0 +1,17 @@
+digraph {
+    a [label="P ⊃ Q, wᵢ, +"];
+    b [label="¬P, wᵢ, +"];
+    c [label="Q, wᵢ, +"];
+    d [label="P ∨ ¬P, wᵢ, -"];
+    e [label="Q ∨ ¬Q, wᵢ, -"];
+    a -> b; a -> c; a -> d; d -> e;
+}
+
+digraph {
+    a [label="P ⊃ Q, wᵢ, -"];
+    b [label="P, wᵢ, +"];
+    c [label="Q, wᵢ, -"];
+    d [label="¬P, wᵢ, -"];
+    e [label="¬Q, wᵢ, +"];
+    a -> b; a -> d; d -> e; b -> c;
+}

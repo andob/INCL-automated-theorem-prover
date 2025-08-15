@@ -1,0 +1,14 @@
+digraph {
+    rankdir = "LR";
+    ranksep = 0.5;
+    a [label="¬¬(◇P∧□Q), w0"];
+    b [label="◇P∧□Q, w0"];
+    c [label="◇P, w0"];
+    d [label="□Q, w0"];
+    e [label="w0 ☆ w1"];
+    f [label="P, w1"];
+    g [label="w0 ⇉ w1"];
+    h [label="Q, w0"];
+    i [label="Q, w1"];
+    a->b;b->c;c->d;d->e;e->f;f->g;g->h;h->i;
+}

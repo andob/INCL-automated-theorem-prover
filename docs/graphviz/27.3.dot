@@ -1,0 +1,12 @@
+digraph {
+    rankdir = "LR";
+    nodesep = 0.3;
+    ranksep = 2;
+    node[shape=circle];
+    edge[arrowsize=1];
+    w0; w1; w2;
+    w0 -> w1; w1 -> w2;
+    w0[label="w0\nP:false\nQ:false"];
+    w1[label="w1\nP:false\nQ:false"];
+    w2[label="w2\nP:true\nQ:true"];
+}
