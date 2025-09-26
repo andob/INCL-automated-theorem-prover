@@ -311,7 +311,7 @@
       {
         "id": "12.13.6.e",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
+        "expected": "disproved",
         "premises": [ "∃x∀y(P[y] ≡ x = y)" ],
         "conclusion": "∃x P[x] ∧ ∀x∀y((P[x] ∧ P[y]) ⊃ x = y)"
       },

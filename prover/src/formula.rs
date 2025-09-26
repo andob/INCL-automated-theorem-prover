@@ -6,6 +6,7 @@ pub mod notations;
 mod operators;
 mod random;
 
+use itertools::Itertools;
 use smol_str::SmolStr;
 
 #[derive(Eq, PartialEq, Hash, Clone)]
@@ -74,25 +75,40 @@ pub struct PredicateArgument
 {
     pub variable_name : SmolStr, //variable name eg: x,y,z
     pub object_name : SmolStr, //object name eg: a,b,c
-    pub is_rigid_designator : bool,
 }
 
 impl PredicateArgument
 {
     pub fn new_variable(name : SmolStr) -> PredicateArgument
     {
-        let is_rigid_designator = !(name == "α" || name == "β" || name == "γ");
-        return PredicateArgument { variable_name:name.clone(), object_name:name, is_rigid_designator };
+        return PredicateArgument { variable_name:name.clone(), object_name:name };
     }
 
     pub fn new_instantiated_object(object_name : SmolStr, variable_name : SmolStr) -> PredicateArgument
     {
-        return PredicateArgument { variable_name, object_name, is_rigid_designator:true };
+        return PredicateArgument { variable_name, object_name };
     }
 
     pub fn is_instantiated(&self) -> bool
     {
-        return self.object_name != self.variable_name;
+        let first_char = self.object_name.chars().next().unwrap();
+        return self.object_name != self.variable_name && first_char <= 's';
+    }
+
+    pub fn is_free_object(&self) -> bool
+    {
+        let first_char = self.object_name.chars().next().unwrap();
+        return self.object_name == self.variable_name && first_char <= 's';
+    }
+
+    pub fn is_non_rigid_designator(&self) -> bool
+    {
+        return self.object_name == "α" || self.object_name == "β" || self.object_name == "γ"
+    }
+
+    pub fn is_rigid_designator(&self) -> bool
+    {
+        return !self.is_non_rigid_designator();
     }
 }
 

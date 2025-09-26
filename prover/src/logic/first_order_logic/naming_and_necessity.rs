@@ -70,7 +70,7 @@ impl Problem
     {
         return self.premises.clone().into_iter().chain(Some(self.conclusion.clone()))
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
-            .filter(|predicate_arg| !predicate_arg.is_rigid_designator)
+            .filter(|predicate_arg| !predicate_arg.is_rigid_designator())
             .collect::<BTreeSet<PredicateArgument>>();
     }
 }

@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
+use smol_str::SmolStr;
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{DefinitelyExists, Exists, ForAll, Non};
 use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument};
@@ -146,69 +147,16 @@ impl ForAllQuantifierRule
         let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
         let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==a);
 
-        let free_args = all_args_on_path.iter()
-            .filter(|y| y.object_name == y.variable_name && !all_formulas_on_path.iter()
-                .any(|formula| formula.contains_quantifier_with_argument(y)))
-            .collect::<BTreeSet<&PredicateArgument>>();
-
-        let instantiated_xs = all_args_on_path.iter()
-            .filter(|a| a.is_instantiated() && a.variable_name == x.variable_name && a.is_rigid_designator)
+        let object_names = all_args_on_path.iter()
+            .filter(|a| (a.is_instantiated() && a.is_rigid_designator()) || a.is_free_object())
             .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
-            .collect::<BTreeSet<&PredicateArgument>>();
-        for instantiated_x in instantiated_xs
+            .map(|a| a.object_name.clone())
+            .collect::<BTreeSet<SmolStr>>();
+
+        for object_name in object_names
         {
-            let (binded_p, binded_x) = p.binded(x, instantiated_x.object_name.clone(), extras);
+            let (binded_p, binded_x) = p.binded(x, object_name, extras);
             output_nodes.add(factory, binded_x.unwrap_or(x.clone()), binded_p, extras);
-        }
-
-        let equivalences = all_formulas_on_path.iter()
-            .filter_map(create_equality_formulas_filtering_lambda())
-            .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
-
-        let has_no_equivalent = |x : &PredicateArgument| !equivalences.iter()
-            .any(|(y, z)| x.variable_name == *y.variable_name || x.variable_name == *z.variable_name);
-
-        if has_no_equivalent(x)
-        {
-            let ys_with_no_equivalent = all_args_on_path.iter()
-                .filter(|y| x.variable_name != y.variable_name)
-                .filter(|y| (!y.is_instantiated() && has_no_equivalent(y)) || free_args.contains(y))
-                .collect::<BTreeSet<&PredicateArgument>>();
-
-            for y in ys_with_no_equivalent
-            {
-                let instantiated_ys = all_args_on_path.iter()
-                    .filter(|a| a.variable_name == y.variable_name && a.is_rigid_designator)
-                    .filter(|a| free_args.contains(a) || a.is_instantiated())
-                    .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
-                    .collect::<BTreeSet<&PredicateArgument>>();
-                for instantiated_y in instantiated_ys
-                {
-                    let (binded_p, binded_x) = p.binded(x, instantiated_y.object_name.clone(), extras);
-                    output_nodes.add(factory, binded_x.unwrap_or(x.clone()), binded_p, extras);
-                }
-            }
-        }
-        else
-        {
-            let equivalent_ys = equivalences.iter()
-                .filter(|(y, z)| x.variable_name == *y.variable_name || x.variable_name == *z.variable_name)
-                .map(|(y, z)| if x.variable_name == *y.variable_name { *z } else { *y })
-                .collect::<BTreeSet<&PredicateArgument>>();
-
-            for y in equivalent_ys
-            {
-                let instantiated_ys = all_args_on_path.iter()
-                    .filter(|a| a.variable_name == y.variable_name && a.is_rigid_designator)
-                    .filter(|a| free_args.contains(a) || a.is_instantiated())
-                    .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
-                    .collect::<BTreeSet<&PredicateArgument>>();
-                for instantiated_y in instantiated_ys
-                {
-                    let (binded_p, binded_x) = p.binded(x, instantiated_y.object_name.clone(), extras);
-                    output_nodes.add(factory, binded_x.unwrap_or(x.clone()), binded_p, extras);
-                }
-            }
         }
     }
 }

@@ -198,7 +198,7 @@ impl ProofTreeNode
     {
         if let Some(modality) = logic.get_modality_ref() &&
             !modality.was_necessity_already_applied(factory, &self.formula) &&
-            self.formula.get_all_predicate_arguments().iter().all(|arg| arg.is_rigid_designator) &&
+            self.formula.get_all_predicate_arguments().iter().all(|arg| arg.is_rigid_designator()) &&
             let Some(subtree) = modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras())
         {
             return subtree;

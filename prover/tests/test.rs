@@ -49,6 +49,7 @@ fn test_proof_status() -> Result<()>
         if problem_json.expected == EXPECTED_TIMEOUT && !proof_tree.has_timeout
         {
             eprintln!("\nExpected problem {} to timeout but it did not!", problem_id);
+            eprintln!("\n It was {} proved!", if !proof_tree.is_proof_correct { "dis" } else { "" });
             assert!(proof_tree.has_timeout);
         }
 
