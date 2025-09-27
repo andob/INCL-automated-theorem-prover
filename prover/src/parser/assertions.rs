@@ -33,11 +33,12 @@ impl FirstOrderLogicParserAssertions
                 Self::run_assertions_impl(q, &variable_stack)?;
             }
 
-            Formula::Atomic(_, extras) if variable_stack.is_empty() =>
+            Formula::Atomic(_, extras) =>
             {
                 for arg in extras.predicate_args.iter()
                 {
-                    if arg.is_variable() && arg.is_rigid_designator()
+                    if arg.is_variable() && arg.is_rigid_designator() &&
+                        !variable_stack.contains(&arg.variable_name)
                     {
                         return Err(anyhow!("Invalid syntax: in {}, {} should be an object!", p, arg))
                     }
