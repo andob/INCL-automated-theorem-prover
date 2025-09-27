@@ -9,7 +9,6 @@ use prover::logic::LogicFactory;
 use prover::parser::token_types::TokenTypeID;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
-use std::error::Error;
 use strum::IntoEnumIterator;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsError;
@@ -108,25 +107,20 @@ pub fn get_problem_catalog() -> String
     return book_chapters_json;
 }
 
-macro_rules! format_error
-{
-    ($err : expr) => { format!("{}\n{}", $err.to_string(), $err.source().map(|s| s.to_string()).unwrap_or_default()).as_str() };
-}
-
 #[wasm_bindgen]
 pub fn solve_problem(problem_raw_json : String) -> Result<String, JsError>
 {
     let problem_parsed_json = serde_json::from_str::<ProblemJSON>(problem_raw_json.as_str())
-        .map_err(|err| JsError::new(format_error!(err)))?;
+        .map_err(|err| JsError::new(err.to_string().as_str()))?;
 
     let problem = problem_parsed_json.to_problem()
-        .map_err(|err| JsError::new(format_error!(err)))?;
+        .map_err(|err| JsError::new(err.chain().last().unwrap().to_string().as_str()))?;
 
     let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
 
     let proof_tree = problem.prove();
     let proof_tree_json = proof_tree.to_json(&formula_format_options)
-        .map_err(|err| JsError::new(format_error!(err)))?;
+        .map_err(|err| JsError::new(err.chain().last().unwrap().to_string().as_str()))?;
 
     return Ok(proof_tree_json);
 }

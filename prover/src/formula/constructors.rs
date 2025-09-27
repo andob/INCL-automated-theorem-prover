@@ -87,7 +87,7 @@ impl PredicateArguments
 
 impl PredicateArgument
 {
-    pub fn new(name : String) -> PredicateArgument
+    pub fn new(name : SmolStr) -> PredicateArgument
     {
         if name.contains(':')
         {
@@ -95,11 +95,11 @@ impl PredicateArgument
             let index_of_colon = name.find(':').unwrap();
             let object_name = name.substring(0, index_of_colon).to_smolstr();
             let variable_name = name.substring(index_of_colon+1, name.len()).to_smolstr();
-            return PredicateArgument::new_instantiated_object(object_name, variable_name);
+            return PredicateArgument { variable_name, object_name };
         }
 
-        //this is an uninstantiated predicate argument
-        return PredicateArgument::new_variable(name.to_smolstr());
+        let (variable_name, object_name) = (name.clone(), name);
+        return PredicateArgument { variable_name, object_name };
     }
 }
 

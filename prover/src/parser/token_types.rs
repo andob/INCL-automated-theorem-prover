@@ -37,7 +37,6 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
                     return Ok(Formula::Exists(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
                 }
             },
@@ -53,7 +52,6 @@ impl TokenType
                 {
                     let formula_extras = FormulaExtras::empty();
                     let predicate_args = Self::parse_predicate_arguments(&name);
-                    Self::check_for_duplicate_quantifier_bindings(&predicate_args[0], &args[0])?;
                     return Ok(Formula::ForAll(predicate_args[0].clone(), bx!(args[0].clone()), formula_extras));
                 }
             },
@@ -68,8 +66,10 @@ impl TokenType
                 to_formula: |_,args|
                 {
                     let formula_format_options = FormulaFormatOptions::default();
-                    let left = PredicateArgument::new(args[0].to_string_with_options(&formula_format_options));
-                    let right = PredicateArgument::new(args[1].to_string_with_options(&formula_format_options));
+                    let left_name = args[0].to_string_with_options(&formula_format_options);
+                    let right_name = args[1].to_string_with_options(&formula_format_options);
+                    let left = PredicateArgument::new(left_name.to_smolstr());
+                    let right = PredicateArgument::new(right_name.to_smolstr());
                     let formula_extras = FormulaExtras::empty();
                     return Ok(Formula::Equals(left, right, formula_extras));
                 }
@@ -329,18 +329,7 @@ impl TokenType
         }
 
         return PredicateArguments::new(input.split(",")
-            .map(|token| PredicateArgument::new(token.trim().to_string()))
+            .map(|token| PredicateArgument::new(token.trim().to_smolstr()))
             .collect());
-    }
-
-    fn check_for_duplicate_quantifier_bindings(x : &PredicateArgument, p : &Formula) -> Result<()>
-    {
-        let regex = Regex::new(format!("(∃|∀){}(\\(| )", x.to_string()).as_str())?;
-        if regex.is_match(p.to_string().as_str())
-        {
-            return Err(anyhow!("Invalid syntax: {} is used more than once in quantifiers!", x.to_string()));
-        }
-
-        return Ok(());
     }
 }

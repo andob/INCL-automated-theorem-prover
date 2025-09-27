@@ -4,6 +4,7 @@ use smol_str::ToSmolStr;
 use crate::codeloc;
 use crate::formula::{AtomicFormulaExtras, Formula};
 use crate::logic::Logic;
+use crate::parser::assertions::FirstOrderLogicParserAssertions;
 use crate::parser::models::{OperatorPrecedence, Token, TokenCategory, TokenType};
 use crate::parser::token_types::TokenTypeID;
 
@@ -77,7 +78,11 @@ impl <'a> LogicalExpressionParserImpl<'a>
 
         let mut parser = LogicalExpressionParserImpl { input: &parser_input, state: &mut parser_state };
 
-        return parser.next_expression(OperatorPrecedence::Lowest);
+        let result_formula = parser.next_expression(OperatorPrecedence::Lowest).context(codeloc!())?;
+
+        FirstOrderLogicParserAssertions::run_assertions(&result_formula).context(codeloc!())?;
+
+        return Ok(result_formula);
     }
 
     fn get_tokens(word : &str, token_types : &Vec<TokenType>) -> Vec<Token>

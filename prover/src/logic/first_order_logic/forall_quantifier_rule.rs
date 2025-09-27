@@ -148,7 +148,7 @@ impl ForAllQuantifierRule
         let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==a);
 
         let object_names = all_args_on_path.iter()
-            .filter(|a| (a.is_instantiated() && a.is_rigid_designator()) || a.is_free_object())
+            .filter(|a| a.is_instantiated() || a.is_free_object())
             .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
             .map(|a| a.object_name.clone())
             .collect::<BTreeSet<SmolStr>>();

@@ -45,7 +45,7 @@ impl LogicRule for NonRigidDesignatorRules
                 for non_rigid_designator in factory.problem_flags.non_rigid_designators.iter()
                 {
                     let variable_name_factory = ExistsQuantifierRule{}.get_object_name_factory2(factory, node, &new_equality_nodes);
-                    let new_variable = PredicateArgument::new_variable((*variable_name_factory)());
+                    let new_variable = PredicateArgument::new((*variable_name_factory)());
                     let extras = FormulaExtras::empty().in_world(new_possible_world);
                     let equality = Formula::Equals(non_rigid_designator.clone(), new_variable, extras);
                     new_equality_nodes.push(factory.new_node(equality));

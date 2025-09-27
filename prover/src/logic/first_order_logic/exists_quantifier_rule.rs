@@ -3,7 +3,7 @@ use box_macro::bx;
 use smol_str::{format_smolstr, SmolStr, StrExt, ToSmolStr};
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
-use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments};
+use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments, FIRST_OBJECT_NAME, LAST_OBJECT_NAME};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::LogicRule;
@@ -80,7 +80,7 @@ impl ExistsQuantifierRule
 
         return Box::new(move ||
         {
-            let mut char = 'a';
+            let mut char = FIRST_OBJECT_NAME;
             let mut aux = 0u64;
             loop
             {
@@ -89,8 +89,8 @@ impl ExistsQuantifierRule
 
                 if !used_names.contains(&name) { return name; }
 
-                if char < 'z' { char = ((char as u8) + 1) as char; }
-                else { char = 'a'; aux += 1; }
+                if char < LAST_OBJECT_NAME { char = ((char as u8) + 1) as char; }
+                else { char = FIRST_OBJECT_NAME; aux += 1; }
             }
         });
     }

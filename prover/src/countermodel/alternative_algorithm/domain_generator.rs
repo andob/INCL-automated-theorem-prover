@@ -2,7 +2,7 @@ use std::cmp::max;
 use std::collections::BTreeSet;
 use std::rc::Rc;
 use smol_str::{format_smolstr, SmolStr, ToSmolStr};
-use crate::formula::PredicateArgument;
+use crate::formula::{PredicateArgument, FIRST_OBJECT_NAME, LAST_OBJECT_NAME};
 use crate::logic::Logic;
 
 pub struct CountermodelDomainGenerator
@@ -45,7 +45,7 @@ impl CountermodelDomainGenerator
     
     fn generate_next_unique_name(&self, used_names : &BTreeSet<SmolStr>) -> SmolStr
     {
-        let mut char = 'a';
+        let mut char = FIRST_OBJECT_NAME;
         let mut aux = 0u64;
         loop
         {
@@ -54,8 +54,8 @@ impl CountermodelDomainGenerator
 
             if !used_names.contains(&name) { return name; }
 
-            if char < 'z' { char = ((char as u8) + 1) as char; }
-            else { char = 'a'; aux += 1; }
+            if char < LAST_OBJECT_NAME { char = ((char as u8) + 1) as char; }
+            else { char = FIRST_OBJECT_NAME; aux += 1; }
         }
     }
 }

@@ -70,6 +70,9 @@ pub struct PredicateArguments
     args : Vec<PredicateArgument>
 }
 
+pub const FIRST_OBJECT_NAME : char = 'a';
+pub const LAST_OBJECT_NAME : char = 's';
+
 #[derive(Eq, Hash, Ord, PartialOrd, Clone)]
 pub struct PredicateArgument
 {
@@ -79,26 +82,22 @@ pub struct PredicateArgument
 
 impl PredicateArgument
 {
-    pub fn new_variable(name : SmolStr) -> PredicateArgument
+    pub fn is_variable(&self) -> bool
     {
-        return PredicateArgument { variable_name:name.clone(), object_name:name };
-    }
-
-    pub fn new_instantiated_object(object_name : SmolStr, variable_name : SmolStr) -> PredicateArgument
-    {
-        return PredicateArgument { variable_name, object_name };
+        let first_char = self.object_name.chars().next().unwrap();
+        return self.object_name == self.variable_name && first_char > LAST_OBJECT_NAME;
     }
 
     pub fn is_instantiated(&self) -> bool
     {
         let first_char = self.object_name.chars().next().unwrap();
-        return self.object_name != self.variable_name && first_char <= 's';
+        return self.object_name != self.variable_name && first_char <= LAST_OBJECT_NAME;
     }
 
     pub fn is_free_object(&self) -> bool
     {
         let first_char = self.object_name.chars().next().unwrap();
-        return self.object_name == self.variable_name && first_char <= 's';
+        return self.object_name == self.variable_name && first_char <= LAST_OBJECT_NAME;
     }
 
     pub fn is_non_rigid_designator(&self) -> bool
