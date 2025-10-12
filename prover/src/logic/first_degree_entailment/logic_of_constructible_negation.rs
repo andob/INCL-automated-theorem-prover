@@ -3,7 +3,7 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
@@ -124,7 +124,7 @@ impl LogicOfConstructibleNegationImplicationRules
 
 impl LogicRule for LogicOfConstructibleNegationImplicationRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -173,22 +173,30 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
                 let p_imply_non_q = Imply(bx!(p.clone()), bx!(non_q), extras.clone());
                 let p_imply_non_q_node = factory.new_node(p_imply_non_q);
 
-                return Some(ProofSubtree::with_middle_node(p_imply_non_q_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(p_imply_non_q_node));
             }
 
             p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return None };
+                if self.modality.was_necessity_already_applied(factory, p_as_formula)
+                {
+                    return LogicRuleResult::Empty;
+                }
+
                 return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 
             non_p_as_formula@Non(box Atomic(_, _), extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, non_p_as_formula) { return None };
+                if self.modality.was_necessity_already_applied(factory, non_p_as_formula)
+                {
+                    return LogicRuleResult::Empty;
+                }
+                
                 return self.modality.apply_necessity(factory, node, &non_p_as_formula, &extras);
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

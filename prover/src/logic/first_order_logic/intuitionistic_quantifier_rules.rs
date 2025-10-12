@@ -1,6 +1,6 @@
 use crate::formula::Formula::ForAll;
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{LogicRule, LogicRuleCollection};
+use crate::logic::{LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -21,7 +21,7 @@ impl IntuitionisticQuantifierRules
 
 impl LogicRule for IntuitionisticQuantifierRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         let modality = factory.get_logic().get_modality_ref().unwrap();
 
@@ -30,15 +30,17 @@ impl LogicRule for IntuitionisticQuantifierRules
             ForAll(_, _, extras)
             if extras.sign == Plus && !self.was_modality_already_applied(factory, node) =>
             {
-                return modality.apply_necessity(factory, node, &node.formula, extras)
-                        .map(|subtree| subtree.with_hidden_nodes());
+                let mut result = modality.apply_necessity(factory, node, &node.formula, extras);
+                result.hide_all_nodes();
+                return result;
             }
 
             ForAll(_, _, extras)
             if extras.sign == Minus && !self.was_modality_already_applied(factory, node) =>
             {
-                return modality.apply_possibility(factory, node, &node.formula, extras)
-                        .map(|subtree| subtree.with_hidden_nodes());
+                let mut result = modality.apply_possibility(factory, node, &node.formula, extras);
+                result.hide_all_nodes();
+                return result;
             }
 
             _ =>

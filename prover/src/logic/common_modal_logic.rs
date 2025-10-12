@@ -4,7 +4,7 @@ use box_macro::bx;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Imply, Necessary, Non, Possible, StrictImply};
 use crate::graph::{Graph, GraphVertex};
-use crate::logic::{Logic, LogicRule};
+use crate::logic::{Logic, LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
@@ -25,7 +25,7 @@ impl <LOGIC : Logic> ModalLogicRules<LOGIC>
 
 impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -35,7 +35,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 let necessary_non_p = Necessary(bx!(non_p), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
 
-                return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
             Non(box Necessary(box p, _), extras) =>
@@ -44,7 +44,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 let possible_non_p = Possible(bx!(non_p), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
 
-                return Some(ProofSubtree::with_middle_node(possible_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(possible_non_p_node));
             }
 
             Possible(box p, extras) =>
@@ -74,7 +74,7 @@ impl <LOGIC : Logic> LogicRule for ModalLogicRules<LOGIC>
                 return self.modality.apply_possibility(factory, node, &non_p_imply_q, extras);
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }
@@ -116,17 +116,20 @@ impl <LOGIC : Logic> Modality<LOGIC>
     pub fn apply_possibility(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         p : &Formula, extras : &FormulaExtras,
-    ) -> Option<ProofSubtree>
+    ) -> LogicRuleResult
     {
-        if !(self.is_possibility_applicable)(factory, node, extras) { return None };
+        if !(self.is_possibility_applicable)(factory, node, extras)
+        {
+            return LogicRuleResult::Empty;
+        }
 
         self.initialize_graph_if_needed(factory);
 
         let logic_pointer = factory.get_logic().clone();
-        let logic = logic_pointer.cast_to::<LOGIC>()?;
+        let logic = logic_pointer.cast_to::<LOGIC>().unwrap();
 
         let current_world = extras.possible_world;
-        let forked_world = factory.modality_graph.nodes().max()?.fork();
+        let forked_world = factory.modality_graph.nodes().max().unwrap().fork();
 
         factory.modality_graph.add_node(forked_world);
         factory.modality_graph.add_vertex(GraphVertex::new(current_world, forked_world));
@@ -142,15 +145,18 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let mut output_nodes = vec![comment_node, p_in_forked_world_node];
         self.reapply_necessity_after_possibility(factory, node, forked_world, &mut output_nodes);
 
-        return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+        return LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
 
     pub fn apply_necessity(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         p : &Formula, extras : &FormulaExtras,
-    ) -> Option<ProofSubtree>
+    ) -> LogicRuleResult
     {
-        if !(self.is_necessity_applicable)(factory, node, extras) { return None };
+        if !(self.is_necessity_applicable)(factory, node, extras)
+        {
+            return LogicRuleResult::Empty;
+        }
 
         self.initialize_graph_if_needed(factory);
 
@@ -169,7 +175,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let output_nodes = self.reapply_necessity(factory, &mut reapplication_data, PossibleWorld::zero());
         factory.push_necessity_reapplication(reapplication_data);
 
-        return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+        return LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
 
     fn reapply_necessity_after_possibility(
@@ -248,8 +254,8 @@ impl <LOGIC : Logic> Modality<LOGIC>
 
 pub struct ModalityRef
 {
-    apply_possibility_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
-    apply_necessity_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> Option<ProofSubtree>>,
+    apply_possibility_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> LogicRuleResult>,
+    apply_necessity_ref : Box<dyn Fn(&mut RuleApplyFactory, &ProofTreeNode, &Formula, &FormulaExtras) -> LogicRuleResult>,
     was_necessity_already_applied_ref : Box<dyn Fn(&mut RuleApplyFactory, &Formula) -> bool>,
 }
 
@@ -271,12 +277,12 @@ impl ModalityRef
         }
     }
 
-    pub fn apply_possibility(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> Option<ProofSubtree>
+    pub fn apply_possibility(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> LogicRuleResult
     {
         return (self.apply_possibility_ref)(factory, node, p, extras);
     }
 
-    pub fn apply_necessity(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> Option<ProofSubtree>
+    pub fn apply_necessity(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode, p : &Formula, extras : &FormulaExtras) -> LogicRuleResult
     {
         return (self.apply_necessity_ref)(factory, node, p, extras);
     }

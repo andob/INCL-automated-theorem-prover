@@ -25,6 +25,7 @@ use crate::logic::temporal_modal_logic::TemporalModalLogic;
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 use crate::tree::node::ProofTreeNode;
+use crate::tree::node_factory::ProofTreeNodeID;
 use crate::tree::subtree::ProofSubtree;
 
 pub mod propositional_logic;
@@ -38,6 +39,7 @@ mod temporal_modal_logic;
 mod conditional_modal_logic;
 mod first_degree_entailment;
 mod fuzzy_logic;
+mod logic_rule_result_impl;
 
 pub trait Logic : Any
 {
@@ -80,7 +82,20 @@ impl dyn Logic
 
 pub trait LogicRule
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>;
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult;
+}
+
+pub enum LogicRuleResult
+{
+    Empty,
+    Subtree(ProofSubtree),
+    Subtrees(Vec<(ProofTreeNodeID, ProofSubtree)>),
+    FromMultipleResults(LogicRuleResultCollection)
+}
+
+pub struct LogicRuleResultCollection
+{
+    results : Vec<LogicRuleResult>
 }
 
 pub struct LogicRuleCollection
@@ -100,17 +115,18 @@ impl LogicRuleCollection
         self.rules.append(&mut another.rules);
     }
 
-    pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    pub fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         for logic_rule in &self.rules
         {
-            if let Some(subtree) = logic_rule.apply(factory, node)
+            let result = logic_rule.apply(factory, node);
+            if !result.is_empty()
             {
-                return Some(subtree);
+                return result;
             }
         }
 
-        return None;
+        return LogicRuleResult::Empty;
     }
 }
 

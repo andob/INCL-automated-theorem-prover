@@ -3,7 +3,7 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Imply, Non};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
@@ -97,7 +97,7 @@ struct RMingle3ImplicationRules {}
 
 impl LogicRule for RMingle3ImplicationRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -117,7 +117,8 @@ impl LogicRule for RMingle3ImplicationRules
                 let p_and_non_p_plus = And(bx!(p.clone()), bx!(non_p), extras.clone()).with_sign(Plus);
                 let p_and_non_p_plus_node = factory.new_node_with_subnode(p_and_non_p_plus, q_and_non_q_plus_node);
 
-                return Some(ProofSubtree::with_left_middle_right_nodes(p_minus_node, non_q_minus_node, p_and_non_p_plus_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_middle_right_nodes(
+                        p_minus_node, non_q_minus_node, p_and_non_p_plus_node));
             }
 
             Imply(box p, box q, extras) if extras.sign == Minus =>
@@ -134,7 +135,7 @@ impl LogicRule for RMingle3ImplicationRules
                 let non_q_plus = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
                 let non_q_plus_node = factory.new_node_with_subnode(non_q_plus, non_p_minus_node);
 
-                return Some(ProofSubtree::with_left_right_nodes(p_plus_node, non_q_plus_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(p_plus_node, non_q_plus_node));
             }
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Plus =>
@@ -144,7 +145,7 @@ impl LogicRule for RMingle3ImplicationRules
 
                 let p_node = factory.new_node_with_subnode(p.clone(), non_q_node);
 
-                return Some(ProofSubtree::with_middle_node(p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(p_node));
             }
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Minus =>
@@ -154,10 +155,10 @@ impl LogicRule for RMingle3ImplicationRules
                 let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Minus);
                 let non_q_node = factory.new_node(non_q);
 
-                return Some(ProofSubtree::with_left_right_nodes(p_node, non_q_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(p_node, non_q_node));
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

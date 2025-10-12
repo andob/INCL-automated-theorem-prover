@@ -4,7 +4,7 @@ use box_macro::bx;
 use crate::default_log_line_formatter;
 use crate::formula::Formula::{InFuture, InPast, Necessary, Non, Possible};
 use crate::graph::{Graph, GraphVertex};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -103,7 +103,7 @@ impl TemporalModalLogicRules
 
 impl LogicRule for TemporalModalLogicRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -114,7 +114,7 @@ impl LogicRule for TemporalModalLogicRules
                 let necessary_non_p = Necessary(bx!(non_p_in_past), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
 
-                return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
             Non(box Possible(box InFuture(box p, _), _), extras) =>
@@ -124,7 +124,7 @@ impl LogicRule for TemporalModalLogicRules
                 let necessary_non_p = Necessary(bx!(non_p_in_future), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
 
-                return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
             Non(box Necessary(box InPast(box p, _), _), extras) =>
@@ -134,7 +134,7 @@ impl LogicRule for TemporalModalLogicRules
                 let possible_non_p = Possible(bx!(non_p_in_past), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
 
-                return Some(ProofSubtree::with_middle_node(possible_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(possible_non_p_node));
             }
 
             Non(box Necessary(box InFuture(box p, _), _), extras) =>
@@ -144,7 +144,7 @@ impl LogicRule for TemporalModalLogicRules
                 let possible_non_p = Possible(bx!(non_p_in_future), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
 
-                return Some(ProofSubtree::with_middle_node(possible_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(possible_non_p_node));
             }
 
             Possible(box InPast(box p, _), extras) =>
@@ -183,7 +183,7 @@ impl LogicRule for TemporalModalLogicRules
                 return self.modality.apply_necessity(factory, node, p, extras);
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         };
     }
 }

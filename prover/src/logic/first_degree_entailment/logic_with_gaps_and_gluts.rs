@@ -4,7 +4,7 @@ use box_macro::bx;
 use crate::formula::Formula::{And, Conditional, Non, Or};
 use crate::formula::{FormulaExtras, PossibleWorld};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -116,7 +116,7 @@ impl LogicWithGapsGlutsAndWorldsConditionalRules
 
 impl LogicRule for LogicWithGapsGlutsAndWorldsConditionalRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -156,7 +156,7 @@ impl LogicRule for LogicWithGapsGlutsAndWorldsConditionalRules
                 return self.modality.apply_necessity(factory, node, &minus_p_or_minus_non_q, extras);
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

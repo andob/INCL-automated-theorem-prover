@@ -1,6 +1,6 @@
 use std::collections::BTreeSet;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument};
-use crate::logic::{LogicRule, LogicRuleCollection};
+use crate::logic::{LogicRule, LogicRuleCollection, LogicRuleResult, LogicRuleResultCollection};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::problem::Problem;
@@ -23,7 +23,7 @@ impl NonRigidDesignatorRules
 
 impl LogicRule for NonRigidDesignatorRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         if factory.problem_flags.non_rigid_designators.is_empty()
         {
@@ -33,7 +33,8 @@ impl LogicRule for NonRigidDesignatorRules
         let old_possible_worlds = factory.modality_graph.nodes()
             .cloned().collect::<BTreeSet<PossibleWorld>>();
 
-        if let Some(mut result_subtree) = self.base_rules.apply(factory, node)
+        let base_result = self.base_rules.apply(factory, node);
+        if !base_result.is_empty()
         {
             let new_possible_worlds = factory.modality_graph.nodes().cloned()
                 .filter(|possible_world| !old_possible_worlds.contains(possible_world))
@@ -54,13 +55,15 @@ impl LogicRule for NonRigidDesignatorRules
 
             if !new_equality_nodes.is_empty()
             {
-                result_subtree.append(&ProofSubtree::with_middle_vertical_nodes(new_equality_nodes));
+                let mut results = LogicRuleResultCollection::with(base_result);
+                results.push(LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(new_equality_nodes)));
+                return results.joined();
             }
-            
-            return Some(result_subtree);
+
+            return base_result;
         }
 
-        return None;
+        return LogicRuleResult::Empty;
     }
 }
 

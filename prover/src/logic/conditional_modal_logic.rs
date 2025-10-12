@@ -6,7 +6,7 @@ use crate::formula::{AtomicFormulaExtras, Formula, PossibleWorld, PredicateArgum
 use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, DefinitelyExists, Equals, Exists, ForAll, GreaterOrEqualThan, Imply, InFuture, InPast, LessThan, Necessary, Non, Or, Possible, StrictImply};
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::GraphVertex;
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalityRef};
 use crate::logic::propositional_logic::PropositionalLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -105,7 +105,7 @@ impl ConditionalModalLogicRules
 
 impl LogicRule for ConditionalModalLogicRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -115,7 +115,7 @@ impl LogicRule for ConditionalModalLogicRules
                 let necessary_non_p = Necessary(bx!(non_p), extras.clone());
                 let necessary_non_p_node = factory.new_node(necessary_non_p);
 
-                return Some(ProofSubtree::with_middle_node(necessary_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(necessary_non_p_node));
             }
 
             Non(box Necessary(box p, _), extras) =>
@@ -124,7 +124,7 @@ impl LogicRule for ConditionalModalLogicRules
                 let possible_non_p = Possible(bx!(non_p), extras.clone());
                 let possible_non_p_node = factory.new_node(possible_non_p);
 
-                return Some(ProofSubtree::with_middle_node(possible_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(possible_non_p_node));
             }
 
             Possible(p, extras) =>
@@ -140,7 +140,7 @@ impl LogicRule for ConditionalModalLogicRules
             Non(box Conditional(box p, box q, _), extras) =>
             {
                 let logic_pointer = factory.get_logic().clone();
-                let logic = logic_pointer.cast_to::<ConditionalModalLogic>()?;
+                let logic = logic_pointer.cast_to::<ConditionalModalLogic>().unwrap();
 
                 let formula_format_options = FormulaFormatOptions::default();
                 let p_as_string = p.to_string_with_options(&formula_format_options);
@@ -163,7 +163,7 @@ impl LogicRule for ConditionalModalLogicRules
                 factory.modality_graph.set_log_line_formatter(default_log_line_formatter!());
 
                 let previous_world = extras.possible_world;
-                let current_world = *factory.modality_graph.nodes().max()?;
+                let current_world = *factory.modality_graph.nodes().max().unwrap();
                 let current_vertex = GraphVertex::new(previous_world, current_world);
                 factory.modality_graph.add_vertex_tag(current_vertex.clone(), p.with_stripped_extras());
 
@@ -208,7 +208,7 @@ impl LogicRule for ConditionalModalLogicRules
                 return subtree;
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

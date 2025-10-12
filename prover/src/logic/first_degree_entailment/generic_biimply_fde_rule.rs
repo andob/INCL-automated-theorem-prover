@@ -2,7 +2,7 @@ use box_macro::bx;
 use crate::formula::Formula::{And, BiImply, Imply, Non};
 use crate::formula::{Formula, FormulaExtras};
 use crate::formula::Sign::Plus;
-use crate::logic::LogicRule;
+use crate::logic::{LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -21,7 +21,7 @@ impl GenericBiImplyAsConjunctionRule
 
 impl LogicRule for GenericBiImplyAsConjunctionRule
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -30,7 +30,7 @@ impl LogicRule for GenericBiImplyAsConjunctionRule
                 let conjunction = self.build_generic_biimply_conjunction(p, q, extras);
                 let conjunction_node = factory.new_node(conjunction);
 
-                return Some(ProofSubtree::with_middle_node(conjunction_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(conjunction_node));
             }
 
             Non(box BiImply(box p, box q, ..), extras) =>
@@ -39,10 +39,10 @@ impl LogicRule for GenericBiImplyAsConjunctionRule
                 let non_conjunction = Non(bx!(conjunction), extras.with_sign(Plus).with_is_hidden(true));
                 let non_conjunction_node = factory.new_node(non_conjunction);
 
-                return Some(ProofSubtree::with_middle_node(non_conjunction_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(non_conjunction_node));
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

@@ -9,7 +9,7 @@ use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRul
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
 use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_formulas_filtering_lambda;
-use crate::logic::LogicRule;
+use crate::logic::{LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -18,7 +18,7 @@ pub struct ForAllQuantifierRule {}
 
 impl LogicRule for ForAllQuantifierRule
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -28,7 +28,7 @@ impl LogicRule for ForAllQuantifierRule
                 let exists_non_p = Exists(x.clone(), bx!(non_p), extras.with_is_hidden(false));
                 let exists_non_p_node = factory.new_node(exists_non_p);
 
-                return Some(ProofSubtree::with_middle_node(exists_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(exists_non_p_node));
             }
 
             ForAll(x, box p, extras) if extras.sign == Plus =>
@@ -41,7 +41,7 @@ impl LogicRule for ForAllQuantifierRule
                 return self.apply_for_all_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }
@@ -108,10 +108,10 @@ impl ForAllQuantifierRule
     fn apply_for_all_quantification(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
-    ) -> Option<ProofSubtree>
+    ) -> LogicRuleResult
     {
         let logic_pointer = factory.get_logic().clone();
-        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
 
         let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
         self.apply_for_all_quantification_impl(factory, node, x, p, extras, &mut output_nodes);
@@ -124,7 +124,7 @@ impl ForAllQuantifierRule
             output_nodes.add(factory, instantiated_x.unwrap_or(x.clone()), instantiated_p, extras);
         }
 
-        return Some(output_nodes.to_proof_subtree(factory));
+        return LogicRuleResult::Subtree(output_nodes.to_proof_subtree(factory));
     }
 
     fn apply_for_all_quantification_impl(&self,

@@ -1,3 +1,4 @@
+use crate::logic::LogicRuleResult;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};
@@ -8,7 +9,7 @@ pub struct ProofSubtree
     pub left : Option<Box<ProofTreeNode>>,
     pub middle : Option<Box<ProofTreeNode>>,
     pub right : Option<Box<ProofTreeNode>>,
-    cloned_subtrees_with_new_ids : Vec<Box<ProofSubtree>>,
+    pub cloned_subtrees_with_new_ids : Vec<Box<ProofSubtree>>,
 }
 
 impl ProofSubtree
@@ -87,12 +88,11 @@ impl ProofSubtree
         return ProofSubtree::new(Some(Box::new(left)), Some(Box::new(middle)), Some(Box::new(right)));
     }
 
-    pub fn with_hidden_nodes(mut self) -> ProofSubtree
+    pub fn hide_all_nodes(&mut self)
     {
         if let Some(left) = &mut self.left { left.hide_all_nodes(); }
         if let Some(middle) = &mut self.middle { middle.hide_all_nodes(); }
         if let Some(right) = &mut self.right { right.hide_all_nodes(); }
-        return self;
     }
 
     fn attach_new_ids(&mut self, node_factory : &mut ProofTreeNodeFactory)

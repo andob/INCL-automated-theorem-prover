@@ -6,7 +6,7 @@ use crate::formula::Formula::{And, Atomic, BiImply, Comment, Conditional, Defini
 use crate::formula::{AtomicFormulaExtras, Formula, FormulaExtras, PredicateArgument, PredicateArguments, FIRST_OBJECT_NAME, LAST_OBJECT_NAME};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
-use crate::logic::LogicRule;
+use crate::logic::{LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::subtree::ProofSubtree;
@@ -15,7 +15,7 @@ pub struct ExistsQuantifierRule {}
 
 impl LogicRule for ExistsQuantifierRule
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -25,7 +25,7 @@ impl LogicRule for ExistsQuantifierRule
                 let for_all_non_p = ForAll(x.clone(), bx!(non_p), extras.with_is_hidden(false));
                 let for_all_non_p_node = factory.new_node(for_all_non_p);
 
-                return Some(ProofSubtree::with_middle_node(for_all_non_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(for_all_non_p_node));
             }
 
             Exists(x, box p, extras) if extras.sign == Plus =>
@@ -38,7 +38,7 @@ impl LogicRule for ExistsQuantifierRule
                 return self.apply_exists_quantification(factory, node, x, p, &extras.with_is_hidden(false));
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }
@@ -48,7 +48,7 @@ impl ExistsQuantifierRule
     fn apply_exists_quantification(&self,
         factory : &mut RuleApplyFactory, node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
-    ) -> Option<ProofSubtree>
+    ) -> LogicRuleResult
     {
         let mut output_nodes: Vec<ProofTreeNode> = vec![];
 
@@ -58,15 +58,15 @@ impl ExistsQuantifierRule
         output_nodes.push(instantiated_p_node);
 
         let logic_pointer = factory.get_logic().clone();
-        let logic = logic_pointer.cast_to::<FirstOrderLogic>()?;
+        let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
         if matches!(logic.domain_type, VariableDomain(..)) && instantiated_x.is_some()
         {
-            let definitely_exists_x = DefinitelyExists(instantiated_x?, extras.with_sign(Plus));
+            let definitely_exists_x = DefinitelyExists(instantiated_x.unwrap(), extras.with_sign(Plus));
             let definitely_exists_x_node = factory.new_node(definitely_exists_x);
             output_nodes.push(definitely_exists_x_node);
         }
 
-        return Some(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+        return LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes));
     }
 
     pub fn get_object_name_factory(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Box<dyn Fn() -> SmolStr>

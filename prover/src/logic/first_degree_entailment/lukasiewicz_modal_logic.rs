@@ -4,7 +4,7 @@ use crate::logic::common_modal_logic::{ModalLogicRules, Modality, ModalityRef};
 use crate::logic::first_degree_entailment::generic_biimply_fde_rule::GenericBiImplyAsConjunctionRule;
 use crate::logic::first_degree_entailment::FirstDegreeEntailmentLogicRules;
 use crate::logic::rule_apply_factory::RuleApplyFactory;
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::parser::token_types::TokenTypeID;
 use crate::semantics::many_valued_logic_semantics::{ManyValuedContradictionBehaviour, ManyValuedLogicSemantics};
 use crate::semantics::Semantics;
@@ -97,7 +97,7 @@ struct LukasiewiczImplicationRules {}
 
 impl LogicRule for LukasiewiczImplicationRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -117,7 +117,8 @@ impl LogicRule for LukasiewiczImplicationRules
                 let p_or_non_p_minus = Or(bx!(p.clone()), bx!(non_p), extras.clone()).with_sign(Minus);
                 let p_or_non_p_minus_node = factory.new_node_with_subnode(p_or_non_p_minus, q_or_non_q_minus_node);
 
-                return Some(ProofSubtree::with_left_middle_right_nodes(non_p_plus_node, q_plus_node, p_or_non_p_minus_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_middle_right_nodes(
+                        non_p_plus_node, q_plus_node, p_or_non_p_minus_node));
             }
 
             Imply(box p, box q, extras) if extras.sign == Minus =>
@@ -134,7 +135,7 @@ impl LogicRule for LukasiewiczImplicationRules
                 let non_q_plus = Non(bx!(q.clone()), extras.clone()).with_sign(Plus);
                 let non_q_plus_node = factory.new_node_with_subnode(non_q_plus, non_p_minus_node);
 
-                return Some(ProofSubtree::with_left_right_nodes(p_plus_node, non_q_plus_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(p_plus_node, non_q_plus_node));
             }
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Plus =>
@@ -145,7 +146,7 @@ impl LogicRule for LukasiewiczImplicationRules
                 let plus_p = p.with_sign(Plus);
                 let plus_p_node = factory.new_node_with_subnode(plus_p, non_q_node);
 
-                return Some(ProofSubtree::with_middle_node(plus_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(plus_p_node));
             }
 
             Non(box Imply(box p, box q, _), extras) if extras.sign == Minus =>
@@ -156,10 +157,10 @@ impl LogicRule for LukasiewiczImplicationRules
                 let non_q = Non(bx!(q.clone()), extras.clone()).with_sign(Minus);
                 let non_q_node = factory.new_node(non_q);
 
-                return Some(ProofSubtree::with_left_right_nodes(minus_p_node, non_q_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(minus_p_node, non_q_node));
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }

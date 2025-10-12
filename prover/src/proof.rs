@@ -1,6 +1,6 @@
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
-use crate::logic::{LogicName, LogicRuleCollection};
+use crate::logic::{LogicName, LogicRuleCollection, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::problem::ProblemFlags;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
@@ -46,20 +46,22 @@ impl ProofAlgorithm
         {
             let ram_consumption = measure_total_number_of_allocated_bytes(||
             {
-                let (box node, mut subtree) = self.consume_next_queue_node().unwrap();
+                let (box node, mut result) = self.consume_next_queue_node().unwrap();
 
+                //todo test this
                 ExecutionLog::log(format!("Apply: <{}> {}\nResult: {}", node.id,
                     node.formula.to_string_with_options(&formula_format_options),
-                    subtree.to_string_with_options(&formula_format_options)));
+                    result.to_string_with_options(&formula_format_options)));
 
-                self.proof_tree.append_subtree(&mut subtree, node.id);
+
+                self.proof_tree.append_logic_rule_result(&mut result, node.id);
 
                 if !self.problem_flags.should_skip_contradiction_check
                 {
                     self.proof_tree.check_for_contradictions();
                 }
 
-                self.decomposition_queue.push_subtree(subtree);
+                self.decomposition_queue.push_logic_rule_result(result);
             });
 
             let log_helper_data = ExecutionLogHelperData::flush();
@@ -74,7 +76,7 @@ impl ProofAlgorithm
         return self.proof_tree;
     }
 
-    fn consume_next_queue_node(&mut self) -> Option<(Box<ProofTreeNode>, Box<ProofSubtree>)>
+    fn consume_next_queue_node(&mut self) -> Option<(Box<ProofTreeNode>, LogicRuleResult)>
     {
         let mut factory = RuleApplyFactory
         {
@@ -88,12 +90,13 @@ impl ProofAlgorithm
         {
             factory.set_spawner_node_id(Some(node.id));
 
-            if let Some(subtree) = self.logic_rules.apply(&mut factory, &node)
+            let result = self.logic_rules.apply(&mut factory, &node);
+            if !result.is_empty()
             {
-                return Some((node, Box::new(subtree)));
+                return Some((node, result));
             }
 
-            return Some((node, Box::new(ProofSubtree::empty())));
+            return Some((node, LogicRuleResult::Empty));
         }
 
         return None;

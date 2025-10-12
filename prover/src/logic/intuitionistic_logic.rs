@@ -3,7 +3,7 @@ use std::rc::Rc;
 use box_macro::bx;
 use crate::formula::Formula::{And, Atomic, Imply, Non, Or};
 use crate::formula::Sign::{Minus, Plus};
-use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection};
+use crate::logic::{Logic, LogicName, LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::common_modal_logic::{Modality, ModalLogicRules, ModalityRef};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::parser::token_types::TokenTypeID;
@@ -83,7 +83,7 @@ impl IntuitionisticLogicRules
 
 impl LogicRule for IntuitionisticLogicRules
 {
-    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> Option<ProofSubtree>
+    fn apply(&self, factory : &mut RuleApplyFactory, node : &ProofTreeNode) -> LogicRuleResult
     {
         return match &node.formula
         {
@@ -95,7 +95,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let plus_p = p.with_sign(p.get_sign() * Plus);
                 let plus_p_node = factory.new_node_with_subnode(plus_p, plus_q_node);
 
-                return Some(ProofSubtree::with_middle_node(plus_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(plus_p_node));
             }
 
             And(box p, box q, extras) if extras.sign == Minus =>
@@ -106,7 +106,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let minus_q = q.with_sign(q.get_sign() * Minus);
                 let minus_q_node = factory.new_node(minus_q);
 
-                return Some(ProofSubtree::with_left_right_nodes(minus_p_node, minus_q_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(minus_p_node, minus_q_node));
             }
 
             Or(box p, box q, extras) if extras.sign == Plus =>
@@ -117,7 +117,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let plus_q = q.with_sign(q.get_sign() * Plus);
                 let plus_q_node = factory.new_node(plus_q);
 
-                return Some(ProofSubtree::with_left_right_nodes(plus_p_node, plus_q_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_left_right_nodes(plus_p_node, plus_q_node));
             }
 
             Or(box p, box q, extras) if extras.sign == Minus =>
@@ -128,7 +128,7 @@ impl LogicRule for IntuitionisticLogicRules
                 let minus_p = p.with_sign(p.get_sign() * Minus);
                 let minus_p_node = factory.new_node_with_subnode(minus_p, minus_q_node);
 
-                return Some(ProofSubtree::with_middle_node(minus_p_node));
+                return LogicRuleResult::Subtree(ProofSubtree::with_middle_node(minus_p_node));
             }
 
             Imply(box p, box q, extras) if extras.sign == Plus =>
@@ -165,11 +165,15 @@ impl LogicRule for IntuitionisticLogicRules
 
             p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return None };
+                if self.modality.was_necessity_already_applied(factory, p_as_formula)
+                {
+                    return LogicRuleResult::Empty;
+                }
+                
                 return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 
-            _ => None
+            _ => LogicRuleResult::Empty
         }
     }
 }
