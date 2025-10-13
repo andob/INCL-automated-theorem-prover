@@ -23,4 +23,4 @@ jobs:
           profile: minimal
 
       - name: Run tests
-        run: cargo test --package prover --test test
+        run: cargo test --package prover --test test -- --nocapture

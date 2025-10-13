@@ -239,17 +239,6 @@ impl Display for PredicateArgument
     }
 }
 
-//todo remove this
-impl Debug for PredicateArgument
-{
-    fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
-    {
-        return if self.is_instantiated()
-            { write!(f, "{}:{}", self.object_name, self.variable_name) }
-        else { write!(f, "{}", self.variable_name) };
-    }
-}
-
 impl Display for PossibleWorld
 {
     fn fmt(&self, f : &mut Formatter<'_>) -> std::fmt::Result
