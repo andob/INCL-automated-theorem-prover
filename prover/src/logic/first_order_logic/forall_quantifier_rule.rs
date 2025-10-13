@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 use box_macro::bx;
+use itertools::Itertools;
 use smol_str::SmolStr;
 use FirstOrderLogicDomainType::VariableDomain;
 use crate::formula::Formula::{DefinitelyExists, Exists, ForAll, Non};
@@ -12,6 +13,8 @@ use crate::logic::first_order_logic::predicate_args_with_equivalences::create_eq
 use crate::logic::{LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
+use crate::tree::node_factory::ProofTreeNodeID;
+use crate::tree::path::ProofTreePath;
 use crate::tree::subtree::ProofSubtree;
 
 pub struct ForAllQuantifierRule {}
@@ -110,25 +113,33 @@ impl ForAllQuantifierRule
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
     ) -> LogicRuleResult
     {
+        let mut output_subtrees: Vec<(ProofTreeNodeID, ProofSubtree)> = Vec::new();
+
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
 
-        let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
-        self.apply_for_all_quantification_impl(factory, node, x, p, extras, &mut output_nodes);
-
-        if output_nodes.is_empty()
+        for path in factory.tree.get_paths_that_goes_through_node(node)
         {
-            //there are no objects to be iterated, act similar to exists quantifier
-            let object_name_factory = ExistsQuantifierRule{}.get_object_name_factory(factory, node);
-            let (instantiated_p, instantiated_x) = p.instantiated(x, &object_name_factory, extras);
-            output_nodes.add(factory, instantiated_x.unwrap_or(x.clone()), instantiated_p, extras);
+            let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
+            self.apply_for_all_quantification_impl(factory, &path, node, x, p, extras, &mut output_nodes);
+
+            if output_nodes.is_empty()
+            {
+                //there are no objects to be iterated, act similar to exists quantifier
+                let object_name_factory = ExistsQuantifierRule{}.get_object_name_factory(factory, node);
+                let (instantiated_p, instantiated_x) = p.instantiated(x, &object_name_factory, extras);
+                output_nodes.add(factory, instantiated_x.unwrap_or(x.clone()), instantiated_p, extras);
+            }
+
+            let subtree = output_nodes.to_proof_subtree(factory);
+            output_subtrees.push((path.get_leaf_node_id(), subtree));
         }
 
-        return LogicRuleResult::Subtree(output_nodes.to_proof_subtree(factory));
+        return LogicRuleResult::Subtrees(output_subtrees);
     }
 
     fn apply_for_all_quantification_impl(&self,
-        factory : &mut RuleApplyFactory, node : &ProofTreeNode,
+        factory : &mut RuleApplyFactory, path : &ProofTreePath, node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
         output_nodes : &mut ForAllQuantifierOutputNodes,
     )
@@ -136,9 +147,8 @@ impl ForAllQuantifierRule
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
 
-        let all_formulas_on_path = factory.tree.get_paths_that_goes_through_node(node).into_iter()
-            .flat_map(|path| path.nodes.into_iter().map(|node| node.formula))
-            .collect::<Vec<Formula>>();
+        let all_formulas_on_path = path.nodes.iter().cloned()
+            .map(|node| node.formula).collect_vec();
 
         let all_args_on_path = all_formulas_on_path.iter()
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())

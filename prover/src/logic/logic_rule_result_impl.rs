@@ -146,7 +146,6 @@ impl DecompositionPriorityQueue
             {
                 for (_, mut subtree) in subtrees
                 {
-                    //todo is this necessary?
                     subtree.cloned_subtrees_with_new_ids.clear();
                     self.push_subtree(Box::new(subtree));
                 }

@@ -2082,7 +2082,7 @@
       {
         "id": "20.13.4.b",
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+IntuitionisticLogic",
-        "expected": "timeout",
+        "expected": "disproved",
         "premises": [ "∀x(P[x] ∨ Q[x])" ],
         "conclusion": "∀x P[x] ∨ ∀x Q[x]"
       },
