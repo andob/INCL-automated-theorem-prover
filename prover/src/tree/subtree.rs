@@ -131,10 +131,10 @@ impl ProofTree
         let paths = self.get_all_paths();
         for path in &paths
         {
-            let leaf = path.nodes.last().unwrap();
-            if !leaf.is_contradictory && (leaf.id == target_node_id ||
-                path.nodes.iter().any(|node| node.id == target_node_id))
+            if path.nodes.iter().all(|node| !node.is_contradictory) &&
+                path.nodes.iter().any(|node| node.id == target_node_id)
             {
+                let leaf = path.nodes.last().unwrap();
                 if !should_clone_subtree_with_new_ids
                 {
                     self.root_node.append_subtree_on_leaf(&another_subtree, leaf.id);

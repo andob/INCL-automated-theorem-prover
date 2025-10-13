@@ -170,18 +170,28 @@ impl HelperQuantifierRules
     {
         let mut missing_equalities : BTreeSet<(PredicateArgument, PredicateArgument)> = BTreeSet::new();
 
+        let mut check_transitive_equality = |args : [&PredicateArgument; 4]|
+        {
+            let (x, y) = (args[0], args[1]);
+            let (y_prime, z) = (args[2], args[3]);
+
+            if y==y_prime && x!=y && y!=z && x!=z
+            {
+                if !existing_equalities.iter().any(|(a, b)| (x==a && z==b) || (x==b && z==a)) &&
+                    !missing_equalities.iter().any(|(a, b)| (x==a && z==b) || (x==b && z==a))
+                {
+                    missing_equalities.insert((x.clone(), z.clone()));
+                }
+            }
+        };
+
         for (x, y) in &existing_equalities
         {
-            for (y_prime, z) in &existing_equalities
+            for (z, t) in &existing_equalities
             {
-                if y==y_prime && x!=y && y!=z && x!=z
-                {
-                    if !existing_equalities.iter().any(|(a, b)| (x==a && z==b) || (x==b && z==a)) &&
-                        !missing_equalities.iter().any(|(a, b)| (x==a && z==b) || (x==b && z==a))
-                    {
-                        missing_equalities.insert((x.clone(), z.clone()));
-                    }
-                }
+                check_transitive_equality([x, y, z, t]);
+                check_transitive_equality([y, x, z, t]);
+                check_transitive_equality([x, y, t, z]);
             }
         }
 

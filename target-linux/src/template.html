@@ -148,6 +148,8 @@
             is_node_hovering_enabled = false;
             unselect_all_nodes();
             select_node(event.target);
+
+            console.log(event.target.data('id'));
         });
 
         cy.on('tap', (event) =>

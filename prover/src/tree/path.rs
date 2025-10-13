@@ -40,7 +40,7 @@ impl ProofTreePath
     {
         let initial_node_data = ProofTreePathNodeData::from_node(initial_node);
 
-        return ProofTreePath { nodes:vec![initial_node_data], domain_type:domain_type }
+        return ProofTreePath { nodes:vec![initial_node_data], domain_type }
     }
 
     pub fn contains(&self, node : &ProofTreeNode) -> bool
@@ -65,6 +65,7 @@ impl ProofTreePath
         let mut out_nodes = self.nodes.clone();
         nodes.iter().for_each(|node| out_nodes
             .push(ProofTreePathNodeData::from_node(node)));
+
         return ProofTreePath { nodes:out_nodes, domain_type:self.domain_type };
     }
 
@@ -82,7 +83,7 @@ impl ProofTreePath
             for j in 0..i
             {
                 let semantics = logic.get_semantics();
-                if semantics.are_formulas_contradictory(self, &self.nodes[i].formula, &self.nodes[j].formula)
+                if semantics.are_formulas_contradictory(&self, &self.nodes[i].formula, &self.nodes[j].formula)
                 {
                     contradictory_ids.push((self.nodes[i].id, self.nodes[j].id));
                 }

@@ -304,14 +304,14 @@
       {
         "id": "12.13.6.d",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
+        "expected": "disproved",
         "premises": [ "∃x(∀t S[x,t] ∧ ∀y(∀t S[y,t] ⊃ x = y))" ],
         "conclusion": "∃x∃y(¬S[x,y] ∧ ¬S[y,x])"
       },
       {
         "id": "12.13.6.e",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "disproved",
+        "expected": "proved",
         "premises": [ "∃x∀y(P[y] ≡ x = y)" ],
         "conclusion": "∃x P[x] ∧ ∀x∀y((P[x] ∧ P[y]) ⊃ x = y)"
       },
@@ -1659,7 +1659,7 @@
       {
         "id": "16.10.6.c",
         "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+KTemporalModalLogic",
-        "expected": "timeout",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "∃x ∃y ◇ᵖ (x = y) ⊃ ∃x ∃y ◇ᶠ (x = y)"
       },

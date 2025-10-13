@@ -1,4 +1,5 @@
 use std::collections::BTreeSet;
+use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{Equals, Non};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
@@ -20,8 +21,8 @@ impl PredicateArguments
     {
         if self.is_empty() { return vec![] };
 
-        let all_formulas_on_path = path.nodes.clone().into_iter()
-            .map(|node| node.formula).collect::<Vec<Formula>>();
+        let all_formulas_on_path = path.nodes.iter()
+            .map(|node| node.formula.clone()).collect_vec();
 
         let all_equivalences_on_path = all_formulas_on_path.iter()
             .filter(|formula| formula.get_possible_world() == possible_world)
@@ -35,13 +36,14 @@ impl PredicateArguments
         for x in self.iter()
         {
             let mut x_equivalence_set: BTreeSet<PredicateArgument> = BTreeSet::new();
-            x_equivalence_set.insert(x.clone());
+            x_equivalence_set.insert(x.deinstantiated());
 
             let mut equivalent_ys = all_equivalences_on_path.iter()
                 .filter(|(y, z)| x==*y || x==*z)
                 .map(|(y, z)| if x==*y { (*z).clone() } else { (*y).clone() })
                 .filter(|a| path.domain_type == ConstantDomain ||
                     args_that_definitely_exists.iter().any(|d| *d==a))
+                .map(|arg| arg.deinstantiated())
                 .collect::<BTreeSet<PredicateArgument>>();
             x_equivalence_set.append(&mut equivalent_ys);
 
@@ -49,6 +51,14 @@ impl PredicateArguments
         }
 
         return args_with_equivalences;
+    }
+}
+
+impl PredicateArgument
+{
+    fn deinstantiated(&self) -> PredicateArgument
+    {
+        return PredicateArgument::new(self.object_name.clone());
     }
 }
 
