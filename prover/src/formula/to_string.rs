@@ -49,7 +49,8 @@ impl FormulaFormatOptions
             return FormulaFormatOptions
             {
                 notations: *default_notations.borrow(),
-                should_show_possible_worlds: false,
+                //todo should_show_possible_worlds: false,
+                should_show_possible_worlds: true,
                 should_show_sign: false,
                 should_show_fuzzy_tags: false,
             }

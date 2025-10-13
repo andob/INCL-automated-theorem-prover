@@ -8,7 +8,6 @@ use crate::proof::execution_log::{ExecutionLog, ExecutionLogHelperData};
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeFactory;
 use crate::tree::ProofTree;
-use crate::tree::subtree::ProofSubtree;
 use crate::utils::measure_total_number_of_allocated_bytes;
 
 pub mod decomposition_queue;
@@ -48,7 +47,6 @@ impl ProofAlgorithm
             {
                 let (box node, mut result) = self.consume_next_queue_node().unwrap();
 
-                //todo test this
                 ExecutionLog::log(format!("Apply: <{}> {}\nResult: {}", node.id,
                     node.formula.to_string_with_options(&formula_format_options),
                     result.to_string_with_options(&formula_format_options)));

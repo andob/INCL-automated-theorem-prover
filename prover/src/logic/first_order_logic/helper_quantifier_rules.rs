@@ -1,8 +1,7 @@
 use std::collections::BTreeSet;
 use crate::formula::Formula::{DefinitelyExists, Equals, Non};
-use crate::formula::{Formula, FormulaExtras, PredicateArgument, Sign};
+use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
-use crate::formula::to_string::FormulaFormatOptions;
 use crate::logic::first_order_logic::{FirstOrderLogic, VariableDomainFlags};
 use crate::logic::{Logic, LogicRule, LogicRuleResult, LogicRuleResultCollection};
 use crate::logic::first_order_logic::FirstOrderLogicDomainType::VariableDomain;
@@ -198,10 +197,9 @@ impl ProofTreeNode
     {
         if let Some(modality) = logic.get_modality_ref() &&
             !modality.was_necessity_already_applied(factory, &self.formula) &&
-            self.formula.get_all_predicate_arguments().iter().all(|arg| arg.is_rigid_designator()) &&
-            let LogicRuleResult::Subtree(subtree) = modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras())
+            self.formula.get_all_predicate_arguments().iter().all(|arg| arg.is_rigid_designator())
         {
-            return LogicRuleResult::Subtree(subtree);
+            return modality.apply_necessity(factory, self, &self.formula, &self.formula.get_extras());
         }
 
         return LogicRuleResult::Empty;

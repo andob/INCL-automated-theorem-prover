@@ -3,7 +3,6 @@ use crate::formula::Sign::{Minus, Plus};
 use crate::logic::{LogicRule, LogicRuleCollection, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::subtree::ProofSubtree;
 
 //check out book chapters 6 and 20
 pub struct IntuitionisticQuantifierRules

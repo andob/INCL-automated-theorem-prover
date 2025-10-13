@@ -178,21 +178,13 @@ impl LogicRule for LogicOfConstructibleNegationImplicationRules
 
             p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, p_as_formula)
-                {
-                    return LogicRuleResult::Empty;
-                }
-
+                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return LogicRuleResult::Empty }
                 return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 
             non_p_as_formula@Non(box Atomic(_, _), extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, non_p_as_formula)
-                {
-                    return LogicRuleResult::Empty;
-                }
-                
+                if self.modality.was_necessity_already_applied(factory, non_p_as_formula) { return LogicRuleResult::Empty }
                 return self.modality.apply_necessity(factory, node, &non_p_as_formula, &extras);
             }
 

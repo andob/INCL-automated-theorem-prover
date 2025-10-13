@@ -22,6 +22,13 @@
         "expected": "disproved",
         "premises": [ "∃x A[x] ∨ (∃y B[y] ∧ ∃z C[z])" ],
         "conclusion": "∃x P[x]"
+      },
+      {
+        "id": "test3",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [ "A | (B & C)" ],
+        "conclusion": "P"
       }
     ]
   }

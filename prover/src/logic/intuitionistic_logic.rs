@@ -165,11 +165,7 @@ impl LogicRule for IntuitionisticLogicRules
 
             p_as_formula@Atomic(_, extras) if extras.sign == Plus =>
             {
-                if self.modality.was_necessity_already_applied(factory, p_as_formula)
-                {
-                    return LogicRuleResult::Empty;
-                }
-                
+                if self.modality.was_necessity_already_applied(factory, p_as_formula) { return LogicRuleResult::Empty }
                 return self.modality.apply_necessity(factory, node, &p_as_formula, &extras.to_formula_extras());
             }
 

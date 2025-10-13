@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Equals, Exists, ForAll, Imply, Necessary, Non, Or, Possible, StrictImply};
+use crate::formula::Formula::{And, Atomic, BiImply, Conditional, Equals, Exists, ForAll, Imply, Non, Or, Possible, StrictImply};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::Logic;
 use crate::tree::node::ProofTreeNode;
@@ -111,9 +111,6 @@ impl DecompositionPriorityQueue
 
             //forall needs to be applied after all instantiations
             ForAll(..) => Priority::UnimportantMinus4,
-
-            //todo remove this
-            // Necessary(..) => Priority::UnimportantMinus4,
 
             //conditional needs to be applied after possibility
             Conditional(..) => Priority::UnimportantMinus3,

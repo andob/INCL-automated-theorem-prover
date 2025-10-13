@@ -1,4 +1,3 @@
-use crate::logic::LogicRuleResult;
 use crate::proof::decomposition_queue::DecompositionPriorityQueue;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::{ProofTreeNodeFactory, ProofTreeNodeID};

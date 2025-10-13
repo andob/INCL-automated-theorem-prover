@@ -4,10 +4,11 @@ use box_macro::bx;
 use crate::formula::{Formula, FormulaExtras, PossibleWorld};
 use crate::formula::Formula::{Imply, Necessary, Non, Possible, StrictImply};
 use crate::graph::{Graph, GraphVertex};
-use crate::logic::{Logic, LogicRule, LogicRuleResult};
+use crate::logic::{Logic, LogicRule, LogicRuleResult, LogicRuleResultCollection};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
 use crate::tree::node::ProofTreeNode;
 use crate::tree::node_factory::ProofTreeNodeID;
+use crate::tree::path::ProofTreePath;
 use crate::tree::subtree::ProofSubtree;
 
 pub struct ModalLogicRules<LOGIC : Logic>
@@ -86,7 +87,7 @@ pub struct NecessityReapplicationData
     pub input_possible_world : PossibleWorld,
     pub input_spawner_node_id : ProofTreeNodeID,
     pub input_leafs_node_ids : Vec<ProofTreeNodeID>,
-    pub already_iterated_possible_worlds : Vec<PossibleWorld>,
+    pub already_iterated_possible_worlds : BTreeSet<PossibleWorld>,
 }
 
 pub struct Modality<LOGIC : Logic>
@@ -118,10 +119,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         p : &Formula, extras : &FormulaExtras,
     ) -> LogicRuleResult
     {
-        if !(self.is_possibility_applicable)(factory, node, extras)
-        {
-            return LogicRuleResult::Empty;
-        }
+        if !(self.is_possibility_applicable)(factory, node, extras) { return LogicRuleResult::Empty }
 
         self.initialize_graph_if_needed(factory);
 
@@ -142,10 +140,12 @@ impl <LOGIC : Logic> Modality<LOGIC>
         let comment = Formula::Comment(factory.modality_graph.flush_log());
         let comment_node = factory.new_node(comment);
 
-        let mut output_nodes = vec![comment_node, p_in_forked_world_node];
-        self.reapply_necessity_after_possibility(factory, node, forked_world, &mut output_nodes);
+        let subtree = ProofSubtree::with_middle_vertical_nodes(vec![comment_node, p_in_forked_world_node]);
+        let mut results = LogicRuleResultCollection::with(LogicRuleResult::Subtree(subtree));
 
-        return LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+        self.reapply_necessity_after_possibility(factory, node, forked_world, &mut results);
+
+        return results.joined();
     }
 
     pub fn apply_necessity(&self,
@@ -153,10 +153,7 @@ impl <LOGIC : Logic> Modality<LOGIC>
         p : &Formula, extras : &FormulaExtras,
     ) -> LogicRuleResult
     {
-        if !(self.is_necessity_applicable)(factory, node, extras)
-        {
-            return LogicRuleResult::Empty;
-        }
+        if !(self.is_necessity_applicable)(factory, node, extras) { return LogicRuleResult::Empty }
 
         self.initialize_graph_if_needed(factory);
 
@@ -169,19 +166,19 @@ impl <LOGIC : Logic> Modality<LOGIC>
             input_possible_world: extras.possible_world,
             input_spawner_node_id: node.id,
             input_leafs_node_ids: leaf_node_ids,
-            already_iterated_possible_worlds: vec![],
+            already_iterated_possible_worlds: BTreeSet::new(),
         };
 
-        let output_nodes = self.reapply_necessity(factory, &mut reapplication_data, PossibleWorld::zero());
+        let result = self.reapply_necessity(factory, &mut reapplication_data, None, PossibleWorld::zero());
         factory.push_necessity_reapplication(reapplication_data);
 
-        return LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes));
+        return result;
     }
 
     fn reapply_necessity_after_possibility(
         &self, factory : &mut RuleApplyFactory,
         node : &ProofTreeNode, forked_world : PossibleWorld,
-        output_nodes : &mut Vec<ProofTreeNode>,
+        output_results : &mut LogicRuleResultCollection,
     )
     {
         let mut reusable_necessity_reapplications : Vec<NecessityReapplicationData> = vec![];
@@ -193,8 +190,8 @@ impl <LOGIC : Logic> Modality<LOGIC>
                 //necessary reapplication should happen only if we're on one of some specific paths
                 if reapplication.input_leafs_node_ids.iter().any(|leaf_node_id| path.contains_node_with_id(*leaf_node_id))
                 {
-                    let mut output_nodes_from_necessity = self.reapply_necessity(factory, &mut reapplication, forked_world);
-                    output_nodes.append(&mut output_nodes_from_necessity);
+                    let output_from_necessity = self.reapply_necessity(factory, &mut reapplication, Some(node), forked_world);
+                    output_results.push(output_from_necessity);
                 }
             }
 
@@ -207,40 +204,55 @@ impl <LOGIC : Logic> Modality<LOGIC>
     fn reapply_necessity(&self,
         factory : &mut RuleApplyFactory,
         reapplication_data : &mut NecessityReapplicationData,
+        possibility_node : Option<&ProofTreeNode>,
         forked_world : PossibleWorld,
-    ) -> Vec<ProofTreeNode>
+    ) -> LogicRuleResult
     {
-        let mut output_nodes : Vec<ProofTreeNode> = vec![];
+        let mut output_subtrees: Vec<(ProofTreeNodeID, ProofSubtree)> = Vec::new();
+
         let output_formulas = factory.modality_graph.vertices()
             .filter(|vertex| vertex.from == reapplication_data.input_possible_world)
             .filter(|vertex| !reapplication_data.already_iterated_possible_worlds.contains(&vertex.to))
             .map(|vertex| reapplication_data.input_formula.in_world(vertex.to))
             .collect::<Vec<Formula>>();
 
-        if !output_formulas.is_empty()
+        if output_formulas.is_empty() { return LogicRuleResult::Empty }
+
+        factory.set_spawner_node_id(Some(reapplication_data.input_spawner_node_id));
+
+        let paths = factory.tree.get_all_paths().into_iter()
+            .filter(|path| reapplication_data.input_leafs_node_ids.iter()
+                .any(|leaf_id| path.contains_node_with_id(*leaf_id)))
+            .collect::<Vec<ProofTreePath>>();
+
+        for path in paths
         {
-            factory.set_spawner_node_id(Some(reapplication_data.input_spawner_node_id));
+            let mut output_nodes_on_path: Vec<ProofTreeNode> = Vec::new();
 
-            let mut possible_worlds_on_tree_path = factory.tree.get_all_paths().iter()
-                .filter(|path| reapplication_data.input_leafs_node_ids.iter()
-                    .any(|leaf_id| path.contains_node_with_id(*leaf_id)))
-                .flat_map(|path| path.nodes.iter()
-                    .map(|node| node.formula.get_possible_world()))
+            let mut possible_worlds_on_path = path.nodes.iter()
+                .map(|node| node.formula.get_possible_world())
                 .collect::<BTreeSet<PossibleWorld>>();
-            possible_worlds_on_tree_path.insert(forked_world);
 
-            for formula in output_formulas
+            if let Some(node) = possibility_node && path.contains(node)
             {
-                reapplication_data.already_iterated_possible_worlds.push(formula.get_possible_world());
+                possible_worlds_on_path.insert(forked_world);
+            }
 
-                if possible_worlds_on_tree_path.contains(&formula.get_possible_world())
+            for formula in &output_formulas
+            {
+                reapplication_data.already_iterated_possible_worlds.insert(formula.get_possible_world());
+
+                if possible_worlds_on_path.contains(&formula.get_possible_world())
                 {
-                    output_nodes.push(factory.new_node(formula));
+                    output_nodes_on_path.push(factory.new_node(formula.clone()));
                 }
             }
+
+            let subtree = ProofSubtree::with_middle_vertical_nodes(output_nodes_on_path);
+            output_subtrees.push((path.get_leaf_node_id(), subtree));
         }
 
-        return output_nodes;
+        return LogicRuleResult::Subtrees(output_subtrees);
     }
 
     pub fn was_necessity_already_applied(&self, factory : &mut RuleApplyFactory, p : &Formula) -> bool

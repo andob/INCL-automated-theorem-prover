@@ -12,7 +12,6 @@ use crate::parser::token_types::TokenTypeID;
 use crate::semantics::Semantics;
 use crate::semantics::many_valued_logic_semantics::ManyValuedLogicSemantics;
 use crate::tree::node::ProofTreeNode;
-use crate::tree::subtree::ProofSubtree;
 
 //check out book chapters 9 and 23
 pub struct LogicWithGapsGlutsAndWorlds

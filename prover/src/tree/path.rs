@@ -107,11 +107,11 @@ impl Display for ProofTreePath
         {
             if index < last_index
             {
-                write!(f, "{} -> ", node.formula).unwrap();
+                write!(f, "{} -> ", node.formula)?;
             }
             else
             {
-                write!(f, "{}", node.formula).unwrap();
+                write!(f, "{}", node.formula)?;
             }
         }
 
