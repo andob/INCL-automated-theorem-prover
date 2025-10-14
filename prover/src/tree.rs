@@ -69,23 +69,23 @@ impl ProofTree
         for path in &paths
         {
             let contradictory_node_ids = path.get_contradictory_node_ids(&self.problem.logic);
-            for (contradictory_node_id, contrarian_node_id) in &contradictory_node_ids
+            if let Some((contradictory_node_id, contrarian_node_id)) = contradictory_node_ids
             {
-                self.root_node.mark_child_node_as_contradictory(*contradictory_node_id, *contrarian_node_id);
+                self.root_node.mark_child_node_as_contradictory(contradictory_node_id, contrarian_node_id);
             }
 
             ExecutionLogHelperData::with(|mut helper_data|
             {
-                for contradictory_node_id_pair in &contradictory_node_ids
+                if let Some(contradictory_node_id_pair) = contradictory_node_ids
                 {
-                    if !helper_data.old_contradictions.contains(contradictory_node_id_pair)
+                    if !helper_data.old_contradictions.contains(&contradictory_node_id_pair)
                     {
                         helper_data.new_contradictions.insert(contradictory_node_id_pair.clone());
                     }
                 }
             });
 
-            if !contradictory_node_ids.is_empty()
+            if contradictory_node_ids.is_some()
             {
                 number_of_contradictory_paths += 1;
             }

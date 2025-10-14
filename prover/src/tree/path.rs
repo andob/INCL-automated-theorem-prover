@@ -57,7 +57,7 @@ impl ProofTreePath
     {
         let mut nodes = self.nodes.clone();
         nodes.push(ProofTreePathNodeData::from_node(node));
-        return ProofTreePath { nodes:nodes, domain_type:self.domain_type };
+        return ProofTreePath { nodes, domain_type:self.domain_type };
     }
 
     pub fn append(&self, nodes : &Vec<ProofTreeNode>) -> ProofTreePath
@@ -74,28 +74,26 @@ impl ProofTreePath
         return self.nodes.last().unwrap().id;
     }
 
-    pub fn get_contradictory_node_ids(&self, logic : &Rc<dyn Logic>) -> Vec<(ProofTreeNodeID, ProofTreeNodeID)>
+    pub fn get_contradictory_node_ids(&self, logic : &Rc<dyn Logic>) -> Option<(ProofTreeNodeID, ProofTreeNodeID)>
     {
-        let mut contradictory_ids : Vec<(ProofTreeNodeID, ProofTreeNodeID)> = vec![];
-
-        for i in 0..self.nodes.len()
+        for i in (0..self.nodes.len()).rev()
         {
             for j in 0..i
             {
                 let semantics = logic.get_semantics();
                 if semantics.are_formulas_contradictory(&self, &self.nodes[i].formula, &self.nodes[j].formula)
                 {
-                    contradictory_ids.push((self.nodes[i].id, self.nodes[j].id));
+                    return Some((self.nodes[i].id, self.nodes[j].id));
                 }
             }
         }
 
-        return contradictory_ids;
+        return None;
     }
 
     pub fn is_contradictory(&self, logic : &Rc<dyn Logic>) -> bool
     {
-        return !self.get_contradictory_node_ids(logic).is_empty();
+        return self.get_contradictory_node_ids(logic).is_some();
     }
 }
 
