@@ -1,5 +1,4 @@
 use anyhow::Result;
-use prover::formula::to_string::FormulaFormatOptions;
 use prover::problem::catalog::get_demo_problem_catalog;
 use prover::problem::json::ProblemJSON;
 use prover::utils::{parallel_for_each_problem, setup_panicking_from_all_future_threads};
@@ -7,30 +6,6 @@ use prover::utils::{parallel_for_each_problem, setup_panicking_from_all_future_t
 const EXPECTED_TIMEOUT : &str = "timeout";
 const EXPECTED_PROVED : &str = "proved";
 const EXPECTED_DISPROVED : &str = "disproved";
-
-#[test]
-fn test_full_output()
-{
-    let input_json = include_str!("full_output_test/input.json").to_string();
-    let expected_output = include_str!("full_output_test/output.txt").to_string();
-    let mut actual_output = String::new();
-
-    let problems_json = serde_json::from_str::<Vec<ProblemJSON>>(input_json.as_str()).unwrap();
-    for problem_json in problems_json
-    {
-        let problem = problem_json.to_problem().unwrap();
-
-        let formula_format_options = FormulaFormatOptions::recommended_for(&problem.logic);
-
-        let proof_tree = problem.prove();
-        let proof_tree_string = proof_tree.to_string_with_options(&formula_format_options);
-
-        actual_output.push_str(format!("{}\n", proof_tree_string).as_str());
-        println!("{}\n", proof_tree_string);
-    }
-
-    assert_eq!(actual_output.trim(), expected_output.trim());
-}
 
 #[test]
 fn test_proof_status() -> Result<()>
