@@ -142,7 +142,7 @@ impl HelperQuantifierRules
                 .collect::<Vec<Formula>>();
 
             let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
-            if !args_that_definitely_exists.into_iter().any(|arg| arg==x)
+            if !args_that_definitely_exists.into_iter().any(|arg| arg==*x)
             {
                 return LogicRuleResult::Empty;
             }

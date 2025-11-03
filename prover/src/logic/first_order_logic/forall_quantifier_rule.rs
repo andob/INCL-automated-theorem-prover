@@ -155,7 +155,7 @@ impl ForAllQuantifierRule
             .collect::<BTreeSet<PredicateArgument>>();
 
         let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
-        let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==a);
+        let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==*a);
 
         let object_names = all_args_on_path.iter()
             .filter(|a| a.is_instantiated() || a.is_free_object())
@@ -171,19 +171,26 @@ impl ForAllQuantifierRule
     }
 }
 
-pub fn get_args_that_definitely_exists(all_formulas_on_path : &Vec<Formula>, possible_world : PossibleWorld) -> BTreeSet<&PredicateArgument>
+pub fn get_args_that_definitely_exists(all_formulas_on_path : &Vec<Formula>, possible_world : PossibleWorld) -> BTreeSet<PredicateArgument>
 {
+    let filter_map_callback = |formula : &Formula|
+    {
+        if let Non(box Non(box DefinitelyExists(x, _), _), _) = formula { Some(x.clone()) }
+        else if let DefinitelyExists(x, _) = formula { Some(x.clone()) }
+        else { None }
+    };
+
     let mut args_that_definitely_exists = all_formulas_on_path.iter()
         .filter(|formula| formula.get_possible_world() == possible_world && formula.get_sign() == Plus)
-        .filter_map(|formula| if let DefinitelyExists(x, _) = formula { Some(x) } else { None })
-        .collect::<BTreeSet<&PredicateArgument>>();
+        .filter_map(filter_map_callback)
+        .collect::<BTreeSet<PredicateArgument>>();
 
     let mut equivalences_of_args_that_definitely_exists = all_formulas_on_path.iter()
         .filter(|formula| formula.get_possible_world() == possible_world)
         .filter_map(create_equality_formulas_filtering_lambda())
-        .filter(|(x, y)| args_that_definitely_exists.iter().any(|d| x==d || y==d))
-        .flat_map(|(x, y)| vec![x, y])
-        .collect::<BTreeSet<&PredicateArgument>>();
+        .filter(|(x, y)| args_that_definitely_exists.iter().any(|d| *x==d || *y==d))
+        .flat_map(|(x, y)| vec![x.clone(), y.clone()])
+        .collect::<BTreeSet<PredicateArgument>>();
 
     args_that_definitely_exists.append(&mut equivalences_of_args_that_definitely_exists);
     return args_that_definitely_exists;

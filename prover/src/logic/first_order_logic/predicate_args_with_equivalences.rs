@@ -42,7 +42,7 @@ impl PredicateArguments
                 .filter(|(y, z)| x==*y || x==*z)
                 .map(|(y, z)| if x==*y { (*z).clone() } else { (*y).clone() })
                 .filter(|a| path.domain_type == ConstantDomain ||
-                    args_that_definitely_exists.iter().any(|d| *d==a))
+                    args_that_definitely_exists.iter().any(|d| d==a))
                 .map(|arg| arg.deinstantiated())
                 .collect::<BTreeSet<PredicateArgument>>();
             x_equivalence_set.append(&mut equivalent_ys);
