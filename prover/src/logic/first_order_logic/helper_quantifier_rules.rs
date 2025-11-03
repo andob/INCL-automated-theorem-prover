@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
-use crate::formula::Formula::{DefinitelyExists, Equals, Non};
+use itertools::Itertools;
+use crate::formula::Formula::{Atomic, DefinitelyExists, Equals, Non};
 use crate::formula::{Formula, FormulaExtras, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::{FirstOrderLogic, VariableDomainFlags};
@@ -24,7 +25,7 @@ impl LogicRule for HelperQuantifierRules
 
         match &node.formula
         {
-            Equals(_, _, extras) if extras.sign == Plus =>
+            Equals(x, y, extras) if extras.sign == Plus =>
             {
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 results.push(self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
@@ -33,6 +34,15 @@ impl LogicRule for HelperQuantifierRules
                 {
                     //inherit x=y to all possible worlds by stating □(x=y)
                     results.push(node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+
+                if matches!(logic.domain_type, VariableDomain(..))
+                {
+                    //negativity constraint
+                    let node1 = factory.new_node(DefinitelyExists(x.clone(), extras.clone()));
+                    let node2 = factory.new_node(DefinitelyExists(y.clone(), extras.clone()));
+                    let subtree = ProofSubtree::with_middle_vertical_nodes(vec![node1, node2]);
+                    results.push(LogicRuleResult::Subtree(subtree));
                 }
             }
 
@@ -51,7 +61,7 @@ impl LogicRule for HelperQuantifierRules
                 }
             }
 
-            Non(box Equals(..), extras) if extras.sign == Minus =>
+            Non(box Equals(x, y, _), extras) if extras.sign == Minus =>
             {
                 //foreach node pair (x = y, y = z), generate a transitive node x = z
                 results.push(self.create_subtree_with_missing_transitive_nodes(factory, node, extras));
@@ -60,6 +70,15 @@ impl LogicRule for HelperQuantifierRules
                 {
                     //inherit !(x=y)- to all possible worlds by stating □!(x=y)-
                     results.push(node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+
+                if matches!(logic.domain_type, VariableDomain(..))
+                {
+                    //negativity constraint
+                    let node1 = factory.new_node(DefinitelyExists(x.clone(), extras.clone()));
+                    let node2 = factory.new_node(DefinitelyExists(y.clone(), extras.clone()));
+                    let subtree = ProofSubtree::with_middle_vertical_nodes(vec![node1, node2]);
+                    results.push(LogicRuleResult::Subtree(subtree));
                 }
             }
 
@@ -115,6 +134,18 @@ impl LogicRule for HelperQuantifierRules
                 {
                     //inherit 𝔈x- to all possible worlds by stating □𝔈x-
                     results.push(node.inherit_on_all_adjacent_possible_worlds(logic, factory));
+                }
+            }
+
+            Atomic(_, extras) =>
+            {
+                if matches!(logic.domain_type, VariableDomain(..))
+                {
+                    let output_nodes = extras.predicate_args.iter()
+                        .map(|arg| DefinitelyExists(arg.clone(), extras.to_formula_extras()))
+                        .map(|formula| factory.new_node(formula)).collect_vec();
+
+                    results.push(LogicRuleResult::Subtree(ProofSubtree::with_middle_vertical_nodes(output_nodes)));
                 }
             }
 
