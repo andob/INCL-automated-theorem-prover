@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use crate::formula::to_string::FormulaFormatOptions;
 use crate::graph::Graph;
 use crate::logic::{LogicName, LogicRuleCollection, LogicRuleResult};
@@ -45,21 +46,26 @@ impl ProofAlgorithm
         {
             let ram_consumption = measure_total_number_of_allocated_bytes(||
             {
-                let (box node, mut result) = self.consume_next_queue_node().unwrap();
-
-                ExecutionLog::log(format!("Apply: <{}> {}\nResult: {}", node.id,
-                    node.formula.to_string_with_options(&formula_format_options),
-                    result.to_string_with_options(&formula_format_options)));
-
-
-                self.proof_tree.append_logic_rule_result(&mut result, node.id);
-
-                if !self.problem_flags.should_skip_contradiction_check
+                if let Some((node, mut result)) = self.consume_next_queue_node()
                 {
-                    self.proof_tree.check_for_contradictions();
-                }
+                    ExecutionLog::log(format!("Apply: <{}> {}\nResult: {}", node.id,
+                        node.formula.to_string_with_options(&formula_format_options),
+                        result.to_string_with_options(&formula_format_options)));
 
-                self.decomposition_queue.push_logic_rule_result(result);
+                    self.proof_tree.append_logic_rule_result(&mut result, node.id);
+
+                    if !self.problem_flags.should_skip_contradiction_check
+                    {
+                        self.proof_tree.check_for_contradictions();
+                    }
+
+                    if self.decomposition_queue.is_node_reusable(&node) && result.is_empty()
+                    {
+                        self.decomposition_queue.ban_reusable_node(&node);
+                    }
+
+                    self.decomposition_queue.push_logic_rule_result(result);
+                }
             });
 
             let log_helper_data = ExecutionLogHelperData::flush();
@@ -89,12 +95,9 @@ impl ProofAlgorithm
             factory.set_spawner_node_id(Some(node.id));
 
             let result = self.logic_rules.apply(&mut factory, &node);
-            if !result.is_empty()
-            {
-                return Some((node, result));
-            }
 
-            return Some((node, LogicRuleResult::Empty));
+            return if !result.is_empty() { Some((node, result)) }
+            else { Some((node, LogicRuleResult::Empty)) };
         }
 
         return None;

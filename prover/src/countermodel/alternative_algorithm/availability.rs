@@ -37,12 +37,14 @@ impl AlternativeCountermodelFinderAvailability
 
     pub fn get_available_first_order_logics() -> Vec<Rc<dyn Logic>>
     {
-        return Self::get_available_propositional_logics().iter()
-            .map(|propositional_logic| Rc::new(FirstOrderLogic
+        return vec!
+        [
+            Rc::new(FirstOrderLogic
             {
                 domain_type: FirstOrderLogicDomainType::ConstantDomain,
                 identity_type: FirstOrderLogicIdentityType::ContingentIdentity,
-                base_logic: propositional_logic.clone(),
-            }) as Rc<dyn Logic>).collect();
+                base_logic: Rc::new(PropositionalLogic{}),
+            }),
+        ];
     }
 }

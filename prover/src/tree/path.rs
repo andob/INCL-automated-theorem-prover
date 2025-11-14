@@ -19,6 +19,7 @@ pub struct ProofTreePathNodeData
     pub id : ProofTreeNodeID,
     pub is_contradictory : bool,
     pub formula : Formula,
+    pub spawner_node_id : ProofTreeNodeID,
 }
 
 impl ProofTreePathNodeData
@@ -30,6 +31,7 @@ impl ProofTreePathNodeData
             id: node.id,
             is_contradictory: node.is_contradictory,
             formula: node.formula.clone(),
+            spawner_node_id: node.spawner_node_id.unwrap_or_default()
         };
     }
 }

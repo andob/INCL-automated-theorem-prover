@@ -70,8 +70,7 @@ impl DecompositionPriorityQueue
             let reusable_node = self.reusable_nodes.remove(0);
             if !self.banned_reusable_nodes.contains(&reusable_node)
             {
-                self.consumable_nodes.push(reusable_node.clone());
-                self.banned_reusable_nodes.push(reusable_node);
+                self.consumable_nodes.push(reusable_node);
             }
         }
 
@@ -141,5 +140,18 @@ impl DecompositionPriorityQueue
             Exists(_x, _p, extras) if extras.sign == Minus => true,
             _ => false
         };
+    }
+
+    pub fn is_node_reusable(&self, node : &Box<ProofTreeNode>) -> bool
+    {
+        return self.reusable_nodes.contains(node);
+    }
+
+    pub fn ban_reusable_node(&mut self, node : &Box<ProofTreeNode>)
+    {
+        if self.reusable_nodes.contains(node)
+        {
+            self.banned_reusable_nodes.push(node.clone());
+        }
     }
 }
