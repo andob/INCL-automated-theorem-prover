@@ -2,8 +2,6 @@ use std::collections::BTreeSet;
 use itertools::Itertools;
 use crate::formula::{Formula, PossibleWorld, PredicateArgument, PredicateArguments, Sign};
 use crate::formula::Formula::{Equals, Non};
-use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
-use crate::logic::first_order_logic::forall_quantifier_rule::get_args_that_definitely_exists;
 use crate::tree::path::ProofTreePath;
 
 impl Formula
@@ -29,8 +27,6 @@ impl PredicateArguments
             .filter_map(create_equality_formulas_filtering_lambda())
             .collect::<BTreeSet<(&PredicateArgument, &PredicateArgument)>>();
 
-        let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, possible_world);
-
         let mut args_with_equivalences: Vec<BTreeSet<PredicateArgument>> = vec![];
 
         for x in self.iter()
@@ -41,8 +37,6 @@ impl PredicateArguments
             let mut equivalent_ys = all_equivalences_on_path.iter()
                 .filter(|(y, z)| x==*y || x==*z)
                 .map(|(y, z)| if x==*y { (*z).clone() } else { (*y).clone() })
-                .filter(|a| path.domain_type == ConstantDomain ||
-                    args_that_definitely_exists.iter().any(|d| d==a))
                 .map(|arg| arg.deinstantiated())
                 .collect::<BTreeSet<PredicateArgument>>();
             x_equivalence_set.append(&mut equivalent_ys);

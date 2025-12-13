@@ -8,7 +8,6 @@ use crate::formula::{Formula, FormulaExtras, PossibleWorld, PredicateArgument};
 use crate::formula::Sign::{Minus, Plus};
 use crate::logic::first_order_logic::exists_quantifier_rule::ExistsQuantifierRule;
 use crate::logic::first_order_logic::{FirstOrderLogic, FirstOrderLogicDomainType};
-use crate::logic::first_order_logic::FirstOrderLogicDomainType::ConstantDomain;
 use crate::logic::first_order_logic::predicate_args_with_equivalences::create_equality_formulas_filtering_lambda;
 use crate::logic::{LogicRule, LogicRuleResult};
 use crate::logic::rule_apply_factory::RuleApplyFactory;
@@ -154,12 +153,8 @@ impl ForAllQuantifierRule
             .flat_map(|formula| formula.get_all_predicate_arguments().into_iter())
             .collect::<BTreeSet<PredicateArgument>>();
 
-        let args_that_definitely_exists = get_args_that_definitely_exists(&all_formulas_on_path, extras.possible_world);
-        let variable_domain_check = |a : &&PredicateArgument| args_that_definitely_exists.iter().any(|d| d==*a);
-
         let object_names = all_args_on_path.iter()
             .filter(|a| a.is_instantiated() || a.is_free_object())
-            .filter(|a| logic.domain_type == ConstantDomain || variable_domain_check(a))
             .map(|a| a.object_name.clone())
             .collect::<BTreeSet<SmolStr>>();
 

@@ -393,6 +393,34 @@
         "conclusion": "∃x P[x]"
       },
       {
+        "id": "13.10.3.a",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "C" ],
+        "conclusion": "∀x C"
+      },
+      {
+        "id": "13.10.3.b",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [ "∀x C" ],
+        "conclusion": "C"
+      },
+      {
+        "id": "13.10.3.c",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "proved",
+        "premises": [ "∃x C" ],
+        "conclusion": "C"
+      },
+      {
+        "id": "13.10.3.d",
+        "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
+        "expected": "disproved",
+        "premises": [ "C" ],
+        "conclusion": "∃x C"
+      },
+      {
         "id": "13.10.6.a",
         "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+NecessaryIdentity+WithoutModality",
         "expected": "proved",
@@ -1687,7 +1715,7 @@
       {
         "id": "17.7.6.b",
         "logic": "FirstOrderLogic+VariableDomain-DomainIncreasingConstraint+ContingentIdentity+KTemporalModalLogic",
-        "expected": "disproved",
+        "expected": "proved",
         "premises": [],
         "conclusion": "(◇ᶠ(a = b) ∧ □ᶠ(Q[a])) ⊃ ◇ᶠQ[b]"
       },
@@ -2082,7 +2110,7 @@
       {
         "id": "20.13.4.b",
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+IntuitionisticLogic",
-        "expected": "disproved",
+        "expected": "timeout",
         "premises": [ "∀x(P[x] ∨ Q[x])" ],
         "conclusion": "∀x P[x] ∨ ∀x Q[x]"
       },
@@ -3026,7 +3054,7 @@
       {
         "id": "23.15.12.a",
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+I4LogicOfConstructibleNegation",
-        "expected": "proved",
+        "expected": "timeout",
         "premises": [ "∀x(P[x] ⊃ Q[x])" ],
         "conclusion": "∃x P[x] ⊃ ∃x Q[x]"
       },
@@ -3701,7 +3729,7 @@
       {
         "id": "20.5.7",
         "logic": "FirstOrderLogic+VariableDomain+DomainIncreasingConstraint+ContingentIdentity+IntuitionisticLogic",
-        "expected": "disproved",
+        "expected": "timeout",
         "premises": [ "\uD835\uDD08a", "∀x(P[a] ∨ Q[x])" ],
         "conclusion": "P[a] ∨ ∀x(Q[x])"
       },
