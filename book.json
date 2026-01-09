@@ -290,7 +290,7 @@
       {
         "id": "12.13.6.b",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+WithoutModality",
-        "expected": "timeout",
+        "expected": "disproved",
         "premises": [ "∀x(P[x] ⊃ (x = a ∨ x = b))", "a = b ∨ b = c ∨ c = a" ],
         "conclusion": "P[c]"
       },
@@ -2325,14 +2325,14 @@
       {
         "id": "22.12.2.e",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
         "conclusion": "¬(∀x P[x]) ∨ (∀x Q[x])"
       },
       {
         "id": "22.12.2.f",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+MinimalFirstDegreeEntailmentLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "∀x (¬P[x] ∨ Q[x])" ],
         "conclusion": "¬(∃x P[x]) ∨ (∃x Q[x])"
       },
@@ -2526,7 +2526,7 @@
       {
         "id": "21.14.2.e",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "∀x(P[a] ∨ Q[x])" ],
         "conclusion": "P[a] ∨ ∀x Q[x]"
       },
@@ -2540,7 +2540,7 @@
       {
         "id": "21.14.2.g",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+Lukasiewicz+KModalLogic",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [ "∀x(¬P[x] ∨ Q[x])" ],
         "conclusion": "∃x P[x] ⊃ ∃x Q[x]"
       },
@@ -2832,7 +2832,7 @@
       {
         "id": "23.15.2.f",
         "logic": "FirstOrderLogic+ConstantDomain+NecessaryIdentity+N4ModalLogicWithGapsAndGluts",
-        "expected": "proved",
+        "expected": "disproved",
         "premises": [],
         "conclusion": "∀x(P[a] ∨ Q[x]) ᐅ (P[a] ∨ ∀x Q[x])"
       },

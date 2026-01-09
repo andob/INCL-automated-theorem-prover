@@ -117,14 +117,19 @@ impl ForAllQuantifierRule
         let logic_pointer = factory.get_logic().clone();
         let logic = logic_pointer.cast_to::<FirstOrderLogic>().unwrap();
 
-        for path in factory.tree.get_paths_that_goes_through_node(node)
+        let all_paths = factory.tree.get_paths_that_goes_through_node(node);
+        for path in all_paths.clone()
         {
             let mut output_nodes = ForAllQuantifierOutputNodes::new(logic.domain_type);
-            self.apply_for_all_quantification_impl(factory, &path, node, x, p, extras, &mut output_nodes);
+            self.apply_for_all_quantification_impl(factory, &all_paths, &path, node, x, p, extras, &mut output_nodes);
 
             if output_nodes.is_empty()
             {
                 //there are no objects to be iterated, act similar to exists quantifier
+                let was_already_applied = all_paths.iter().flat_map(|path| path.nodes.iter())
+                    .any(|other_node| other_node.spawner_node_id == node.id && node.id>0);
+                if was_already_applied { return LogicRuleResult::Empty };
+
                 let object_name_factory = ExistsQuantifierRule{}.get_object_name_factory(factory, node);
                 let (instantiated_p, instantiated_x) = p.instantiated(x, &object_name_factory, extras);
                 output_nodes.add(factory, instantiated_x.unwrap_or(x.clone()), instantiated_p, extras);
@@ -137,8 +142,8 @@ impl ForAllQuantifierRule
         return LogicRuleResult::Subtrees(output_subtrees);
     }
 
-    fn apply_for_all_quantification_impl(&self,
-        factory : &mut RuleApplyFactory, path : &ProofTreePath, node : &ProofTreeNode,
+    fn apply_for_all_quantification_impl(&self, factory : &mut RuleApplyFactory,
+        all_paths : &Vec<ProofTreePath>, path : &ProofTreePath, spawner_node : &ProofTreeNode,
         x : &PredicateArgument, p : &Formula, extras : &FormulaExtras,
         output_nodes : &mut ForAllQuantifierOutputNodes,
     )
@@ -161,8 +166,28 @@ impl ForAllQuantifierRule
         for object_name in object_names
         {
             let (binded_p, binded_x) = p.binded(x, object_name, extras);
-            output_nodes.add(factory, binded_x.unwrap_or(x.clone()), binded_p, extras);
+
+            if !self.should_skip_outputting_binded_formula(logic, all_paths, spawner_node, &binded_p, &binded_x)
+            {
+                output_nodes.add(factory, binded_x.unwrap_or(x.clone()), binded_p, extras);
+            }
         }
+    }
+
+    fn should_skip_outputting_binded_formula(&self, logic : &FirstOrderLogic, all_paths : &Vec<ProofTreePath>,
+        spawner_node : &ProofTreeNode, binded_p : &Formula, binded_x : &Option<PredicateArgument>) -> bool
+    {
+        if matches!(logic.domain_type, VariableDomain(..)) && let Some(binded_x) = binded_x
+        {
+            return all_paths.iter().flat_map(|path| path.nodes.iter())
+                .filter(|node| node.spawner_node_id == spawner_node.id)
+                .filter_map(|node| if let Non(box DefinitelyExists(x, _), _) = &node.formula { Some(x) } else { None })
+                .find(|x| *x == binded_x).is_some();
+        }
+
+        return all_paths.iter().flat_map(|path| path.nodes.iter())
+            .filter(|node| node.spawner_node_id == spawner_node.id)
+            .find(|node| node.formula == *binded_p).is_some();
     }
 }
 
