@@ -4,6 +4,8 @@ An automated theorem prover on first order modal logic, fuzzy logic and other no
 
 ### [Check out running project here](https://andob.io/incl)
 
+### This software was developed under a zero Generative AI usage policy.
+
 ### Coverage
 
 |     | Chapter                            | Status                                                                                                                                                                                                       |
@@ -21,9 +23,9 @@ An automated theorem prover on first order modal logic, fuzzy logic and other no
 | 11  | Fuzzy logics                       | ✅ Lukasiewicz fuzzy logic fully implemented based on [this](https://link.springer.com/article/10.1023/A:1022989323091) article, although the book does not provide a tableaux method on this chapter.        |
 | 11a | Many-valued modal logics           | ✅ Lukasiewicz logic, Kleene logic, Logic of Paradox, RMingle3 logic fully implemented.                                                                                                                       |
 | 12  | Classical first-order logic        | ✅ Fully implemented.                                                                                                                                                                                         |
-| 13  | Free logics                        | ✅ Implemented only with negativity constraint. Positive free logic is not implemented.                                                                                                                       |
+| 13  | Free logics                        | ✅ Fully implemented.                                                                                                                       |
 | 14  | Constant domain modal logics       | ✅ Fully implemented.                                                                                                                                                                                         |
-| 15  | Variable domain modal logics       | ✅ Implemented only with negativity constraint.                                                                                                                                                               |
+| 15  | Variable domain modal logics       | ✅ Fully implemented.                                                                                                                                                               |
 | 16  | Necessary identity in modal logic  | ✅ Fully implemented.                                                                                                                                                                                         |
 | 17  | Contingent identity in modal logic | ✅ Fully implemented.                                                                                                                                                                                         |
 | 18  | Non-normal modal logics            | ✅ Fully implemented.                                                                                                                                                                                         |
@@ -34,3 +36,22 @@ An automated theorem prover on first order modal logic, fuzzy logic and other no
 | 23  | Logics with gaps, gluts and worlds | ✅ Fully implemented.                                                                                                                                                                                         |
 | 24  | Relevant logics                    | ❌ Skip, this is really difficult to implement.                                                                                                                                                               |
 | 25  | Fuzzy logics                       | ✅ Fully implemented.                                                                                                                                                                                         |
+
+### License
+
+```
+Copyright 2024 - 2025, 2025 - present Dobrescu Andrei
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
