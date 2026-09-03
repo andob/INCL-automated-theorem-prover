@@ -37,6 +37,10 @@ An automated theorem prover on first order modal logic, fuzzy logic and other no
 | 24  | Relevant logics                    | ❌ Skip, this is really difficult to implement.                                                                                                                                                               |
 | 25  | Fuzzy logics                       | ✅ Fully implemented.                                                                                                                                                                                         |
 
+### Contact
+- Marian Călborean, project manager, thesis coordinator: mc@filos.ro, marian.calborean@opti.ro
+- Andrei Dobrescu, software developer: andreidobrescu832@gmail.com, usingvirtualbox@gmail.com
+
 ### License
 
 ```
