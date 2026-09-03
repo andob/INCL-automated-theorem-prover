@@ -775,7 +775,6 @@ function show_about_panel_contents()
 {
     let book_url = 'https://www.cambridge.org/core/books/an-introduction-to-nonclassical-logic/61AD69C1D1B88006588B26C37F3A788E';
     let github_repository_url = 'https://github.com/andob/INCL-automated-theorem-prover';
-    let contact_email_address = 'mc@filos.ro';
 
     window.containers.about_container.style.overflowY = 'scroll';
     window.containers.about_container.innerHTML = `
@@ -787,13 +786,15 @@ function show_about_panel_contents()
                 Implements the algorithm theorized by renowned philosopher and logician Graham Priest in his 2008 book
                 <a href="${book_url}" target="_blank" style="color:white">"An Introduction to Non-Classical Logic. From If to Is (second edition)"</a>.
                 <br/><br/>This is free open source software, licensed under the Apache License.
-                This software was developed by Andrei Dobrescu and coordinated by Marian Calborean from Faculty of Philosophy, University of Bucharest.
+                This software was developed by Andrei Dobrescu and coordinated by Marian Călborean from Faculty of Philosophy, University of Bucharest.
             </td>
         </tr></table>
         <br/>
         <b>
-            Contact Marian at: <a href="mailto:${contact_email_address}" target="_blank" style="color:white">mc@filos.ro</a>
-            <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">here</a>
+           Contact:
+            <br/>Marian Călborean, project manager, thesis coordinator: mc@filos.ro, marian.calborean@opti.ro
+            <br/>Andrei Dobrescu, software developer: andreidobrescu832@gmail.com, usingvirtualbox@gmail.com
+            <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">${github_repository_url}</a>
             <br/>Version: 1.0.0
         </b>
     </span>`;
