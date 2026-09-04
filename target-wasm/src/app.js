@@ -790,12 +790,9 @@ function show_about_panel_contents()
             </td>
         </tr></table>
         <br/>
-        <b>
-           Contact:
+        <b>Contact:</b>
             <br/>Marian Călborean, project manager, thesis coordinator: mc@filos.ro, marian.calborean@opti.ro
             <br/>Andrei Dobrescu, software developer: andreidobrescu832@gmail.com, usingvirtualbox@gmail.com
             <br/>GitHub repository: <a href="${github_repository_url}" target="_blank" style="color:white">${github_repository_url}</a>
-            <br/>Version: 1.0.0
-        </b>
     </span>`;
 }
