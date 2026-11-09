@@ -7,11 +7,11 @@ digraph {
     f[label="γ, P, -"];
     g[label="0 + α + β < 1 - µ(P)"];
     h[label="β ≥ µ(Q)"];
-    i[label="γ < µ(P)\n🗲"];
+    i[label="γ < µ(P)"];
     j[label="α + γ, ¬Q, +"];
     k[label="0 + α + β < 1 - µ(P)"];
     l[label="β ≥ µ(Q)"];
-    m[label="α + γ ≥ 1 - µ(Q)\n🗲"];
+    m[label="α + γ ≥ 1 - µ(Q)"];
     a -> b; b -> c; c -> d; d -> e;
     e -> f; f -> g; g -> h; h -> i;
     e -> j; j -> k; k -> l; l -> m;

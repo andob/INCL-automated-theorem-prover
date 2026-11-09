@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <input-file>"
+    exit 1
+fi
+
 gvpack -u "$1" | dot -Gdpi=500 -Granksep=0.4 -Nheight=0.4 -Nshape=plaintext -Earrowhead=vee -Earrowsize=0.5 -Tpng -o "$1.png"
 convert "$1.png" "$1.bmp"
 potrace -s "$1.bmp"
